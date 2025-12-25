@@ -1,7 +1,12 @@
+#argparse: 用于解析命令行参数
 import argparse
+#glob: 用于文件模式匹配，查找符合特定规则的文件路径名
 import glob
+#pathlib: 提供面向对象的文件系统路径操作
 from pathlib import Path
 
+
+#尝试导入open3d库，如果失败则导入mayavi库,OPEN3D_FLAG用于标识使用的是哪个可视化库
 try:
     import open3d
     from visual_utils import open3d_vis_utils as V
@@ -14,6 +19,7 @@ except:
 import numpy as np
 import torch
 
+#从OPenPCDet库中导入所需模块,cfg用于配置管理，DatasetTemplate是数据集模板类，build_network用于构建神经网络模型，load_data_to_gpu用于将数据加载到GPU，common_utils包含常用工具函数
 from pcdet.config import cfg, cfg_from_yaml_file
 from pcdet.datasets import DatasetTemplate
 from pcdet.models import build_network, load_data_to_gpu
@@ -35,6 +41,7 @@ class DemoDataset(DatasetTemplate):
         )
         self.root_path = root_path
         self.ext = ext
+        # 如果root_path是一个目录，则使用glob模块查找该目录下所有符合扩展名的文件；如果root_path是一个文件，则将其作为唯一的样本文件
         data_file_list = glob.glob(str(root_path / f'*{self.ext}')) if self.root_path.is_dir() else [self.root_path]
 
         data_file_list.sort()

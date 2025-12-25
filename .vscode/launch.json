@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // cd /home/vipuser/桌面/OpenPCDet  # cwd设置
+    // python tools/demo.py \
+    //  --cfg_file /home/vipuser/桌面/OpenPCDet/tools/cfgs/kitti_models/second.yaml \
+    //  --ckpt /home/vipuser/桌面/OpenPCDet/mycode/second_7862.pth \
+    //  --data_path /home/vipuser/桌面/OpenPCDet/mycode/000008.bin
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python Debugger: demo_py_openpcdet",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/tools/demo.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {                            // 新增 env 对象
+                "DISPLAY": "localhost:10.0"     // 新增 DISPLAY 变量
+            },
+            "args": [
+                "--cfg_file",
+                "${workspaceFolder}/tools/cfgs/kitti_models/second.yaml",
+                "--ckpt",
+                "${workspaceFolder}/mycode/second_7862.pth",
+                "--data_path",
+                "${workspaceFolder}/mycode/000008.bin"
+            ]
+        }
+    ]
+}

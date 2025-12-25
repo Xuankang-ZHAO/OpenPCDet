@@ -1,9 +1,11 @@
+# 路径处理库，比os.path更强大
 from pathlib import Path
 
 import yaml
+# 使得字典可以通过属性访问，如cfg.key而不是cfg['key']
 from easydict import EasyDict
 
-
+# 将配置字典的内容记录到日志文件中，方便调试和记录配置
 def log_config_to_file(cfg, pre='cfg', logger=None):
     for key, val in cfg.items():
         if isinstance(cfg[key], EasyDict):
@@ -47,7 +49,7 @@ def cfg_from_list(cfg_list, config):
                 'type {} does not match original type {}'.format(type(value), type(d[subkey]))
             d[subkey] = value
 
-
+# 基础配置（_BASE_CONFIG）先加载，新配置覆盖基础配置，递归处理嵌套配置
 def merge_new_config(config, new_config):
     if '_BASE_CONFIG_' in new_config:
         with open(new_config['_BASE_CONFIG_'], 'r') as f:
@@ -67,7 +69,7 @@ def merge_new_config(config, new_config):
 
     return config
 
-
+# 从yaml文件加载配置
 def cfg_from_yaml_file(cfg_file, config):
     with open(cfg_file, 'r') as f:
         try:
