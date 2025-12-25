@@ -24,13 +24,16 @@ class DatasetTemplate(torch_data.Dataset):
             return
 
         self.point_cloud_range = np.array(self.dataset_cfg.POINT_CLOUD_RANGE, dtype=np.float32)
+        # PointFeatureEncoder: 负责处理点云特征（如 X, Y, Z, 反射强度等），决定哪些特征被输入模型。
         self.point_feature_encoder = PointFeatureEncoder(
             self.dataset_cfg.POINT_FEATURE_ENCODING,
             point_cloud_range=self.point_cloud_range
         )
+        # DataAugmentor: 负责数据增强（仅在 training=True 时启动）。包括点云的随机旋转、缩放、翻转，以及 GT 采样（Ground Truth Sampling）等。
         self.data_augmentor = DataAugmentor(
             self.root_path, self.dataset_cfg.DATA_AUGMENTOR, self.class_names, logger=self.logger
         ) if self.training else None
+        # DataProcessor: 负责数据标准化。它将点云裁切到指定范围，并进行**体素化（Voxelization）**或点采样，最终确定网格大小（grid_size）。
         self.data_processor = DataProcessor(
             self.dataset_cfg.DATA_PROCESSOR, point_cloud_range=self.point_cloud_range,
             training=self.training, num_point_features=self.point_feature_encoder.num_point_features

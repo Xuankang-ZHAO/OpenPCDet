@@ -15,6 +15,7 @@ except:
 
 class VoxelGeneratorWrapper():
     def __init__(self, vsize_xyz, coors_range_xyz, num_point_features, max_num_points_per_voxel, max_num_voxels):
+        # 版本兼容：VoxelGeneratorWrapper 会自动检测你安装的是 spconv 1.x 还是 2.x 版本。
         try:
             from spconv.utils import VoxelGeneratorV2 as VoxelGenerator
             self.spconv_ver = 1
@@ -73,9 +74,11 @@ class DataProcessor(object):
         self.voxel_generator = None
 
         for cur_cfg in processor_configs:
+            # 如果配置里有名为 transform_points_to_voxels 的任务，getattr 会找到该方法。
             cur_processor = getattr(self, cur_cfg.NAME)(config=cur_cfg)
             self.data_processor_queue.append(cur_processor)
 
+    # 在体素化前，必须把点云范围（Range）限制在配置文件定义的 $[min\_x, min\_y, min\_z, max\_x, max\_y, max\_z]$ 内，否则体素索引会越界。
     def mask_points_and_boxes_outside_range(self, data_dict=None, config=None):
         if data_dict is None:
             return partial(self.mask_points_and_boxes_outside_range, config=config)
@@ -130,6 +133,7 @@ class DataProcessor(object):
 
         return points_yflip, points_xflip, points_xyflip
 
+    # 将点云转换成 voxels (点), coordinates (坐标), num_points (点数) 三个张量。这是 3D 卷积神经网络（如 SECOND, PV-RCNN）的输入基础。
     def transform_points_to_voxels(self, data_dict=None, config=None):
         if data_dict is None:
             grid_size = (self.point_cloud_range[3:6] - self.point_cloud_range[0:3]) / np.array(config.VOXEL_SIZE)
