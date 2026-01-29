@@ -20,14 +20,14 @@ from tqdm import tqdm
 from pcdet.config import cfg, cfg_from_yaml_file
 from pcdet.datasets.processor.data_processor import DataProcessor
 
-
+# load KITTI dataset config
 def load_cfg_for_kitti():
     # 拼接得到完整的kitti数据集配置文件路径
     cfg_file = os.path.join(cfg.ROOT_DIR, 'tools', 'cfgs', 'dataset_configs', 'kitti_dataset.yaml')
     cfg_from_yaml_file(cfg_file, cfg)
     return cfg
 
-
+# Find all .bin files in velodyne_dir, optionally filtering by list_file
 def find_bin_files(velodyne_dir, list_file=None):
     if list_file is not None:
         with open(list_file, 'r') as f:
@@ -38,7 +38,7 @@ def find_bin_files(velodyne_dir, list_file=None):
         paths = sorted([os.path.join(velodyne_dir, f) for f in os.listdir(velodyne_dir) if f.endswith('.bin')])
     return paths
 
-
+# Analyze a single .bin file and return voxel/block statistics
 def analyze_file(bin_path, data_proc, block_size_xyz):
     points = np.fromfile(bin_path, dtype=np.float32).reshape(-1, 4)
     data_dict = {'points': points, 'use_lead_xyz': True}
@@ -89,6 +89,22 @@ def analyze_file(bin_path, data_proc, block_size_xyz):
     voxels_per_block = int(bx) * int(by) * int(bz)
     occupancy = counts / voxels_per_block
 
+    # compute per-block point counts using voxel_num_points (points inside each voxel)
+    num_points = data_dict.get('voxel_num_points', None)
+    if num_points is None:
+        points_per_block = np.zeros(total_blocks, dtype=np.int64)
+    else:
+        if isinstance(num_points, list):
+            num_points = num_points[0]
+        if hasattr(num_points, 'cpu'):
+            num_points = num_points.cpu().numpy()
+        num_points = np.array(num_points, dtype=np.int64)
+        # aggregate points per block by summing voxel point counts
+        points_per_block = np.bincount(block_ids, weights=num_points, minlength=total_blocks).astype(np.int64)
+
+    max_points_in_block = int(points_per_block.max()) if points_per_block.size > 0 else 0
+    mean_points_per_block = float(points_per_block.mean()) if points_per_block.size > 0 else 0.0
+
     result = {
         'file': os.path.basename(bin_path),
         'non_empty_voxels': int(non_empty),
@@ -101,15 +117,26 @@ def analyze_file(bin_path, data_proc, block_size_xyz):
         'blocks_median_occupied_voxels': float(np.median(counts)),
         'blocks_mean_occupancy': float(occupancy.mean()),
         'blocks_fraction_empty': float(np.sum(counts == 0) / total_blocks),
+        'blocks_max_points': int(max_points_in_block),
+        'blocks_mean_points_per_block': float(mean_points_per_block),
     }
 
     # optional distribution summary
     hist = np.bincount(counts)
     # return also hist as a compact string
     result['block_count_hist'] = ';'.join([f"{i}:{int(v)}" for i, v in enumerate(hist) if v > 0])
+
+    # list non-empty block voxel counts (one value per non-empty block)
+    nonempty_block_counts = counts[counts > 0]
+    if nonempty_block_counts.size > 0:
+        # keep original order (by block id); keep as list of ints
+        nonempty_block_counts_list = [int(x) for x in nonempty_block_counts.tolist()]
+    else:
+        nonempty_block_counts_list = []
+    result['blocks_nonempty_voxel_counts_list'] = nonempty_block_counts_list
     return result
 
-
+# Main function to parse arguments and run analysis
 def main():
     parser = argparse.ArgumentParser(description='arg parser')
     parser.add_argument('--velodyne_dir', type=str, default=None, help='Path to KITTI velodyne folder (bin files)')
@@ -154,13 +181,29 @@ def main():
             results.append(res)
 
     # write CSV
-    keys = ['file','non_empty_voxels','total_voxels','sparsity','blocks_total','blocks_empty','blocks_nonempty',
-            'blocks_mean_occupied_voxels','blocks_median_occupied_voxels','blocks_mean_occupancy','blocks_fraction_empty','block_count_hist']
-    with open(args.out, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=keys)
-        writer.writeheader()
+        base_keys = ['file','non_empty_voxels','total_voxels','sparsity','blocks_total','blocks_empty','blocks_nonempty',
+                     'blocks_mean_occupied_voxels','blocks_median_occupied_voxels','blocks_mean_occupancy','blocks_fraction_empty',
+                     'blocks_max_points','blocks_mean_points_per_block','block_count_hist']
+
+        # determine max number of non-empty blocks across all frames to create columns
+        max_nonempty = 0
         for r in results:
-            writer.writerow({k: r.get(k, '') for k in keys})
+            lst = r.get('blocks_nonempty_voxel_counts_list', [])
+            if len(lst) > max_nonempty:
+                max_nonempty = len(lst)
+
+        block_cols = [f'block_nonempty_voxels_{i}' for i in range(max_nonempty)]
+        keys = base_keys + block_cols
+
+        with open(args.out, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=keys)
+            writer.writeheader()
+            for r in results:
+                row = {k: r.get(k, '') for k in base_keys}
+                lst = r.get('blocks_nonempty_voxel_counts_list', [])
+                for i in range(max_nonempty):
+                    row[block_cols[i]] = lst[i] if i < len(lst) else ''
+                writer.writerow(row)
 
     # simple aggregate print
     sparsities = [r['sparsity'] for r in results]
