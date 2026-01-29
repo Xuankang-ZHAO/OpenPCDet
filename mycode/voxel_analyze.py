@@ -44,6 +44,7 @@ def find_bin_files(velodyne_dir, list_file=None):
 #   block_size_xyz: tuple of (block_size_x, block_size_y, block_size_z
 def analyze_file(bin_path, data_proc, block_size_xyz):
     points = np.fromfile(bin_path, dtype=np.float32).reshape(-1, 4)
+    # print(points.shape)
     data_dict = {'points': points, 'use_lead_xyz': True}
 
     # Apply data processing pipeline to generate voxels
@@ -142,9 +143,9 @@ def main():
     parser.add_argument('--list_file', type=str, default='data/kitti/velodyne/analyze.txt', help='Optional frame id list (one id per line)')
     parser.add_argument('--out', type=str, default='mycode/output/voxel_stats.csv', help='CSV output file')
     parser.add_argument('--block_size', type=int, default=16, help='Fallback single block size for all dims')
-    parser.add_argument('--block_size_x', type=int, default=None, help='Block size in voxels along X (optional)')
-    parser.add_argument('--block_size_y', type=int, default=None, help='Block size in voxels along Y (optional)')
-    parser.add_argument('--block_size_z', type=int, default=None, help='Block size in voxels along Z (optional)')
+    parser.add_argument('--block_size_x', type=int, default=10, help='Block size in voxels along X (optional)')
+    parser.add_argument('--block_size_y', type=int, default=10, help='Block size in voxels along Y (optional)')
+    parser.add_argument('--block_size_z', type=int, default=40, help='Block size in voxels along Z (optional)')
     args = parser.parse_args()
 
     cfg_local = load_cfg_for_kitti()
@@ -180,7 +181,7 @@ def main():
             results.append(res)
 
     # write CSV
-        base_keys = ['file','total_voxels','non_empty_voxels','voxel_sparsity','block_voxel_limit','blocks_total','blocks_empty','blocks_nonempty','blocks_fraction_empty','blocks_max_voxels','blocks_mean_voxels_per_valid_block','block_count_hist']
+        base_keys = ['file','total_voxels','non_empty_voxels','voxel_sparsity','block_voxel_limit','blocks_total','blocks_empty','blocks_nonempty','blocks_fraction_empty','blocks_max_voxels','blocks_mean_voxels_per_block','block_count_hist']
 
         # Determine max number of non-empty blocks across all frames to create columns
         max_nonempty = 0
