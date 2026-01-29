@@ -39,39 +39,51 @@ def find_bin_files(velodyne_dir, list_file=None):
     return paths
 
 # Analyze a single .bin file and return voxel/block statistics
+#   bin_path: path to .bin file
+#   data_proc: configured DataProcessor instance
+#   block_size_xyz: tuple of (block_size_x, block_size_y, block_size_z
 def analyze_file(bin_path, data_proc, block_size_xyz):
     points = np.fromfile(bin_path, dtype=np.float32).reshape(-1, 4)
     data_dict = {'points': points, 'use_lead_xyz': True}
 
-    # run the configured processors (this mirrors dataset pipeline)
+    # Apply data processing pipeline to generate voxels
     for proc in data_proc.data_processor_queue:
         data_dict = proc(data_dict)
 
+    # Extract voxel coordinates
     coords = data_dict.get('voxel_coords', None)
     if coords is None:
         return None
 
-    # coords could be list (double flip) or numpy/torch array
+    # Double-check the format of coords, actually coords is not a list in this case
     if isinstance(coords, list):
         coords = coords[0]
-
+        print('Warning: voxel_coords is a list, using first element.')
+        
+    # Convert to numpy if needed, actually coords has no 'cpu' attribute and it is already numpy array in this case 
     if hasattr(coords, 'cpu'):
         coords = coords.cpu().numpy()
+        print('Message: voxel_coords is a tensor, converting to numpy.')
 
+    # Ensure integer type
     coords = coords.astype(np.int64)
     if coords.ndim == 2 and coords.shape[1] == 4:
         # format: [batch_idx, z, y, x]
         coords = coords[:, 1:4]
+        print('Message: voxel_coords has batch dimension, removing it.')
 
-    # coords expected [z, y, x]
+    # Coords expected [z, y, x]
     z_idx = coords[:, 0]
     y_idx = coords[:, 1]
     x_idx = coords[:, 2]
+    # Debug print, the result is 1406, 1358, 39 for kitti 000001.bin, which is correct for x, y, z sequence
+    # print(max(x_idx), max(y_idx), max(z_idx))
 
+    # Compute voxel sparsity
     nx, ny, nz = data_proc.grid_size[0], data_proc.grid_size[1], data_proc.grid_size[2]
     total_voxels = int(nx) * int(ny) * int(nz)
-    non_empty = coords.shape[0]
-    sparsity = non_empty / total_voxels
+    non_empty_voxels = coords.shape[0]
+    voxel_sparsity = non_empty_voxels / total_voxels
 
     # Block partition in x/y/z (tile over all three dims)
     bx, by, bz = int(block_size_xyz[0]), int(block_size_xyz[1]), int(block_size_xyz[2])
@@ -86,48 +98,35 @@ def analyze_file(bin_path, data_proc, block_size_xyz):
     block_ids = block_x + block_y * num_blocks_x + block_z * (num_blocks_x * num_blocks_y)
 
     counts = np.bincount(block_ids, minlength=total_blocks)
-    voxels_per_block = int(bx) * int(by) * int(bz)
-    occupancy = counts / voxels_per_block
+    block_voxel_limit = int(bx) * int(by) * int(bz)
 
-    # compute per-block point counts using voxel_num_points (points inside each voxel)
-    num_points = data_dict.get('voxel_num_points', None)
-    if num_points is None:
-        points_per_block = np.zeros(total_blocks, dtype=np.int64)
-    else:
-        if isinstance(num_points, list):
-            num_points = num_points[0]
-        if hasattr(num_points, 'cpu'):
-            num_points = num_points.cpu().numpy()
-        num_points = np.array(num_points, dtype=np.int64)
-        # aggregate points per block by summing voxel point counts
-        points_per_block = np.bincount(block_ids, weights=num_points, minlength=total_blocks).astype(np.int64)
 
-    max_points_in_block = int(points_per_block.max()) if points_per_block.size > 0 else 0
-    mean_points_per_block = float(points_per_block.mean()) if points_per_block.size > 0 else 0.0
+    max_voxels_in_block = int(counts.max()) if counts.size > 0 else 0
+    mean_voxels_per_valid_block = float(counts[counts>0].mean()) if counts.size > 0 else 0.0
 
     result = {
         'file': os.path.basename(bin_path),
-        'non_empty_voxels': int(non_empty),
         'total_voxels': int(total_voxels),
-        'sparsity': float(sparsity),
+        'non_empty_voxels': int(non_empty_voxels),
+        'voxel_sparsity': float(voxel_sparsity),
+        'block_voxel_limit': int(block_voxel_limit),
         'blocks_total': int(total_blocks),
         'blocks_empty': int(np.sum(counts == 0)),
         'blocks_nonempty': int(np.sum(counts > 0)),
-        'blocks_mean_occupied_voxels': float(counts.mean()),
-        'blocks_median_occupied_voxels': float(np.median(counts)),
-        'blocks_mean_occupancy': float(occupancy.mean()),
         'blocks_fraction_empty': float(np.sum(counts == 0) / total_blocks),
-        'blocks_max_points': int(max_points_in_block),
-        'blocks_mean_points_per_block': float(mean_points_per_block),
+        'blocks_max_voxels': int(max_voxels_in_block),
+        'blocks_mean_voxels_per_block': float(mean_voxels_per_valid_block),
     }
 
-    # optional distribution summary
+    # Histogram of block voxel counts, e.g. "0:100;1:50;2:20" means 100 blocks with 0 voxels, 50 blocks with 1 voxel, 20 blocks with 2 voxels
     hist = np.bincount(counts)
-    # return also hist as a compact string
+    # Return hist as a compact string
     result['block_count_hist'] = ';'.join([f"{i}:{int(v)}" for i, v in enumerate(hist) if v > 0])
 
-    # list non-empty block voxel counts (one value per non-empty block)
+    # List non-empty block voxel counts (one value per non-empty block)
+    # print('counts shape:', counts.shape)
     nonempty_block_counts = counts[counts > 0]
+    # print('nonempty_block_counts shape:', nonempty_block_counts.shape)
     if nonempty_block_counts.size > 0:
         # keep original order (by block id); keep as list of ints
         nonempty_block_counts_list = [int(x) for x in nonempty_block_counts.tolist()]
@@ -181,18 +180,16 @@ def main():
             results.append(res)
 
     # write CSV
-        base_keys = ['file','non_empty_voxels','total_voxels','sparsity','blocks_total','blocks_empty','blocks_nonempty',
-                     'blocks_mean_occupied_voxels','blocks_median_occupied_voxels','blocks_mean_occupancy','blocks_fraction_empty',
-                     'blocks_max_points','blocks_mean_points_per_block','block_count_hist']
+        base_keys = ['file','total_voxels','non_empty_voxels','voxel_sparsity','block_voxel_limit','blocks_total','blocks_empty','blocks_nonempty','blocks_fraction_empty','blocks_max_voxels','blocks_mean_voxels_per_valid_block','block_count_hist']
 
-        # determine max number of non-empty blocks across all frames to create columns
+        # Determine max number of non-empty blocks across all frames to create columns
         max_nonempty = 0
         for r in results:
             lst = r.get('blocks_nonempty_voxel_counts_list', [])
             if len(lst) > max_nonempty:
                 max_nonempty = len(lst)
 
-        block_cols = [f'block_nonempty_voxels_{i}' for i in range(max_nonempty)]
+        block_cols = [f'Nonempty_block{i}' for i in range(max_nonempty)]
         keys = base_keys + block_cols
 
         with open(args.out, 'w', newline='') as f:
@@ -206,8 +203,8 @@ def main():
                 writer.writerow(row)
 
     # simple aggregate print
-    sparsities = [r['sparsity'] for r in results]
-    print(f"Processed {len(results)} files. Mean sparsity: {np.mean(sparsities):.6f}, median: {np.median(sparsities):.6f}")
+    sparsities = [r['voxel_sparsity'] for r in results]
+    print(f"Processed {len(results)} files. Mean voxel_sparsity: {np.mean(sparsities):.6f}, median: {np.median(sparsities):.6f}")
 
 
 if __name__ == '__main__':
