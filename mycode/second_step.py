@@ -28,13 +28,13 @@ def main():
     parser.add_argument('--out_dir', type=str, default='mycode/second_trace_outputs')
     args = parser.parse_args()
 
-    # project root: parent of mycode/ (so imports like `pcdet` and `tools` work)
+    # project root: parent of mycode/ (so imports like `pcdet` work)
     PRJ_ROOT = Path(__file__).resolve().parents[1]
     if str(PRJ_ROOT) not in sys.path:
         sys.path.insert(0, str(PRJ_ROOT))
 
     from pcdet.config import cfg, cfg_from_yaml_file
-    from tools.demo import DemoDataset
+    from pcdet.datasets.dataset import DatasetTemplate
     from pcdet.models import build_network
     from mycode.second_instrument import ActivationRecorder, summarize_records
     from pcdet.utils import common_utils
@@ -50,17 +50,21 @@ def main():
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # Create dataset and process one sample (this will run point_feature_encoder + data_processor -> voxels)
+    # Load single .bin file and run dataset processors to prepare a single sample
     pcd_path = Path(args.pcd)
-    demo_ds = DemoDataset(dataset_cfg=cfg.DATA_CONFIG, class_names=cfg.CLASS_NAMES, training=False, root_path=pcd_path, ext='.bin')
-    if len(demo_ds) == 0:
-        raise RuntimeError(f'No samples found in {pcd_path}')
+    if not pcd_path.exists():
+        raise FileNotFoundError(f'Point cloud file not found: {pcd_path}')
 
-    sample = demo_ds[0]
+    points = np.fromfile(str(pcd_path), dtype=np.float32).reshape(-1, 4)
+
+    # Use DatasetTemplate to access point_feature_encoder and data_processor without importing demo visualizers
+    dataset_template = DatasetTemplate(dataset_cfg=cfg.DATA_CONFIG, class_names=cfg.CLASS_NAMES, training=False)
+    input_dict = {'points': points, 'frame_id': 0}
+    sample = dataset_template.prepare_data(input_dict)
     print('Prepared sample keys:', list(sample.keys()))
 
     # Collate into a batch (numpy arrays)
-    batch = demo_ds.collate_batch([sample])
+    batch = DatasetTemplate.collate_batch([sample])
 
     # Convert numpy arrays to torch tensors on chosen device (custom conversion to support CPU)
     def load_data_to_device(batch_dict, device):
