@@ -140,7 +140,7 @@ def analyze_file(bin_path, data_proc, block_size_xyz):
 def main():
     parser = argparse.ArgumentParser(description='arg parser')
     parser.add_argument('--velodyne_dir', type=str, default=None, help='Path to KITTI velodyne folder (bin files)')
-    parser.add_argument('--list_file', type=str, default='data/kitti/velodyne/analyze.txt', help='Optional frame id list (one id per line)')
+    parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/train.txt', help='Optional frame id list (one id per line)')
     parser.add_argument('--out', type=str, default='mycode/output/voxel_stats.csv', help='CSV output file')
     parser.add_argument('--block_size', type=int, default=16, help='Fallback single block size for all dims')
     parser.add_argument('--block_size_x', type=int, default=10, help='Block size in voxels along X (optional)')
@@ -151,7 +151,7 @@ def main():
     cfg_local = load_cfg_for_kitti()
 
     if args.velodyne_dir is None:
-        default_dir = os.path.join(cfg.ROOT_DIR, 'data', 'kitti', 'velodyne')
+        default_dir = os.path.join(cfg.ROOT_DIR, 'data', 'kitti', 'training', 'velodyne')
         velodyne_dir = default_dir
     else:
         velodyne_dir = args.velodyne_dir
