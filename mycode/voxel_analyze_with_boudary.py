@@ -248,7 +248,7 @@ def main():
     num_point_features = len(cfg_local.POINT_FEATURE_ENCODING.used_feature_list) if 'POINT_FEATURE_ENCODING' in cfg_local else 4
     data_proc = DataProcessor(processor_configs=cfg_local.DATA_PROCESSOR,
                               point_cloud_range=np.array(cfg_local.POINT_CLOUD_RANGE),
-                              training=False,
+                              training=True,
                               num_point_features=num_point_features)
 
     results = []

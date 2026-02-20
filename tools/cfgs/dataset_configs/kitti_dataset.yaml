@@ -66,5 +66,6 @@ DATA_PROCESSOR:
       MAX_POINTS_PER_VOXEL: 5
       MAX_NUMBER_OF_VOXELS: {
         'train': 16000,
+        # 'test': 40000  # Originally set to 40000, but modified below for testing
         'test': 40000
       }
