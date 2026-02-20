@@ -99,14 +99,14 @@ def analyze_file(bin_path, data_proc):
 
 def main():
     parser = argparse.ArgumentParser(description='Compute 3x3x3 neighbor-count distribution')
-    parser.add_argument('--velodyne_dir', type=str, default=None, help='Path to KITTI velodyne folder (bin files)')
-    parser.add_argument('--list_file', type=str, default=None, help='Optional frame id list (one id per line)')
+    parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne', help='Path to KITTI velodyne folder (bin files)')
+    parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/train.txt', help='Optional frame id list (one id per line)')
     args = parser.parse_args()
 
     cfg_local = load_cfg_for_kitti()
 
     if args.velodyne_dir is None:
-        velodyne_dir = os.path.join(cfg.ROOT_DIR, 'data', 'kitti', 'velodyne')
+        velodyne_dir = os.path.join(cfg.ROOT_DIR, 'data', 'kitti', 'training', 'velodyne')
     else:
         velodyne_dir = args.velodyne_dir
 

@@ -221,19 +221,19 @@ def analyze_file(bin_path, data_proc, block_size_xyz):
 # Main function to parse arguments and run analysis
 def main():
     parser = argparse.ArgumentParser(description='arg parser')
-    parser.add_argument('--velodyne_dir', type=str, default=None, help='Path to KITTI velodyne folder (bin files)')
-    parser.add_argument('--list_file', type=str, default='data/kitti/velodyne/analyze.txt', help='Optional frame id list (one id per line)')
+    parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne', help='Path to KITTI velodyne folder (bin files)')
+    parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/train.txt', help='Optional frame id list (one id per line)')
     parser.add_argument('--out', type=str, default='mycode/output/voxel_stats_with_boudary.csv', help='CSV output file')
     parser.add_argument('--block_size', type=int, default=16, help='Fallback single block size for all dims')
-    parser.add_argument('--block_size_x', type=int, default=128, help='Block size in voxels along X (optional)')
-    parser.add_argument('--block_size_y', type=int, default=16, help='Block size in voxels along Y (optional)')
-    parser.add_argument('--block_size_z', type=int, default=16, help='Block size in voxels along Z (optional)')
+    parser.add_argument('--block_size_x', type=int, default=10, help='Block size in voxels along X (optional)')
+    parser.add_argument('--block_size_y', type=int, default=10, help='Block size in voxels along Y (optional)')
+    parser.add_argument('--block_size_z', type=int, default=6, help='Block size in voxels along Z (optional)')
     args = parser.parse_args()
 
     cfg_local = load_cfg_for_kitti()
 
     if args.velodyne_dir is None:
-        default_dir = os.path.join(cfg.ROOT_DIR, 'data', 'kitti', 'velodyne')
+        default_dir = os.path.join(cfg.ROOT_DIR, 'data', 'kitti', 'training', 'velodyne')
         velodyne_dir = default_dir
     else:
         velodyne_dir = args.velodyne_dir
