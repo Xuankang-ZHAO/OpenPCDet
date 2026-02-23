@@ -5,6 +5,8 @@
 # - bx,by,bz: block sizes for that zone/interval
 # Lines starting with # are comments and ignored.
 # Example: zone 0 covers distances 0-63 with block size 10x10x6
-0:0-127:16,16,16
-1:128-511:32,32,16
-2:512-2048:32,32,41
+0:0-127:8,8,8
+1:128-255:16,16,8
+2:256-511:16,16,16
+3:512-1023:32,32,16
+4:1024-2047:64,32,32

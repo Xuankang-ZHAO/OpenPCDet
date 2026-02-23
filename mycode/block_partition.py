@@ -193,8 +193,8 @@ def _compute_unfixed_partition_counts(coords: np.ndarray,
     else:
         counts = np.bincount(np.array(replicated_block_ids, dtype=np.int64), minlength=next_id)
 
-    # block_voxel_limit: pick maximum capacity among LUT entries
-    block_voxel_limit = max([sz[0] * sz[1] * sz[2] for (_, _, sz) in lut])
+    # block_voxel_limit: set to -1 to debug
+    block_voxel_limit = -1
     total_blocks = counts.size
     return counts, total_blocks, block_voxel_limit
 
