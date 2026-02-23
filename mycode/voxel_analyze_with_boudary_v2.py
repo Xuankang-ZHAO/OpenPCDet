@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
-"""Analyze voxel sparsity and block partition sparsity for KITTI point clouds.
+"""Analyze voxel sparsity and block partition sparsity for LiDAR point clouds.
 
-Usage examples:
-  python mycode/voxel_analyze.py --velodyne_dir /path/to/kitti/velodyne --out stats.csv
+This script reproduces the voxelization from OpenPCDet's pipeline and
+partitions the voxel grid into 3D blocks. Two partitioning modes are
+supported:
+    - fixed: fixed-size blocks with boundary replication (default)
+    - unfixed: variable block sizes selected from a LUT by Chebyshev distance
 
-The script hooks into OpenPCDet's DataProcessor transform pipeline to reproduce
-the same voxelization used during inference (spconv VoxelGenerator wrapper).
+Files in this folder used by the script:
+    - `block_partition.py`: partition implementations and API
+    - `block_size_lut.txt`: example LUT for unfixed mode
+
+Usage example:
+    python mycode/voxel_analyze_with_boudary_v2.py --velodyne_dir /path/to/kitti/velodyne --out stats.csv
 """
 import os
 import math
@@ -19,6 +26,7 @@ from tqdm import tqdm
 
 from pcdet.config import cfg, cfg_from_yaml_file
 from pcdet.datasets.processor.data_processor import DataProcessor
+from mycode.block_partition import compute_block_partition_counts
 
 # load KITTI dataset config
 def load_cfg_for_kitti():
@@ -42,7 +50,7 @@ def find_bin_files(velodyne_dir, list_file=None):
 #   bin_path: path to .bin file
 #   data_proc: configured DataProcessor instance
 #   block_size_xyz: tuple of (block_size_x, block_size_y, block_size_z
-def analyze_file(bin_path, data_proc, block_size_xyz):
+def analyze_file(bin_path, data_proc, block_size_xyz, fixed_block_partition=True, lut_path=None, lidar_center_xy=None):
     points = np.fromfile(bin_path, dtype=np.float32).reshape(-1, 4)
     # print(points.shape)
     data_dict = {'points': points, 'use_lead_xyz': True}
@@ -86,21 +94,12 @@ def analyze_file(bin_path, data_proc, block_size_xyz):
     non_empty_voxels = coords.shape[0]
     voxel_sparsity = non_empty_voxels / total_voxels
 
-    # Block partition in x/y/z (tile over all three dims)
-    bx, by, bz = int(block_size_xyz[0]), int(block_size_xyz[1]), int(block_size_xyz[2])
-    num_blocks_x = math.ceil(nx / bx)
-    num_blocks_y = math.ceil(ny / by)
-    num_blocks_z = math.ceil(nz / bz)
-    total_blocks = num_blocks_x * num_blocks_y * num_blocks_z
-
-    block_x = (x_idx // bx).astype(np.int64)
-    block_y = (y_idx // by).astype(np.int64)
-    block_z = (z_idx // bz).astype(np.int64)
-    block_ids = block_x + block_y * num_blocks_x + block_z * (num_blocks_x * num_blocks_y)
-
-    counts = np.bincount(block_ids, minlength=total_blocks)
-    block_voxel_limit = int(bx) * int(by) * int(bz)
-
+    # Block partition and boundary replication delegated to helper.
+    # The helper supports different partitioning modes via `mode`.
+    mode = 'fixed' if fixed_block_partition else 'unfixed'
+    counts, total_blocks, block_voxel_limit = compute_block_partition_counts(
+        coords, (nx, ny, nz), block_size_xyz, mode=mode, lut_path=lut_path, lidar_center_xy=lidar_center_xy
+    )
 
     max_voxels_in_block = int(counts.max()) if counts.size > 0 else 0
     mean_voxels_per_valid_block = float(counts[counts>0].mean()) if counts.size > 0 else 0.0
@@ -141,11 +140,14 @@ def main():
     parser = argparse.ArgumentParser(description='arg parser')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne', help='Path to KITTI velodyne folder (bin files)')
     parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/train.txt', help='Optional frame id list (one id per line)')
-    parser.add_argument('--out', type=str, default='mycode/output/voxel_stats.csv', help='CSV output file')
+    parser.add_argument('--out', type=str, default='mycode/output/voxel_stats_with_boudary_v2.csv', help='CSV output file')
     parser.add_argument('--block_size', type=int, default=16, help='Fallback single block size for all dims')
     parser.add_argument('--block_size_x', type=int, default=10, help='Block size in voxels along X (optional)')
     parser.add_argument('--block_size_y', type=int, default=10, help='Block size in voxels along Y (optional)')
     parser.add_argument('--block_size_z', type=int, default=6, help='Block size in voxels along Z (optional)')
+    parser.add_argument('--fixed_block_partition', type=str, default='True', help='Set to True (fixed) or False (unfixed) block partitioning')
+    parser.add_argument('--block_lut', type=str, default='mycode/block_size_lut.txt', help='Path to block-size lookup table for unfixed partition')
+    parser.add_argument('--lidar_center', type=str, default='0,800', help='LiDAR voxel center as "x,y" for unfixed partition (e.g. 0,800 for KITTI)')
     args = parser.parse_args()
 
     cfg_local = load_cfg_for_kitti()
@@ -175,8 +177,14 @@ def main():
     by = args.block_size_y if args.block_size_y is not None else args.block_size
     bz = args.block_size_z if args.block_size_z is not None else args.block_size
 
+    # parse lidar_center
+    lc = tuple(int(x) for x in args.lidar_center.split(',')) if args.lidar_center is not None else None
+
+    # parse fixed_block_partition string into bool
+    fixed_flag = str(args.fixed_block_partition).lower() in ('1', 'true', 'yes', 'y', 't')
+
     for p in tqdm(paths, desc='Processing'):
-        res = analyze_file(p, data_proc, (bx, by, bz))
+        res = analyze_file(p, data_proc, (bx, by, bz), fixed_block_partition=fixed_flag, lut_path=args.block_lut, lidar_center_xy=lc)
         if res is not None:
             results.append(res)
 

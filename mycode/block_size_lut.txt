@@ -1,0 +1,10 @@
+# Block size lookup table for unfixed partitioning
+# Format per line: zone:start-end:bx,by,bz
+# - zone: integer zone id starting from 0
+# - start-end: Chebyshev distance interval (inclusive)
+# - bx,by,bz: block sizes for that zone/interval
+# Lines starting with # are comments and ignored.
+# Example: zone 0 covers distances 0-63 with block size 10x10x6
+0:0-127:16,16,16
+1:128-511:32,32,16
+2:512-2048:32,32,41

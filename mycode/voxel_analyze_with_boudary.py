@@ -178,6 +178,7 @@ def analyze_file(bin_path, data_proc, block_size_xyz):
         counts = np.zeros(total_blocks, dtype=np.int64)
     else:
         replicated_block_ids = np.array(replicated_block_ids, dtype=np.int64)
+        # 这一步的bincount统计的是体素的数量（加上复制的体素）个id,每个id对应一个block，统计每个block的体素数量（包括复制的体素）。minlength=total_blocks确保我们得到每个block的计数，即使有些block的计数为0。
         counts = np.bincount(replicated_block_ids, minlength=total_blocks)
 
     # The block voxel capacity (per-block limit) remains the unreplicated
@@ -202,6 +203,7 @@ def analyze_file(bin_path, data_proc, block_size_xyz):
     }
 
     # Histogram of block voxel counts, e.g. "0:100;1:50;2:20" means 100 blocks with 0 voxels, 50 blocks with 1 voxel, 20 blocks with 2 voxels
+    # 这一步bincount统计的是block中包含不同数量体素的block数量
     hist = np.bincount(counts)
     # Return hist as a compact string
     result['block_count_hist'] = ';'.join([f"{i}:{int(v)}" for i, v in enumerate(hist) if v > 0])
@@ -225,9 +227,9 @@ def main():
     parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/train.txt', help='Optional frame id list (one id per line)')
     parser.add_argument('--out', type=str, default='mycode/output/voxel_stats_with_boudary.csv', help='CSV output file')
     parser.add_argument('--block_size', type=int, default=16, help='Fallback single block size for all dims')
-    parser.add_argument('--block_size_x', type=int, default=10, help='Block size in voxels along X (optional)')
-    parser.add_argument('--block_size_y', type=int, default=10, help='Block size in voxels along Y (optional)')
-    parser.add_argument('--block_size_z', type=int, default=6, help='Block size in voxels along Z (optional)')
+    parser.add_argument('--block_size_x', type=int, default=16, help='Block size in voxels along X (optional)')
+    parser.add_argument('--block_size_y', type=int, default=16, help='Block size in voxels along Y (optional)')
+    parser.add_argument('--block_size_z', type=int, default=16, help='Block size in voxels along Z (optional)')
     args = parser.parse_args()
 
     cfg_local = load_cfg_for_kitti()
@@ -248,7 +250,7 @@ def main():
     num_point_features = len(cfg_local.POINT_FEATURE_ENCODING.used_feature_list) if 'POINT_FEATURE_ENCODING' in cfg_local else 4
     data_proc = DataProcessor(processor_configs=cfg_local.DATA_PROCESSOR,
                               point_cloud_range=np.array(cfg_local.POINT_CLOUD_RANGE),
-                              training=True,
+                              training=False,
                               num_point_features=num_point_features)
 
     results = []
