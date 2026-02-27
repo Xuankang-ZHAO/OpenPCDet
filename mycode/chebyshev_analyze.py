@@ -98,7 +98,8 @@ def analyze_file(bin_path, data_proc, lidar_center_xy=(0, 0)):
     total_voxels = int(nx) * int(ny) * int(nz)
     non_empty_voxels = coords.shape[0]
     voxel_sparsity = float(non_empty_voxels) / float(total_voxels) if total_voxels > 0 else 0.0
-
+    
+    #print(nx, ny, nz)
     # Clip indices to grid bounds just in case
     valid_mask = (z_idx >= 0) & (z_idx < nz) & (y_idx >= 0) & (y_idx < ny) & (x_idx >= 0) & (x_idx < nx)
     if not np.all(valid_mask):

@@ -13,6 +13,6 @@ venv/
 *.pkl
 *.zip
 #*.bin
-#output
+output
 #version.py
 *.csv
