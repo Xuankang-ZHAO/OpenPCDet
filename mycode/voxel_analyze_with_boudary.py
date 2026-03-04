@@ -225,7 +225,7 @@ def main():
     parser = argparse.ArgumentParser(description='arg parser')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne', help='Path to KITTI velodyne folder (bin files)')
     parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/analyze.txt', help='Optional frame id list (one id per line)')
-    parser.add_argument('--out', type=str, default='mycode/output/voxel_stats_with_boudary_10x10x6_40000.csv', help='CSV output file')
+    parser.add_argument('--out', type=str, default='mycode/output/voxel_stats_with_boudary_10x10x6_15000.csv', help='CSV output file')
     parser.add_argument('--block_size', type=int, default=16, help='Fallback single block size for all dims')
     parser.add_argument('--block_size_x', type=int, default=10, help='Block size in voxels along X (optional)')
     parser.add_argument('--block_size_y', type=int, default=10, help='Block size in voxels along Y (optional)')
