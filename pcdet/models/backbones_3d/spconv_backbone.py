@@ -71,6 +71,8 @@ class VoxelBackBone8x(nn.Module):
     def __init__(self, model_cfg, input_channels, grid_size, **kwargs):
         super().__init__()
         self.model_cfg = model_cfg
+        # partial 是 Python 标准库 functools 中的函数（使用前需导入 from functools import partial），作用是创建一个「参数固定了一部分的新函数」，也叫「偏函数」。
+        # 创建一个新函数 norm_fn，它本质上还是 nn.BatchNorm1d，但已经固定了 eps 和 momentum 两个参数
         norm_fn = partial(nn.BatchNorm1d, eps=1e-3, momentum=0.01)
 
         self.sparse_shape = grid_size[::-1] + [1, 0, 0]
@@ -146,23 +148,23 @@ class VoxelBackBone8x(nn.Module):
             batch_size=batch_size
         )
 
-        x = self.conv_input(input_sp_tensor)
+        x = self.conv_input(input_sp_tensor)  # 输入层：原始特征→16维  
 
-        x_conv1 = self.conv1(x)
-        x_conv2 = self.conv2(x_conv1)
-        x_conv3 = self.conv3(x_conv2)
-        x_conv4 = self.conv4(x_conv3)
+        x_conv1 = self.conv1(x)               # conv1：尺度1倍（无下采样，分辨率不变），16维→16维
+        x_conv2 = self.conv2(x_conv1)         # conv2：尺度2倍（下采样2倍，分辨率减半），16维→32维
+        x_conv3 = self.conv3(x_conv2)         # conv3：尺度4倍（下采样2倍，分辨率减半），32维→64维
+        x_conv4 = self.conv4(x_conv3)         # conv4：尺度8倍（下采样2倍，分辨率减半），64维→64维
 
         # for detection head
         # [200, 176, 5] -> [200, 176, 2]
         out = self.conv_out(x_conv4)
 
         batch_dict.update({
-            'encoded_spconv_tensor': out,
-            'encoded_spconv_tensor_stride': 8
+            'encoded_spconv_tensor': out,     # 最终输出特征
+            'encoded_spconv_tensor_stride': 8 # 最终特征的下采样倍数（8倍）
         })
         batch_dict.update({
-            'multi_scale_3d_features': {
+            'multi_scale_3d_features': {      # 多尺度特征（1/2/4/8倍）
                 'x_conv1': x_conv1,
                 'x_conv2': x_conv2,
                 'x_conv3': x_conv3,
@@ -170,7 +172,7 @@ class VoxelBackBone8x(nn.Module):
             }
         })
         batch_dict.update({
-            'multi_scale_3d_strides': {
+            'multi_scale_3d_strides': {       # 各尺度的下采样倍数
                 'x_conv1': 1,
                 'x_conv2': 2,
                 'x_conv3': 4,
