@@ -1,0 +1,439 @@
+2026-03-06 12:02:50,272   INFO  **********************Start logging**********************
+2026-03-06 12:02:50,272   INFO  CUDA_VISIBLE_DEVICES=ALL
+2026-03-06 12:02:50,272   INFO  Training with a single process
+2026-03-06 12:02:50,272   INFO  cfg_file         cfgs/kitti_models/second.yaml
+2026-03-06 12:02:50,272   INFO  batch_size       4
+2026-03-06 12:02:50,272   INFO  epochs           2
+2026-03-06 12:02:50,272   INFO  workers          4
+2026-03-06 12:02:50,272   INFO  extra_tag        qat_finetune
+2026-03-06 12:02:50,272   INFO  ckpt             None
+2026-03-06 12:02:50,272   INFO  pretrained_model ../output/kitti_models/second/default/ckpt/checkpoint_epoch_51.pth
+2026-03-06 12:02:50,272   INFO  launcher         none
+2026-03-06 12:02:50,272   INFO  tcp_port         18888
+2026-03-06 12:02:50,272   INFO  sync_bn          False
+2026-03-06 12:02:50,272   INFO  fix_random_seed  False
+2026-03-06 12:02:50,272   INFO  ckpt_save_interval 1
+2026-03-06 12:02:50,273   INFO  local_rank       None
+2026-03-06 12:02:50,273   INFO  max_ckpt_save_num 30
+2026-03-06 12:02:50,273   INFO  merge_all_iters_to_one_epoch False
+2026-03-06 12:02:50,273   INFO  set_cfgs         None
+2026-03-06 12:02:50,273   INFO  max_waiting_mins 0
+2026-03-06 12:02:50,273   INFO  start_epoch      0
+2026-03-06 12:02:50,273   INFO  num_epochs_to_eval 0
+2026-03-06 12:02:50,273   INFO  save_to_file     False
+2026-03-06 12:02:50,273   INFO  use_tqdm_to_record False
+2026-03-06 12:02:50,273   INFO  logger_iter_interval 50
+2026-03-06 12:02:50,273   INFO  ckpt_save_time_interval 300
+2026-03-06 12:02:50,273   INFO  wo_gpu_stat      False
+2026-03-06 12:02:50,273   INFO  use_amp          False
+2026-03-06 12:02:50,273   INFO  qat              True
+2026-03-06 12:02:50,273   INFO  cfg.ROOT_DIR: /home/vipuser/桌面/OpenPCDet
+2026-03-06 12:02:50,273   INFO  cfg.LOCAL_RANK: 0
+2026-03-06 12:02:50,273   INFO  cfg.CLASS_NAMES: ['Car', 'Pedestrian', 'Cyclist']
+2026-03-06 12:02:50,273   INFO  ----------- DATA_CONFIG -----------
+2026-03-06 12:02:50,273   INFO  cfg.DATA_CONFIG.DATASET: KittiDataset
+2026-03-06 12:02:50,273   INFO  cfg.DATA_CONFIG.DATA_PATH: ../data/kitti
+2026-03-06 12:02:50,273   INFO  cfg.DATA_CONFIG.POINT_CLOUD_RANGE: [0, -40, -3, 70.4, 40, 1]
+2026-03-06 12:02:50,273   INFO  ----------- DATA_SPLIT -----------
+2026-03-06 12:02:50,273   INFO  cfg.DATA_CONFIG.DATA_SPLIT.train: train
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.DATA_SPLIT.test: val
+2026-03-06 12:02:50,274   INFO  ----------- INFO_PATH -----------
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.INFO_PATH.train: ['kitti_infos_train.pkl']
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.INFO_PATH.test: ['kitti_infos_val.pkl']
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.GET_ITEM_LIST: ['points']
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.FOV_POINTS_ONLY: True
+2026-03-06 12:02:50,274   INFO  ----------- DATA_AUGMENTOR -----------
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.DISABLE_AUG_LIST: ['placeholder']
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.AUG_CONFIG_LIST: [{'NAME': 'gt_sampling', 'USE_ROAD_PLANE': False, 'DB_INFO_PATH': ['kitti_dbinfos_train.pkl'], 'PREPARE': {'filter_by_min_points': ['Car:5', 'Pedestrian:5', 'Cyclist:5'], 'filter_by_difficulty': [-1]}, 'SAMPLE_GROUPS': ['Car:20', 'Pedestrian:15', 'Cyclist:15'], 'NUM_POINT_FEATURES': 4, 'DATABASE_WITH_FAKELIDAR': False, 'REMOVE_EXTRA_WIDTH': [0.0, 0.0, 0.0], 'LIMIT_WHOLE_SCENE': True}, {'NAME': 'random_world_flip', 'ALONG_AXIS_LIST': ['x']}, {'NAME': 'random_world_rotation', 'WORLD_ROT_ANGLE': [-0.78539816, 0.78539816]}, {'NAME': 'random_world_scaling', 'WORLD_SCALE_RANGE': [0.95, 1.05]}]
+2026-03-06 12:02:50,274   INFO  ----------- POINT_FEATURE_ENCODING -----------
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.encoding_type: absolute_coordinates_encoding
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.used_feature_list: ['x', 'y', 'z', 'intensity']
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.src_feature_list: ['x', 'y', 'z', 'intensity']
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG.DATA_PROCESSOR: [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': True, 'test': False}}, {'NAME': 'transform_points_to_voxels', 'VOXEL_SIZE': [0.05, 0.05, 0.1], 'MAX_POINTS_PER_VOXEL': 5, 'MAX_NUMBER_OF_VOXELS': {'train': 16000, 'test': 15000}}]
+2026-03-06 12:02:50,274   INFO  cfg.DATA_CONFIG._BASE_CONFIG_: cfgs/dataset_configs/kitti_dataset.yaml
+2026-03-06 12:02:50,274   INFO  ----------- MODEL -----------
+2026-03-06 12:02:50,274   INFO  cfg.MODEL.NAME: SECONDNet
+2026-03-06 12:02:50,274   INFO  ----------- VFE -----------
+2026-03-06 12:02:50,274   INFO  cfg.MODEL.VFE.NAME: MeanVFE
+2026-03-06 12:02:50,274   INFO  ----------- BACKBONE_3D -----------
+2026-03-06 12:02:50,274   INFO  cfg.MODEL.BACKBONE_3D.NAME: VoxelBackBone8x_INT8
+2026-03-06 12:02:50,274   INFO  ----------- MAP_TO_BEV -----------
+2026-03-06 12:02:50,274   INFO  cfg.MODEL.MAP_TO_BEV.NAME: HeightCompression
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.MAP_TO_BEV.NUM_BEV_FEATURES: 256
+2026-03-06 12:02:50,275   INFO  ----------- BACKBONE_2D -----------
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.BACKBONE_2D.NAME: BaseBEVBackbone
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.BACKBONE_2D.LAYER_NUMS: [5, 5]
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.BACKBONE_2D.LAYER_STRIDES: [1, 2]
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.BACKBONE_2D.NUM_FILTERS: [128, 256]
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.BACKBONE_2D.UPSAMPLE_STRIDES: [1, 2]
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.BACKBONE_2D.NUM_UPSAMPLE_FILTERS: [256, 256]
+2026-03-06 12:02:50,275   INFO  ----------- DENSE_HEAD -----------
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.NAME: AnchorHeadSingle
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.CLASS_AGNOSTIC: False
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.USE_DIRECTION_CLASSIFIER: True
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.DIR_OFFSET: 0.78539
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.DIR_LIMIT_OFFSET: 0.0
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.NUM_DIR_BINS: 2
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.ANCHOR_GENERATOR_CONFIG: [{'class_name': 'Car', 'anchor_sizes': [[3.9, 1.6, 1.56]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.78], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.45}, {'class_name': 'Pedestrian', 'anchor_sizes': [[0.8, 0.6, 1.73]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.6], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}, {'class_name': 'Cyclist', 'anchor_sizes': [[1.76, 0.6, 1.73]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.6], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}]
+2026-03-06 12:02:50,275   INFO  ----------- TARGET_ASSIGNER_CONFIG -----------
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NAME: AxisAlignedTargetAssigner
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.POS_FRACTION: -1.0
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.SAMPLE_SIZE: 512
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NORM_BY_NUM_EXAMPLES: False
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.MATCH_HEIGHT: False
+2026-03-06 12:02:50,275   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER: ResidualCoder
+2026-03-06 12:02:50,276   INFO  ----------- LOSS_CONFIG -----------
+2026-03-06 12:02:50,276   INFO  ----------- LOSS_WEIGHTS -----------
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.cls_weight: 1.0
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.loc_weight: 2.0
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.dir_weight: 0.2
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.code_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+2026-03-06 12:02:50,276   INFO  ----------- POST_PROCESSING -----------
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.SCORE_THRESH: 0.1
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.OUTPUT_RAW_SCORE: False
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.EVAL_METRIC: kitti
+2026-03-06 12:02:50,276   INFO  ----------- NMS_CONFIG -----------
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.MULTI_CLASSES_NMS: False
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_TYPE: nms_gpu
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_THRESH: 0.01
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_PRE_MAXSIZE: 4096
+2026-03-06 12:02:50,276   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_POST_MAXSIZE: 500
+2026-03-06 12:02:50,276   INFO  ----------- OPTIMIZATION -----------
+2026-03-06 12:02:50,276   INFO  cfg.OPTIMIZATION.BATCH_SIZE_PER_GPU: 4
+2026-03-06 12:02:50,276   INFO  cfg.OPTIMIZATION.NUM_EPOCHS: 10
+2026-03-06 12:02:50,276   INFO  cfg.OPTIMIZATION.OPTIMIZER: adam_onecycle
+2026-03-06 12:02:50,276   INFO  cfg.OPTIMIZATION.LR: 0.0001
+2026-03-06 12:02:50,276   INFO  cfg.OPTIMIZATION.WEIGHT_DECAY: 0.01
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.MOMENTUM: 0.9
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.MOMS: [0.95, 0.85]
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.PCT_START: 0.4
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.DIV_FACTOR: 10
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.DECAY_STEP_LIST: [35, 45]
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.LR_DECAY: 0.1
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.LR_CLIP: 1e-07
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.LR_WARMUP: False
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.WARMUP_EPOCH: 1
+2026-03-06 12:02:50,277   INFO  cfg.OPTIMIZATION.GRAD_NORM_CLIP: 10
+2026-03-06 12:02:50,277   INFO  cfg.TAG: second
+2026-03-06 12:02:50,277   INFO  cfg.EXP_GROUP_PATH: kitti_models
+2026-03-06 12:02:50,289   INFO  ----------- Create dataloader & network & optimizer -----------
+2026-03-06 12:02:50,483   INFO  Database filter by min points Car: 14357 => 13532
+2026-03-06 12:02:50,484   INFO  Database filter by min points Pedestrian: 2207 => 2168
+2026-03-06 12:02:50,484   INFO  Database filter by min points Cyclist: 734 => 705
+2026-03-06 12:02:50,504   INFO  Database filter by difficulty Car: 13532 => 10759
+2026-03-06 12:02:50,508   INFO  Database filter by difficulty Pedestrian: 2168 => 2075
+2026-03-06 12:02:50,509   INFO  Database filter by difficulty Cyclist: 705 => 581
+2026-03-06 12:02:50,516   INFO  Loading KITTI dataset
+2026-03-06 12:02:50,656   INFO  Total samples for KITTI dataset: 3712
+2026-03-06 12:02:51,000   INFO  ==> Loading parameters from checkpoint ../output/kitti_models/second/default/ckpt/checkpoint_epoch_51.pth to GPU
+2026-03-06 12:02:51,087   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py3a0d9e7
+2026-03-06 12:02:51,095   INFO  ==> Done (loaded 163/163)
+2026-03-06 12:02:51,097   INFO  Enabled QAT on backbone_3d (model.backbone_3d.enable_qat(True))
+2026-03-06 12:02:51,098   INFO  ----------- Model SECONDNet created, param count: 5325576 -----------
+2026-03-06 12:02:51,098   INFO  SECONDNet(
+  (vfe): MeanVFE()
+  (backbone_3d): VoxelBackBone8x_INT8(
+    (conv_input): SparseSequential(
+      (0): SubMConv3d(4, 16, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[1, 1, 1], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+      (1): BatchNorm1d(16, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+      (2): ReLU()
+    )
+    (conv1): SparseSequential(
+      (0): SparseSequential(
+        (0): SubMConv3d(16, 16, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(16, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+    (conv2): SparseSequential(
+      (0): SparseSequential(
+        (0): SparseConv3d(16, 32, kernel_size=[3, 3, 3], stride=[2, 2, 2], padding=[1, 1, 1], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(32, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (1): SparseSequential(
+        (0): SubMConv3d(32, 32, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(32, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (2): SparseSequential(
+        (0): SubMConv3d(32, 32, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(32, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+    (conv3): SparseSequential(
+      (0): SparseSequential(
+        (0): SparseConv3d(32, 64, kernel_size=[3, 3, 3], stride=[2, 2, 2], padding=[1, 1, 1], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (1): SparseSequential(
+        (0): SubMConv3d(64, 64, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (2): SparseSequential(
+        (0): SubMConv3d(64, 64, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+    (conv4): SparseSequential(
+      (0): SparseSequential(
+        (0): SparseConv3d(64, 64, kernel_size=[3, 3, 3], stride=[2, 2, 2], padding=[0, 1, 1], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (1): SparseSequential(
+        (0): SubMConv3d(64, 64, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (2): SparseSequential(
+        (0): SubMConv3d(64, 64, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+    (conv_out): SparseSequential(
+      (0): SparseConv3d(64, 128, kernel_size=[3, 1, 1], stride=[2, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+      (1): BatchNorm1d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+      (2): ReLU()
+    )
+  )
+  (map_to_bev_module): HeightCompression()
+  (pfe): None
+  (backbone_2d): BaseBEVBackbone(
+    (blocks): ModuleList(
+      (0): Sequential(
+        (0): ZeroPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), bias=False)
+        (2): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (3): ReLU()
+        (4): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (5): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (6): ReLU()
+        (7): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (8): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (9): ReLU()
+        (10): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (11): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (12): ReLU()
+        (13): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (14): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (15): ReLU()
+        (16): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (17): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (18): ReLU()
+      )
+      (1): Sequential(
+        (0): ZeroPad2d((1, 1, 1, 1))
+        (1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), bias=False)
+        (2): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (3): ReLU()
+        (4): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (5): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (6): ReLU()
+        (7): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (8): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (9): ReLU()
+        (10): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (11): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (12): ReLU()
+        (13): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (14): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (15): ReLU()
+        (16): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (17): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (18): ReLU()
+      )
+    )
+    (deblocks): ModuleList(
+      (0): Sequential(
+        (0): ConvTranspose2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (1): Sequential(
+        (0): ConvTranspose2d(256, 256, kernel_size=(2, 2), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+  )
+  (dense_head): AnchorHeadSingle(
+    (cls_loss_func): SigmoidFocalClassificationLoss()
+    (reg_loss_func): WeightedSmoothL1Loss()
+    (dir_loss_func): WeightedCrossEntropyLoss()
+    (conv_cls): Conv2d(512, 18, kernel_size=(1, 1), stride=(1, 1))
+    (conv_box): Conv2d(512, 42, kernel_size=(1, 1), stride=(1, 1))
+    (conv_dir_cls): Conv2d(512, 12, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (point_head): None
+  (roi_head): None
+)
+2026-03-06 12:02:51,101   INFO  **********************Start training kitti_models/second(qat_finetune)**********************
+2026-03-06 12:02:59,415   INFO  Train:    1/2 ( 50%) [   0/928 (  0%)]  Loss: 0.2588 (0.259)  LR: 1.000e-05  Time cost: 00:08/2:06:01 [00:08/4:12:03]  Acc_iter 1           Data time: 1.01(1.01)  Forward time: 7.14(7.14)  Batch time: 8.15(8.15)
+2026-03-06 12:03:09,364   INFO  Train:    1/2 ( 50%) [  49/928 (  5%)]  Loss: 0.3142 (0.250)  LR: 1.096e-05  Time cost: 00:18/05:18 [00:18/10:54]  Acc_iter 50          Data time: 0.00(0.02)  Forward time: 0.19(0.34)  Batch time: 0.19(0.36)
+2026-03-06 12:03:19,654   INFO  Train:    1/2 ( 50%) [  99/928 ( 11%)]  Loss: 0.3892 (0.253)  LR: 1.390e-05  Time cost: 00:28/03:55 [00:28/08:18]  Acc_iter 100         Data time: 0.00(0.01)  Forward time: 0.19(0.27)  Batch time: 0.19(0.28)
+2026-03-06 12:03:29,921   INFO  Train:    1/2 ( 50%) [ 149/928 ( 16%)]  Loss: 0.2506 (0.254)  LR: 1.866e-05  Time cost: 00:38/03:20 [00:38/07:19]  Acc_iter 150         Data time: 0.00(0.01)  Forward time: 0.22(0.25)  Batch time: 0.22(0.26)
+2026-03-06 12:03:30,402   INFO  ubuntu22                    Fri Mar  6 12:03:30 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 48°C,   0 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:03:40,712   INFO  Train:    1/2 ( 50%) [ 199/928 ( 21%)]  Loss: 0.2992 (0.256)  LR: 2.505e-05  Time cost: 00:49/03:00 [00:49/06:49]  Acc_iter 200         Data time: 0.00(0.01)  Forward time: 0.20(0.24)  Batch time: 0.20(0.25)
+2026-03-06 12:03:50,848   INFO  Train:    1/2 ( 50%) [ 249/928 ( 27%)]  Loss: 0.2021 (0.256)  LR: 3.278e-05  Time cost: 00:59/02:41 [00:59/06:22]  Acc_iter 250         Data time: 0.00(0.01)  Forward time: 0.20(0.23)  Batch time: 0.20(0.24)
+2026-03-06 12:04:01,211   INFO  Train:    1/2 ( 50%) [ 299/928 ( 32%)]  Loss: 0.2422 (0.255)  LR: 4.149e-05  Time cost: 01:09/02:26 [01:10/06:03]  Acc_iter 300         Data time: 0.01(0.01)  Forward time: 0.20(0.23)  Batch time: 0.21(0.23)
+2026-03-06 12:04:01,571   INFO  ubuntu22                    Fri Mar  6 12:04:01 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 56°C,   7 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:04:11,811   INFO  Train:    1/2 ( 50%) [ 349/928 ( 38%)]  Loss: 0.2729 (0.253)  LR: 5.081e-05  Time cost: 01:20/02:13 [01:20/05:46]  Acc_iter 350         Data time: 0.00(0.01)  Forward time: 0.20(0.22)  Batch time: 0.21(0.23)
+2026-03-06 12:04:22,102   INFO  Train:    1/2 ( 50%) [ 399/928 ( 43%)]  Loss: 0.3271 (0.252)  LR: 6.032e-05  Time cost: 01:30/02:00 [01:30/05:30]  Acc_iter 400         Data time: 0.00(0.01)  Forward time: 0.20(0.22)  Batch time: 0.20(0.23)
+2026-03-06 12:04:32,609   INFO  Train:    1/2 ( 50%) [ 449/928 ( 48%)]  Loss: 0.1960 (0.252)  LR: 6.959e-05  Time cost: 01:41/01:47 [01:41/05:16]  Acc_iter 450         Data time: 0.00(0.01)  Forward time: 0.22(0.22)  Batch time: 0.23(0.23)
+2026-03-06 12:04:32,965   INFO  ubuntu22                    Fri Mar  6 12:04:32 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 60°C,   7 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:04:43,471   INFO  Train:    1/2 ( 50%) [ 499/928 ( 54%)]  Loss: 0.2699 (0.253)  LR: 7.821e-05  Time cost: 01:52/01:36 [01:52/05:04]  Acc_iter 500         Data time: 0.00(0.01)  Forward time: 0.23(0.22)  Batch time: 0.23(0.22)
+2026-03-06 12:04:53,847   INFO  Train:    1/2 ( 50%) [ 549/928 ( 59%)]  Loss: 0.2929 (0.252)  LR: 8.579e-05  Time cost: 02:02/01:24 [02:02/04:51]  Acc_iter 550         Data time: 0.00(0.01)  Forward time: 0.20(0.22)  Batch time: 0.20(0.22)
+2026-03-06 12:05:04,157   INFO  Train:    1/2 ( 50%) [ 599/928 ( 65%)]  Loss: 0.2358 (0.252)  LR: 9.200e-05  Time cost: 02:12/01:12 [02:13/04:38]  Acc_iter 600         Data time: 0.01(0.01)  Forward time: 0.22(0.21)  Batch time: 0.23(0.22)
+2026-03-06 12:05:04,530   INFO  ubuntu22                    Fri Mar  6 12:05:04 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 61°C,   0 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:05:14,820   INFO  Train:    1/2 ( 50%) [ 649/928 ( 70%)]  Loss: 0.2196 (0.252)  LR: 9.656e-05  Time cost: 02:23/01:01 [02:23/04:26]  Acc_iter 650         Data time: 0.00(0.01)  Forward time: 0.19(0.21)  Batch time: 0.20(0.22)
+2026-03-06 12:05:24,964   INFO  Train:    1/2 ( 50%) [ 699/928 ( 75%)]  Loss: 0.2019 (0.251)  LR: 9.926e-05  Time cost: 02:33/00:50 [02:33/04:14]  Acc_iter 700         Data time: 0.00(0.01)  Forward time: 0.20(0.21)  Batch time: 0.20(0.22)
+2026-03-06 12:05:35,112   INFO  Train:    1/2 ( 50%) [ 749/928 ( 81%)]  Loss: 0.2133 (0.251)  LR: 9.999e-05  Time cost: 02:43/00:39 [02:44/04:01]  Acc_iter 750         Data time: 0.00(0.01)  Forward time: 0.20(0.21)  Batch time: 0.20(0.22)
+2026-03-06 12:05:35,476   INFO  ubuntu22                    Fri Mar  6 12:05:35 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 62°C,  59 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:05:45,751   INFO  Train:    1/2 ( 50%) [ 799/928 ( 86%)]  Loss: 0.2315 (0.250)  LR: 9.936e-05  Time cost: 02:54/00:28 [02:54/03:50]  Acc_iter 800         Data time: 0.00(0.01)  Forward time: 0.20(0.21)  Batch time: 0.21(0.22)
+2026-03-06 12:05:55,969   INFO  Train:    1/2 ( 50%) [ 849/928 ( 91%)]  Loss: 0.2549 (0.251)  LR: 9.774e-05  Time cost: 03:04/00:17 [03:04/03:38]  Acc_iter 850         Data time: 0.00(0.01)  Forward time: 0.21(0.21)  Batch time: 0.21(0.22)
+2026-03-06 12:06:06,101   INFO  Train:    1/2 ( 50%) [ 899/928 ( 97%)]  Loss: 0.2664 (0.251)  LR: 9.518e-05  Time cost: 03:14/00:06 [03:14/03:27]  Acc_iter 900         Data time: 0.00(0.01)  Forward time: 0.20(0.21)  Batch time: 0.20(0.22)
+2026-03-06 12:06:06,466   INFO  ubuntu22                    Fri Mar  6 12:06:06 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 62°C,  57 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:06:12,446   INFO  Train:    1/2 ( 50%) [ 927/928 (100%)]  Loss: 0.2592 (0.251)  LR: 9.335e-05  Time cost: 03:21/00:00 [03:21/03:21]  Acc_iter 928         Data time: 0.00(0.01)  Forward time: 0.21(0.21)  Batch time: 0.22(0.22)
+2026-03-06 12:06:13,846   INFO  Train:    2/2 (100%) [   0/928 (  0%)]  Loss: 0.2360 (0.236)  LR: 9.328e-05  Time cost: 00:01/16:46 [03:22/16:46]  Acc_iter 929         Data time: 0.77(0.77)  Forward time: 0.31(0.31)  Batch time: 1.08(1.08)
+2026-03-06 12:06:18,378   INFO  Train:    2/2 (100%) [  21/928 (  2%)]  Loss: 0.2907 (0.255)  LR: 9.172e-05  Time cost: 00:05/03:51 [03:27/03:51]  Acc_iter 950         Data time: 0.00(0.04)  Forward time: 0.20(0.22)  Batch time: 0.20(0.26)
+2026-03-06 12:06:28,465   INFO  Train:    2/2 (100%) [  71/928 (  8%)]  Loss: 0.1965 (0.252)  LR: 8.743e-05  Time cost: 00:15/03:06 [03:37/03:06]  Acc_iter 1000        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.22)
+2026-03-06 12:06:38,559   INFO  Train:    2/2 (100%) [ 121/928 ( 13%)]  Loss: 0.1884 (0.250)  LR: 8.240e-05  Time cost: 00:25/02:50 [03:47/02:50]  Acc_iter 1050        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.21(0.21)
+2026-03-06 12:06:38,922   INFO  ubuntu22                    Fri Mar  6 12:06:38 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 62°C,   6 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:06:49,127   INFO  Train:    2/2 (100%) [ 171/928 ( 18%)]  Loss: 0.2010 (0.249)  LR: 7.673e-05  Time cost: 00:36/02:40 [03:58/02:40]  Acc_iter 1100        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:06:59,300   INFO  Train:    2/2 (100%) [ 221/928 ( 24%)]  Loss: 0.2134 (0.250)  LR: 7.053e-05  Time cost: 00:46/02:28 [04:08/02:28]  Acc_iter 1150        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:07:09,563   INFO  Train:    2/2 (100%) [ 271/928 ( 29%)]  Loss: 0.2350 (0.250)  LR: 6.391e-05  Time cost: 00:56/02:17 [04:18/02:17]  Acc_iter 1200        Data time: 0.00(0.01)  Forward time: 0.22(0.20)  Batch time: 0.22(0.21)
+2026-03-06 12:07:09,931   INFO  ubuntu22                    Fri Mar  6 12:07:09 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 62°C,  14 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:07:20,038   INFO  Train:    2/2 (100%) [ 321/928 ( 35%)]  Loss: 0.2083 (0.251)  LR: 5.703e-05  Time cost: 01:07/02:06 [04:28/02:06]  Acc_iter 1250        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:07:30,361   INFO  Train:    2/2 (100%) [ 371/928 ( 40%)]  Loss: 0.2286 (0.250)  LR: 5.000e-05  Time cost: 01:17/01:56 [04:39/01:56]  Acc_iter 1300        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:07:40,569   INFO  Train:    2/2 (100%) [ 421/928 ( 45%)]  Loss: 0.2708 (0.250)  LR: 4.297e-05  Time cost: 01:27/01:45 [04:49/01:45]  Acc_iter 1350        Data time: 0.00(0.01)  Forward time: 0.22(0.20)  Batch time: 0.22(0.21)
+2026-03-06 12:07:40,935   INFO  ubuntu22                    Fri Mar  6 12:07:40 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 63°C,  20 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:07:51,349   INFO  Train:    2/2 (100%) [ 471/928 ( 51%)]  Loss: 0.1832 (0.249)  LR: 3.609e-05  Time cost: 01:38/01:35 [05:00/01:35]  Acc_iter 1400        Data time: 0.00(0.01)  Forward time: 0.21(0.20)  Batch time: 0.22(0.21)
+2026-03-06 12:08:01,550   INFO  Train:    2/2 (100%) [ 521/928 ( 56%)]  Loss: 0.2149 (0.250)  LR: 2.948e-05  Time cost: 01:48/01:24 [05:10/01:24]  Acc_iter 1450        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:08:11,875   INFO  Train:    2/2 (100%) [ 571/928 ( 62%)]  Loss: 0.2526 (0.249)  LR: 2.327e-05  Time cost: 01:59/01:14 [05:20/01:14]  Acc_iter 1500        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:08:12,231   INFO  ubuntu22                    Fri Mar  6 12:08:12 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 63°C,  65 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:08:22,336   INFO  Train:    2/2 (100%) [ 621/928 ( 67%)]  Loss: 0.2466 (0.248)  LR: 1.760e-05  Time cost: 02:09/01:03 [05:31/01:03]  Acc_iter 1550        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:08:32,621   INFO  Train:    2/2 (100%) [ 671/928 ( 72%)]  Loss: 0.2373 (0.248)  LR: 1.257e-05  Time cost: 02:19/00:53 [05:41/00:53]  Acc_iter 1600        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:08:42,662   INFO  Train:    2/2 (100%) [ 721/928 ( 78%)]  Loss: 0.2675 (0.248)  LR: 8.281e-06  Time cost: 02:29/00:42 [05:51/00:42]  Acc_iter 1650        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:08:43,018   INFO  ubuntu22                    Fri Mar  6 12:08:42 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 63°C,  63 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:08:53,254   INFO  Train:    2/2 (100%) [ 771/928 ( 83%)]  Loss: 0.2741 (0.249)  LR: 4.822e-06  Time cost: 02:40/00:32 [06:02/00:32]  Acc_iter 1700        Data time: 0.00(0.01)  Forward time: 0.21(0.20)  Batch time: 0.22(0.21)
+2026-03-06 12:09:03,337   INFO  Train:    2/2 (100%) [ 821/928 ( 88%)]  Loss: 0.3086 (0.249)  LR: 2.260e-06  Time cost: 02:50/00:22 [06:12/00:22]  Acc_iter 1750        Data time: 0.00(0.01)  Forward time: 0.19(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:09:13,481   INFO  Train:    2/2 (100%) [ 871/928 ( 94%)]  Loss: 0.2554 (0.248)  LR: 6.456e-07  Time cost: 03:00/00:11 [06:22/00:11]  Acc_iter 1800        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:09:13,852   INFO  ubuntu22                    Fri Mar  6 12:09:13 2026  550.78
+[0] NVIDIA GeForce RTX 3080 | 63°C,   0 % |  4568 / 10240 MB | vipuser(4554M) root(4M)
+
+2026-03-06 12:09:24,185   INFO  Train:    2/2 (100%) [ 921/928 ( 99%)]  Loss: 0.2384 (0.249)  LR: 1.074e-08  Time cost: 03:11/00:01 [06:33/00:01]  Acc_iter 1850        Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.21)
+2026-03-06 12:09:25,362   INFO  Train:    2/2 (100%) [ 927/928 (100%)]  Loss: 0.2661 (0.249)  LR: 1.199e-09  Time cost: 03:12/00:00 [06:34/00:00]  Acc_iter 1856        Data time: 0.00(0.01)  Forward time: 0.19(0.20)  Batch time: 0.19(0.21)
+2026-03-06 12:09:25,616   INFO  **********************End training kitti_models/second(qat_finetune)**********************
+
+
+
+2026-03-06 12:09:25,616   INFO  **********************Start evaluation kitti_models/second(qat_finetune)**********************
+2026-03-06 12:09:25,621   INFO  Loading KITTI dataset
+2026-03-06 12:09:26,069   INFO  Total samples for KITTI dataset: 3769
+2026-03-06 12:09:26,071   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/kitti_models/second/qat_finetune/ckpt/checkpoint_epoch_2.pth to GPU
+2026-03-06 12:09:26,140   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+pyea87aba
+2026-03-06 12:09:26,147   INFO  ==> Done (loaded 163/163)
+2026-03-06 12:09:26,150   INFO  *************** EPOCH 2 EVALUATION *****************
+2026-03-06 12:10:29,178   INFO  *************** Performance of EPOCH 2 *****************
+2026-03-06 12:10:29,179   INFO  Generate label finished(sec_per_example: 0.0167 second).
+2026-03-06 12:10:29,179   INFO  recall_roi_0.3: 0.000000
+2026-03-06 12:10:29,179   INFO  recall_rcnn_0.3: 0.933022
+2026-03-06 12:10:29,179   INFO  recall_roi_0.5: 0.000000
+2026-03-06 12:10:29,180   INFO  recall_rcnn_0.5: 0.869632
+2026-03-06 12:10:29,180   INFO  recall_roi_0.7: 0.000000
+2026-03-06 12:10:29,180   INFO  recall_rcnn_0.7: 0.638057
+2026-03-06 12:10:29,183   INFO  Average predicted number of objects(3769 samples): 15.408
+2026-03-06 12:11:04,999   INFO  Car AP@0.70, 0.70, 0.70:
+bbox AP:90.7654, 89.4219, 88.3343
+bev  AP:89.7483, 86.9468, 83.6548
+3d   AP:87.8917, 77.5245, 75.5198
+aos  AP:90.73, 89.20, 87.98
+Car AP_R40@0.70, 0.70, 0.70:
+bbox AP:95.8103, 91.9555, 90.6686
+bev  AP:92.1855, 87.9725, 85.2246
+3d   AP:88.6986, 78.8507, 75.6941
+aos  AP:95.76, 91.71, 90.27
+Car AP@0.70, 0.50, 0.50:
+bbox AP:90.7654, 89.4219, 88.3343
+bev  AP:90.7756, 89.9035, 89.1524
+3d   AP:90.7756, 89.8299, 88.9936
+aos  AP:90.73, 89.20, 87.98
+Car AP_R40@0.70, 0.50, 0.50:
+bbox AP:95.8103, 91.9555, 90.6686
+bev  AP:95.8785, 94.4646, 93.5662
+3d   AP:95.8612, 94.2133, 91.7181
+aos  AP:95.76, 91.71, 90.27
+Pedestrian AP@0.50, 0.50, 0.50:
+bbox AP:67.4149, 63.3502, 59.8579
+bev  AP:56.4521, 52.4107, 47.9391
+3d   AP:52.2265, 46.8455, 42.1582
+aos  AP:63.46, 59.03, 55.57
+Pedestrian AP_R40@0.50, 0.50, 0.50:
+bbox AP:68.2749, 63.2043, 59.5752
+bev  AP:56.5349, 51.0903, 46.4403
+3d   AP:50.7183, 45.2503, 40.0939
+aos  AP:63.87, 58.40, 54.71
+Pedestrian AP@0.50, 0.25, 0.25:
+bbox AP:67.4149, 63.3502, 59.8579
+bev  AP:72.2162, 68.6821, 65.0610
+3d   AP:72.1784, 68.3889, 64.9864
+aos  AP:63.46, 59.03, 55.57
+Pedestrian AP_R40@0.50, 0.25, 0.25:
+bbox AP:68.2749, 63.2043, 59.5752
+bev  AP:72.9017, 69.1895, 65.2010
+3d   AP:72.8675, 68.9447, 65.0816
+aos  AP:63.87, 58.40, 54.71
+Cyclist AP@0.50, 0.50, 0.50:
+bbox AP:87.2792, 76.5215, 73.6811
+bev  AP:83.3167, 70.6647, 66.4271
+3d   AP:81.4196, 66.5115, 61.9291
+aos  AP:87.07, 76.04, 73.18
+Cyclist AP_R40@0.50, 0.50, 0.50:
+bbox AP:91.4581, 78.2185, 74.5372
+bev  AP:87.3518, 71.8302, 67.1369
+3d   AP:83.7357, 66.7262, 62.2790
+aos  AP:91.22, 77.66, 73.97
+Cyclist AP@0.50, 0.25, 0.25:
+bbox AP:87.2792, 76.5215, 73.6811
+bev  AP:90.4644, 74.9823, 71.9602
+3d   AP:90.4644, 74.9823, 71.9602
+aos  AP:87.07, 76.04, 73.18
+Cyclist AP_R40@0.50, 0.25, 0.25:
+bbox AP:91.4581, 78.2185, 74.5372
+bev  AP:91.4400, 76.9220, 72.6362
+3d   AP:91.4400, 76.9220, 72.6362
+aos  AP:91.22, 77.66, 73.97
+
+2026-03-06 12:11:05,007   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/kitti_models/second/qat_finetune/eval/eval_with_train/epoch_2/val
+2026-03-06 12:11:05,007   INFO  ****************Evaluation done.*****************
+2026-03-06 12:11:05,036   INFO  Epoch 2 has been evaluated
+2026-03-06 12:11:35,068   INFO  **********************End evaluation kitti_models/second(qat_finetune)**********************

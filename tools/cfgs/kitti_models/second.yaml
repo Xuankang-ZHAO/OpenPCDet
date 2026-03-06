@@ -11,7 +11,7 @@ MODEL:
         NAME: MeanVFE
 
     BACKBONE_3D:
-        NAME: VoxelBackBone8x
+        NAME: VoxelBackBone8x_INT8
 
     MAP_TO_BEV:
         NAME: HeightCompression
@@ -101,10 +101,11 @@ MODEL:
 
 OPTIMIZATION:
     BATCH_SIZE_PER_GPU: 4
-    NUM_EPOCHS: 80
-
+    # NUM_EPOCHS: 80
+    NUM_EPOCHS: 10
     OPTIMIZER: adam_onecycle
-    LR: 0.003
+    # LR: 0.003
+    LR: 0.0001
     WEIGHT_DECAY: 0.01
     MOMENTUM: 0.9
 

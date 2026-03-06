@@ -128,9 +128,43 @@ class VoxelBackBone8x_INT8(nn.Module):
         """
         if enable and not getattr(self, '_int8_cached', False):
             raise RuntimeError('INT8 weights not prepared. Call convert_to_int8() first.')
-        self._int8_inference = bool(enable)
+
+        # When enabling INT8 inference, save a copy of FP32 weights so we can
+        # restore them when disabling INT8 mode. We store the copies as buffers
+        # named `_orig_fp32_weight` on each spconv conv module.
         if enable:
+            for m in self.modules():
+                if self._is_spconv_conv(m):
+                    w = getattr(m, 'weight', None)
+                    if w is None:
+                        continue
+                    if not hasattr(m, '_orig_fp32_weight'):
+                        try:
+                            m.register_buffer('_orig_fp32_weight', w.detach().clone())
+                        except Exception:
+                            pass
+            self._int8_inference = True
             self.eval()
+        else:
+            # restore saved FP32 weights if present
+            for m in self.modules():
+                if self._is_spconv_conv(m):
+                    orig = getattr(m, '_orig_fp32_weight', None)
+                    if orig is None:
+                        continue
+                    try:
+                        with torch.no_grad():
+                            if hasattr(m, 'weight') and isinstance(getattr(m, 'weight'), torch.nn.Parameter):
+                                if m.weight.shape == orig.shape:
+                                    m.weight.data.copy_(orig)
+                                else:
+                                    try:
+                                        m.weight.data.copy_(orig.view_as(m.weight.data))
+                                    except Exception:
+                                        pass
+                    except Exception:
+                        pass
+            self._int8_inference = False
 
     def enable_qat(self, enable=True):
         """Toggle activation fake-quantization for QAT training (STE)."""
@@ -185,9 +219,7 @@ class VoxelBackBone8x_INT8(nn.Module):
     def _apply_weight_fake_quant_all(self):
         """Replace each spconv conv module's `weight` attribute with a fake-quantized
         tensor using STE. The original Parameter is saved on the module as
-        `_orig_weight` and will be restored by `_restore_weights_after_fake_quant()`.
-        This is done in-place (temporary) so forward ops use quantized-dequantized
-        weights while gradients still flow to the original FP32 parameters.
+        `_orig_weight_data` and will be restored by `_restore_weights_after_fake_quant()`.
         """
         self._qat_replaced_modules = []
         qmax = 127
@@ -196,35 +228,39 @@ class VoxelBackBone8x_INT8(nn.Module):
                 w = getattr(m, 'weight', None)
                 if w is None or not isinstance(w, torch.nn.Parameter):
                     continue
+                
+                # 计算缩放因子
                 with torch.no_grad():
                     max_abs = w.abs().amax()
                     if max_abs == 0:
                         scale = torch.tensor(1.0, device=w.device, dtype=torch.float32)
                     else:
                         scale = (max_abs / qmax).to(torch.float32)
-                # compute quantized-dequantized weight
+                
+                # 计算量化-反量化权重
                 q = (w / scale).round().clamp(-qmax, qmax)
                 dq = q * scale
-                # STE fake weight: forward uses dq, backward flows to w
-                fake = dq.detach() + (w - w.detach())
-                # save original parameter and replace attribute (this temporarily
-                # removes the parameter registration; we will restore after forward)
-                setattr(m, '_orig_weight', w)
-                setattr(m, 'weight', fake)
+                
+                # 保存原始数据
+                setattr(m, '_orig_weight_data', w.data.clone())
+                
+                # 直接修改data属性（保持Parameter身份）
+                with torch.no_grad():
+                    w.data.copy_(dq)
+                
                 self._qat_replaced_modules.append(m)
 
     def _restore_weights_after_fake_quant(self):
-        """Restore original weight Parameters that were replaced by
-        `_apply_weight_fake_quant_all`.
-        """
+        """Restore original weight data after fake quantization."""
         if not hasattr(self, '_qat_replaced_modules'):
             return
         for m in self._qat_replaced_modules:
-            orig = getattr(m, '_orig_weight', None)
-            if orig is not None:
-                setattr(m, 'weight', orig)
+            orig_data = getattr(m, '_orig_weight_data', None)
+            if orig_data is not None:
+                with torch.no_grad():
+                    m.weight.data.copy_(orig_data)
                 try:
-                    delattr(m, '_orig_weight')
+                    delattr(m, '_orig_weight_data')
                 except Exception:
                     pass
         self._qat_replaced_modules = []
