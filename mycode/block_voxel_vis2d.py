@@ -14,6 +14,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib import cm, colors
 
 from tqdm import tqdm
 
@@ -66,32 +67,61 @@ def make_image_from_blocks(counts, blocks, grid_size):
     return img
 
 
-def vis_and_save(img, lidar_center, out_path, cmap='viridis'):
-    plt.figure(figsize=(8, 8))
-    # show with origin lower so increasing y goes upward
-    plt.imshow(img, cmap=cmap, interpolation='nearest', origin='lower')
-    plt.colorbar(label='voxels per block (max overlap)')
+def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
+    # create figure/axes so colorbar can steal space from the axes (no warning)
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    # prepare normalized image and colormap
+    img_f = img.astype(np.float32)
+    maxv = float(img_f.max()) if img_f.size > 0 else 0.0
+    norm = colors.Normalize(vmin=0.0, vmax=maxv if maxv > 0 else 1.0)
+
+    # use the recommended API and reverse the colormap so low->light, high->dark
+    base_cmap = matplotlib.colormaps.get_cmap(cmap_name)
+    cmap = base_cmap.reversed()
+
+    # map to RGBA; then make zero-valued pixels white & fully transparent
+    normed = norm(img_f)
+    rgba = cmap(normed)
+
+    # make low-count pixels more transparent: alpha = 0 for zeros, otherwise scaled
+    alpha = 0.2 + 0.8 * normed
+    alpha[img_f == 0] = 0.0
+    rgba[..., 3] = alpha
+
+    # force pure zeros to white-transparent to emphasize emptiness
+    zero_mask = (img_f == 0)
+    rgba[zero_mask, :3] = 1.0
+
+    ax.imshow(rgba, interpolation='nearest', origin='lower')
+
+    # add a colorbar showing the color mapping (ignores alpha)
+    sm = cm.ScalarMappable(norm=norm, cmap=cmap)
+    sm.set_array(img_f)
+    cbar = fig.colorbar(sm, ax=ax, fraction=0.046, pad=0.04)
+    cbar.set_label('voxels per block (max overlap)')
+
     if lidar_center is not None:
         cx, cy = int(lidar_center[0]), int(lidar_center[1])
-        # ensure in bounds
         ny, nx = img.shape
         if 0 <= cx < nx and 0 <= cy < ny:
-            plt.scatter([cx], [cy], c='red', marker='x', s=40)
-    plt.axis('off')
+            ax.scatter([cx], [cy], c='red', marker='x', s=40)
+
+    ax.axis('off')
     plt.tight_layout()
-    plt.savefig(out_path, dpi=150)
-    plt.close()
+    fig.savefig(out_path, dpi=150)
+    plt.close(fig)
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne')
-    parser.add_argument('--list_file', type=str, default=None)
-    parser.add_argument('--out_dir', type=str, default='mycode/output/block_vis2d')
-    parser.add_argument('--block_size_x', type=int, default=8)
-    parser.add_argument('--block_size_y', type=int, default=8)
-    parser.add_argument('--block_size_z', type=int, default=8)
-    parser.add_argument('--fixed_block_partition', type=str, default='False')
+    parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/analyze.txt', help='Optional frame id list (one id per line)')
+    parser.add_argument('--out_dir', type=str, default='mycode/output/block_vis2d_fixed')
+    parser.add_argument('--block_size_x', type=int, default=10)
+    parser.add_argument('--block_size_y', type=int, default=10)
+    parser.add_argument('--block_size_z', type=int, default=6)
+    parser.add_argument('--fixed_block_partition', type=str, default='True')
     parser.add_argument('--block_lut', type=str, default='mycode/block_size_lut.txt')
     parser.add_argument('--lidar_center', type=str, default='0,800')
     args = parser.parse_args()
