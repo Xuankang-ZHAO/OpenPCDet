@@ -157,16 +157,77 @@ class VoxelBackBone8x_INT8(nn.Module):
                             except Exception:
                                 pass
 
-    def _apply_activation_fake_quant(self, features: Tensor):
-        # simple symmetric per-tensor fake-quant with STE
+    def _apply_activation_fake_quant(self, features: Tensor, ste: bool = None):
+        # per-tensor symmetric fake-quant
+        # If `ste` is True (default) apply Straight-Through Estimator so gradients
+        # flow to the original FP32 activations during QAT training. For inference
+        # use ste=False to produce a pure quantized-dequantized activation.
+        def _quant_dequant(x):
+            qmax = 127
+            max_val = x.abs().amax(dim=0, keepdim=True)
+            scale = (max_val / qmax).clamp_min(1e-8)
+            qx = (x / scale).round().clamp(-qmax, qmax)
+            return qx * scale
+
         if features.numel() == 0:
             return features
+
+        # decide STE: explicit `ste` argument overrides automatic decision
+        if ste is None:
+            ste = getattr(self, '_qat_enabled', False) and self.training
+        if ste:
+            qdq = _quant_dequant(features)
+            # STE: forward uses quantized-dequantized value, backward passes gradient to original features
+            return qdq.detach() + (features - features.detach())
+        else:
+            return _quant_dequant(features)
+
+    def _apply_weight_fake_quant_all(self):
+        """Replace each spconv conv module's `weight` attribute with a fake-quantized
+        tensor using STE. The original Parameter is saved on the module as
+        `_orig_weight` and will be restored by `_restore_weights_after_fake_quant()`.
+        This is done in-place (temporary) so forward ops use quantized-dequantized
+        weights while gradients still flow to the original FP32 parameters.
+        """
+        self._qat_replaced_modules = []
         qmax = 127
-        max_val = features.abs().amax(dim=0, keepdim=True)
-        scale = (max_val / qmax).clamp_min(1e-8)
-        qx = (features / scale).round().clamp(-qmax, qmax)
-        # STE: forward returns quantized-dequantized; backward flows through as identity
-        return (qx * scale)
+        for m in self.modules():
+            if self._is_spconv_conv(m):
+                w = getattr(m, 'weight', None)
+                if w is None or not isinstance(w, torch.nn.Parameter):
+                    continue
+                with torch.no_grad():
+                    max_abs = w.abs().amax()
+                    if max_abs == 0:
+                        scale = torch.tensor(1.0, device=w.device, dtype=torch.float32)
+                    else:
+                        scale = (max_abs / qmax).to(torch.float32)
+                # compute quantized-dequantized weight
+                q = (w / scale).round().clamp(-qmax, qmax)
+                dq = q * scale
+                # STE fake weight: forward uses dq, backward flows to w
+                fake = dq.detach() + (w - w.detach())
+                # save original parameter and replace attribute (this temporarily
+                # removes the parameter registration; we will restore after forward)
+                setattr(m, '_orig_weight', w)
+                setattr(m, 'weight', fake)
+                self._qat_replaced_modules.append(m)
+
+    def _restore_weights_after_fake_quant(self):
+        """Restore original weight Parameters that were replaced by
+        `_apply_weight_fake_quant_all`.
+        """
+        if not hasattr(self, '_qat_replaced_modules'):
+            return
+        for m in self._qat_replaced_modules:
+            orig = getattr(m, '_orig_weight', None)
+            if orig is not None:
+                setattr(m, 'weight', orig)
+                try:
+                    delattr(m, '_orig_weight')
+                except Exception:
+                    pass
+        self._qat_replaced_modules = []
 
     # ---------- forward ----------
     def forward(self, batch_dict):
@@ -176,10 +237,16 @@ class VoxelBackBone8x_INT8(nn.Module):
         # If INT8 inference mode enabled, dequantize stored int8 weights into module weights
         if self._int8_inference:
             self._maybe_dequantize_int8_weights_into_modules()
+            # during INT8 inference we also quantize activations (no STE)
+            voxel_features = self._apply_activation_fake_quant(voxel_features, ste=False)
 
-        # If QAT is enabled and in training, fake-quant activations (STE)
+        # For QAT training, fake-quant both weights (STE) and activations (STE).
+        weight_qapplied = False
         if self._qat_enabled and self.training:
-            voxel_features = self._apply_activation_fake_quant(voxel_features)
+            voxel_features = self._apply_activation_fake_quant(voxel_features, ste=True)
+            # replace conv weights with STE fake-quant tensors
+            self._apply_weight_fake_quant_all()
+            weight_qapplied = True
 
         input_sp_tensor = spconv.SparseConvTensor(
             features=voxel_features,
@@ -188,14 +255,19 @@ class VoxelBackBone8x_INT8(nn.Module):
             batch_size=batch_size
         )
 
-        x = self.conv_input(input_sp_tensor)
+        try:
+            x = self.conv_input(input_sp_tensor)
 
-        x_conv1 = self.conv1(x)
-        x_conv2 = self.conv2(x_conv1)
-        x_conv3 = self.conv3(x_conv2)
-        x_conv4 = self.conv4(x_conv3)
+            x_conv1 = self.conv1(x)
+            x_conv2 = self.conv2(x_conv1)
+            x_conv3 = self.conv3(x_conv2)
+            x_conv4 = self.conv4(x_conv3)
 
-        out = self.conv_out(x_conv4)
+            out = self.conv_out(x_conv4)
+        finally:
+            # restore original weights if we replaced them for QAT
+            if weight_qapplied:
+                self._restore_weights_after_fake_quant()
 
         batch_dict.update({
             'encoded_spconv_tensor': out,
