@@ -165,7 +165,11 @@ def main():
     # ---------- QAT: enable fake-quant behavior on backbone if requested ----------
     if args.qat:
         try:
-            # If model is not wrapped yet, access backbone_3d directly
+            # 先调用convert_to_int8()计算静态scale
+            if hasattr(model, 'backbone_3d'):
+                model.backbone_3d.convert_to_int8()
+                logger.info('Converted backbone to INT8 representation with static scales')
+             # 再启用QAT模式
             if hasattr(model, 'backbone_3d'):
                 model.backbone_3d.enable_qat(True)
                 logger.info('Enabled QAT on backbone_3d (model.backbone_3d.enable_qat(True))')
