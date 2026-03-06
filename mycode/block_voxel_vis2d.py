@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""Generate 2D per-file visualizations of block voxel counts.
+
+For each input `.bin` file this script produces a PNG where the image
+grid resolution follows the voxel-space `x,y` grid size. Each block is
+drawn as a rectangle whose size corresponds to the block's x,y sizes
+in voxels; pixel values are the maximum voxel-count among blocks that
+cover that pixel (to handle replication/overlap). The LiDAR center is
+drawn as a red `x` marker in the voxel coordinate space.
+"""
+import os
+import argparse
+import numpy as np
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+from tqdm import tqdm
+
+from pcdet.config import cfg, cfg_from_yaml_file
+from pcdet.datasets.processor.data_processor import DataProcessor
+from mycode.block_partition import compute_block_partition_map
+
+
+def load_cfg_for_kitti():
+    cfg_file = os.path.join(cfg.ROOT_DIR, 'tools', 'cfgs', 'dataset_configs', 'kitti_dataset.yaml')
+    cfg_from_yaml_file(cfg_file, cfg)
+    return cfg
+
+
+def find_bin_files(velodyne_dir, list_file=None):
+    if list_file is not None:
+        with open(list_file, 'r') as f:
+            ids = [l.strip() for l in f.readlines() if l.strip()]
+        paths = [os.path.join(velodyne_dir, x + '.bin') for x in ids]
+        paths = [p for p in paths if os.path.exists(p)]
+    else:
+        paths = sorted([os.path.join(velodyne_dir, f) for f in os.listdir(velodyne_dir) if f.endswith('.bin')])
+    return paths
+
+
+def make_image_from_blocks(counts, blocks, grid_size):
+    nx, ny, nz = grid_size
+    nx = int(nx); ny = int(ny)
+    img = np.zeros((ny, nx), dtype=np.float32)
+
+    # For each block, paint its xy footprint with the block's count (max if overlap)
+    for block_id, info in blocks.items():
+        # counts array may be shorter than some block ids in certain modes
+        if block_id >= counts.size:
+            continue
+        cnt = int(counts[block_id])
+        if cnt <= 0:
+            continue
+        bx0 = int(info['bx0']); by0 = int(info['by0'])
+        bx = int(info['bx']); by = int(info['by'])
+        x0 = bx0 * bx
+        x1 = min(nx, x0 + bx)
+        y0 = by0 * by
+        y1 = min(ny, y0 + by)
+        if x0 >= nx or y0 >= ny:
+            continue
+        # Note image index order is [y,x]
+        img[y0:y1, x0:x1] = np.maximum(img[y0:y1, x0:x1], float(cnt))
+
+    return img
+
+
+def vis_and_save(img, lidar_center, out_path, cmap='viridis'):
+    plt.figure(figsize=(8, 8))
+    # show with origin lower so increasing y goes upward
+    plt.imshow(img, cmap=cmap, interpolation='nearest', origin='lower')
+    plt.colorbar(label='voxels per block (max overlap)')
+    if lidar_center is not None:
+        cx, cy = int(lidar_center[0]), int(lidar_center[1])
+        # ensure in bounds
+        ny, nx = img.shape
+        if 0 <= cx < nx and 0 <= cy < ny:
+            plt.scatter([cx], [cy], c='red', marker='x', s=40)
+    plt.axis('off')
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne')
+    parser.add_argument('--list_file', type=str, default=None)
+    parser.add_argument('--out_dir', type=str, default='mycode/output/block_vis2d')
+    parser.add_argument('--block_size_x', type=int, default=8)
+    parser.add_argument('--block_size_y', type=int, default=8)
+    parser.add_argument('--block_size_z', type=int, default=8)
+    parser.add_argument('--fixed_block_partition', type=str, default='False')
+    parser.add_argument('--block_lut', type=str, default='mycode/block_size_lut.txt')
+    parser.add_argument('--lidar_center', type=str, default='0,800')
+    args = parser.parse_args()
+
+    cfg_local = load_cfg_for_kitti()
+
+    velodyne_dir = args.velodyne_dir
+    if not os.path.exists(velodyne_dir):
+        raise FileNotFoundError(f'velodyne dir not found: {velodyne_dir}')
+
+    paths = find_bin_files(velodyne_dir, args.list_file)
+    if len(paths) == 0:
+        raise RuntimeError('No .bin files found to process')
+
+    os.makedirs(args.out_dir, exist_ok=True)
+
+    num_point_features = len(cfg_local.POINT_FEATURE_ENCODING.used_feature_list) if 'POINT_FEATURE_ENCODING' in cfg_local else 4
+    data_proc = DataProcessor(processor_configs=cfg_local.DATA_PROCESSOR,
+                              point_cloud_range=np.array(cfg_local.POINT_CLOUD_RANGE),
+                              training=False,
+                              num_point_features=num_point_features)
+
+    fixed_flag = str(args.fixed_block_partition).lower() in ('1', 'true', 'yes', 'y', 't')
+    bx = args.block_size_x; by = args.block_size_y; bz = args.block_size_z
+    lidar_center = tuple(int(x) for x in args.lidar_center.split(',')) if args.lidar_center is not None else None
+
+    for p in tqdm(paths, desc='Visualizing'):
+        points = np.fromfile(p, dtype=np.float32).reshape(-1, 4)
+        data_dict = {'points': points, 'use_lead_xyz': True}
+        for proc in data_proc.data_processor_queue:
+            data_dict = proc(data_dict)
+
+        coords = data_dict.get('voxel_coords', None)
+        if coords is None:
+            continue
+        if isinstance(coords, list):
+            coords = coords[0]
+        if hasattr(coords, 'cpu'):
+            coords = coords.cpu().numpy()
+        coords = coords.astype(np.int64)
+        if coords.ndim == 2 and coords.shape[1] == 4:
+            coords = coords[:, 1:4]
+
+        mode = 'fixed' if fixed_flag else 'unfixed'
+        # prefer grid_size from data_proc
+        grid_sz = getattr(data_proc, 'grid_size', None)
+        if grid_sz is None:
+            # fallback: try cfg
+            grid_sz = (cfg_local.POINT_CLOUD_RANGE[0], cfg_local.POINT_CLOUD_RANGE[1], cfg_local.POINT_CLOUD_RANGE[2]) if hasattr(cfg_local, 'POINT_CLOUD_RANGE') else (400, 400, 40)
+
+        if mode == 'fixed':
+            counts, blocks, total_blocks, _ = compute_block_partition_map(coords, grid_sz, (bx, by, bz), mode='fixed')
+        else:
+            counts, blocks, total_blocks, _ = compute_block_partition_map(coords, grid_sz, (bx, by, bz), mode='unfixed', lut_path=args.block_lut, lidar_center_xy=lidar_center)
+
+        gsize = tuple(int(x) for x in grid_sz)
+
+        img = make_image_from_blocks(counts, blocks, gsize)
+
+        base = os.path.splitext(os.path.basename(p))[0]
+        out_path = os.path.join(args.out_dir, base + '.png')
+        vis_and_save(img, lidar_center, out_path)
+
+
+if __name__ == '__main__':
+    main()

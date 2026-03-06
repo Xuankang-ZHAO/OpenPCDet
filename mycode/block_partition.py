@@ -290,3 +290,166 @@ def _compute_fixed_partition_counts(coords: np.ndarray,
 
     block_voxel_limit = int(bx) * int(by) * int(bz)
     return counts, total_blocks, block_voxel_limit
+
+
+def compute_block_partition_map(coords: np.ndarray,
+                                grid_size: Tuple[int, int, int],
+                                block_size_xyz: Tuple[int, int, int],
+                                mode: str = 'fixed',
+                                lut_path: str = None,
+                                lidar_center_xy: Tuple[int, int] = None):
+    """Compute per-block counts and return a mapping useful for 2D visualization.
+
+    Returns:
+        counts: numpy array of per-block counts (same semantics as other helpers)
+        blocks: dict mapping block_id -> dict with keys:
+            - 'bx0','by0','bz0' : block indices in voxel-space
+            - 'bx','by','bz'    : block sizes in voxels
+            - 'zone' (unfixed only): zone id or None
+        total_blocks: int
+        grid_size: (nx,ny,nz)
+
+    This duplicates a small portion of the logic from the fixed/unfixed
+    implementations but preserves the original functions for backwards
+    compatibility.
+    """
+    if mode == 'fixed':
+        nx, ny, nz = int(grid_size[0]), int(grid_size[1]), int(grid_size[2])
+        bx, by, bz = int(block_size_xyz[0]), int(block_size_xyz[1]), int(block_size_xyz[2])
+
+        num_blocks_x = math.ceil(nx / bx)
+        num_blocks_y = math.ceil(ny / by)
+        num_blocks_z = math.ceil(nz / bz)
+        total_blocks = num_blocks_x * num_blocks_y * num_blocks_z
+
+        # Build blocks dict
+        blocks = {}
+        for bz_i in range(num_blocks_z):
+            for by_i in range(num_blocks_y):
+                for bx_i in range(num_blocks_x):
+                    block_id = bx_i + by_i * num_blocks_x + bz_i * (num_blocks_x * num_blocks_y)
+                    blocks[block_id] = {
+                        'bx0': bx_i, 'by0': by_i, 'bz0': bz_i,
+                        'bx': bx, 'by': by, 'bz': bz,
+                        'zone': None
+                    }
+
+        # Compute counts using existing helper for correctness
+        counts, total_blocks_ret, block_voxel_limit = _compute_fixed_partition_counts(coords, grid_size, block_size_xyz)
+        return counts, blocks, total_blocks_ret, (nx, ny, nz)
+
+    # unfixed mode: reconstruct mapping similar to _compute_unfixed_partition_counts
+    if mode != 'unfixed':
+        raise ValueError('mode must be "fixed" or "unfixed"')
+    if lut_path is None or lidar_center_xy is None:
+        raise ValueError('lut_path and lidar_center_xy required for unfixed mode')
+
+    # Load LUT
+    lut = []
+    with open(lut_path, 'r') as f:
+        for line in f:
+            s = line.strip()
+            if not s or s.startswith('#'):
+                continue
+            parts = s.split(':')
+            zone = int(parts[0].strip())
+            start_s, end_s = parts[1].split('-', 1)
+            start = int(start_s.strip()); end = int(end_s.strip())
+            sizes = [int(x.strip()) for x in parts[2].split(',')]
+            lut.append((zone, start, end, (sizes[0], sizes[1], sizes[2])))
+
+    def lookup_block_size(dist: int):
+        for (zone, a, b, sz) in lut:
+            if a <= dist <= b:
+                return zone, sz
+        raise ValueError(f'No LUT entry for distance {dist}')
+
+    cx, cy = int(lidar_center_xy[0]), int(lidar_center_xy[1])
+    nx, ny, nz = int(grid_size[0]), int(grid_size[1]), int(grid_size[2])
+
+    block_id_map = {}
+    next_id = 1
+    blocks = {}
+
+    z_idx = coords[:, 0]
+    y_idx = coords[:, 1]
+    x_idx = coords[:, 2]
+
+    # replicate ids and also record mapping entries when new block id assigned
+    replicated_block_ids = []
+    nvox = coords.shape[0]
+    for i in range(nvox):
+        xi = int(x_idx[i]); yi = int(y_idx[i]); zi = int(z_idx[i])
+        dist = max(abs(xi - cx), abs(yi - cy))
+        zone_i, (bx_i, by_i, bz_i) = lookup_block_size(dist)
+
+        bx0 = xi // bx_i
+        by0 = yi // by_i
+        bz0 = zi // bz_i
+
+        target_keys = set()
+        target_keys.add((zone_i, int(bx0), int(by0), int(bz0)))
+
+        sx_choices = [0]
+        modx = xi % bx_i
+        if modx == 0:
+            sx_choices.append(-1)
+        if modx == (bx_i - 1):
+            sx_choices.append(1)
+
+        sy_choices = [0]
+        mody = yi % by_i
+        if mody == 0:
+            sy_choices.append(-1)
+        if mody == (by_i - 1):
+            sy_choices.append(1)
+
+        sz_choices = [0]
+        modz = zi % bz_i
+        if modz == 0:
+            sz_choices.append(-1)
+        if modz == (bz_i - 1):
+            sz_choices.append(1)
+
+        for sx in sx_choices:
+            for sy in sy_choices:
+                for sz in sz_choices:
+                    if sx == 0 and sy == 0 and sz == 0:
+                        continue
+                    xj = xi + sx; yj = yi + sy; zj = zi + sz
+                    if not (0 <= xj < nx and 0 <= yj < ny and 0 <= zj < nz):
+                        continue
+                    neigh_dist = max(abs(xj - cx), abs(yj - cy))
+                    zone_j, (bx_j, by_j, bz_j) = lookup_block_size(neigh_dist)
+                    bxj0 = xj // bx_j
+                    byj0 = yj // by_j
+                    bzj0 = zj // bz_j
+                    target_keys.add((zone_j, int(bxj0), int(byj0), int(bzj0)))
+
+        for key in target_keys:
+            if key not in block_id_map:
+                block_id_map[key] = next_id
+                zone_k, bx0_k, by0_k, bz0_k = key
+                # determine sizes for this key via lookup
+                # compute chebyshev distance for representative voxel: use block origin voxel coordinates
+                bx_size_k = None; by_size_k = None; bz_size_k = None
+                # find size from LUT by zone
+                for (zone_l, a_l, b_l, sz_l) in lut:
+                    if zone_l == zone_k:
+                        bx_size_k, by_size_k, bz_size_k = sz_l
+                        break
+                blocks[block_id_map[key]] = {
+                    'bx0': bx0_k, 'by0': by0_k, 'bz0': bz0_k,
+                    'bx': bx_size_k, 'by': by_size_k, 'bz': bz_size_k,
+                    'zone': zone_k
+                }
+                next_id += 1
+            replicated_block_ids.append(block_id_map[key])
+
+    if len(replicated_block_ids) == 0:
+        counts = np.zeros(0, dtype=np.int64)
+    else:
+        counts = np.bincount(np.array(replicated_block_ids, dtype=np.int64), minlength=next_id)
+
+    total_blocks = counts.size
+    return counts, blocks, total_blocks, (nx, ny, nz)
