@@ -99,9 +99,8 @@ class VoxelBackBone8x_INT8(nn.Module):
 
     def convert_to_int8(self, dtype=torch.int8):
         """Store int8 representation and scale for each convolution weight.
-
-        This does not modify parameters in-place; it registers buffers `_int8_weight` and `_int8_weight_scale`
-        on each spconv conv module so you can later enable int8 inference.
+        
+        This should be called once after loading pretrained weights, before QAT training.
         """
         for m in self.modules():
             if self._is_spconv_conv(m):
@@ -116,8 +115,18 @@ class VoxelBackBone8x_INT8(nn.Module):
                         qmax = 127
                         scale = (max_abs / qmax).to(torch.float32)
                     int8_w = (w.detach() / scale).round().clamp(-127, 127).to(torch.int8)
-                    m.register_buffer('_int8_weight', int8_w)
-                    m.register_buffer('_int8_weight_scale', torch.tensor(scale, device=w.device, dtype=torch.float32))
+                    
+                    # ===== 修改点2：确保buffer存在且更新 =====
+                    # 移除旧的buffer（如果存在）
+                    for buffer_name in ['_int8_weight', '_int8_weight_scale']:
+                        if hasattr(m, buffer_name):
+                            delattr(m, buffer_name)
+                    
+                    # 注册新的buffer
+                    m.register_buffer('_int8_weight', int8_w.cpu())
+                    m.register_buffer('_int8_weight_scale', torch.tensor(scale, device='cpu', dtype=torch.float32))
+                    # ========================================
+                    
         self._int8_cached = True
 
     def enable_int8_inference(self, enable=True):
@@ -218,8 +227,7 @@ class VoxelBackBone8x_INT8(nn.Module):
 
     def _apply_weight_fake_quant_all(self):
         """Replace each spconv conv module's `weight` attribute with a fake-quantized
-        tensor using STE. The original Parameter is saved on the module as
-        `_orig_weight_data` and will be restored by `_restore_weights_after_fake_quant()`.
+        tensor using STE. Uses static scale from convert_to_int8() for consistency.
         """
         self._qat_replaced_modules = []
         qmax = 127
@@ -229,15 +237,33 @@ class VoxelBackBone8x_INT8(nn.Module):
                 if w is None or not isinstance(w, torch.nn.Parameter):
                     continue
                 
-                # 计算缩放因子
-                with torch.no_grad():
-                    max_abs = w.abs().amax()
-                    if max_abs == 0:
-                        scale = torch.tensor(1.0, device=w.device, dtype=torch.float32)
-                    else:
-                        scale = (max_abs / qmax).to(torch.float32)
+                # ===== 修改点1：优先使用已存储的静态scale =====
+                # 检查是否已经有存储的scale buffer
+                scale_buffer = getattr(m, '_int8_weight_scale', None)
                 
-                # 计算量化-反量化权重
+                if scale_buffer is not None:
+                    # 方案1：使用已存储的静态scale
+                    scale = scale_buffer
+                    # 注意：scale_buffer可能是在CPU上，需要确保设备一致
+                    if scale.device != w.device:
+                        scale = scale.to(w.device)
+                else:
+                    # 首次运行，计算并存储scale
+                    with torch.no_grad():
+                        max_abs = w.abs().amax()
+                        if max_abs == 0:
+                            scale = torch.tensor(1.0, device=w.device, dtype=torch.float32)
+                        else:
+                            scale = (max_abs / qmax).to(torch.float32)
+                    
+                    # 存储为buffer供后续使用
+                    m.register_buffer('_int8_weight_scale', scale.cpu().clone())
+                    # 同时存储INT8权重以备后用
+                    int8_w = (w.detach() / scale).round().clamp(-qmax, qmax).to(torch.int8)
+                    m.register_buffer('_int8_weight', int8_w.cpu())
+                # ==============================================
+                
+                # 计算量化-反量化权重（使用静态scale）
                 q = (w / scale).round().clamp(-qmax, qmax)
                 dq = q * scale
                 
