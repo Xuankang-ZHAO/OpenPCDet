@@ -95,6 +95,27 @@ def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
 
     ax.imshow(rgba, interpolation='nearest', origin='lower')
 
+    # add x/y ticks matching voxel coordinates (left and bottom)
+    ny, nx = img.shape
+    max_ticks = 10
+    xticks_num = min(max_ticks, nx)
+    yticks_num = min(max_ticks, ny)
+    if xticks_num > 1:
+        xticks = np.linspace(0, nx - 1, num=xticks_num, dtype=int)
+    else:
+        xticks = np.array([0], dtype=int)
+    if yticks_num > 1:
+        yticks = np.linspace(0, ny - 1, num=yticks_num, dtype=int)
+    else:
+        yticks = np.array([0], dtype=int)
+    ax.set_xticks(xticks)
+    ax.set_yticks(yticks)
+    ax.set_xticklabels([str(int(x)) for x in xticks])
+    ax.set_yticklabels([str(int(y)) for y in yticks])
+    ax.set_xlabel('x (voxels)')
+    ax.set_ylabel('y (voxels)')
+    ax.tick_params(axis='both', which='both', direction='out')
+
     # add a colorbar showing the color mapping (ignores alpha)
     sm = cm.ScalarMappable(norm=norm, cmap=cmap)
     sm.set_array(img_f)
