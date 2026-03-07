@@ -13,6 +13,8 @@ venv/
 *.pkl
 *.zip
 #*.bin
-output
+#output
+*.pth
 #version.py
 *.csv
+*.png

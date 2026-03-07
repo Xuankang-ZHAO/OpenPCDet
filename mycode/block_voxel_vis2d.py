@@ -95,7 +95,7 @@ def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
 
     ax.imshow(rgba, interpolation='nearest', origin='lower')
 
-    # add x/y ticks matching voxel coordinates (left and bottom)
+    # add x/y ticks matching voxel coordinates (drawn on bottom and left)
     ny, nx = img.shape
     max_ticks = 10
     xticks_num = min(max_ticks, nx)
@@ -108,13 +108,35 @@ def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
         yticks = np.linspace(0, ny - 1, num=yticks_num, dtype=int)
     else:
         yticks = np.array([0], dtype=int)
-    ax.set_xticks(xticks)
-    ax.set_yticks(yticks)
-    ax.set_xticklabels([str(int(x)) for x in xticks])
-    ax.set_yticklabels([str(int(y)) for y in yticks])
-    ax.set_xlabel('x (voxels)')
-    ax.set_ylabel('y (voxels)')
-    ax.tick_params(axis='both', which='both', direction='out')
+
+    # ensure image covers integer voxel centers; set explicit limits
+    ax.set_xlim(-0.5, nx - 0.5)
+    ax.set_ylim(-0.5, ny - 0.5)
+
+    # draw axis lines (bottom and left) in data coords
+    ax.plot([ -0.5, nx - 0.5 ], [ -0.5, -0.5 ], color='black', lw=1)
+    ax.plot([ -0.5, -0.5 ], [ -0.5, ny - 0.5 ], color='black', lw=1)
+
+    # tick length and label padding in data coordinates (small fraction)
+    tick_len = max(nx, ny) * 0.02
+    text_pad = tick_len * 0.6
+
+    # draw x ticks and labels below the image
+    for x in xticks:
+        ax.plot([x, x], [-0.5, -0.5 - tick_len], color='black', lw=1)
+        ax.text(x, -0.5 - tick_len - text_pad, str(int(x)), ha='center', va='top', fontsize=8)
+
+    # draw y ticks and labels to the left of the image
+    for y in yticks:
+        ax.plot([-0.5, -0.5 - tick_len], [y, y], color='black', lw=1)
+        ax.text(-0.5 - tick_len - text_pad, y, str(int(y)), ha='right', va='center', fontsize=8)
+
+    # axis labels
+    ax.text((nx - 1) / 2.0, -0.5 - 3 * text_pad, 'x (voxels)', ha='center', va='top', fontsize=9)
+    ax.text(-0.5 - 3 * text_pad, (ny - 1) / 2.0, 'y (voxels)', ha='center', va='bottom', rotation='vertical', fontsize=9)
+
+    # ensure there is room for left/bottom labels and the colorbar
+    fig.subplots_adjust(left=0.18, bottom=0.18)
 
     # add a colorbar showing the color mapping (ignores alpha)
     sm = cm.ScalarMappable(norm=norm, cmap=cmap)
@@ -126,9 +148,9 @@ def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
         cx, cy = int(lidar_center[0]), int(lidar_center[1])
         ny, nx = img.shape
         if 0 <= cx < nx and 0 <= cy < ny:
-            ax.scatter([cx], [cy], c='red', marker='x', s=40)
+            ax.scatter([cx], [cy], c='red', marker='x', s=80)
 
-    ax.axis('off')
+    # keep custom axis lines/labels visible; finalize layout
     plt.tight_layout()
     fig.savefig(out_path, dpi=150)
     plt.close(fig)
