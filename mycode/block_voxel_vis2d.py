@@ -95,45 +95,50 @@ def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
 
     ax.imshow(rgba, interpolation='nearest', origin='lower')
 
-    # add x/y ticks matching voxel coordinates (drawn on bottom and left)
+    # add x/y ticks with fixed interval of 200 (drawn on bottom and left)
     ny, nx = img.shape
-    max_ticks = 10
-    xticks_num = min(max_ticks, nx)
-    yticks_num = min(max_ticks, ny)
-    if xticks_num > 1:
-        xticks = np.linspace(0, nx - 1, num=xticks_num, dtype=int)
-    else:
-        xticks = np.array([0], dtype=int)
-    if yticks_num > 1:
-        yticks = np.linspace(0, ny - 1, num=yticks_num, dtype=int)
-    else:
-        yticks = np.array([0], dtype=int)
+    tick_interval = 200
+    # generate x ticks: start at 0, step 200, stop before exceeding nx
+    xticks = np.arange(0, nx+1, tick_interval)
+    # ensure ticks don't exceed the last pixel index
+    xticks = xticks[xticks < nx+1]
+
+    # generate y ticks: start at 0, step 200, stop before exceeding ny
+    yticks = np.arange(0, ny+1, tick_interval)
+    yticks = yticks[yticks < ny+1]
 
     # ensure image covers integer voxel centers; set explicit limits
     ax.set_xlim(-0.5, nx - 0.5)
     ax.set_ylim(-0.5, ny - 0.5)
 
     # draw axis lines (bottom and left) in data coords
-    ax.plot([ -0.5, nx - 0.5 ], [ -0.5, -0.5 ], color='black', lw=1)
-    ax.plot([ -0.5, -0.5 ], [ -0.5, ny - 0.5 ], color='black', lw=1)
+    # ax.plot([ -0.5, nx - 0.5 ], [ -0.5, -0.5 ], color='black', lw=1)
+    # ax.plot([ -0.5, -0.5 ], [ -0.5, ny - 0.5 ], color='black', lw=1)
+    # ax.plot([ -0.5, nx - 0.5 ], [ ny - 0.5, ny - 0.5 ], color='black', lw=1)
+    # ax.plot([ nx - 0.5, nx - 0.5 ], [ -0.5, ny - 0.5 ], color='black', lw=1)
+    for spine in ax.spines.values():
+        spine.set_visible(True)
 
     # tick length and label padding in data coordinates (small fraction)
-    tick_len = max(nx, ny) * 0.02
-    text_pad = tick_len * 0.6
+    tick_len = max(nx, ny) * 0.005
 
     # draw x ticks and labels below the image
     for x in xticks:
-        ax.plot([x, x], [-0.5, -0.5 - tick_len], color='black', lw=1)
-        ax.text(x, -0.5 - tick_len - text_pad, str(int(x)), ha='center', va='top', fontsize=8)
+        ax.plot([x, x], [-0.5, 2 * tick_len], color='black', lw=1)
+        ax.text(x, -0.5 - tick_len, str(int(x)), ha='center', va='top', fontsize=8)
 
     # draw y ticks and labels to the left of the image
     for y in yticks:
-        ax.plot([-0.5, -0.5 - tick_len], [y, y], color='black', lw=1)
-        ax.text(-0.5 - tick_len - text_pad, y, str(int(y)), ha='right', va='center', fontsize=8)
+        ax.plot([-0.5, 2 * tick_len], [y, y], color='black', lw=1)
+        ax.text(-0.5 - tick_len, y, str(int(y)), ha='right', va='center', fontsize=8)
 
     # axis labels
-    ax.text((nx - 1) / 2.0, -0.5 - 3 * text_pad, 'x (voxels)', ha='center', va='top', fontsize=9)
-    ax.text(-0.5 - 3 * text_pad, (ny - 1) / 2.0, 'y (voxels)', ha='center', va='bottom', rotation='vertical', fontsize=9)
+    ax.text((nx - 1) / 2.0, -0.5 - 5 * tick_len, 'x (voxels)', ha='center', va='top', fontsize=10)
+    ax.text(-0.5 - 15 * tick_len, (ny - 1) / 2.0, 'y (voxels)', ha='center', va='bottom', rotation='vertical', fontsize=10)
+
+    # hide default axis ticks and spines so only the custom ticks are shown
+    ax.set_xticks([])
+    ax.set_yticks([])
 
     # ensure there is room for left/bottom labels and the colorbar
     fig.subplots_adjust(left=0.18, bottom=0.18)
@@ -141,18 +146,18 @@ def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
     # add a colorbar showing the color mapping (ignores alpha)
     sm = cm.ScalarMappable(norm=norm, cmap=cmap)
     sm.set_array(img_f)
-    cbar = fig.colorbar(sm, ax=ax, fraction=0.046, pad=0.04)
+    cbar = fig.colorbar(sm, ax=ax, fraction=0.04, pad=0.04)
     cbar.set_label('voxels per block (max overlap)')
 
     if lidar_center is not None:
         cx, cy = int(lidar_center[0]), int(lidar_center[1])
         ny, nx = img.shape
         if 0 <= cx < nx and 0 <= cy < ny:
-            ax.scatter([cx], [cy], c='red', marker='x', s=80)
+            ax.scatter([cx], [cy], c='red', marker='x', s=200)
 
     # keep custom axis lines/labels visible; finalize layout
-    plt.tight_layout()
-    fig.savefig(out_path, dpi=150)
+    # use tight bbox so externally-drawn labels/ticks are not clipped
+    fig.savefig(out_path, dpi=150, bbox_inches='tight', pad_inches=0.05)
     plt.close(fig)
 
 
