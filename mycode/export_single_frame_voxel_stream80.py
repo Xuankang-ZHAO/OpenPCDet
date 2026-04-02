@@ -10,12 +10,9 @@ Each output line is a 20-hex-digit token (MSB-first):
 
     <feat:8 hex><z:4 hex><y:4 hex><x:4 hex>
 
+    A
 Example:
-    python mycode/export_single_frame_voxel_stream80.py ^
-        --cfg tools/cfgs/kitti_models/second.yaml ^
-        --pcd mycode/000008.bin ^
-        --out mycode/output/000008_voxel_stream80.txt ^
-        --feat-mode num_points
+python ../mycode/export_single_frame_voxel_stream80.py --cfg cfgs/kitti_models/second.yaml --pcd ../data/kitti/training/velodyne/000014.bin --out ../mycode/output/000014_voxel_stream80.txt --feat-mode num_points
 """
 
 import argparse
@@ -32,7 +29,7 @@ UINT32_MAX = (1 << 32) - 1
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Export single-frame voxel stream in 80-bit packed format")
-    parser.add_argument("--cfg", type=str, default="tools/cfgs/kitti_models/second.yaml", help="Model config yaml")
+    parser.add_argument("--cfg", type=str, default="cfgs/kitti_models/second.yaml", help="Model config yaml")
     parser.add_argument("--pcd", type=str, required=True, help="Input point cloud file (.bin or .npy)")
     parser.add_argument("--out", type=str, required=True, help="Output stream file path")
 
