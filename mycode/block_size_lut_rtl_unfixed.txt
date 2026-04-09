@@ -1,0 +1,8 @@
+# RTL-style unfixed block partition lookup table
+# Format per line: zone:start-end:bx,by,bz
+# Distances use Chebyshev distance in voxel index space from lidar_center.
+# Block sizes must be powers of two because the RTL uses arithmetic/logical shifts.
+0:0-63:16,16,16
+1:64-511:8,8,16
+2:512-767:16,16,16
+3:768-2048:64,64,16
