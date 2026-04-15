@@ -26,7 +26,7 @@ from tqdm import tqdm
 
 from pcdet.config import cfg, cfg_from_yaml_file
 from pcdet.datasets.processor.data_processor import DataProcessor
-from mycode.block_partition import compute_block_partition_counts
+from mycode.legacy.block_partition import compute_block_partition_counts
 
 # load KITTI dataset config
 def load_cfg_for_kitti():

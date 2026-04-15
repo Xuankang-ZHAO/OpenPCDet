@@ -5,6 +5,8 @@ This script keeps the same voxelization pipeline, parser style, default KITTI
 data paths, and CSV statistics as `voxel_analyze_with_boudary_v2.py`, but uses
 the RTL-aligned unfixed partition semantics described in
 `online_block_partitioning_algorithm_summary.md`.
+
+Run directly in the OpenPCDet folder: (openpcd) vipuser@ubuntu22:~/桌面/OpenPCDet$ python mycode/voxel_analyze_with_boudary_rtl_unfixed.py
 """
 
 import argparse
@@ -155,7 +157,7 @@ def main():
     parser = argparse.ArgumentParser(description='arg parser')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne', help='Path to KITTI velodyne folder (bin files)')
     parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/trainval.txt', help='Optional frame id list (one id per line); pass an empty string to scan the directory directly')
-    parser.add_argument('--out', type=str, default='mycode/output/block_v2_rtl_unfixed_zone1.csv', help='CSV output file')
+    parser.add_argument('--out', type=str, default='mycode/output/block_v2_rtl_unfixed_zone4.csv', help='CSV output file')
     parser.add_argument('--zone_lut', type=str, default='mycode/block_size_lut_rtl_unfixed.txt', help='Path to zone block-size LUT for RTL unfixed partition')
     parser.add_argument('--lidar_center', type=str, default='0,800', help='LiDAR voxel center as "x,y" for zone lookup (e.g. 0,800 for KITTI)')
     parser.add_argument('--max_files', type=int, default=200, help='Optional limit for the number of frames to process')
