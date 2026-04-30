@@ -16,5 +16,5 @@ venv/
 #output
 *.pth
 #version.py
-*.csv
+#*.csv
 *.png
