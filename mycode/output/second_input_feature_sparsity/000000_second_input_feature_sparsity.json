@@ -1,0 +1,417 @@
+{
+  "frame_id": "000000",
+  "point_cloud_path": "/home/vipuser/\u684c\u9762/OpenPCDet/data/kitti/training/velodyne/000000.bin",
+  "num_raw_points": 115384,
+  "num_voxels_after_vfe": 15000,
+  "records": [
+    {
+      "record_name": "input_voxel_features",
+      "module_name": "conv_input",
+      "source": "backbone_input",
+      "layer_type": "InputFeatures",
+      "indice_key": "",
+      "spatial_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "feature_shape_nc": [
+        15000,
+        4
+      ],
+      "active_voxels": 15000,
+      "channels": 4,
+      "total_elements": 60000,
+      "zero_elements": 2198,
+      "nonzero_elements": 57802,
+      "zero_ratio": 0.03663333333333333,
+      "nonzero_ratio": 0.9633666666666667,
+      "avg_zero_channels_per_voxel": 0.14653334021568298,
+      "avg_nonzero_channels_per_voxel": 3.853466659784317,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.0,
+      "zero_channel_ratio_p90": 0.25,
+      "zero_channel_ratio_p95": 0.25,
+      "zero_channel_ratio_p99": 0.25,
+      "zero_channel_ratio_max": 0.5
+    },
+    {
+      "record_name": "conv_input",
+      "module_name": "conv_input.0",
+      "source": "layer_input",
+      "layer_type": "SubMConv3d",
+      "indice_key": "subm1",
+      "spatial_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "feature_shape_nc": [
+        15000,
+        4
+      ],
+      "active_voxels": 15000,
+      "channels": 4,
+      "total_elements": 60000,
+      "zero_elements": 2198,
+      "nonzero_elements": 57802,
+      "zero_ratio": 0.03663333333333333,
+      "nonzero_ratio": 0.9633666666666667,
+      "avg_zero_channels_per_voxel": 0.14653334021568298,
+      "avg_nonzero_channels_per_voxel": 3.853466659784317,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.0,
+      "zero_channel_ratio_p90": 0.25,
+      "zero_channel_ratio_p95": 0.25,
+      "zero_channel_ratio_p99": 0.25,
+      "zero_channel_ratio_max": 0.5
+    },
+    {
+      "record_name": "conv1.0",
+      "module_name": "conv1.0.0",
+      "source": "layer_input",
+      "layer_type": "SubMConv3d",
+      "indice_key": "subm1",
+      "spatial_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "feature_shape_nc": [
+        15000,
+        16
+      ],
+      "active_voxels": 15000,
+      "channels": 16,
+      "total_elements": 240000,
+      "zero_elements": 110599,
+      "nonzero_elements": 129401,
+      "zero_ratio": 0.4608291666666667,
+      "nonzero_ratio": 0.5391708333333334,
+      "avg_zero_channels_per_voxel": 7.373266696929932,
+      "avg_nonzero_channels_per_voxel": 8.626733303070068,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.5,
+      "zero_channel_ratio_p90": 0.625,
+      "zero_channel_ratio_p95": 0.6875,
+      "zero_channel_ratio_p99": 0.75,
+      "zero_channel_ratio_max": 0.875
+    },
+    {
+      "record_name": "conv2.0",
+      "module_name": "conv2.0.0",
+      "source": "layer_input",
+      "layer_type": "SparseConv3d",
+      "indice_key": "spconv2",
+      "spatial_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "feature_shape_nc": [
+        15000,
+        16
+      ],
+      "active_voxels": 15000,
+      "channels": 16,
+      "total_elements": 240000,
+      "zero_elements": 110372,
+      "nonzero_elements": 129628,
+      "zero_ratio": 0.4598833333333333,
+      "nonzero_ratio": 0.5401166666666667,
+      "avg_zero_channels_per_voxel": 7.358133316040039,
+      "avg_nonzero_channels_per_voxel": 8.641866683959961,
+      "all_zero_voxel_ratio": 0.0004000000189989805,
+      "zero_channel_ratio_p50": 0.4375,
+      "zero_channel_ratio_p90": 0.75,
+      "zero_channel_ratio_p95": 0.8125,
+      "zero_channel_ratio_p99": 0.875,
+      "zero_channel_ratio_max": 1.0
+    },
+    {
+      "record_name": "conv2.1",
+      "module_name": "conv2.1.0",
+      "source": "layer_input",
+      "layer_type": "SubMConv3d",
+      "indice_key": "subm2",
+      "spatial_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "feature_shape_nc": [
+        20740,
+        32
+      ],
+      "active_voxels": 20740,
+      "channels": 32,
+      "total_elements": 663680,
+      "zero_elements": 310979,
+      "nonzero_elements": 352701,
+      "zero_ratio": 0.4685676832208293,
+      "nonzero_ratio": 0.5314323167791707,
+      "avg_zero_channels_per_voxel": 14.994165420532227,
+      "avg_nonzero_channels_per_voxel": 17.005834579467773,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.46875,
+      "zero_channel_ratio_p90": 0.59375,
+      "zero_channel_ratio_p95": 0.625,
+      "zero_channel_ratio_p99": 0.71875,
+      "zero_channel_ratio_max": 0.84375
+    },
+    {
+      "record_name": "conv2.2",
+      "module_name": "conv2.2.0",
+      "source": "layer_input",
+      "layer_type": "SubMConv3d",
+      "indice_key": "subm2",
+      "spatial_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "feature_shape_nc": [
+        20740,
+        32
+      ],
+      "active_voxels": 20740,
+      "channels": 32,
+      "total_elements": 663680,
+      "zero_elements": 378248,
+      "nonzero_elements": 285432,
+      "zero_ratio": 0.5699252651880424,
+      "nonzero_ratio": 0.43007473481195757,
+      "avg_zero_channels_per_voxel": 18.237607955932617,
+      "avg_nonzero_channels_per_voxel": 13.762392044067383,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.59375,
+      "zero_channel_ratio_p90": 0.75,
+      "zero_channel_ratio_p95": 0.8125,
+      "zero_channel_ratio_p99": 0.875,
+      "zero_channel_ratio_max": 0.96875
+    },
+    {
+      "record_name": "conv3.0",
+      "module_name": "conv3.0.0",
+      "source": "layer_input",
+      "layer_type": "SparseConv3d",
+      "indice_key": "spconv3",
+      "spatial_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "feature_shape_nc": [
+        20740,
+        32
+      ],
+      "active_voxels": 20740,
+      "channels": 32,
+      "total_elements": 663680,
+      "zero_elements": 356004,
+      "nonzero_elements": 307676,
+      "zero_ratio": 0.536409112825458,
+      "nonzero_ratio": 0.46359088717454194,
+      "avg_zero_channels_per_voxel": 17.165090560913086,
+      "avg_nonzero_channels_per_voxel": 14.834909439086914,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.5625,
+      "zero_channel_ratio_p90": 0.71875,
+      "zero_channel_ratio_p95": 0.78125,
+      "zero_channel_ratio_p99": 0.84375,
+      "zero_channel_ratio_max": 0.9375
+    },
+    {
+      "record_name": "conv3.1",
+      "module_name": "conv3.1.0",
+      "source": "layer_input",
+      "layer_type": "SubMConv3d",
+      "indice_key": "subm3",
+      "spatial_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "feature_shape_nc": [
+        11089,
+        64
+      ],
+      "active_voxels": 11089,
+      "channels": 64,
+      "total_elements": 709696,
+      "zero_elements": 391425,
+      "nonzero_elements": 318271,
+      "zero_ratio": 0.5515389687979079,
+      "nonzero_ratio": 0.4484610312020922,
+      "avg_zero_channels_per_voxel": 35.298492431640625,
+      "avg_nonzero_channels_per_voxel": 28.701507568359375,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.546875,
+      "zero_channel_ratio_p90": 0.6875,
+      "zero_channel_ratio_p95": 0.734375,
+      "zero_channel_ratio_p99": 0.796875,
+      "zero_channel_ratio_max": 0.875
+    },
+    {
+      "record_name": "conv3.2",
+      "module_name": "conv3.2.0",
+      "source": "layer_input",
+      "layer_type": "SubMConv3d",
+      "indice_key": "subm3",
+      "spatial_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "feature_shape_nc": [
+        11089,
+        64
+      ],
+      "active_voxels": 11089,
+      "channels": 64,
+      "total_elements": 709696,
+      "zero_elements": 486097,
+      "nonzero_elements": 223599,
+      "zero_ratio": 0.684936930742177,
+      "nonzero_ratio": 0.31506306925782307,
+      "avg_zero_channels_per_voxel": 43.83596420288086,
+      "avg_nonzero_channels_per_voxel": 20.16403579711914,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.703125,
+      "zero_channel_ratio_p90": 0.828125,
+      "zero_channel_ratio_p95": 0.84375,
+      "zero_channel_ratio_p99": 0.890625,
+      "zero_channel_ratio_max": 0.953125
+    },
+    {
+      "record_name": "conv4.0",
+      "module_name": "conv4.0.0",
+      "source": "layer_input",
+      "layer_type": "SparseConv3d",
+      "indice_key": "spconv4",
+      "spatial_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "feature_shape_nc": [
+        11089,
+        64
+      ],
+      "active_voxels": 11089,
+      "channels": 64,
+      "total_elements": 709696,
+      "zero_elements": 524866,
+      "nonzero_elements": 184830,
+      "zero_ratio": 0.7395645459464334,
+      "nonzero_ratio": 0.2604354540535666,
+      "avg_zero_channels_per_voxel": 47.332130432128906,
+      "avg_nonzero_channels_per_voxel": 16.667869567871094,
+      "all_zero_voxel_ratio": 9.017945558298379e-05,
+      "zero_channel_ratio_p50": 0.765625,
+      "zero_channel_ratio_p90": 0.875,
+      "zero_channel_ratio_p95": 0.890625,
+      "zero_channel_ratio_p99": 0.921875,
+      "zero_channel_ratio_max": 1.0
+    },
+    {
+      "record_name": "conv4.1",
+      "module_name": "conv4.1.0",
+      "source": "layer_input",
+      "layer_type": "SubMConv3d",
+      "indice_key": "subm4",
+      "spatial_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "feature_shape_nc": [
+        4393,
+        64
+      ],
+      "active_voxels": 4393,
+      "channels": 64,
+      "total_elements": 281152,
+      "zero_elements": 163822,
+      "nonzero_elements": 117330,
+      "zero_ratio": 0.5826812542681539,
+      "nonzero_ratio": 0.41731874573184613,
+      "avg_zero_channels_per_voxel": 37.29159927368164,
+      "avg_nonzero_channels_per_voxel": 26.70840072631836,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.578125,
+      "zero_channel_ratio_p90": 0.734375,
+      "zero_channel_ratio_p95": 0.765625,
+      "zero_channel_ratio_p99": 0.828125,
+      "zero_channel_ratio_max": 0.890625
+    },
+    {
+      "record_name": "conv4.2",
+      "module_name": "conv4.2.0",
+      "source": "layer_input",
+      "layer_type": "SubMConv3d",
+      "indice_key": "subm4",
+      "spatial_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "feature_shape_nc": [
+        4393,
+        64
+      ],
+      "active_voxels": 4393,
+      "channels": 64,
+      "total_elements": 281152,
+      "zero_elements": 183832,
+      "nonzero_elements": 97320,
+      "zero_ratio": 0.6538527202367402,
+      "nonzero_ratio": 0.3461472797632597,
+      "avg_zero_channels_per_voxel": 41.84657287597656,
+      "avg_nonzero_channels_per_voxel": 22.153427124023438,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.671875,
+      "zero_channel_ratio_p90": 0.796875,
+      "zero_channel_ratio_p95": 0.8125,
+      "zero_channel_ratio_p99": 0.859375,
+      "zero_channel_ratio_max": 0.9375
+    },
+    {
+      "record_name": "conv_out",
+      "module_name": "conv_out.0",
+      "source": "layer_input",
+      "layer_type": "SparseConv3d",
+      "indice_key": "spconv_down2",
+      "spatial_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "feature_shape_nc": [
+        4393,
+        64
+      ],
+      "active_voxels": 4393,
+      "channels": 64,
+      "total_elements": 281152,
+      "zero_elements": 180695,
+      "nonzero_elements": 100457,
+      "zero_ratio": 0.6426950546323696,
+      "nonzero_ratio": 0.3573049453676303,
+      "avg_zero_channels_per_voxel": 41.13248062133789,
+      "avg_nonzero_channels_per_voxel": 22.86751937866211,
+      "all_zero_voxel_ratio": 0.0,
+      "zero_channel_ratio_p50": 0.640625,
+      "zero_channel_ratio_p90": 0.765625,
+      "zero_channel_ratio_p95": 0.78125,
+      "zero_channel_ratio_p99": 0.828125,
+      "zero_channel_ratio_max": 0.921875
+    }
+  ],
+  "cfg": "/home/vipuser/\u684c\u9762/OpenPCDet/tools/cfgs/kitti_models/second.yaml",
+  "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/second_7862.pth",
+  "device": "cuda:0",
+  "seed": 0,
+  "zero_threshold": 0.0,
+  "int8_inference": false
+}
