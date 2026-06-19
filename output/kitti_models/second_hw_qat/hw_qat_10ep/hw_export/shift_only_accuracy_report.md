@@ -1,0 +1,10 @@
+# SECOND HW-QAT HW Reference Evaluation
+
+This report records OpenPCDet metrics from the HW-equivalent integer reference path.
+The 3D backbone reference uses int8-valued sparse features/weights, integer bias,
+per-channel shift-only requantization, clamp, and ReLU before dequantizing back to FP32.
+Exact bias/shift checks are in requant_shift_stats.csv.
+
+```text
+{'recall/roi_0.3': 0.0, 'recall/rcnn_0.3': 0.9048297072559517, 'recall/roi_0.5': 0.0, 'recall/rcnn_0.5': 0.8435471010365645, 'recall/roi_0.7': 0.0, 'recall/rcnn_0.7': 0.5943729354140562, 'Car_aos/easy_R40': 95.25697217476517, 'Car_aos/moderate_R40': 90.47977331658545, 'Car_aos/hard_R40': 87.62787066096008, 'Car_3d/easy_R40': 87.76626041206988, 'Car_3d/moderate_R40': 75.55034741621819, 'Car_3d/hard_R40': 70.76088500957958, 'Car_bev/easy_R40': 92.11346960141618, 'Car_bev/moderate_R40': 87.20817071838873, 'Car_bev/hard_R40': 84.41289269056212, 'Car_image/easy_R40': 95.35215261267588, 'Car_image/moderate_R40': 90.83346746217727, 'Car_image/hard_R40': 88.15005521731594, 'Pedestrian_aos/easy_R40': 65.73586441060168, 'Pedestrian_aos/moderate_R40': 59.69639222132748, 'Pedestrian_aos/hard_R40': 55.44180403678799, 'Pedestrian_3d/easy_R40': 56.85325158119411, 'Pedestrian_3d/moderate_R40': 50.454172008792156, 'Pedestrian_3d/hard_R40': 45.04603152294734, 'Pedestrian_bev/easy_R40': 61.147862336660296, 'Pedestrian_bev/moderate_R40': 55.395610263256444, 'Pedestrian_bev/hard_R40': 50.19209840881251, 'Pedestrian_image/easy_R40': 70.50587193653148, 'Pedestrian_image/moderate_R40': 64.83461029114595, 'Pedestrian_image/hard_R40': 60.6955369543122, 'Cyclist_aos/easy_R40': 88.40413433567555, 'Cyclist_aos/moderate_R40': 69.81662818798806, 'Cyclist_aos/hard_R40': 66.10472337751852, 'Cyclist_3d/easy_R40': 81.78705801606425, 'Cyclist_3d/moderate_R40': 61.43721281697421, 'Cyclist_3d/hard_R40': 57.311569792343, 'Cyclist_bev/easy_R40': 88.53632915536154, 'Cyclist_bev/moderate_R40': 65.68129408667915, 'Cyclist_bev/hard_R40': 61.15564203712495, 'Cyclist_image/easy_R40': 88.634459775528, 'Cyclist_image/moderate_R40': 70.19109857481192, 'Cyclist_image/hard_R40': 66.51975386763749}
+```
