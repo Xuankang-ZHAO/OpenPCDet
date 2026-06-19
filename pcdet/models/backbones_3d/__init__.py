@@ -7,6 +7,7 @@ from .spconv_backbone_voxelnext2d import VoxelResBackBone8xVoxelNeXt2D
 from .spconv_unet import UNetV2
 from .dsvt import DSVT
 from .spconv_backbone_qat import VoxelBackBone8x_INT8
+from .spconv_backbone_hw_qat import VoxelBackBone8x_HWQAT
 
 __all__ = {
     'VoxelBackBone8x': VoxelBackBone8x,
@@ -21,4 +22,5 @@ __all__ = {
     'PillarRes18BackBone8x': PillarRes18BackBone8x,
     'DSVT': DSVT,
     'VoxelBackBone8x_INT8': VoxelBackBone8x_INT8,
+    'VoxelBackBone8x_HWQAT': VoxelBackBone8x_HWQAT,
 }
