@@ -1,2 +1,0 @@
-layer_id,module_name,shape,dtype,weight_quant,qmin,qmax
-8,conv4.0.0,"(64, 3, 3, 3, 64)",int8,per_channel,-127,127

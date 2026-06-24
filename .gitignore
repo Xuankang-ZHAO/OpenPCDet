@@ -18,3 +18,14 @@ venv/
 #version.py
 #*.csv
 *.png
+
+# accdesign: always track RTL golden-vector packages and export scripts
+!/accdesign/
+!/accdesign/**
+!/accdesign/**/*
+!/accdesign/**/*.bin
+!/accdesign/**/*.pkl
+!/accdesign/**/*.png
+!/accdesign/**/*.pth
+!/accdesign/data/
+!/accdesign/data/**
