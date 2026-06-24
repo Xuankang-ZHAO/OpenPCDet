@@ -1,0 +1,603 @@
+2026-06-20 00:13:49,348   INFO  **********************Start HW-QAT logging**********************
+2026-06-20 00:13:49,348   INFO  CUDA_VISIBLE_DEVICES=ALL
+2026-06-20 00:13:49,348   INFO  Training in single-process mode
+2026-06-20 00:13:49,348   INFO  cfg_file                 cfgs/kitti_models/second_hw_qat.yaml
+2026-06-20 00:13:49,348   INFO  batch_size               8
+2026-06-20 00:13:49,348   INFO  epochs                   10
+2026-06-20 00:13:49,348   INFO  workers                  4
+2026-06-20 00:13:49,348   INFO  extra_tag                hw_qat_10ep_per_tensor
+2026-06-20 00:13:49,348   INFO  ckpt                     None
+2026-06-20 00:13:49,348   INFO  pretrained_model         ../output/kitti_models/second/default/ckpt/checkpoint_epoch_80.pth
+2026-06-20 00:13:49,348   INFO  launcher                 none
+2026-06-20 00:13:49,348   INFO  tcp_port                 18888
+2026-06-20 00:13:49,349   INFO  sync_bn                  False
+2026-06-20 00:13:49,349   INFO  fix_random_seed          False
+2026-06-20 00:13:49,349   INFO  ckpt_save_interval       1
+2026-06-20 00:13:49,349   INFO  local_rank               None
+2026-06-20 00:13:49,349   INFO  max_ckpt_save_num        30
+2026-06-20 00:13:49,349   INFO  merge_all_iters_to_one_epoch False
+2026-06-20 00:13:49,349   INFO  set_cfgs                 None
+2026-06-20 00:13:49,349   INFO  max_waiting_mins         0
+2026-06-20 00:13:49,349   INFO  start_epoch              0
+2026-06-20 00:13:49,349   INFO  num_epochs_to_eval       0
+2026-06-20 00:13:49,349   INFO  save_to_file             False
+2026-06-20 00:13:49,349   INFO  use_tqdm_to_record       False
+2026-06-20 00:13:49,349   INFO  logger_iter_interval     50
+2026-06-20 00:13:49,349   INFO  ckpt_save_time_interval  300
+2026-06-20 00:13:49,349   INFO  wo_gpu_stat              False
+2026-06-20 00:13:49,349   INFO  use_amp                  False
+2026-06-20 00:13:49,349   INFO  hw_qat                   True
+2026-06-20 00:13:49,349   INFO  activation_quant         signed_symmetric
+2026-06-20 00:13:49,349   INFO  weight_quant             per_tensor
+2026-06-20 00:13:49,349   INFO  observer                 max
+2026-06-20 00:13:49,349   INFO  observer_momentum        0.95
+2026-06-20 00:13:49,349   INFO  freeze_observer_epoch    -1
+2026-06-20 00:13:49,350   INFO  export_qparams           True
+2026-06-20 00:13:49,350   INFO  cfg.ROOT_DIR: /home/vipuser/桌面/OpenPCDet
+2026-06-20 00:13:49,350   INFO  cfg.LOCAL_RANK: 0
+2026-06-20 00:13:49,350   INFO  cfg.CLASS_NAMES: ['Car', 'Pedestrian', 'Cyclist']
+2026-06-20 00:13:49,350   INFO  ----------- DATA_CONFIG -----------
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.DATASET: KittiDataset
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.DATA_PATH: ../data/kitti
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.POINT_CLOUD_RANGE: [0, -40, -3, 70.4, 40, 1]
+2026-06-20 00:13:49,350   INFO  ----------- DATA_SPLIT -----------
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.DATA_SPLIT.train: train
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.DATA_SPLIT.test: val
+2026-06-20 00:13:49,350   INFO  ----------- INFO_PATH -----------
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.INFO_PATH.train: ['kitti_infos_train.pkl']
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.INFO_PATH.test: ['kitti_infos_val.pkl']
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.GET_ITEM_LIST: ['points']
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.FOV_POINTS_ONLY: True
+2026-06-20 00:13:49,350   INFO  ----------- DATA_AUGMENTOR -----------
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.DISABLE_AUG_LIST: ['placeholder']
+2026-06-20 00:13:49,350   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.AUG_CONFIG_LIST: [{'NAME': 'gt_sampling', 'USE_ROAD_PLANE': False, 'DB_INFO_PATH': ['kitti_dbinfos_train.pkl'], 'PREPARE': {'filter_by_min_points': ['Car:5', 'Pedestrian:5', 'Cyclist:5'], 'filter_by_difficulty': [-1]}, 'SAMPLE_GROUPS': ['Car:20', 'Pedestrian:15', 'Cyclist:15'], 'NUM_POINT_FEATURES': 4, 'DATABASE_WITH_FAKELIDAR': False, 'REMOVE_EXTRA_WIDTH': [0.0, 0.0, 0.0], 'LIMIT_WHOLE_SCENE': True}, {'NAME': 'random_world_flip', 'ALONG_AXIS_LIST': ['x']}, {'NAME': 'random_world_rotation', 'WORLD_ROT_ANGLE': [-0.78539816, 0.78539816]}, {'NAME': 'random_world_scaling', 'WORLD_SCALE_RANGE': [0.95, 1.05]}]
+2026-06-20 00:13:49,351   INFO  ----------- POINT_FEATURE_ENCODING -----------
+2026-06-20 00:13:49,351   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.encoding_type: absolute_coordinates_encoding
+2026-06-20 00:13:49,351   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.used_feature_list: ['x', 'y', 'z', 'intensity']
+2026-06-20 00:13:49,351   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.src_feature_list: ['x', 'y', 'z', 'intensity']
+2026-06-20 00:13:49,351   INFO  cfg.DATA_CONFIG.DATA_PROCESSOR: [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': True, 'test': False}}, {'NAME': 'transform_points_to_voxels', 'VOXEL_SIZE': [0.05, 0.05, 0.1], 'MAX_POINTS_PER_VOXEL': 5, 'MAX_NUMBER_OF_VOXELS': {'train': 16000, 'test': 15000}}]
+2026-06-20 00:13:49,351   INFO  cfg.DATA_CONFIG._BASE_CONFIG_: cfgs/dataset_configs/kitti_dataset.yaml
+2026-06-20 00:13:49,351   INFO  ----------- MODEL -----------
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.NAME: SECONDNet
+2026-06-20 00:13:49,351   INFO  ----------- VFE -----------
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.VFE.NAME: MeanVFE
+2026-06-20 00:13:49,351   INFO  ----------- BACKBONE_3D -----------
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.BACKBONE_3D.NAME: VoxelBackBone8x_HWQAT
+2026-06-20 00:13:49,351   INFO  ----------- MAP_TO_BEV -----------
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.MAP_TO_BEV.NAME: HeightCompression
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.MAP_TO_BEV.NUM_BEV_FEATURES: 256
+2026-06-20 00:13:49,351   INFO  ----------- BACKBONE_2D -----------
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.BACKBONE_2D.NAME: BaseBEVBackbone
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.BACKBONE_2D.LAYER_NUMS: [5, 5]
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.BACKBONE_2D.LAYER_STRIDES: [1, 2]
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.BACKBONE_2D.NUM_FILTERS: [128, 256]
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.BACKBONE_2D.UPSAMPLE_STRIDES: [1, 2]
+2026-06-20 00:13:49,351   INFO  cfg.MODEL.BACKBONE_2D.NUM_UPSAMPLE_FILTERS: [256, 256]
+2026-06-20 00:13:49,352   INFO  ----------- DENSE_HEAD -----------
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.NAME: AnchorHeadSingle
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.CLASS_AGNOSTIC: False
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.USE_DIRECTION_CLASSIFIER: True
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.DIR_OFFSET: 0.78539
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.DIR_LIMIT_OFFSET: 0.0
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.NUM_DIR_BINS: 2
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.ANCHOR_GENERATOR_CONFIG: [{'class_name': 'Car', 'anchor_sizes': [[3.9, 1.6, 1.56]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.78], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.45}, {'class_name': 'Pedestrian', 'anchor_sizes': [[0.8, 0.6, 1.73]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.6], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}, {'class_name': 'Cyclist', 'anchor_sizes': [[1.76, 0.6, 1.73]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.6], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}]
+2026-06-20 00:13:49,352   INFO  ----------- TARGET_ASSIGNER_CONFIG -----------
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NAME: AxisAlignedTargetAssigner
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.POS_FRACTION: -1.0
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.SAMPLE_SIZE: 512
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NORM_BY_NUM_EXAMPLES: False
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.MATCH_HEIGHT: False
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER: ResidualCoder
+2026-06-20 00:13:49,352   INFO  ----------- LOSS_CONFIG -----------
+2026-06-20 00:13:49,352   INFO  ----------- LOSS_WEIGHTS -----------
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.cls_weight: 1.0
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.loc_weight: 2.0
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.dir_weight: 0.2
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.code_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+2026-06-20 00:13:49,352   INFO  ----------- POST_PROCESSING -----------
+2026-06-20 00:13:49,352   INFO  cfg.MODEL.POST_PROCESSING.RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
+2026-06-20 00:13:49,353   INFO  cfg.MODEL.POST_PROCESSING.SCORE_THRESH: 0.1
+2026-06-20 00:13:49,353   INFO  cfg.MODEL.POST_PROCESSING.OUTPUT_RAW_SCORE: False
+2026-06-20 00:13:49,353   INFO  cfg.MODEL.POST_PROCESSING.EVAL_METRIC: kitti
+2026-06-20 00:13:49,353   INFO  ----------- NMS_CONFIG -----------
+2026-06-20 00:13:49,353   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.MULTI_CLASSES_NMS: False
+2026-06-20 00:13:49,353   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_TYPE: nms_gpu
+2026-06-20 00:13:49,353   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_THRESH: 0.01
+2026-06-20 00:13:49,353   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_PRE_MAXSIZE: 4096
+2026-06-20 00:13:49,353   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_POST_MAXSIZE: 500
+2026-06-20 00:13:49,353   INFO  ----------- OPTIMIZATION -----------
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.BATCH_SIZE_PER_GPU: 8
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.NUM_EPOCHS: 5
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.OPTIMIZER: adam_onecycle
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.LR: 0.0001
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.WEIGHT_DECAY: 0.01
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.MOMENTUM: 0.9
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.MOMS: [0.95, 0.85]
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.PCT_START: 0.4
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.DIV_FACTOR: 10
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.DECAY_STEP_LIST: [35, 45]
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.LR_DECAY: 0.1
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.LR_CLIP: 1e-07
+2026-06-20 00:13:49,353   INFO  cfg.OPTIMIZATION.LR_WARMUP: False
+2026-06-20 00:13:49,354   INFO  cfg.OPTIMIZATION.WARMUP_EPOCH: 1
+2026-06-20 00:13:49,354   INFO  cfg.OPTIMIZATION.GRAD_NORM_CLIP: 10
+2026-06-20 00:13:49,354   INFO  cfg.TAG: second_hw_qat
+2026-06-20 00:13:49,354   INFO  cfg.EXP_GROUP_PATH: kitti_models
+2026-06-20 00:13:49,367   INFO  ----------- Create dataloader & network & optimizer -----------
+2026-06-20 00:13:49,557   INFO  Database filter by min points Car: 14357 => 13532
+2026-06-20 00:13:49,558   INFO  Database filter by min points Pedestrian: 2207 => 2168
+2026-06-20 00:13:49,558   INFO  Database filter by min points Cyclist: 734 => 705
+2026-06-20 00:13:49,578   INFO  Database filter by difficulty Car: 13532 => 10759
+2026-06-20 00:13:49,581   INFO  Database filter by difficulty Pedestrian: 2168 => 2075
+2026-06-20 00:13:49,582   INFO  Database filter by difficulty Cyclist: 705 => 581
+2026-06-20 00:13:49,591   INFO  Loading KITTI dataset
+2026-06-20 00:13:49,736   INFO  Total samples for KITTI dataset: 3712
+2026-06-20 00:13:50,088   INFO  ==> Loading parameters from checkpoint ../output/kitti_models/second/default/ckpt/checkpoint_epoch_80.pth to GPU
+2026-06-20 00:13:50,382   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py3a0d9e7
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_scale_input: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_seen_input: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_scale_l00_conv_input: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_seen_l00_conv_input: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_scale_l01_conv1: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_seen_l01_conv1: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_scale_l02_conv2_0: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_seen_l02_conv2_0: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_scale_l03_conv2_1: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_seen_l03_conv2_1: torch.Size([])
+2026-06-20 00:13:50,391   INFO  Not updated weight backbone_3d._hw_act_scale_l04_conv2_2: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_seen_l04_conv2_2: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_scale_l05_conv3_0: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_seen_l05_conv3_0: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_scale_l06_conv3_1: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_seen_l06_conv3_1: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_scale_l07_conv3_2: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_seen_l07_conv3_2: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_scale_l08_conv4_0: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_seen_l08_conv4_0: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_scale_l09_conv4_1: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_seen_l09_conv4_1: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_scale_l10_conv4_2: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_seen_l10_conv4_2: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_scale_l11_conv_out: torch.Size([])
+2026-06-20 00:13:50,392   INFO  Not updated weight backbone_3d._hw_act_seen_l11_conv_out: torch.Size([])
+2026-06-20 00:13:50,392   INFO  ==> Done (loaded 163/189)
+2026-06-20 00:13:50,394   INFO  HW-QAT backbone setup:
+2026-06-20 00:13:50,395   INFO    enabled: True
+2026-06-20 00:13:50,395   INFO    activation_quant: signed_symmetric
+2026-06-20 00:13:50,395   INFO    weight_quant: per_tensor
+2026-06-20 00:13:50,395   INFO    observer: max
+2026-06-20 00:13:50,395   INFO    observer_momentum: 0.950000
+2026-06-20 00:13:50,395   INFO    freeze_observer_epoch metadata: -1
+2026-06-20 00:13:50,395   INFO  ----------- Model SECONDNet created, param count: 5325576 -----------
+2026-06-20 00:13:50,395   INFO  SECONDNet(
+  (vfe): MeanVFE()
+  (backbone_3d): VoxelBackBone8x_HWQAT(
+    (conv_input): SparseSequential(
+      (0): SubMConv3d(4, 16, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[1, 1, 1], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+      (1): BatchNorm1d(16, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+      (2): ReLU()
+    )
+    (conv1): SparseSequential(
+      (0): SparseSequential(
+        (0): SubMConv3d(16, 16, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(16, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+    (conv2): SparseSequential(
+      (0): SparseSequential(
+        (0): SparseConv3d(16, 32, kernel_size=[3, 3, 3], stride=[2, 2, 2], padding=[1, 1, 1], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(32, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (1): SparseSequential(
+        (0): SubMConv3d(32, 32, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(32, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (2): SparseSequential(
+        (0): SubMConv3d(32, 32, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(32, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+    (conv3): SparseSequential(
+      (0): SparseSequential(
+        (0): SparseConv3d(32, 64, kernel_size=[3, 3, 3], stride=[2, 2, 2], padding=[1, 1, 1], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (1): SparseSequential(
+        (0): SubMConv3d(64, 64, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (2): SparseSequential(
+        (0): SubMConv3d(64, 64, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+    (conv4): SparseSequential(
+      (0): SparseSequential(
+        (0): SparseConv3d(64, 64, kernel_size=[3, 3, 3], stride=[2, 2, 2], padding=[0, 1, 1], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (1): SparseSequential(
+        (0): SubMConv3d(64, 64, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (2): SparseSequential(
+        (0): SubMConv3d(64, 64, kernel_size=[3, 3, 3], stride=[1, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+        (1): BatchNorm1d(64, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+    (conv_out): SparseSequential(
+      (0): SparseConv3d(64, 128, kernel_size=[3, 1, 1], stride=[2, 1, 1], padding=[0, 0, 0], dilation=[1, 1, 1], output_padding=[0, 0, 0], bias=False, algo=ConvAlgo.MaskImplicitGemm)
+      (1): BatchNorm1d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+      (2): ReLU()
+    )
+  )
+  (map_to_bev_module): HeightCompression()
+  (pfe): None
+  (backbone_2d): BaseBEVBackbone(
+    (blocks): ModuleList(
+      (0): Sequential(
+        (0): ZeroPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), bias=False)
+        (2): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (3): ReLU()
+        (4): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (5): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (6): ReLU()
+        (7): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (8): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (9): ReLU()
+        (10): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (11): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (12): ReLU()
+        (13): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (14): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (15): ReLU()
+        (16): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (17): BatchNorm2d(128, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (18): ReLU()
+      )
+      (1): Sequential(
+        (0): ZeroPad2d((1, 1, 1, 1))
+        (1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), bias=False)
+        (2): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (3): ReLU()
+        (4): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (5): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (6): ReLU()
+        (7): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (8): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (9): ReLU()
+        (10): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (11): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (12): ReLU()
+        (13): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (14): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (15): ReLU()
+        (16): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (17): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (18): ReLU()
+      )
+    )
+    (deblocks): ModuleList(
+      (0): Sequential(
+        (0): ConvTranspose2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+      (1): Sequential(
+        (0): ConvTranspose2d(256, 256, kernel_size=(2, 2), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU()
+      )
+    )
+  )
+  (dense_head): AnchorHeadSingle(
+    (cls_loss_func): SigmoidFocalClassificationLoss()
+    (reg_loss_func): WeightedSmoothL1Loss()
+    (dir_loss_func): WeightedCrossEntropyLoss()
+    (conv_cls): Conv2d(512, 18, kernel_size=(1, 1), stride=(1, 1))
+    (conv_box): Conv2d(512, 42, kernel_size=(1, 1), stride=(1, 1))
+    (conv_dir_cls): Conv2d(512, 12, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (point_head): None
+  (roi_head): None
+)
+2026-06-20 00:13:50,397   INFO  **********************Start HW-QAT training kitti_models/second_hw_qat(hw_qat_10ep_per_tensor)**********************
+2026-06-20 00:14:02,041   INFO  Train:    1/10 ( 10%) [   0/464 (  0%)]  Loss: 0.2914 (0.291)  LR: 1.000e-05  Time cost: 00:11/1:28:30 [00:11/14:45:03]  Acc_iter 1           Data time: 1.40(1.40)  Forward time: 10.04(10.04)  Batch time: 11.44(11.44)
+2026-06-20 00:14:19,255   INFO  Train:    1/10 ( 10%) [  49/464 ( 11%)]  Loss: 0.3069 (0.303)  LR: 1.015e-05  Time cost: 00:28/03:57 [00:28/43:51]  Acc_iter 50          Data time: 0.00(0.03)  Forward time: 0.35(0.54)  Batch time: 0.35(0.57)
+2026-06-20 00:14:36,271   INFO  Train:    1/10 ( 10%) [  99/464 ( 21%)]  Loss: 0.3378 (0.300)  LR: 1.063e-05  Time cost: 00:45/02:46 [00:45/34:34]  Acc_iter 100         Data time: 0.00(0.02)  Forward time: 0.33(0.44)  Batch time: 0.33(0.46)
+2026-06-20 00:14:53,227   INFO  Train:    1/10 ( 10%) [ 149/464 ( 32%)]  Loss: 0.2731 (0.298)  LR: 1.142e-05  Time cost: 01:02/02:11 [01:02/31:15]  Acc_iter 150         Data time: 0.00(0.01)  Forward time: 0.33(0.41)  Batch time: 0.33(0.42)
+2026-06-20 00:14:53,610   INFO  ubuntu22                    Sat Jun 20 00:14:53 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 62°C,  64 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:15:10,643   INFO  Train:    1/10 ( 10%) [ 199/464 ( 43%)]  Loss: 0.2411 (0.295)  LR: 1.253e-05  Time cost: 01:20/01:46 [01:20/29:37]  Acc_iter 200         Data time: 0.00(0.01)  Forward time: 0.34(0.39)  Batch time: 0.34(0.40)
+2026-06-20 00:15:27,715   INFO  Train:    1/10 ( 10%) [ 249/464 ( 54%)]  Loss: 0.2617 (0.292)  LR: 1.394e-05  Time cost: 01:37/01:23 [01:37/28:25]  Acc_iter 250         Data time: 0.00(0.01)  Forward time: 0.33(0.38)  Batch time: 0.34(0.39)
+2026-06-20 00:15:44,606   INFO  Train:    1/10 ( 10%) [ 299/464 ( 64%)]  Loss: 0.3365 (0.291)  LR: 1.564e-05  Time cost: 01:54/01:02 [01:54/27:29]  Acc_iter 300         Data time: 0.00(0.01)  Forward time: 0.34(0.37)  Batch time: 0.34(0.38)
+2026-06-20 00:15:44,984   INFO  ubuntu22                    Sat Jun 20 00:15:44 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 66°C,  62 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:16:02,301   INFO  Train:    1/10 ( 10%) [ 349/464 ( 75%)]  Loss: 0.3567 (0.290)  LR: 1.763e-05  Time cost: 02:11/00:43 [02:11/26:54]  Acc_iter 350         Data time: 0.00(0.01)  Forward time: 0.35(0.37)  Batch time: 0.35(0.38)
+2026-06-20 00:16:19,376   INFO  Train:    1/10 ( 10%) [ 399/464 ( 86%)]  Loss: 0.2822 (0.289)  LR: 1.988e-05  Time cost: 02:28/00:24 [02:28/26:17]  Acc_iter 400         Data time: 0.00(0.01)  Forward time: 0.34(0.36)  Batch time: 0.35(0.37)
+2026-06-20 00:16:36,571   INFO  Train:    1/10 ( 10%) [ 449/464 ( 97%)]  Loss: 0.3184 (0.288)  LR: 2.238e-05  Time cost: 02:45/00:05 [02:46/25:45]  Acc_iter 450         Data time: 0.00(0.01)  Forward time: 0.34(0.36)  Batch time: 0.35(0.37)
+2026-06-20 00:16:36,938   INFO  ubuntu22                    Sat Jun 20 00:16:36 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 69°C,  51 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:16:41,619   INFO  Train:    1/10 ( 10%) [ 463/464 (100%)]  Loss: 0.2784 (0.288)  LR: 2.313e-05  Time cost: 02:51/00:00 [02:51/25:39]  Acc_iter 464         Data time: 0.00(0.01)  Forward time: 0.32(0.36)  Batch time: 0.33(0.37)
+2026-06-20 00:16:43,352   INFO  Train:    2/10 ( 20%) [   0/464 (  0%)]  Loss: 0.2614 (0.261)  LR: 2.318e-05  Time cost: 00:01/11:06 [02:52/1:39:58]  Acc_iter 465         Data time: 0.94(0.94)  Forward time: 0.50(0.50)  Batch time: 1.44(1.44)
+2026-06-20 00:16:55,614   INFO  Train:    2/10 ( 20%) [  35/464 (  8%)]  Loss: 0.2972 (0.281)  LR: 2.512e-05  Time cost: 00:13/02:43 [03:05/26:15]  Acc_iter 500         Data time: 0.00(0.03)  Forward time: 0.34(0.35)  Batch time: 0.34(0.38)
+2026-06-20 00:17:12,788   INFO  Train:    2/10 ( 20%) [  85/464 ( 18%)]  Loss: 0.2638 (0.278)  LR: 2.807e-05  Time cost: 00:30/02:16 [03:22/24:28]  Acc_iter 550         Data time: 0.00(0.01)  Forward time: 0.33(0.35)  Batch time: 0.33(0.36)
+2026-06-20 00:17:29,660   INFO  Train:    2/10 ( 20%) [ 135/464 ( 29%)]  Loss: 0.2764 (0.278)  LR: 3.122e-05  Time cost: 00:47/01:55 [03:39/23:38]  Acc_iter 600         Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.33(0.35)
+2026-06-20 00:17:30,021   INFO  ubuntu22                    Sat Jun 20 00:17:29 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   1 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:17:47,219   INFO  Train:    2/10 ( 20%) [ 185/464 ( 40%)]  Loss: 0.2757 (0.276)  LR: 3.453e-05  Time cost: 01:05/01:37 [03:56/23:21]  Acc_iter 650         Data time: 0.00(0.01)  Forward time: 0.36(0.34)  Batch time: 0.36(0.35)
+2026-06-20 00:18:04,391   INFO  Train:    2/10 ( 20%) [ 235/464 ( 51%)]  Loss: 0.3163 (0.275)  LR: 3.799e-05  Time cost: 01:22/01:20 [04:13/22:57]  Acc_iter 700         Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:18:21,255   INFO  Train:    2/10 ( 20%) [ 285/464 ( 61%)]  Loss: 0.2958 (0.273)  LR: 4.157e-05  Time cost: 01:39/01:02 [04:30/22:31]  Acc_iter 750         Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:18:21,632   INFO  ubuntu22                    Sat Jun 20 00:18:21 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   4 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:18:38,740   INFO  Train:    2/10 ( 20%) [ 335/464 ( 72%)]  Loss: 0.3050 (0.273)  LR: 4.525e-05  Time cost: 01:56/00:44 [04:48/22:15]  Acc_iter 800         Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:18:55,730   INFO  Train:    2/10 ( 20%) [ 385/464 ( 83%)]  Loss: 0.2714 (0.273)  LR: 4.900e-05  Time cost: 02:13/00:27 [05:05/21:54]  Acc_iter 850         Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:19:12,663   INFO  Train:    2/10 ( 20%) [ 435/464 ( 94%)]  Loss: 0.2995 (0.272)  LR: 5.279e-05  Time cost: 02:30/00:10 [05:22/21:33]  Acc_iter 900         Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:19:13,018   INFO  ubuntu22                    Sat Jun 20 00:19:12 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,  13 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:19:22,425   INFO  Train:    2/10 ( 20%) [ 463/464 (100%)]  Loss: 0.2800 (0.272)  LR: 5.492e-05  Time cost: 02:40/00:00 [05:32/21:24]  Acc_iter 928         Data time: 0.00(0.01)  Forward time: 0.32(0.34)  Batch time: 0.32(0.35)
+2026-06-20 00:19:24,048   INFO  Train:    3/10 ( 30%) [   0/464 (  0%)]  Loss: 0.2712 (0.271)  LR: 5.500e-05  Time cost: 00:01/10:24 [05:33/1:23:13]  Acc_iter 929         Data time: 0.90(0.90)  Forward time: 0.45(0.45)  Batch time: 1.34(1.34)
+2026-06-20 00:19:31,348   INFO  Train:    3/10 ( 30%) [  21/464 (  5%)]  Loss: 0.2031 (0.258)  LR: 5.660e-05  Time cost: 00:08/02:54 [05:40/24:10]  Acc_iter 950         Data time: 0.00(0.04)  Forward time: 0.36(0.35)  Batch time: 0.36(0.39)
+2026-06-20 00:19:48,584   INFO  Train:    3/10 ( 30%) [  71/464 ( 15%)]  Loss: 0.2414 (0.259)  LR: 6.040e-05  Time cost: 00:25/02:21 [05:58/21:48]  Acc_iter 1000        Data time: 0.00(0.02)  Forward time: 0.34(0.34)  Batch time: 0.34(0.36)
+2026-06-20 00:20:05,944   INFO  Train:    3/10 ( 30%) [ 121/464 ( 26%)]  Loss: 0.2540 (0.263)  LR: 6.415e-05  Time cost: 00:43/02:01 [06:15/21:12]  Acc_iter 1050        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:20:06,313   INFO  ubuntu22                    Sat Jun 20 00:20:06 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,  58 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:20:23,528   INFO  Train:    3/10 ( 30%) [ 171/464 ( 37%)]  Loss: 0.2580 (0.263)  LR: 6.784e-05  Time cost: 01:00/01:43 [06:33/20:52]  Acc_iter 1100        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:20:40,725   INFO  Train:    3/10 ( 30%) [ 221/464 ( 48%)]  Loss: 0.2303 (0.264)  LR: 7.144e-05  Time cost: 01:18/01:25 [06:50/20:26]  Acc_iter 1150        Data time: 0.01(0.01)  Forward time: 0.33(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:20:57,996   INFO  Train:    3/10 ( 30%) [ 271/464 ( 58%)]  Loss: 0.3031 (0.264)  LR: 7.493e-05  Time cost: 01:35/01:07 [07:07/20:05]  Acc_iter 1200        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:20:58,356   INFO  ubuntu22                    Sat Jun 20 00:20:58 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,   0 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:21:15,777   INFO  Train:    3/10 ( 30%) [ 321/464 ( 69%)]  Loss: 0.2546 (0.263)  LR: 7.827e-05  Time cost: 01:53/00:50 [07:25/19:50]  Acc_iter 1250        Data time: 0.00(0.01)  Forward time: 0.37(0.34)  Batch time: 0.37(0.35)
+2026-06-20 00:21:33,069   INFO  Train:    3/10 ( 30%) [ 371/464 ( 80%)]  Loss: 0.2563 (0.263)  LR: 8.144e-05  Time cost: 02:10/00:32 [07:42/19:30]  Acc_iter 1300        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:21:50,611   INFO  Train:    3/10 ( 30%) [ 421/464 ( 91%)]  Loss: 0.3057 (0.262)  LR: 8.442e-05  Time cost: 02:27/00:15 [08:00/19:13]  Acc_iter 1350        Data time: 0.00(0.01)  Forward time: 0.37(0.34)  Batch time: 0.37(0.35)
+2026-06-20 00:21:50,976   INFO  ubuntu22                    Sat Jun 20 00:21:50 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,   4 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:22:05,537   INFO  Train:    3/10 ( 30%) [ 463/464 (100%)]  Loss: 0.2999 (0.261)  LR: 8.677e-05  Time cost: 02:42/00:00 [08:15/19:00]  Acc_iter 1392        Data time: 0.00(0.01)  Forward time: 0.32(0.34)  Batch time: 0.33(0.35)
+2026-06-20 00:22:07,196   INFO  Train:    4/10 ( 40%) [   0/464 (  0%)]  Loss: 0.2720 (0.272)  LR: 8.682e-05  Time cost: 00:01/10:11 [08:16/1:11:23]  Acc_iter 1393        Data time: 0.82(0.82)  Forward time: 0.50(0.50)  Batch time: 1.32(1.32)
+2026-06-20 00:22:09,771   INFO  Train:    4/10 ( 40%) [   7/464 (  2%)]  Loss: 0.2683 (0.258)  LR: 8.719e-05  Time cost: 00:03/03:42 [08:19/26:17]  Acc_iter 1400        Data time: 0.00(0.11)  Forward time: 0.36(0.38)  Batch time: 0.36(0.49)
+2026-06-20 00:22:27,099   INFO  Train:    4/10 ( 40%) [  57/464 ( 12%)]  Loss: 0.2430 (0.264)  LR: 8.974e-05  Time cost: 00:21/02:28 [08:36/19:27]  Acc_iter 1450        Data time: 0.00(0.02)  Forward time: 0.33(0.35)  Batch time: 0.34(0.37)
+2026-06-20 00:22:44,482   INFO  Train:    4/10 ( 40%) [ 107/464 ( 23%)]  Loss: 0.2130 (0.261)  LR: 9.203e-05  Time cost: 00:38/02:07 [08:54/18:42]  Acc_iter 1500        Data time: 0.00(0.01)  Forward time: 0.34(0.35)  Batch time: 0.35(0.36)
+2026-06-20 00:22:44,855   INFO  ubuntu22                    Sat Jun 20 00:22:44 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  46 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:23:02,668   INFO  Train:    4/10 ( 40%) [ 157/464 ( 34%)]  Loss: 0.2636 (0.261)  LR: 9.406e-05  Time cost: 00:56/01:50 [09:12/18:31]  Acc_iter 1550        Data time: 0.00(0.01)  Forward time: 0.35(0.35)  Batch time: 0.35(0.36)
+2026-06-20 00:23:19,958   INFO  Train:    4/10 ( 40%) [ 207/464 ( 45%)]  Loss: 0.2522 (0.260)  LR: 9.581e-05  Time cost: 01:14/01:31 [09:29/18:03]  Acc_iter 1600        Data time: 0.00(0.01)  Forward time: 0.34(0.35)  Batch time: 0.34(0.36)
+2026-06-20 00:23:37,362   INFO  Train:    4/10 ( 40%) [ 257/464 ( 55%)]  Loss: 0.2276 (0.258)  LR: 9.727e-05  Time cost: 01:31/01:13 [09:46/17:40]  Acc_iter 1650        Data time: 0.00(0.01)  Forward time: 0.35(0.35)  Batch time: 0.36(0.35)
+2026-06-20 00:23:37,723   INFO  ubuntu22                    Sat Jun 20 00:23:37 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   0 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:23:54,999   INFO  Train:    4/10 ( 40%) [ 307/464 ( 66%)]  Loss: 0.2706 (0.258)  LR: 9.842e-05  Time cost: 01:49/00:55 [10:04/17:21]  Acc_iter 1700        Data time: 0.00(0.01)  Forward time: 0.34(0.35)  Batch time: 0.34(0.35)
+2026-06-20 00:24:12,332   INFO  Train:    4/10 ( 40%) [ 357/464 ( 77%)]  Loss: 0.2963 (0.258)  LR: 9.926e-05  Time cost: 02:06/00:37 [10:21/17:01]  Acc_iter 1750        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:24:29,457   INFO  Train:    4/10 ( 40%) [ 407/464 ( 88%)]  Loss: 0.2816 (0.258)  LR: 9.979e-05  Time cost: 02:23/00:20 [10:39/16:39]  Acc_iter 1800        Data time: 0.00(0.01)  Forward time: 0.36(0.34)  Batch time: 0.36(0.35)
+2026-06-20 00:24:29,833   INFO  ubuntu22                    Sat Jun 20 00:24:29 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  48 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:24:46,969   INFO  Train:    4/10 ( 40%) [ 457/464 ( 98%)]  Loss: 0.2390 (0.257)  LR: 1.000e-04  Time cost: 02:41/00:02 [10:56/16:21]  Acc_iter 1850        Data time: 0.00(0.01)  Forward time: 0.32(0.34)  Batch time: 0.32(0.35)
+2026-06-20 00:24:48,910   INFO  Train:    4/10 ( 40%) [ 463/464 (100%)]  Loss: 0.2244 (0.257)  LR: 1.000e-04  Time cost: 02:43/00:00 [10:58/16:18]  Acc_iter 1856        Data time: 0.00(0.01)  Forward time: 0.32(0.34)  Batch time: 0.32(0.35)
+2026-06-20 00:24:50,589   INFO  Train:    5/10 ( 50%) [   0/464 (  0%)]  Loss: 0.2106 (0.211)  LR: 1.000e-04  Time cost: 00:01/10:21 [11:00/1:02:06]  Acc_iter 1857        Data time: 0.82(0.82)  Forward time: 0.52(0.52)  Batch time: 1.34(1.34)
+2026-06-20 00:25:05,596   INFO  Train:    5/10 ( 50%) [  43/464 (  9%)]  Loss: 0.2784 (0.253)  LR: 9.994e-05  Time cost: 00:16/02:36 [11:15/16:58]  Acc_iter 1900        Data time: 0.00(0.02)  Forward time: 0.34(0.35)  Batch time: 0.35(0.37)
+2026-06-20 00:25:22,741   INFO  Train:    5/10 ( 50%) [  93/464 ( 20%)]  Loss: 0.2919 (0.251)  LR: 9.972e-05  Time cost: 00:33/02:12 [11:32/15:58]  Acc_iter 1950        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.36(0.36)
+2026-06-20 00:25:23,119   INFO  ubuntu22                    Sat Jun 20 00:25:23 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   0 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:25:40,267   INFO  Train:    5/10 ( 50%) [ 143/464 ( 31%)]  Loss: 0.2142 (0.252)  LR: 9.935e-05  Time cost: 00:51/01:53 [11:49/15:35]  Acc_iter 2000        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:25:57,454   INFO  Train:    5/10 ( 50%) [ 193/464 ( 42%)]  Loss: 0.2251 (0.252)  LR: 9.882e-05  Time cost: 01:08/01:35 [12:07/15:10]  Acc_iter 2050        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:26:14,713   INFO  Train:    5/10 ( 50%) [ 243/464 ( 52%)]  Loss: 0.2619 (0.252)  LR: 9.813e-05  Time cost: 01:25/01:17 [12:24/14:49]  Acc_iter 2100        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:26:15,079   INFO  ubuntu22                    Sat Jun 20 00:26:15 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   0 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:26:32,232   INFO  Train:    5/10 ( 50%) [ 293/464 ( 63%)]  Loss: 0.2757 (0.252)  LR: 9.729e-05  Time cost: 01:42/00:59 [12:41/14:32]  Acc_iter 2150        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:26:49,255   INFO  Train:    5/10 ( 50%) [ 343/464 ( 74%)]  Loss: 0.2271 (0.252)  LR: 9.630e-05  Time cost: 02:00/00:42 [12:58/14:11]  Acc_iter 2200        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.33(0.35)
+2026-06-20 00:27:06,241   INFO  Train:    5/10 ( 50%) [ 393/464 ( 85%)]  Loss: 0.2628 (0.251)  LR: 9.516e-05  Time cost: 02:16/00:24 [13:15/13:51]  Acc_iter 2250        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:27:06,596   INFO  ubuntu22                    Sat Jun 20 00:27:06 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,  61 % |  9447 / 24576 MB | vipuser(9432M) root(4M)
+
+2026-06-20 00:27:23,436   INFO  Train:    5/10 ( 50%) [ 443/464 ( 95%)]  Loss: 0.2554 (0.251)  LR: 9.388e-05  Time cost: 02:34/00:07 [13:33/13:32]  Acc_iter 2300        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.33(0.35)
+2026-06-20 00:27:30,196   INFO  Train:    5/10 ( 50%) [ 463/464 (100%)]  Loss: 0.2856 (0.251)  LR: 9.333e-05  Time cost: 02:40/00:00 [13:39/13:25]  Acc_iter 2320        Data time: 0.00(0.01)  Forward time: 0.32(0.34)  Batch time: 0.32(0.35)
+2026-06-20 00:27:31,888   INFO  Train:    6/10 ( 60%) [   0/464 (  0%)]  Loss: 0.2324 (0.232)  LR: 9.330e-05  Time cost: 00:01/10:48 [13:41/54:03]  Acc_iter 2321        Data time: 0.94(0.94)  Forward time: 0.46(0.46)  Batch time: 1.40(1.40)
+2026-06-20 00:27:42,049   INFO  Train:    6/10 ( 60%) [  29/464 (  6%)]  Loss: 0.2727 (0.255)  LR: 9.246e-05  Time cost: 00:11/02:47 [13:51/14:42]  Acc_iter 2350        Data time: 0.01(0.04)  Forward time: 0.34(0.35)  Batch time: 0.34(0.39)
+2026-06-20 00:27:59,191   INFO  Train:    6/10 ( 60%) [  79/464 ( 17%)]  Loss: 0.2105 (0.252)  LR: 9.090e-05  Time cost: 00:28/02:18 [14:08/13:23]  Acc_iter 2400        Data time: 0.00(0.02)  Forward time: 0.33(0.34)  Batch time: 0.33(0.36)
+2026-06-20 00:27:59,570   INFO  ubuntu22                    Sat Jun 20 00:27:59 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  43 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:28:16,812   INFO  Train:    6/10 ( 60%) [ 129/464 ( 28%)]  Loss: 0.2379 (0.252)  LR: 8.922e-05  Time cost: 00:46/01:59 [14:26/13:00]  Acc_iter 2450        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.36)
+2026-06-20 00:28:34,087   INFO  Train:    6/10 ( 60%) [ 179/464 ( 39%)]  Loss: 0.2463 (0.251)  LR: 8.741e-05  Time cost: 01:03/01:40 [14:43/12:36]  Acc_iter 2500        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:28:51,470   INFO  Train:    6/10 ( 60%) [ 229/464 ( 49%)]  Loss: 0.2051 (0.251)  LR: 8.547e-05  Time cost: 01:20/01:22 [15:01/12:16]  Acc_iter 2550        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:28:51,841   INFO  ubuntu22                    Sat Jun 20 00:28:51 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   0 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:29:09,216   INFO  Train:    6/10 ( 60%) [ 279/464 ( 60%)]  Loss: 0.2210 (0.250)  LR: 8.343e-05  Time cost: 01:38/01:05 [15:18/11:59]  Acc_iter 2600        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:29:26,655   INFO  Train:    6/10 ( 60%) [ 329/464 ( 71%)]  Loss: 0.2564 (0.250)  LR: 8.128e-05  Time cost: 01:56/00:47 [15:36/11:40]  Acc_iter 2650        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:29:43,978   INFO  Train:    6/10 ( 60%) [ 379/464 ( 82%)]  Loss: 0.2411 (0.250)  LR: 7.903e-05  Time cost: 02:13/00:29 [15:53/11:21]  Acc_iter 2700        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:29:44,360   INFO  ubuntu22                    Sat Jun 20 00:29:44 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  51 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:30:01,549   INFO  Train:    6/10 ( 60%) [ 429/464 ( 92%)]  Loss: 0.2186 (0.250)  LR: 7.669e-05  Time cost: 02:31/00:12 [16:11/11:04]  Acc_iter 2750        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.33(0.35)
+2026-06-20 00:30:12,953   INFO  Train:    6/10 ( 60%) [ 463/464 (100%)]  Loss: 0.2305 (0.250)  LR: 7.505e-05  Time cost: 02:42/00:00 [16:22/10:50]  Acc_iter 2784        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.33(0.35)
+2026-06-20 00:30:14,573   INFO  Train:    7/10 ( 70%) [   0/464 (  0%)]  Loss: 0.2846 (0.285)  LR: 7.500e-05  Time cost: 00:01/10:12 [16:24/40:50]  Acc_iter 2785        Data time: 0.93(0.93)  Forward time: 0.39(0.39)  Batch time: 1.32(1.32)
+2026-06-20 00:30:19,679   INFO  Train:    7/10 ( 70%) [  15/464 (  3%)]  Loss: 0.2211 (0.251)  LR: 7.426e-05  Time cost: 00:06/03:00 [16:29/12:19]  Acc_iter 2800        Data time: 0.00(0.06)  Forward time: 0.33(0.34)  Batch time: 0.34(0.40)
+2026-06-20 00:30:36,689   INFO  Train:    7/10 ( 70%) [  65/464 ( 14%)]  Loss: 0.2319 (0.247)  LR: 7.176e-05  Time cost: 00:23/02:21 [16:46/10:36]  Acc_iter 2850        Data time: 0.00(0.02)  Forward time: 0.35(0.34)  Batch time: 0.36(0.36)
+2026-06-20 00:30:37,050   INFO  ubuntu22                    Sat Jun 20 00:30:37 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  16 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:30:54,099   INFO  Train:    7/10 ( 70%) [ 115/464 ( 25%)]  Loss: 0.2119 (0.249)  LR: 6.919e-05  Time cost: 00:40/02:02 [17:03/10:13]  Acc_iter 2900        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:31:11,442   INFO  Train:    7/10 ( 70%) [ 165/464 ( 36%)]  Loss: 0.2004 (0.248)  LR: 6.655e-05  Time cost: 00:58/01:44 [17:21/09:52]  Acc_iter 2950        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:31:28,695   INFO  Train:    7/10 ( 70%) [ 215/464 ( 46%)]  Loss: 0.2421 (0.250)  LR: 6.387e-05  Time cost: 01:15/01:26 [17:38/09:33]  Acc_iter 3000        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:31:29,063   INFO  ubuntu22                    Sat Jun 20 00:31:29 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  24 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:31:46,195   INFO  Train:    7/10 ( 70%) [ 265/464 ( 57%)]  Loss: 0.2380 (0.248)  LR: 6.113e-05  Time cost: 01:32/01:09 [17:55/09:15]  Acc_iter 3050        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:32:03,379   INFO  Train:    7/10 ( 70%) [ 315/464 ( 68%)]  Loss: 0.2555 (0.248)  LR: 5.837e-05  Time cost: 01:50/00:51 [18:12/08:57]  Acc_iter 3100        Data time: 0.00(0.01)  Forward time: 0.36(0.34)  Batch time: 0.36(0.35)
+2026-06-20 00:32:20,453   INFO  Train:    7/10 ( 70%) [ 365/464 ( 79%)]  Loss: 0.2268 (0.248)  LR: 5.557e-05  Time cost: 02:07/00:34 [18:30/08:38]  Acc_iter 3150        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:32:20,814   INFO  ubuntu22                    Sat Jun 20 00:32:20 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,  11 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:32:37,971   INFO  Train:    7/10 ( 70%) [ 415/464 ( 89%)]  Loss: 0.2260 (0.247)  LR: 5.276e-05  Time cost: 02:24/00:17 [18:47/08:21]  Acc_iter 3200        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:32:54,415   INFO  Train:    7/10 ( 70%) [ 463/464 (100%)]  Loss: 0.2695 (0.247)  LR: 5.006e-05  Time cost: 02:41/00:00 [19:04/08:03]  Acc_iter 3248        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:32:56,165   INFO  Train:    8/10 ( 80%) [   0/464 (  0%)]  Loss: 0.2745 (0.274)  LR: 5.000e-05  Time cost: 00:01/11:14 [19:05/33:43]  Acc_iter 3249        Data time: 0.97(0.97)  Forward time: 0.49(0.49)  Batch time: 1.45(1.45)
+2026-06-20 00:32:56,501   INFO  Train:    8/10 ( 80%) [   1/464 (  0%)]  Loss: 0.2405 (0.257)  LR: 4.994e-05  Time cost: 00:01/06:54 [19:06/20:44]  Acc_iter 3250        Data time: 0.00(0.49)  Forward time: 0.33(0.41)  Batch time: 0.34(0.89)
+2026-06-20 00:33:13,852   INFO  Train:    8/10 ( 80%) [  51/464 ( 11%)]  Loss: 0.2709 (0.246)  LR: 4.712e-05  Time cost: 00:19/02:32 [19:23/08:13]  Acc_iter 3300        Data time: 0.00(0.02)  Forward time: 0.34(0.35)  Batch time: 0.35(0.37)
+2026-06-20 00:33:14,232   INFO  ubuntu22                    Sat Jun 20 00:33:14 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  20 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:33:31,285   INFO  Train:    8/10 ( 80%) [ 101/464 ( 22%)]  Loss: 0.2837 (0.247)  LR: 4.431e-05  Time cost: 00:36/02:10 [19:40/07:42]  Acc_iter 3350        Data time: 0.00(0.02)  Forward time: 0.33(0.34)  Batch time: 0.33(0.36)
+2026-06-20 00:33:48,532   INFO  Train:    8/10 ( 80%) [ 151/464 ( 33%)]  Loss: 0.2191 (0.244)  LR: 4.152e-05  Time cost: 00:53/01:50 [19:58/07:19]  Acc_iter 3400        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:34:05,787   INFO  Train:    8/10 ( 80%) [ 201/464 ( 43%)]  Loss: 0.2325 (0.245)  LR: 3.876e-05  Time cost: 01:11/01:32 [20:15/06:59]  Acc_iter 3450        Data time: 0.00(0.01)  Forward time: 0.37(0.34)  Batch time: 0.37(0.35)
+2026-06-20 00:34:06,163   INFO  ubuntu22                    Sat Jun 20 00:34:06 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   0 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:34:23,105   INFO  Train:    8/10 ( 80%) [ 251/464 ( 54%)]  Loss: 0.2513 (0.246)  LR: 3.603e-05  Time cost: 01:28/01:14 [20:32/06:40]  Acc_iter 3500        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:34:40,197   INFO  Train:    8/10 ( 80%) [ 301/464 ( 65%)]  Loss: 0.2757 (0.245)  LR: 3.334e-05  Time cost: 01:45/00:56 [20:49/06:21]  Acc_iter 3550        Data time: 0.00(0.01)  Forward time: 0.37(0.34)  Batch time: 0.37(0.35)
+2026-06-20 00:34:57,306   INFO  Train:    8/10 ( 80%) [ 351/464 ( 76%)]  Loss: 0.2730 (0.246)  LR: 3.071e-05  Time cost: 02:02/00:39 [21:06/06:02]  Acc_iter 3600        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.33(0.35)
+2026-06-20 00:34:57,669   INFO  ubuntu22                    Sat Jun 20 00:34:57 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,  61 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:35:15,114   INFO  Train:    8/10 ( 80%) [ 401/464 ( 86%)]  Loss: 0.2286 (0.246)  LR: 2.814e-05  Time cost: 02:20/00:22 [21:24/05:46]  Acc_iter 3650        Data time: 0.00(0.01)  Forward time: 0.39(0.34)  Batch time: 0.39(0.35)
+2026-06-20 00:35:32,539   INFO  Train:    8/10 ( 80%) [ 451/464 ( 97%)]  Loss: 0.2516 (0.245)  LR: 2.564e-05  Time cost: 02:37/00:04 [21:42/05:28]  Acc_iter 3700        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.33(0.35)
+2026-06-20 00:35:36,478   INFO  Train:    8/10 ( 80%) [ 463/464 (100%)]  Loss: 0.2376 (0.245)  LR: 2.505e-05  Time cost: 02:41/00:00 [21:46/05:23]  Acc_iter 3712        Data time: 0.00(0.01)  Forward time: 0.31(0.34)  Batch time: 0.31(0.35)
+2026-06-20 00:35:38,157   INFO  Train:    9/10 ( 90%) [   0/464 (  0%)]  Loss: 0.2540 (0.254)  LR: 2.500e-05  Time cost: 00:01/10:39 [21:47/21:18]  Acc_iter 3713        Data time: 0.89(0.89)  Forward time: 0.49(0.49)  Batch time: 1.38(1.38)
+2026-06-20 00:35:50,965   INFO  Train:    9/10 ( 90%) [  37/464 (  8%)]  Loss: 0.2236 (0.244)  LR: 2.322e-05  Time cost: 00:14/02:39 [22:00/05:32]  Acc_iter 3750        Data time: 0.01(0.03)  Forward time: 0.34(0.35)  Batch time: 0.34(0.37)
+2026-06-20 00:35:51,339   INFO  ubuntu22                    Sat Jun 20 00:35:51 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   0 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:36:08,569   INFO  Train:    9/10 ( 90%) [  87/464 ( 19%)]  Loss: 0.2201 (0.245)  LR: 2.088e-05  Time cost: 00:31/02:16 [22:18/05:03]  Acc_iter 3800        Data time: 0.00(0.02)  Forward time: 0.34(0.34)  Batch time: 0.34(0.36)
+2026-06-20 00:36:25,803   INFO  Train:    9/10 ( 90%) [ 137/464 ( 30%)]  Loss: 0.2263 (0.248)  LR: 1.863e-05  Time cost: 00:49/01:56 [22:35/04:40]  Acc_iter 3850        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.36)
+2026-06-20 00:36:42,979   INFO  Train:    9/10 ( 90%) [ 187/464 ( 40%)]  Loss: 0.2250 (0.247)  LR: 1.649e-05  Time cost: 01:06/01:37 [22:52/04:20]  Acc_iter 3900        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:36:43,395   INFO  ubuntu22                    Sat Jun 20 00:36:43 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  10 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:37:00,747   INFO  Train:    9/10 ( 90%) [ 237/464 ( 51%)]  Loss: 0.2198 (0.246)  LR: 1.445e-05  Time cost: 01:23/01:20 [23:10/04:03]  Acc_iter 3950        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:37:18,115   INFO  Train:    9/10 ( 90%) [ 287/464 ( 62%)]  Loss: 0.2398 (0.247)  LR: 1.252e-05  Time cost: 01:41/01:02 [23:27/03:45]  Acc_iter 4000        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:37:35,541   INFO  Train:    9/10 ( 90%) [ 337/464 ( 73%)]  Loss: 0.2595 (0.247)  LR: 1.071e-05  Time cost: 01:58/00:44 [23:45/03:27]  Acc_iter 4050        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:37:35,905   INFO  ubuntu22                    Sat Jun 20 00:37:35 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,   0 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:37:53,087   INFO  Train:    9/10 ( 90%) [ 387/464 ( 83%)]  Loss: 0.2204 (0.246)  LR: 9.033e-06  Time cost: 02:16/00:27 [24:02/03:10]  Acc_iter 4100        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:38:10,190   INFO  Train:    9/10 ( 90%) [ 437/464 ( 94%)]  Loss: 0.2427 (0.245)  LR: 7.481e-06  Time cost: 02:33/00:09 [24:19/02:51]  Acc_iter 4150        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:38:18,935   INFO  Train:    9/10 ( 90%) [ 463/464 (100%)]  Loss: 0.2484 (0.245)  LR: 6.728e-06  Time cost: 02:42/00:00 [24:28/02:42]  Acc_iter 4176        Data time: 0.00(0.01)  Forward time: 0.32(0.34)  Batch time: 0.32(0.35)
+2026-06-20 00:38:20,606   INFO  Train:   10/10 (100%) [   0/464 (  0%)]  Loss: 0.1967 (0.197)  LR: 6.700e-06  Time cost: 00:01/10:38 [24:30/10:38]  Acc_iter 4177        Data time: 0.87(0.87)  Forward time: 0.50(0.50)  Batch time: 1.38(1.38)
+2026-06-20 00:38:28,580   INFO  Train:   10/10 (100%) [  23/464 (  5%)]  Loss: 0.2092 (0.240)  LR: 6.065e-06  Time cost: 00:09/02:51 [24:38/02:51]  Acc_iter 4200        Data time: 0.00(0.04)  Forward time: 0.35(0.35)  Batch time: 0.36(0.39)
+2026-06-20 00:38:28,942   INFO  ubuntu22                    Sat Jun 20 00:38:28 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 70°C,  29 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:38:46,180   INFO  Train:   10/10 (100%) [  73/464 ( 16%)]  Loss: 0.2415 (0.242)  LR: 4.789e-06  Time cost: 00:26/02:22 [24:55/02:22]  Acc_iter 4250        Data time: 0.00(0.02)  Forward time: 0.34(0.34)  Batch time: 0.35(0.36)
+2026-06-20 00:39:03,322   INFO  Train:   10/10 (100%) [ 123/464 ( 27%)]  Loss: 0.2042 (0.246)  LR: 3.657e-06  Time cost: 00:44/02:01 [25:12/02:01]  Acc_iter 4300        Data time: 0.00(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.36)
+2026-06-20 00:39:20,551   INFO  Train:   10/10 (100%) [ 173/464 ( 37%)]  Loss: 0.2325 (0.245)  LR: 2.673e-06  Time cost: 01:01/01:42 [25:30/01:42]  Acc_iter 4350        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:39:20,941   INFO  ubuntu22                    Sat Jun 20 00:39:20 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,  21 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:39:38,173   INFO  Train:   10/10 (100%) [ 223/464 ( 48%)]  Loss: 0.2545 (0.244)  LR: 1.839e-06  Time cost: 01:18/01:24 [25:47/01:24]  Acc_iter 4400        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:39:55,309   INFO  Train:   10/10 (100%) [ 273/464 ( 59%)]  Loss: 0.2203 (0.244)  LR: 1.158e-06  Time cost: 01:36/01:06 [26:04/01:06]  Acc_iter 4450        Data time: 0.00(0.01)  Forward time: 0.34(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:40:12,371   INFO  Train:   10/10 (100%) [ 323/464 ( 70%)]  Loss: 0.2112 (0.244)  LR: 6.326e-07  Time cost: 01:53/00:49 [26:21/00:49]  Acc_iter 4500        Data time: 0.01(0.01)  Forward time: 0.33(0.34)  Batch time: 0.34(0.35)
+2026-06-20 00:40:12,731   INFO  ubuntu22                    Sat Jun 20 00:40:12 2026  550.78
+[0] NVIDIA GeForce RTX 3090 | 71°C,  37 % |  9449 / 24576 MB | vipuser(9434M) root(4M)
+
+2026-06-20 00:40:29,927   INFO  Train:   10/10 (100%) [ 373/464 ( 80%)]  Loss: 0.2776 (0.245)  LR: 2.644e-07  Time cost: 02:10/00:31 [26:39/00:31]  Acc_iter 4550        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:40:47,279   INFO  Train:   10/10 (100%) [ 423/464 ( 91%)]  Loss: 0.2377 (0.244)  LR: 5.450e-08  Time cost: 02:28/00:14 [26:56/00:14]  Acc_iter 4600        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:41:00,962   INFO  Train:   10/10 (100%) [ 463/464 (100%)]  Loss: 0.2344 (0.244)  LR: 1.032e-09  Time cost: 02:41/00:00 [27:10/00:00]  Acc_iter 4640        Data time: 0.00(0.01)  Forward time: 0.35(0.34)  Batch time: 0.35(0.35)
+2026-06-20 00:41:01,250   INFO  Exported HW-QAT training qparams to /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep_per_tensor/hw_qparams
+2026-06-20 00:41:01,251   INFO  **********************End HW-QAT training kitti_models/second_hw_qat(hw_qat_10ep_per_tensor)**********************
+
+
+
+2026-06-20 00:41:01,251   INFO  **********************Start evaluation kitti_models/second_hw_qat(hw_qat_10ep_per_tensor)**********************
+2026-06-20 00:41:01,255   INFO  Loading KITTI dataset
+2026-06-20 00:41:01,418   INFO  Total samples for KITTI dataset: 3769
+2026-06-20 00:41:01,421   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep_per_tensor/ckpt/checkpoint_epoch_10.pth to GPU
+2026-06-20 00:41:01,478   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py31ee61c
+2026-06-20 00:41:01,484   INFO  ==> Done (loaded 189/189)
+2026-06-20 00:41:01,487   INFO  *************** EPOCH 10 EVALUATION *****************
+2026-06-20 00:42:00,380   INFO  *************** Performance of EPOCH 10 *****************
+2026-06-20 00:42:00,380   INFO  Generate label finished(sec_per_example: 0.0156 second).
+2026-06-20 00:42:00,380   INFO  recall_roi_0.3: 0.000000
+2026-06-20 00:42:00,380   INFO  recall_rcnn_0.3: 0.931029
+2026-06-20 00:42:00,380   INFO  recall_roi_0.5: 0.000000
+2026-06-20 00:42:00,380   INFO  recall_rcnn_0.5: 0.867980
+2026-06-20 00:42:00,380   INFO  recall_roi_0.7: 0.000000
+2026-06-20 00:42:00,380   INFO  recall_rcnn_0.7: 0.633785
+2026-06-20 00:42:00,384   INFO  Average predicted number of objects(3769 samples): 15.783
+2026-06-20 00:42:36,436   INFO  Car AP@0.70, 0.70, 0.70:
+bbox AP:90.6646, 89.4047, 88.3563
+bev  AP:89.8484, 86.9978, 84.0093
+3d   AP:87.6164, 77.3711, 75.1721
+aos  AP:90.63, 89.20, 88.02
+Car AP_R40@0.70, 0.70, 0.70:
+bbox AP:95.5874, 92.0330, 90.8794
+bev  AP:92.3876, 88.0558, 85.3936
+3d   AP:88.5724, 78.6881, 75.5639
+aos  AP:95.53, 91.81, 90.51
+Car AP@0.70, 0.50, 0.50:
+bbox AP:90.6646, 89.4047, 88.3563
+bev  AP:90.6897, 89.7993, 89.0768
+3d   AP:90.6863, 89.7076, 88.9366
+aos  AP:90.63, 89.20, 88.02
+Car AP_R40@0.70, 0.50, 0.50:
+bbox AP:95.5874, 92.0330, 90.8794
+bev  AP:95.6775, 94.4628, 93.5272
+3d   AP:95.6584, 94.2720, 91.7522
+aos  AP:95.53, 91.81, 90.51
+Pedestrian AP@0.50, 0.50, 0.50:
+bbox AP:67.1248, 62.9824, 59.8338
+bev  AP:57.3164, 52.1688, 47.7330
+3d   AP:52.8825, 47.7103, 43.5071
+aos  AP:62.84, 58.51, 55.22
+Pedestrian AP_R40@0.50, 0.50, 0.50:
+bbox AP:67.9677, 62.9046, 59.2182
+bev  AP:56.3995, 50.6946, 46.3095
+3d   AP:51.7374, 46.0814, 40.9870
+aos  AP:63.09, 57.81, 54.07
+Pedestrian AP@0.50, 0.25, 0.25:
+bbox AP:67.1248, 62.9824, 59.8338
+bev  AP:72.5814, 68.7250, 65.1683
+3d   AP:72.5635, 68.4907, 64.9897
+aos  AP:62.84, 58.51, 55.22
+Pedestrian AP_R40@0.50, 0.25, 0.25:
+bbox AP:67.9677, 62.9046, 59.2182
+bev  AP:73.1973, 69.1042, 65.6513
+3d   AP:73.1803, 68.9433, 65.2426
+aos  AP:63.09, 57.81, 54.07
+Cyclist AP@0.50, 0.50, 0.50:
+bbox AP:87.3370, 74.7989, 71.6359
+bev  AP:84.2474, 69.3621, 65.3614
+3d   AP:81.6739, 64.4330, 61.3599
+aos  AP:87.09, 74.27, 71.06
+Cyclist AP_R40@0.50, 0.50, 0.50:
+bbox AP:91.7257, 76.0439, 72.3059
+bev  AP:87.8080, 69.7600, 65.5007
+3d   AP:83.5184, 65.1312, 60.9527
+aos  AP:91.41, 75.45, 71.70
+Cyclist AP@0.50, 0.25, 0.25:
+bbox AP:87.3370, 74.7989, 71.6359
+bev  AP:90.1102, 73.7587, 69.8645
+3d   AP:90.1102, 73.7587, 69.8645
+aos  AP:87.09, 74.27, 71.06
+Cyclist AP_R40@0.50, 0.25, 0.25:
+bbox AP:91.7257, 76.0439, 72.3059
+bev  AP:91.7968, 74.3383, 70.3001
+3d   AP:91.7968, 74.3383, 70.3001
+aos  AP:91.41, 75.45, 71.70
+
+2026-06-20 00:42:36,448   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep_per_tensor/eval/eval_with_train/epoch_10/val
+2026-06-20 00:42:36,448   INFO  ****************Evaluation done.*****************
+2026-06-20 00:42:36,498   INFO  Epoch 10 has been evaluated
+2026-06-20 00:43:06,530   INFO  **********************End evaluation kitti_models/second_hw_qat(hw_qat_10ep_per_tensor)**********************

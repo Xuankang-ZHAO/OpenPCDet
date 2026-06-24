@@ -1,0 +1,13 @@
+{
+  "cfg_file": "cfgs/kitti_models/second_hw_qat.yaml",
+  "extra_tag": "hw_qat_10ep_per_tensor",
+  "activation_quant": "signed_symmetric",
+  "weight_quant": "per_tensor",
+  "observer": "max",
+  "observer_momentum": 0.95,
+  "freeze_observer_epoch": -1,
+  "scope": "MODEL.BACKBONE_3D only",
+  "zero_point": 0,
+  "qmin": -127,
+  "qmax": 127
+}
