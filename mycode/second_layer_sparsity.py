@@ -3,7 +3,7 @@
 
 This script starts from voxelization output, runs MeanVFE and the 3D sparse
 backbone, and reports sparsity after every sparse convolution layer in
-`spconv_backbone_qat.py`.
+`spconv_backbone.py`.
 """
 
 import argparse

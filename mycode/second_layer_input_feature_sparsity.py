@@ -32,8 +32,6 @@ def parse_args():
     parser.add_argument('--out_dir', type=str, default='mycode/output')
     parser.add_argument('--log_file', type=str, default='', help='Optional combined log file path.')
     parser.add_argument('--zero_threshold', type=float, default=0.0, help='Treat abs(x) <= threshold as zero.')
-    parser.add_argument('--int8_inference', action='store_true', default=False,
-                        help='Enable INT8 inference mode for VoxelBackBone8x_INT8 if supported.')
     return parser.parse_args()
 
 
@@ -310,19 +308,6 @@ def resolve_log_path(project_root, out_dir, requested_log_file, run_tag):
     return project_root / out_dir / f'{run_tag}.log'
 
 
-def setup_int8_inference(model, enable_int8):
-    if not enable_int8:
-        return False
-
-    backbone = model.backbone_3d
-    if not (hasattr(backbone, 'convert_to_int8') and hasattr(backbone, 'enable_int8_inference')):
-        return False
-
-    backbone.convert_to_int8()
-    backbone.enable_int8_inference(True)
-    return True
-
-
 def analyze_frame(model, backbone, spconv, batch_torch, frame_path, raw_points, zero_threshold):
     with torch.no_grad():
         batch_torch = model.vfe(batch_torch)
@@ -378,7 +363,6 @@ def main():
     model.load_params_from_file(filename=str(ckpt_path), logger=logger, to_cpu=(device.type == 'cpu'))
     model.to(device)
 
-    int8_enabled = setup_int8_inference(model, args.int8_inference)
     model.eval()
     backbone = model.backbone_3d
 
@@ -409,7 +393,6 @@ def main():
             'device': str(device),
             'seed': args.seed,
             'zero_threshold': args.zero_threshold,
-            'int8_inference': bool(int8_enabled),
         })
         payloads.append(frame_payload)
 
@@ -439,7 +422,6 @@ def main():
         'seed': args.seed,
         'num_frames': args.num_frames,
         'zero_threshold': args.zero_threshold,
-        'int8_inference': bool(int8_enabled),
         'frames': [frame_payload['frame_id'] for frame_payload in payloads],
     }
 
