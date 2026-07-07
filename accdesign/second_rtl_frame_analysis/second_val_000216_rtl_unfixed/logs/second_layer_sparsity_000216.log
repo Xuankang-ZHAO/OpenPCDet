@@ -1,0 +1,33 @@
+Frame: 000216
+Device: cuda:0
+
+Layer              Type               FeatShape(N,C)     Active   TotalCells     Sparsity     VsPrev    VsInput      SpatialShape(Z,Y,X)
+----------------------------------------------------------------------------------------------------------------------------------------------
+input_voxelized    InputSparseTensor         (15000, 4)      15000     92364800   0.00016240   1.000000   1.000000         (41, 1600, 1408)
+conv_input.0       SubMConv3d            (15000, 16)      15000     92364800   0.00016240   1.000000   1.000000         (41, 1600, 1408)
+conv1.0.0          SubMConv3d            (15000, 16)      15000     92364800   0.00016240   1.000000   1.000000         (41, 1600, 1408)
+conv2.0.0          SparseConv3d          (31292, 32)      31292     11827200   0.00264577   2.086133   2.086133           (21, 800, 704)
+conv2.1.0          SubMConv3d            (31292, 32)      31292     11827200   0.00264577   1.000000   2.086133           (21, 800, 704)
+conv2.2.0          SubMConv3d            (31292, 32)      31292     11827200   0.00264577   1.000000   2.086133           (21, 800, 704)
+conv3.0.0          SparseConv3d          (20242, 64)      20242      1548800   0.01306947   0.646875   1.349467           (11, 400, 352)
+conv3.1.0          SubMConv3d            (20242, 64)      20242      1548800   0.01306947   1.000000   1.349467           (11, 400, 352)
+conv3.2.0          SubMConv3d            (20242, 64)      20242      1548800   0.01306947   1.000000   1.349467           (11, 400, 352)
+conv4.0.0          SparseConv3d           (8831, 64)       8831       176000   0.05017614   0.436271   0.588733            (5, 200, 176)
+conv4.1.0          SubMConv3d             (8831, 64)       8831       176000   0.05017614   1.000000   0.588733            (5, 200, 176)
+conv4.2.0          SubMConv3d             (8831, 64)       8831       176000   0.05017614   1.000000   0.588733            (5, 200, 176)
+conv_out.0         SparseConv3d          (6261, 128)       6261        70400   0.08893466   0.708980   0.417400            (2, 200, 176)
+
+Saved JSON: /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_sparsity/000216_second_layer_sparsity.json
+Saved CSV:  /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_sparsity/000216_second_layer_sparsity.csv
+
+{
+  "cfg": "/home/vipuser/\u684c\u9762/OpenPCDet/tools/cfgs/kitti_models/second_hw_qat.yaml",
+  "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
+  "device": "cuda:0",
+  "seed": 0,
+  "num_frames": 1,
+  "frames": [
+    "000216"
+  ]
+}
+Summary JSON: /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_sparsity/second_layer_sparsity_1frames_seed0_20260707_153352_summary.json

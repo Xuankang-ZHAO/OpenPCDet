@@ -1,0 +1,36 @@
+Frame: 000216
+Device: cuda:0
+
+Record               Type                Active     C   ZeroRatio    AvgZeroC   AllZeroV      P50      P90      P99      SpatialShape(Z,Y,X)
+--------------------------------------------------------------------------------------------------------------------------------------------
+input_voxel_features InputFeatures        15000     4    0.054183       0.217   0.000000   0.0000   0.2500   0.2500         (41, 1600, 1408)
+conv_input           SubMConv3d           15000     4    0.054183       0.217   0.000000   0.0000   0.2500   0.2500         (41, 1600, 1408)
+conv1.0              SubMConv3d           15000    16    0.467608       7.482   0.000000   0.4375   0.6250   0.6875         (41, 1600, 1408)
+conv2.0              SparseConv3d         15000    16    0.330875       5.294   0.000000   0.3125   0.5625   0.7500         (41, 1600, 1408)
+conv2.1              SubMConv3d           31292    32    0.455529      14.577   0.000000   0.4688   0.5625   0.6875           (21, 800, 704)
+conv2.2              SubMConv3d           31292    32    0.548776      17.561   0.000032   0.5625   0.7500   0.8438           (21, 800, 704)
+conv3.0              SparseConv3d         31292    32    0.503199      16.102   0.000000   0.5312   0.6875   0.8125           (21, 800, 704)
+conv3.1              SubMConv3d           20242    64    0.558274      35.730   0.000000   0.5469   0.6719   0.7656           (11, 400, 352)
+conv3.2              SubMConv3d           20242    64    0.671528      42.978   0.000000   0.6875   0.8125   0.8750           (11, 400, 352)
+conv4.0              SparseConv3d         20242    64    0.719062      46.020   0.000000   0.7344   0.8594   0.9219           (11, 400, 352)
+conv4.1              SubMConv3d            8831    64    0.586988      37.567   0.000000   0.5781   0.7188   0.8125            (5, 200, 176)
+conv4.2              SubMConv3d            8831    64    0.635340      40.662   0.000000   0.6406   0.7656   0.8438            (5, 200, 176)
+conv_out             SparseConv3d          8831    64    0.608473      38.942   0.000000   0.6094   0.7344   0.8125            (5, 200, 176)
+
+Raw points: 122676
+Checkpoint: /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth
+Saved JSON: /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_input_feature_sparsity/000216_second_input_feature_sparsity.json
+Saved CSV:  /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_input_feature_sparsity/000216_second_input_feature_sparsity.csv
+
+{
+  "cfg": "/home/vipuser/\u684c\u9762/OpenPCDet/tools/cfgs/kitti_models/second_hw_qat.yaml",
+  "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
+  "device": "cuda:0",
+  "seed": 0,
+  "num_frames": 1,
+  "zero_threshold": 0.0,
+  "frames": [
+    "000216"
+  ]
+}
+Summary JSON: /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_input_feature_sparsity/second_input_feature_sparsity_1frames_seed0_20260707_153335_summary.json

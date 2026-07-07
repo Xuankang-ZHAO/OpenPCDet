@@ -4,5 +4,7 @@
   "actual_voxel_count": 15000,
   "max_number_of_voxels": 15000,
   "hit_voxel_cap": true,
-  "manifest_sha256": "71dfd4ea24e66d1c1ec7a35b5fd6c34a013c254ea7fcdaffd2e07994fd037b39"
+  "format_version": "second_rtl_golden_v2",
+  "raw_vfe_voxel_stream_bytes": 240000,
+  "manifest_sha256": "465ab46db636a64daccf8a7310052684fc2921ec6fb8cac9b234e6140aa74e88"
 }

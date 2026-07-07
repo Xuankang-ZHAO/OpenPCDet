@@ -10,7 +10,6 @@ import os
 import random
 import struct
 import sys
-from collections import OrderedDict
 from pathlib import Path
 
 import numpy as np
@@ -264,134 +263,29 @@ def load_zone_specs(path):
     return specs
 
 
-def lookup_zone(specs, distance):
-    for spec in specs:
-        if spec.start_dist <= distance <= spec.end_dist:
-            return spec
-    raise ValueError(f'Distance {distance} is outside zone LUT range')
-
-
-def chebyshev_distance(x, y, lidar_center_xy):
-    return max(abs(int(x) - lidar_center_xy[0]), abs(int(y) - lidar_center_xy[1]))
-
-
-def axis_boundary_flags(coord, log2_block_size, coord_max):
-    mask = (1 << log2_block_size) - 1
-    is_low = ((coord & mask) == 0) and coord != 0
-    is_high = ((coord & mask) == mask) and coord != coord_max
-    return is_low, is_high
-
-
-def compute_block_key(x, y, z, zone_spec, lidar_center_xy):
-    log2_bx, log2_by, log2_bz = zone_spec.log2_block_size_xyz
-    block_x = (int(x) - lidar_center_xy[0]) >> log2_bx
-    block_y = (int(y) - lidar_center_xy[1]) >> log2_by
-    block_z = int(z) >> log2_bz
-    return zone_spec.zone_id, block_x, block_y, block_z
-
-
-def pack_block_id(block_key):
-    zone_id, block_x, block_y, block_z = block_key
-    return ((zone_id & 0x3) << 16) | ((block_x & 0x7F) << 9) | ((block_y & 0x7F) << 2) | (block_z & 0x3)
-
-
-def iter_block_beats_for_voxel(z, y, x, grid_size_xyz, zone_specs, lidar_center_xy):
-    nx, ny, nz = grid_size_xyz
-    primary_spec = lookup_zone(zone_specs, chebyshev_distance(x, y, lidar_center_xy))
-    yield compute_block_key(x, y, z, primary_spec, lidar_center_xy), False
-
-    x_low, x_high = axis_boundary_flags(int(x), primary_spec.log2_block_size_xyz[0], nx - 1)
-    y_low, y_high = axis_boundary_flags(int(y), primary_spec.log2_block_size_xyz[1], ny - 1)
-    z_low, z_high = axis_boundary_flags(int(z), primary_spec.log2_block_size_xyz[2], nz - 1)
-    x_on = x_low or x_high
-    y_on = y_low or y_high
-    z_on = z_low or z_high
-    valid_halo = {
-        1: x_on,
-        2: y_on,
-        3: x_on and y_on,
-        4: z_on,
-        5: x_on and z_on,
-        6: y_on and z_on,
-        7: x_on and y_on and z_on,
-    }
-    for halo_index in range(1, 8):
-        if not valid_halo[halo_index]:
-            continue
-        halo_x = int(x)
-        halo_y = int(y)
-        halo_z = int(z)
-        if halo_index & 0b001:
-            halo_x += -1 if x_low else 1
-        if halo_index & 0b010:
-            halo_y += -1 if y_low else 1
-        if halo_index & 0b100:
-            halo_z += -1 if z_low else 1
-        if not (0 <= halo_x < nx and 0 <= halo_y < ny and 0 <= halo_z < nz):
-            continue
-        halo_spec = lookup_zone(zone_specs, chebyshev_distance(halo_x, halo_y, lidar_center_xy))
-        yield compute_block_key(halo_x, halo_y, halo_z, halo_spec, lidar_center_xy), True
-
-
-def append_page(pages, page_addr, voxel_records, word_offset):
+def build_raw_vfe_voxel_stream(coords_zyx, q_features):
     payload = bytearray()
     seen = set()
-    for coord32, qfeat in voxel_records:
+    coords = coords_zyx.astype(np.int64)
+    if coords.ndim != 2 or coords.shape[1] != 3:
+        raise RuntimeError(f'Expected coords_zyx shape [N,3], got {coords.shape}')
+    if q_features.ndim != 2 or q_features.shape[0] != coords.shape[0] or q_features.shape[1] < 4:
+        raise RuntimeError(f'Expected q_features shape [N,>=4], got {q_features.shape}')
+
+    for index, (z, y, x) in enumerate(coords):
+        coord32 = coord32_from_zyx(z, y, x, is_halo=False)
         if coord32 in seen:
-            raise RuntimeError('Duplicate coord32 in one input page')
+            raise RuntimeError(f'Duplicate owner coord32 in raw VFE stream: 0x{coord32:08x}')
+        if coord32 & (1 << 31):
+            raise RuntimeError(f'Raw VFE owner coord32 unexpectedly has is_halo=1: 0x{coord32:08x}')
         seen.add(coord32)
         payload += pack_u64(coord32)
-        payload += pack_u64(pack_int8_tile(qfeat))
-    pages.append({
-        'page_addr': page_addr,
-        'voxel_count': len(voxel_records),
-        'word_offset': word_offset,
-    })
+        payload += pack_u64(pack_int8_tile(q_features[index, :4].tolist()))
+
+    expected_bytes = coords.shape[0] * 16
+    if len(payload) != expected_bytes:
+        raise RuntimeError(f'Raw VFE stream has {len(payload)} bytes, expected {expected_bytes}')
     return bytes(payload)
-
-
-def build_vfe_input_pages(coords_zyx, q_features, grid_size_xyz, zone_specs, lidar_center_xy):
-    blocks = OrderedDict()
-    for index, (z, y, x) in enumerate(coords_zyx.astype(np.int64)):
-        for block_key, is_halo in iter_block_beats_for_voxel(z, y, x, grid_size_xyz, zone_specs, lidar_center_xy):
-            block_id = pack_block_id(block_key)
-            if block_id not in blocks:
-                blocks[block_id] = {
-                    'block_id': block_id,
-                    'block_key': list(block_key),
-                    'records': [],
-                }
-            coord32 = coord32_from_zyx(z, y, x, is_halo=is_halo)
-            blocks[block_id]['records'].append((coord32, q_features[index, :4].tolist()))
-
-    payload = bytearray()
-    manifest_blocks = []
-    page_addr = 0
-    for block in blocks.values():
-        pages = []
-        current_page = []
-        current_seen = set()
-        for record in block['records']:
-            coord32 = record[0]
-            if len(current_page) == 64 or coord32 in current_seen:
-                payload += append_page(pages, page_addr, current_page, len(payload) // 8)
-                page_addr += 1
-                current_page = []
-                current_seen = set()
-            current_page.append(record)
-            current_seen.add(coord32)
-        if current_page:
-            payload += append_page(pages, page_addr, current_page, len(payload) // 8)
-            page_addr += 1
-        total_voxels = sum(page['voxel_count'] for page in pages)
-        manifest_blocks.append({
-            'block_id': block['block_id'],
-            'block_key': block['block_key'],
-            'total_voxel_count': total_voxels,
-            'pages': pages,
-        })
-
-    return bytes(payload), manifest_blocks
 
 
 def pack_weights_layer(weight_int8, cin, cout):
@@ -695,16 +589,16 @@ def write_binary(path, payload):
 
 
 def build_manifest(args, package_dir, sample, provenance, quantization, partition_geometry,
-                   input_pages, layer_entries, file_entries):
+                   raw_vfe_voxel_stream, layer_entries, file_entries):
     return {
-        'format_version': 'second_rtl_golden_v1',
+        'format_version': 'second_rtl_golden_v2',
         'word_bits': 64,
         'byte_order': 'little',
         'sample': sample,
         'provenance': provenance,
         'quantization': quantization,
         'partition_geometry': partition_geometry,
-        'input_pages': input_pages,
+        'raw_vfe_voxel_stream': raw_vfe_voxel_stream,
         'files': file_entries,
         'layers': layer_entries,
         'rtl_contract': {
@@ -713,6 +607,12 @@ def build_manifest(args, package_dir, sample, provenance, quantization, partitio
             'mac_lane': 4,
             'bias_bits': 16,
             'shift_bits': 4,
+            'initial_build_write_voxel_bytes': 16,
+            'layer0_ifm_resident_record_bytes': 16,
+            'layer0_ofm_record_bytes': 24,
+            'initial_sparse_directory_owner': 'block_manager_write_hash_path',
+            'input_commit_path': 'vfe_input_commit_path_uses_bm_write_descriptor',
+            'role_swap_after_initial_build': True,
             'weight_kernel_order': 'x*9+y*3+z',
             'layer11_status': [
                 'conv_out.0 is 3x1x1 with z-only stride 2; current RTL top-level semantics are a known blocker.',
@@ -736,6 +636,14 @@ def write_report(path, manifest, selected_index, actual_voxels, max_voxels):
         f'- MAX_NUMBER_OF_VOXELS: `{max_voxels}`',
         f'- Hit voxel cap: `{actual_voxels >= max_voxels}`',
         f'- Package directory: `{path.parent}`',
+        '',
+        '## Ingress',
+        f'- File: `{manifest["raw_vfe_voxel_stream"]["file"]}`',
+        f'- Records: `{manifest["raw_vfe_voxel_stream"]["record_count"]}`',
+        f'- Record bytes: `{manifest["raw_vfe_voxel_stream"]["record_bytes"]}`',
+        f'- Owner voxels only: `{manifest["raw_vfe_voxel_stream"]["owner_voxel_only"]}`',
+        f'- Halo expanded: `{manifest["raw_vfe_voxel_stream"]["halo_expanded"]}`',
+        f'- BM page preallocated: `{manifest["raw_vfe_voxel_stream"]["bm_page_preallocated"]}`',
         '',
         '## Files',
     ]
@@ -819,16 +727,14 @@ def main():
     grid_size_xyz = tuple(int(v) for v in dataset.grid_size.tolist())
     sparse_shape_zyx = tuple(int(v) for v in backbone.sparse_shape)
     zone_specs = load_zone_specs(args.zone_lut)
-    vfe_payload, input_blocks = build_vfe_input_pages(
-        voxel_coords_zyx, input_qfeatures, grid_size_xyz, zone_specs, lidar_center_xy
-    )
+    vfe_payload = build_raw_vfe_voxel_stream(voxel_coords_zyx, input_qfeatures)
 
     weights_payload, params_payload, ofm_payload, layer_entries = build_binaries(
         qparams, voxel_coords_zyx, input_qfeatures, sparse_shape_zyx
     )
 
     file_entries = {
-        'vfe_input_pages.bin': write_binary(package_dir / 'vfe_input_pages.bin', vfe_payload),
+        'raw_vfe_voxel_stream.bin': write_binary(package_dir / 'raw_vfe_voxel_stream.bin', vfe_payload),
         'weights.bin': write_binary(package_dir / 'weights.bin', weights_payload),
         'params.bin': write_binary(package_dir / 'params.bin', params_payload),
         'ofm_golden.bin': write_binary(package_dir / 'ofm_golden.bin', ofm_payload),
@@ -886,16 +792,47 @@ def main():
             'is_halo_bit': 31,
         },
     }
-    input_pages = {
-        'file': 'vfe_input_pages.bin',
-        'block_count': len(input_blocks),
-        'total_records': sum(block['total_voxel_count'] for block in input_blocks),
-        'unique_source_voxel_count': actual_voxel_count,
-        'blocks': input_blocks,
+    stale_vfe_input_pages = package_dir / 'vfe_input_pages.bin'
+    if stale_vfe_input_pages.exists():
+        stale_vfe_input_pages.unlink()
+
+    raw_vfe_voxel_stream = {
+        'file': 'raw_vfe_voxel_stream.bin',
+        'record_count': actual_voxel_count,
+        'record_bytes': 16,
+        'word_length_per_record': 2,
+        'total_bytes': len(vfe_payload),
+        'word_length': len(vfe_payload) // 8,
+        'sha256': file_entries['raw_vfe_voxel_stream.bin']['sha256'],
+        'sort_order': 'vfe_output_order',
+        'owner_voxel_only': True,
+        'unique_owner_coord32': True,
+        'halo_expanded': False,
+        'bm_page_preallocated': False,
+        'rtl_initial_directory_input': False,
+        'record_layout': {
+            'word0': "64'h00000000_XXXXXXXX where low 32 bits are coord32",
+            'word1': '8 signed INT8 lanes; lanes 0..3 are VFE features, lanes 4..7 are zero',
+        },
+        'coord32': {
+            'x_bits': [0, 10],
+            'y_bits': [11, 21],
+            'z_bits': [22, 27],
+            'reserved_bits': [28, 30],
+            'is_halo_bit': 31,
+            'is_halo_value': 0,
+        },
+        'build_phase': {
+            'write_voxel_bytes': 16,
+            'payload_layout': 'layer0_ifm_resident_coord_word_plus_one_feature_word',
+            'directory_owner': 'block_manager_write_hash_path',
+            'commit_path': 'vfe_input_commit_path_uses_bm_write_descriptor',
+            'role_swap_after_build': True,
+        },
     }
     manifest = build_manifest(
         args, package_dir, sample, provenance, quantization, partition_geometry,
-        input_pages, layer_entries, file_entries
+        raw_vfe_voxel_stream, layer_entries, file_entries
     )
     manifest_path = package_dir / 'manifest.json'
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=False) + '\n', encoding='utf-8')
@@ -908,6 +845,8 @@ def main():
             'actual_voxel_count': actual_voxel_count,
             'max_number_of_voxels': args.max_voxels,
             'hit_voxel_cap': actual_voxel_count >= args.max_voxels,
+            'format_version': manifest['format_version'],
+            'raw_vfe_voxel_stream_bytes': len(vfe_payload),
             'manifest_sha256': sha256_file(manifest_path),
         }, indent=2) + '\n',
         encoding='utf-8',

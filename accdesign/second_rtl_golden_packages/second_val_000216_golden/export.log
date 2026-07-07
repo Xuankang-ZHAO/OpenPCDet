@@ -13,3 +13,10 @@
 2026-06-25 00:37:36,362   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth to CPU
 2026-06-25 00:37:36,589   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py8aaad69
 2026-06-25 00:37:36,596   INFO  ==> Done (loaded 189/189)
+2026-07-07 15:07:41,594   INFO  Loading KITTI dataset
+2026-07-07 15:07:41,916   INFO  Total samples for KITTI dataset: 3769
+2026-07-07 15:08:12,662   INFO  Loading KITTI dataset
+2026-07-07 15:08:12,960   INFO  Total samples for KITTI dataset: 3769
+2026-07-07 15:08:14,637   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth to CPU
+2026-07-07 15:08:14,997   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py8aaad69
+2026-07-07 15:08:15,008   INFO  ==> Done (loaded 189/189)
