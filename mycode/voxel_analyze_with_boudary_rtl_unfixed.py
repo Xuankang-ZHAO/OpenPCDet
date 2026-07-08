@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Analyze voxel sparsity with RTL-style unfixed zone block partitioning.
 
-This script keeps the same voxelization pipeline, parser style, default KITTI
-data paths, and CSV statistics as `voxel_analyze_with_boudary_v2.py`, but uses
-the RTL-aligned unfixed partition semantics described in
+This script keeps the same parser style, default KITTI data paths, and CSV
+statistics as the earlier software block analyzers, but uses the RTL-aligned
+unfixed partition semantics described in
 `online_block_partitioning_algorithm_summary.md`.
 
 Run directly in the OpenPCDet folder: (openpcd) vipuser@ubuntu22:~/桌面/OpenPCDet$ python mycode/voxel_analyze_with_boudary_rtl_unfixed.py

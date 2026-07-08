@@ -5,8 +5,8 @@
     // cd /home/vipuser/桌面/OpenPCDet  # cwd设置
     // python tools/demo.py \
     //  --cfg_file /home/vipuser/桌面/OpenPCDet/tools/cfgs/kitti_models/second.yaml \
-    //  --ckpt /home/vipuser/桌面/OpenPCDet/mycode/second_7862.pth \
-    //  --data_path /home/vipuser/桌面/OpenPCDet/mycode/000008.bin
+    //  --ckpt /home/vipuser/桌面/OpenPCDet/mycode/local/second_7862.pth \
+    //  --data_path /home/vipuser/桌面/OpenPCDet/mycode/local/000008.bin
     "version": "0.2.0",
     "configurations": [
 
@@ -25,9 +25,9 @@
                 "--cfg_file",
                 "${workspaceFolder}/tools/cfgs/kitti_models/second.yaml",
                 "--ckpt",
-                "${workspaceFolder}/mycode/second_7862.pth",
+                "${workspaceFolder}/mycode/local/second_7862.pth",
                 "--data_path",
-                "${workspaceFolder}/mycode/000008.bin"
+                "${workspaceFolder}/mycode/local/000008.bin"
             ]
         }
     ]

@@ -10,17 +10,31 @@ Each output line is a 20-hex-digit token (MSB-first):
 
     <feat:8 hex><z:4 hex><y:4 hex><x:4 hex>
 
-    A
 Example:
-python ../mycode/export_single_frame_voxel_stream80.py --cfg cfgs/kitti_models/second.yaml --pcd ../data/kitti/training/velodyne/000014.bin --out ../mycode/output/000014_voxel_stream80.txt --feat-mode num_points
+python mycode/export_single_frame_voxel_stream80.py \
+  --cfg tools/cfgs/kitti_models/second.yaml \
+  --pcd data/kitti/training/velodyne/000014.bin \
+  --out mycode/output/voxel_stream80/000014_voxel_stream80.txt \
+  --feat-mode num_points
 """
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
 import numpy as np
+
+from mycode.kitti_frame_loader import (
+    add_data_mode_args,
+    build_kitti_dataset,
+    build_template_dataset,
+    load_kitti_sample,
+    normalize_frame_token,
+    resolve_data_mode,
+    resolve_project_root,
+)
 
 
 UINT16_MAX = (1 << 16) - 1
@@ -29,8 +43,9 @@ UINT32_MAX = (1 << 32) - 1
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Export single-frame voxel stream in 80-bit packed format")
-    parser.add_argument("--cfg", type=str, default="cfgs/kitti_models/second.yaml", help="Model config yaml")
-    parser.add_argument("--pcd", type=str, required=True, help="Input point cloud file (.bin or .npy)")
+    parser.add_argument("--cfg", type=str, default="tools/cfgs/kitti_models/second.yaml", help="Model config yaml")
+    parser.add_argument("--pcd", type=str, required=True, help="Input point cloud file (.bin or .npy); frame id is taken from the stem in kitti mode")
+    add_data_mode_args(parser)
     parser.add_argument("--out", type=str, required=True, help="Output stream file path")
 
     parser.add_argument(
@@ -167,28 +182,7 @@ def reorder_indices(x: np.ndarray, y: np.ndarray, z: np.ndarray, order: str) -> 
     raise ValueError(f"Unsupported sort order: {order}")
 
 
-def main():
-    args = parse_args()
-
-    project_root = Path(__file__).resolve().parents[1]
-    if str(project_root) not in sys.path:
-        sys.path.insert(0, str(project_root))
-
-    from pcdet.config import cfg, cfg_from_yaml_file
-    from pcdet.datasets.dataset import DatasetTemplate
-
-    cfg_from_yaml_file(args.cfg, cfg)
-
-    points = load_points(Path(args.pcd))
-
-    dataset = DatasetTemplate(
-        dataset_cfg=cfg.DATA_CONFIG,
-        class_names=cfg.CLASS_NAMES,
-        training=False,
-    )
-
-    sample = dataset.prepare_data({"points": points, "frame_id": Path(args.pcd).stem})
-
+def extract_voxel_arrays(sample):
     voxels = sample.get("voxels", None)
     voxel_coords = sample.get("voxel_coords", None)
     voxel_num_points = sample.get("voxel_num_points", None)
@@ -210,13 +204,55 @@ def main():
     if voxel_coords.ndim != 2 or voxel_coords.shape[1] not in (3, 4):
         raise ValueError(f"Unexpected voxel_coords shape: {voxel_coords.shape}")
 
-    # OpenPCDet voxel coords are [z, y, x] or [batch, z, y, x]
     if voxel_coords.shape[1] == 4:
         voxel_coords = voxel_coords[:, 1:4]
 
     z = voxel_coords[:, 0]
     y = voxel_coords[:, 1]
     x = voxel_coords[:, 2]
+    return voxels, x, y, z, voxel_num_points
+
+
+def main():
+    args = parse_args()
+    project_root = resolve_project_root()
+    pcd_path = Path(args.pcd)
+    if not pcd_path.is_absolute():
+        pcd_path = project_root / pcd_path
+
+    from pcdet.config import cfg, cfg_from_yaml_file
+    from pcdet.utils import common_utils
+
+    original_cwd = os.getcwd()
+    try:
+        os.chdir(project_root / 'tools')
+        cfg_from_yaml_file(str(project_root / args.cfg), cfg)
+    finally:
+        os.chdir(original_cwd)
+
+    data_mode = resolve_data_mode(cfg, args.data_mode)
+    frame_id = normalize_frame_token(pcd_path.name)
+
+    if data_mode == "kitti":
+        logger = common_utils.create_logger()
+        dataset = build_kitti_dataset(cfg, project_root, args.kitti_root, logger)
+        sample, frame_info = load_kitti_sample(dataset, frame_id)
+        voxels, x, y, z, voxel_num_points = extract_voxel_arrays(sample)
+        num_input_points = int(frame_info.get("num_raw_points", sample["points"].shape[0]))
+        data_loader = frame_info["data_loader"]
+        fov_points_only = frame_info["fov_points_only"]
+        grid_size = dataset.grid_size
+        voxel_size = dataset.voxel_size
+    else:
+        points = load_points(pcd_path)
+        dataset = build_template_dataset(cfg)
+        sample = dataset.prepare_data({"points": points, "frame_id": frame_id})
+        voxels, x, y, z, voxel_num_points = extract_voxel_arrays(sample)
+        num_input_points = int(points.shape[0])
+        data_loader = "DatasetTemplate.prepare_data(raw_points)"
+        fov_points_only = False
+        grid_size = dataset.grid_size
+        voxel_size = dataset.voxel_size
 
     feat = build_feat(
         feat_mode=args.feat_mode,
@@ -238,6 +274,8 @@ def main():
     feat_ord = feat[order_idx]
 
     out_path = Path(args.out)
+    if not out_path.is_absolute():
+        out_path = project_root / out_path
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     with out_path.open("w", encoding="ascii", newline="\n") as f:
@@ -247,12 +285,16 @@ def main():
 
     summary = {
         "cfg": str(args.cfg),
-        "pcd": str(args.pcd),
+        "pcd": str(pcd_path),
         "out": str(out_path),
-        "num_input_points": int(points.shape[0]),
+        "frame_id": frame_id,
+        "data_loader": data_loader,
+        "fov_points_only": fov_points_only,
+        "data_mode": data_mode,
+        "num_input_points": num_input_points,
         "num_voxels": int(x_ord.shape[0]),
-        "grid_size_xyz": [int(v) for v in dataset.grid_size.tolist()] if dataset.grid_size is not None else None,
-        "voxel_size_xyz": [float(v) for v in dataset.voxel_size] if dataset.voxel_size is not None else None,
+        "grid_size_xyz": [int(v) for v in grid_size.tolist()] if grid_size is not None else None,
+        "voxel_size_xyz": [float(v) for v in voxel_size] if voxel_size is not None else None,
         "coord_min_xyz": [int(x_ord.min()) if x_ord.size else 0, int(y_ord.min()) if y_ord.size else 0, int(z_ord.min()) if z_ord.size else 0],
         "coord_max_xyz": [int(x_ord.max()) if x_ord.size else 0, int(y_ord.max()) if y_ord.size else 0, int(z_ord.max()) if z_ord.size else 0],
         "feat_mode": args.feat_mode,
@@ -261,6 +303,8 @@ def main():
 
     if args.summary_json:
         summary_path = Path(args.summary_json)
+        if not summary_path.is_absolute():
+            summary_path = project_root / summary_path
         summary_path.parent.mkdir(parents=True, exist_ok=True)
         with summary_path.open("w", encoding="utf-8", newline="\n") as f:
             json.dump(summary, f, indent=2)

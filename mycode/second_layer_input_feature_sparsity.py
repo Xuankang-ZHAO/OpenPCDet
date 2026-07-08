@@ -34,7 +34,7 @@ from mycode.kitti_frame_loader import (
 def parse_args():
     parser = argparse.ArgumentParser(description='Per-layer input feature sparsity analysis for SECOND backbone')
     parser.add_argument('--cfg', type=str, default='tools/cfgs/kitti_models/second.yaml')
-    parser.add_argument('--ckpt', type=str, default='mycode/second_7862.pth')
+    parser.add_argument('--ckpt', type=str, default='mycode/local/second_7862.pth')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne')
     add_data_mode_args(parser)
     parser.add_argument('--frame_id', type=str, default='', help='KITTI frame id, e.g. 000123. Leave empty for random pick.')

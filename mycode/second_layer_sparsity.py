@@ -22,7 +22,7 @@ import torch
 def parse_args():
     parser = argparse.ArgumentParser(description='Per-layer sparse conv sparsity analysis for SECOND backbone')
     parser.add_argument('--cfg', type=str, default='tools/cfgs/kitti_models/second.yaml')
-    parser.add_argument('--ckpt', type=str, default='mycode/second_7862.pth')
+    parser.add_argument('--ckpt', type=str, default='mycode/local/second_7862.pth')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne')
     parser.add_argument('--kitti_root', type=str, default='data/kitti')
     parser.add_argument(
