@@ -1,6 +1,8 @@
 {
   "frame_id": "000216",
   "point_cloud_path": "/home/vipuser/\u684c\u9762/OpenPCDet/data/kitti/training/velodyne/000216.bin",
+  "data_loader": "KittiDataset.__getitem__",
+  "fov_points_only": true,
   "records": [
     {
       "layer_name": "input_voxelized",
@@ -72,15 +74,15 @@
         704
       ],
       "feature_shape_nc": [
-        31292,
+        25762,
         32
       ],
       "feature_channels": 32,
       "total_cells": 11827200,
-      "active_voxels": 31292,
-      "sparsity": 0.0026457656926406926,
-      "active_ratio_vs_prev": 2.086133333333333,
-      "active_ratio_vs_input": 2.086133333333333
+      "active_voxels": 25762,
+      "sparsity": 0.0021781994047619046,
+      "active_ratio_vs_prev": 1.7174666666666667,
+      "active_ratio_vs_input": 1.7174666666666667
     },
     {
       "layer_name": "conv2.1.0",
@@ -92,15 +94,15 @@
         704
       ],
       "feature_shape_nc": [
-        31292,
+        25762,
         32
       ],
       "feature_channels": 32,
       "total_cells": 11827200,
-      "active_voxels": 31292,
-      "sparsity": 0.0026457656926406926,
+      "active_voxels": 25762,
+      "sparsity": 0.0021781994047619046,
       "active_ratio_vs_prev": 1.0,
-      "active_ratio_vs_input": 2.086133333333333
+      "active_ratio_vs_input": 1.7174666666666667
     },
     {
       "layer_name": "conv2.2.0",
@@ -112,15 +114,15 @@
         704
       ],
       "feature_shape_nc": [
-        31292,
+        25762,
         32
       ],
       "feature_channels": 32,
       "total_cells": 11827200,
-      "active_voxels": 31292,
-      "sparsity": 0.0026457656926406926,
+      "active_voxels": 25762,
+      "sparsity": 0.0021781994047619046,
       "active_ratio_vs_prev": 1.0,
-      "active_ratio_vs_input": 2.086133333333333
+      "active_ratio_vs_input": 1.7174666666666667
     },
     {
       "layer_name": "conv3.0.0",
@@ -132,15 +134,15 @@
         352
       ],
       "feature_shape_nc": [
-        20242,
+        19089,
         64
       ],
       "feature_channels": 64,
       "total_cells": 1548800,
-      "active_voxels": 20242,
-      "sparsity": 0.013069473140495868,
-      "active_ratio_vs_prev": 0.6468746005368784,
-      "active_ratio_vs_input": 1.3494666666666666
+      "active_voxels": 19089,
+      "sparsity": 0.012325025826446281,
+      "active_ratio_vs_prev": 0.7409750795745672,
+      "active_ratio_vs_input": 1.2726
     },
     {
       "layer_name": "conv3.1.0",
@@ -152,15 +154,15 @@
         352
       ],
       "feature_shape_nc": [
-        20242,
+        19089,
         64
       ],
       "feature_channels": 64,
       "total_cells": 1548800,
-      "active_voxels": 20242,
-      "sparsity": 0.013069473140495868,
+      "active_voxels": 19089,
+      "sparsity": 0.012325025826446281,
       "active_ratio_vs_prev": 1.0,
-      "active_ratio_vs_input": 1.3494666666666666
+      "active_ratio_vs_input": 1.2726
     },
     {
       "layer_name": "conv3.2.0",
@@ -172,15 +174,15 @@
         352
       ],
       "feature_shape_nc": [
-        20242,
+        19089,
         64
       ],
       "feature_channels": 64,
       "total_cells": 1548800,
-      "active_voxels": 20242,
-      "sparsity": 0.013069473140495868,
+      "active_voxels": 19089,
+      "sparsity": 0.012325025826446281,
       "active_ratio_vs_prev": 1.0,
-      "active_ratio_vs_input": 1.3494666666666666
+      "active_ratio_vs_input": 1.2726
     },
     {
       "layer_name": "conv4.0.0",
@@ -192,15 +194,15 @@
         176
       ],
       "feature_shape_nc": [
-        8831,
+        8495,
         64
       ],
       "feature_channels": 64,
       "total_cells": 176000,
-      "active_voxels": 8831,
-      "sparsity": 0.05017613636363636,
-      "active_ratio_vs_prev": 0.43627111945459934,
-      "active_ratio_vs_input": 0.5887333333333333
+      "active_voxels": 8495,
+      "sparsity": 0.04826704545454545,
+      "active_ratio_vs_prev": 0.445020692545445,
+      "active_ratio_vs_input": 0.5663333333333334
     },
     {
       "layer_name": "conv4.1.0",
@@ -212,15 +214,15 @@
         176
       ],
       "feature_shape_nc": [
-        8831,
+        8495,
         64
       ],
       "feature_channels": 64,
       "total_cells": 176000,
-      "active_voxels": 8831,
-      "sparsity": 0.05017613636363636,
+      "active_voxels": 8495,
+      "sparsity": 0.04826704545454545,
       "active_ratio_vs_prev": 1.0,
-      "active_ratio_vs_input": 0.5887333333333333
+      "active_ratio_vs_input": 0.5663333333333334
     },
     {
       "layer_name": "conv4.2.0",
@@ -232,15 +234,15 @@
         176
       ],
       "feature_shape_nc": [
-        8831,
+        8495,
         64
       ],
       "feature_channels": 64,
       "total_cells": 176000,
-      "active_voxels": 8831,
-      "sparsity": 0.05017613636363636,
+      "active_voxels": 8495,
+      "sparsity": 0.04826704545454545,
       "active_ratio_vs_prev": 1.0,
-      "active_ratio_vs_input": 0.5887333333333333
+      "active_ratio_vs_input": 0.5663333333333334
     },
     {
       "layer_name": "conv_out.0",
@@ -252,19 +254,20 @@
         176
       ],
       "feature_shape_nc": [
-        6261,
+        6612,
         128
       ],
       "feature_channels": 128,
       "total_cells": 70400,
-      "active_voxels": 6261,
-      "sparsity": 0.08893465909090909,
-      "active_ratio_vs_prev": 0.7089797304948477,
-      "active_ratio_vs_input": 0.4174
+      "active_voxels": 6612,
+      "sparsity": 0.09392045454545454,
+      "active_ratio_vs_prev": 0.7783402001177163,
+      "active_ratio_vs_input": 0.4408
     }
   ],
   "cfg": "/home/vipuser/\u684c\u9762/OpenPCDet/tools/cfgs/kitti_models/second_hw_qat.yaml",
   "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
   "device": "cuda:0",
-  "seed": 0
+  "seed": 0,
+  "data_mode": "kitti"
 }

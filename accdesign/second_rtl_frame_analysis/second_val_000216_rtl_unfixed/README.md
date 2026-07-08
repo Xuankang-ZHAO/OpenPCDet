@@ -118,11 +118,12 @@ Chebyshev distance from LiDAR center:
 SECOND layer active-voxel analysis from `second_layer_sparsity.py`:
 
 - `input_voxelized`: 15000 active voxels
-- `conv2.0.0`: 31292 active voxels
-- `conv3.0.0`: 20242 active voxels
-- `conv4.0.0`: 8831 active voxels
-- `conv_out.0`: 6261 active voxels
-- `conv_out.0` active density: `0.08893465909090909`
+- Data loader: `KittiDataset.__getitem__` with `FOV_POINTS_ONLY=True`
+- `conv2.0.0`: 25762 active voxels
+- `conv3.0.0`: 19089 active voxels
+- `conv4.0.0`: 8495 active voxels
+- `conv_out.0`: 6612 active voxels
+- `conv_out.0` active density: `0.09392045454545454`
 
 SECOND layer input feature sparsity from `second_layer_input_feature_sparsity.py`:
 
@@ -136,5 +137,5 @@ SECOND layer input feature sparsity from `second_layer_input_feature_sparsity.py
 
 - `voxel_analyze_with_boudary_rtl_unfixed.py` uses the same RTL unfixed zone LUT and LiDAR center recorded by the golden manifest.
 - `block_voxel_vis2d.py` is the script's default fixed `10x10x6` block visualization. It is useful as a 2D occupancy view, but it is not the RTL unfixed block allocator result.
-- The two SECOND sparsity scripts were run with the HW-QAT golden config and checkpoint, not their default `second.yaml` / `mycode/second_7862.pth`.
+- `second_layer_sparsity.py` was regenerated with the HW-QAT golden config/checkpoint and the KITTI dataset path so its FOV filtering matches the golden package.
 - The SECOND sparsity outputs are model-hook analysis artifacts; the bit-exact RTL golden outputs remain in `accdesign/second_rtl_golden_packages/second_val_000216_golden/ofm_golden.bin`.

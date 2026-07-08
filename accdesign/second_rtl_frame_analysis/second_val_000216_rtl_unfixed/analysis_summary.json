@@ -123,6 +123,9 @@
     "peak_voxel_count": 267
   },
   "second_layer_sparsity": {
+    "data_loader": "KittiDataset.__getitem__",
+    "fov_points_only": true,
+    "data_mode": "kitti",
     "records": [
       {
         "layer_name": "input_voxelized",
@@ -175,162 +178,162 @@
       {
         "layer_name": "conv2.0.0",
         "layer_type": "SparseConv3d",
-        "active_voxels": 31292,
+        "active_voxels": 25762,
         "spatial_shape_zyx": [
           21,
           800,
           704
         ],
         "feature_shape_nc": [
-          31292,
+          25762,
           32
         ],
-        "active_density": 0.0026457656926406926,
-        "active_ratio_vs_input": 2.086133333333333
+        "active_density": 0.0021781994047619046,
+        "active_ratio_vs_input": 1.7174666666666667
       },
       {
         "layer_name": "conv2.1.0",
         "layer_type": "SubMConv3d",
-        "active_voxels": 31292,
+        "active_voxels": 25762,
         "spatial_shape_zyx": [
           21,
           800,
           704
         ],
         "feature_shape_nc": [
-          31292,
+          25762,
           32
         ],
-        "active_density": 0.0026457656926406926,
-        "active_ratio_vs_input": 2.086133333333333
+        "active_density": 0.0021781994047619046,
+        "active_ratio_vs_input": 1.7174666666666667
       },
       {
         "layer_name": "conv2.2.0",
         "layer_type": "SubMConv3d",
-        "active_voxels": 31292,
+        "active_voxels": 25762,
         "spatial_shape_zyx": [
           21,
           800,
           704
         ],
         "feature_shape_nc": [
-          31292,
+          25762,
           32
         ],
-        "active_density": 0.0026457656926406926,
-        "active_ratio_vs_input": 2.086133333333333
+        "active_density": 0.0021781994047619046,
+        "active_ratio_vs_input": 1.7174666666666667
       },
       {
         "layer_name": "conv3.0.0",
         "layer_type": "SparseConv3d",
-        "active_voxels": 20242,
+        "active_voxels": 19089,
         "spatial_shape_zyx": [
           11,
           400,
           352
         ],
         "feature_shape_nc": [
-          20242,
+          19089,
           64
         ],
-        "active_density": 0.013069473140495868,
-        "active_ratio_vs_input": 1.3494666666666666
+        "active_density": 0.012325025826446281,
+        "active_ratio_vs_input": 1.2726
       },
       {
         "layer_name": "conv3.1.0",
         "layer_type": "SubMConv3d",
-        "active_voxels": 20242,
+        "active_voxels": 19089,
         "spatial_shape_zyx": [
           11,
           400,
           352
         ],
         "feature_shape_nc": [
-          20242,
+          19089,
           64
         ],
-        "active_density": 0.013069473140495868,
-        "active_ratio_vs_input": 1.3494666666666666
+        "active_density": 0.012325025826446281,
+        "active_ratio_vs_input": 1.2726
       },
       {
         "layer_name": "conv3.2.0",
         "layer_type": "SubMConv3d",
-        "active_voxels": 20242,
+        "active_voxels": 19089,
         "spatial_shape_zyx": [
           11,
           400,
           352
         ],
         "feature_shape_nc": [
-          20242,
+          19089,
           64
         ],
-        "active_density": 0.013069473140495868,
-        "active_ratio_vs_input": 1.3494666666666666
+        "active_density": 0.012325025826446281,
+        "active_ratio_vs_input": 1.2726
       },
       {
         "layer_name": "conv4.0.0",
         "layer_type": "SparseConv3d",
-        "active_voxels": 8831,
+        "active_voxels": 8495,
         "spatial_shape_zyx": [
           5,
           200,
           176
         ],
         "feature_shape_nc": [
-          8831,
+          8495,
           64
         ],
-        "active_density": 0.05017613636363636,
-        "active_ratio_vs_input": 0.5887333333333333
+        "active_density": 0.04826704545454545,
+        "active_ratio_vs_input": 0.5663333333333334
       },
       {
         "layer_name": "conv4.1.0",
         "layer_type": "SubMConv3d",
-        "active_voxels": 8831,
+        "active_voxels": 8495,
         "spatial_shape_zyx": [
           5,
           200,
           176
         ],
         "feature_shape_nc": [
-          8831,
+          8495,
           64
         ],
-        "active_density": 0.05017613636363636,
-        "active_ratio_vs_input": 0.5887333333333333
+        "active_density": 0.04826704545454545,
+        "active_ratio_vs_input": 0.5663333333333334
       },
       {
         "layer_name": "conv4.2.0",
         "layer_type": "SubMConv3d",
-        "active_voxels": 8831,
+        "active_voxels": 8495,
         "spatial_shape_zyx": [
           5,
           200,
           176
         ],
         "feature_shape_nc": [
-          8831,
+          8495,
           64
         ],
-        "active_density": 0.05017613636363636,
-        "active_ratio_vs_input": 0.5887333333333333
+        "active_density": 0.04826704545454545,
+        "active_ratio_vs_input": 0.5663333333333334
       },
       {
         "layer_name": "conv_out.0",
         "layer_type": "SparseConv3d",
-        "active_voxels": 6261,
+        "active_voxels": 6612,
         "spatial_shape_zyx": [
           2,
           200,
           176
         ],
         "feature_shape_nc": [
-          6261,
+          6612,
           128
         ],
-        "active_density": 0.08893465909090909,
-        "active_ratio_vs_input": 0.4174
+        "active_density": 0.09392045454545454,
+        "active_ratio_vs_input": 0.4408
       }
     ]
   },

@@ -24,6 +24,11 @@ def parse_args():
     parser.add_argument('--cfg', type=str, default='tools/cfgs/kitti_models/second.yaml')
     parser.add_argument('--ckpt', type=str, default='mycode/second_7862.pth')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne')
+    parser.add_argument('--kitti_root', type=str, default='data/kitti')
+    parser.add_argument(
+        '--data_mode', type=str, default='auto', choices=['auto', 'kitti', 'raw'],
+        help='auto uses KittiDataset for KITTI configs so FOV filtering matches normal inference.'
+    )
     parser.add_argument('--frame_id', type=str, default='', help='KITTI frame id, e.g. 000123. Leave empty for random pick.')
     parser.add_argument('--device', type=str, default='auto', help='auto|cpu|cuda|cuda:0')
     parser.add_argument('--seed', type=int, default=0)
@@ -40,7 +45,17 @@ def resolve_project_root():
     return project_root
 
 
-def choose_frames(velodyne_dir, frame_id, seed, num_frames):
+def resolve_data_mode(cfg_obj, requested_mode):
+    if requested_mode != 'auto':
+        return requested_mode
+    return 'kitti' if cfg_obj.DATA_CONFIG.get('DATASET', '') == 'KittiDataset' else 'raw'
+
+
+def normalize_frame_token(token):
+    return Path(token).stem if token.endswith('.bin') else token
+
+
+def choose_raw_frames(velodyne_dir, frame_id, seed, num_frames):
     velodyne_path = Path(velodyne_dir)
     if not velodyne_path.exists():
         raise FileNotFoundError(f'Velodyne directory not found: {velodyne_path}')
@@ -68,17 +83,65 @@ def choose_frames(velodyne_dir, frame_id, seed, num_frames):
     return rng.sample(candidates, num_frames)
 
 
-def build_inference_dataset(cfg_obj):
+def choose_kitti_frames(dataset, frame_id, seed, num_frames):
+    available_ids = [str(info['point_cloud']['lidar_idx']) for info in dataset.kitti_infos]
+    available = set(available_ids)
+
+    if frame_id:
+        frames = [normalize_frame_token(token.strip()) for token in frame_id.split(',') if token.strip()]
+        missing = [frame for frame in frames if frame not in available]
+        if missing:
+            raise FileNotFoundError(f'Frame id(s) not found in KITTI split: {missing}')
+        if num_frames != len(frames):
+            raise ValueError('When --frame_id is provided, --num_frames must match the number of frame ids.')
+        return frames
+
+    if num_frames > len(available_ids):
+        raise ValueError(f'Requested {num_frames} frames, but only found {len(available_ids)} KITTI samples.')
+    rng = random.Random(seed)
+    return rng.sample(available_ids, num_frames)
+
+
+def build_inference_dataset(cfg_obj, project_root, args, data_mode, logger):
+    if data_mode == 'kitti':
+        from pcdet.datasets.kitti.kitti_dataset import KittiDataset
+
+        return KittiDataset(
+            dataset_cfg=cfg_obj.DATA_CONFIG,
+            class_names=cfg_obj.CLASS_NAMES,
+            training=False,
+            root_path=project_root / args.kitti_root,
+            logger=logger,
+        )
+
     from pcdet.datasets.dataset import DatasetTemplate
 
     return DatasetTemplate(dataset_cfg=cfg_obj.DATA_CONFIG, class_names=cfg_obj.CLASS_NAMES, training=False)
 
 
-def load_single_batch(dataset, frame_path):
+def load_raw_batch(dataset, frame_path):
     points = np.fromfile(str(frame_path), dtype=np.float32).reshape(-1, 4)
     sample = dataset.prepare_data({'points': points, 'frame_id': frame_path.stem})
     batch = dataset.collate_batch([sample])
-    return batch
+    return batch, {
+        'frame_id': frame_path.stem,
+        'point_cloud_path': str(frame_path),
+        'data_loader': 'DatasetTemplate.prepare_data(raw_points)',
+        'fov_points_only': False,
+    }
+
+
+def load_kitti_batch(dataset, frame_id):
+    info_by_id = {str(info['point_cloud']['lidar_idx']): idx for idx, info in enumerate(dataset.kitti_infos)}
+    sample = dataset[info_by_id[frame_id]]
+    batch = dataset.collate_batch([sample])
+    point_cloud_path = dataset.root_split_path / 'velodyne' / f'{frame_id}.bin'
+    return batch, {
+        'frame_id': frame_id,
+        'point_cloud_path': str(point_cloud_path),
+        'data_loader': 'KittiDataset.__getitem__',
+        'fov_points_only': bool(dataset.dataset_cfg.get('FOV_POINTS_ONLY', False)),
+    }
 
 
 def move_batch_to_device(batch_dict, device):
@@ -90,6 +153,8 @@ def move_batch_to_device(batch_dict, device):
             continue
         if isinstance(value, np.ndarray):
             if key == 'image_shape':
+                output[key] = torch.from_numpy(value).int().to(device)
+            elif key == 'voxel_coords':
                 output[key] = torch.from_numpy(value).int().to(device)
             else:
                 output[key] = torch.from_numpy(value).float().to(device)
@@ -261,7 +326,7 @@ def resolve_log_path(project_root, out_dir, requested_log_file, run_tag):
     return project_root / out_dir / f'{run_tag}.log'
 
 
-def analyze_frame(model, backbone, spconv, batch_torch, frame_path):
+def analyze_frame(model, backbone, spconv, batch_torch, frame_info):
     with torch.no_grad():
         batch_torch = model.vfe(batch_torch)
         input_record = make_input_record(backbone, batch_torch)
@@ -275,8 +340,10 @@ def analyze_frame(model, backbone, spconv, batch_torch, frame_path):
 
     records = [input_record] + recorder.records
     return {
-        'frame_id': frame_path.stem,
-        'point_cloud_path': str(frame_path),
+        'frame_id': frame_info['frame_id'],
+        'point_cloud_path': frame_info['point_cloud_path'],
+        'data_loader': frame_info['data_loader'],
+        'fov_points_only': frame_info['fov_points_only'],
         'records': records,
     }
 
@@ -286,7 +353,6 @@ def main():
     project_root = resolve_project_root()
 
     from pcdet.config import cfg, cfg_from_yaml_file
-    from pcdet.models import build_network
     from pcdet.utils import common_utils
     from pcdet.utils.spconv_utils import spconv
 
@@ -297,12 +363,19 @@ def main():
     finally:
         os.chdir(original_cwd)
 
-    frame_paths = choose_frames(project_root / args.velodyne_dir, args.frame_id, args.seed, args.num_frames)
-    dataset = build_inference_dataset(cfg)
-
     device = resolve_device(args.device)
 
     logger = common_utils.create_logger()
+    data_mode = resolve_data_mode(cfg, args.data_mode)
+    dataset = build_inference_dataset(cfg, project_root, args, data_mode, logger)
+
+    if data_mode == 'kitti':
+        frame_refs = choose_kitti_frames(dataset, args.frame_id, args.seed, args.num_frames)
+    else:
+        frame_refs = choose_raw_frames(project_root / args.velodyne_dir, args.frame_id, args.seed, args.num_frames)
+
+    from pcdet.models import build_network
+
     model = build_network(model_cfg=cfg.MODEL, num_class=len(cfg.CLASS_NAMES), dataset=dataset)
 
     ckpt_path = project_root / args.ckpt
@@ -322,21 +395,25 @@ def main():
 
     payloads = []
     log_sections = []
-    for frame_path in frame_paths:
-        batch = load_single_batch(dataset, frame_path)
+    for frame_ref in frame_refs:
+        if data_mode == 'kitti':
+            batch, frame_info = load_kitti_batch(dataset, frame_ref)
+        else:
+            batch, frame_info = load_raw_batch(dataset, frame_ref)
         batch_torch = move_batch_to_device(batch, device)
-        frame_payload = analyze_frame(model, backbone, spconv, batch_torch, frame_path)
+        frame_payload = analyze_frame(model, backbone, spconv, batch_torch, frame_info)
         frame_payload.update({
             'cfg': str(project_root / args.cfg),
             'ckpt': str(ckpt_path),
             'device': str(device),
             'seed': args.seed,
+            'data_mode': data_mode,
         })
         payloads.append(frame_payload)
 
-        formatted = format_records(frame_path.stem, device, frame_payload['records'])
+        formatted = format_records(frame_info['frame_id'], device, frame_payload['records'])
         print(formatted)
-        json_path, csv_path = save_records(project_root / args.out_dir, frame_path.stem, frame_payload)
+        json_path, csv_path = save_records(project_root / args.out_dir, frame_info['frame_id'], frame_payload)
         tail_lines = [formatted, '', f'Saved JSON: {json_path}', f'Saved CSV:  {csv_path}']
         log_sections.append('\n'.join(tail_lines))
         print('')
@@ -350,6 +427,7 @@ def main():
         'device': str(device),
         'seed': args.seed,
         'num_frames': args.num_frames,
+        'data_mode': data_mode,
         'frames': [frame_payload['frame_id'] for frame_payload in payloads],
     }
 
