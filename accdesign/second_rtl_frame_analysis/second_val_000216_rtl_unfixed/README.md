@@ -15,7 +15,7 @@ This directory contains analysis outputs for the KITTI point-cloud frame used by
 - RTL unfixed zone LUT: `mycode/block_size_lut_rtl_unfixed.txt`
 - Zone LUT SHA-256: `d5864716816058089c525af005d430a1c063a1fb4eba2a53990dda1b21ed856a`
 
-All commands were run from the repository root with the `openpcd` conda environment.
+All commands were run from the repository root with the `openpcd` conda environment. Unless `--data_mode raw` is passed explicitly, each script defaults to `KittiDataset.__getitem__()` with `FOV_POINTS_ONLY=True`, matching the golden exporter input path.
 
 ## Generated Files
 
@@ -94,25 +94,28 @@ conda run -n openpcd python mycode/second_layer_sparsity.py \
 
 RTL unfixed initial block distribution:
 
+- Data loader: `KittiDataset.__getitem__` with `FOV_POINTS_ONLY=True`
 - Non-empty voxels: 15000
 - Voxel sparsity over the full grid: `0.00016645951704545453`
-- Non-empty blocks: 1113
+- Non-empty blocks: 1128
 - Empty blocks among emitted blocks: 0
-- Max voxels in one block: 287
-- Mean voxels per block: `18.315363881401616`
-- Most common block occupancies by block count: 2 voxels/block -> 115 blocks, 1 -> 110, 3 -> 65, 5 -> 62, 4 -> 57
+- Max voxels in one block: 360
+- Mean voxels per block: `18.007978723404257`
+- Most common block occupancies by block count: 1 voxels/block -> 78 blocks, 2 -> 75, 8 -> 63, 3 -> 58, 7 -> 57
 
 3x3x3 occupied-neighbor count:
 
+- Data loader: `KittiDataset.__getitem__` with `FOV_POINTS_ONLY=True`
 - Valid voxels: 15000
-- Most common neighbor bins: 1 neighbor -> 6705 voxels, 2 -> 3063, 3 -> 1652, 4 -> 1083, 5 -> 526
-- Highest nonzero bin: 26 neighbors -> 1 voxel; 27 neighbors -> 0 voxels
+- Most common neighbor bins: 1 neighbor -> 4107 voxels, 3 -> 3918, 4 -> 2606, 2 -> 2206, 5 -> 1200
+- Highest nonzero bin: 18 neighbors -> 4 voxels; 27 neighbors -> 0 voxels
 
 Chebyshev distance from LiDAR center:
 
+- Data loader: `KittiDataset.__getitem__` with `FOV_POINTS_ONLY=True`
 - Non-empty voxels: 15000
-- Nonzero distance range: 113 to 1407
-- Peak distance bin: 524 with 267 voxels
+- Nonzero distance range: 109 to 1407
+- Peak distance bin: 153 with 146 voxels
 - Voxel sparsity: `0.00016645951704545453`
 
 SECOND layer active-voxel analysis from `second_layer_sparsity.py`:
@@ -127,15 +130,17 @@ SECOND layer active-voxel analysis from `second_layer_sparsity.py`:
 
 SECOND layer input feature sparsity from `second_layer_input_feature_sparsity.py`:
 
-- Raw points before voxelization: 122676
+- Data loader: `KittiDataset.__getitem__` with `FOV_POINTS_ONLY=True`
+- FOV-filtered points before voxelization: 18733
 - Voxels after VFE: 15000
-- `input_voxel_features` zero element ratio: `0.05418333333333333`
-- Highest observed layer-input zero ratio: `conv4.0` / `conv4.0.0` at `0.7190618515956921`
-- `conv4.0` average zero channels per voxel: `46.01995849609375` of 64
+- `input_voxel_features` zero element ratio: `0.05246666666666667`
+- Highest observed layer-input zero ratio: `conv4.0` / `conv4.0.0` at `0.7254529768453036`
+- `conv4.0` average zero channels per voxel: `46.428993225097656` of 64
 
 ## Notes
 
+- All regenerated frame-analysis scripts now default to the KITTI dataset path (`--data_mode auto`) so their input voxel set matches the golden package's 15000 owner voxels.
 - `voxel_analyze_with_boudary_rtl_unfixed.py` uses the same RTL unfixed zone LUT and LiDAR center recorded by the golden manifest.
 - `block_voxel_vis2d.py` is the script's default fixed `10x10x6` block visualization. It is useful as a 2D occupancy view, but it is not the RTL unfixed block allocator result.
-- `second_layer_sparsity.py` was regenerated with the HW-QAT golden config/checkpoint and the KITTI dataset path so its FOV filtering matches the golden package.
+- `second_layer_sparsity.py` and `second_layer_input_feature_sparsity.py` were regenerated with the HW-QAT golden config/checkpoint and the KITTI dataset path so their FOV filtering matches the golden package.
 - The SECOND sparsity outputs are model-hook analysis artifacts; the bit-exact RTL golden outputs remain in `accdesign/second_rtl_golden_packages/second_val_000216_golden/ofm_golden.bin`.

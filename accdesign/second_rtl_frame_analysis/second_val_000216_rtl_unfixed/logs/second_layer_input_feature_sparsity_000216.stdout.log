@@ -1,30 +1,32 @@
+2026-07-08 11:29:33,458   INFO  Loading KITTI dataset
+2026-07-08 11:29:33,654   INFO  Total samples for KITTI dataset: 3769
 /home/vipuser/miniconda3/envs/openpcd/lib/python3.8/site-packages/torch/functional.py:504: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /opt/conda/conda-bld/pytorch_1678402421473/work/aten/src/ATen/native/TensorShape.cpp:3483.)
   return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
-2026-07-07 15:33:35,141   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth to GPU
-2026-07-07 15:33:35,260   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py8aaad69
-2026-07-07 15:33:35,282   INFO  ==> Done (loaded 189/189)
+2026-07-08 11:29:33,922   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth to GPU
+2026-07-08 11:29:34,003   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py8aaad69
+2026-07-08 11:29:34,033   INFO  ==> Done (loaded 189/189)
 Frame: 000216
 Device: cuda:0
 
 Record               Type                Active     C   ZeroRatio    AvgZeroC   AllZeroV      P50      P90      P99      SpatialShape(Z,Y,X)
 --------------------------------------------------------------------------------------------------------------------------------------------
-input_voxel_features InputFeatures        15000     4    0.054183       0.217   0.000000   0.0000   0.2500   0.2500         (41, 1600, 1408)
-conv_input           SubMConv3d           15000     4    0.054183       0.217   0.000000   0.0000   0.2500   0.2500         (41, 1600, 1408)
-conv1.0              SubMConv3d           15000    16    0.467608       7.482   0.000000   0.4375   0.6250   0.6875         (41, 1600, 1408)
-conv2.0              SparseConv3d         15000    16    0.330875       5.294   0.000000   0.3125   0.5625   0.7500         (41, 1600, 1408)
-conv2.1              SubMConv3d           31292    32    0.455529      14.577   0.000000   0.4688   0.5625   0.6875           (21, 800, 704)
-conv2.2              SubMConv3d           31292    32    0.548776      17.561   0.000032   0.5625   0.7500   0.8438           (21, 800, 704)
-conv3.0              SparseConv3d         31292    32    0.503199      16.102   0.000000   0.5312   0.6875   0.8125           (21, 800, 704)
-conv3.1              SubMConv3d           20242    64    0.558274      35.730   0.000000   0.5469   0.6719   0.7656           (11, 400, 352)
-conv3.2              SubMConv3d           20242    64    0.671528      42.978   0.000000   0.6875   0.8125   0.8750           (11, 400, 352)
-conv4.0              SparseConv3d         20242    64    0.719062      46.020   0.000000   0.7344   0.8594   0.9219           (11, 400, 352)
-conv4.1              SubMConv3d            8831    64    0.586988      37.567   0.000000   0.5781   0.7188   0.8125            (5, 200, 176)
-conv4.2              SubMConv3d            8831    64    0.635340      40.662   0.000000   0.6406   0.7656   0.8438            (5, 200, 176)
-conv_out             SparseConv3d          8831    64    0.608473      38.942   0.000000   0.6094   0.7344   0.8125            (5, 200, 176)
+input_voxel_features InputFeatures        15000     4    0.052467       0.210   0.000000   0.0000   0.2500   0.2500         (41, 1600, 1408)
+conv_input           SubMConv3d           15000     4    0.052467       0.210   0.000000   0.0000   0.2500   0.2500         (41, 1600, 1408)
+conv1.0              SubMConv3d           15000    16    0.426683       6.827   0.000000   0.4375   0.5625   0.6875         (41, 1600, 1408)
+conv2.0              SparseConv3d         15000    16    0.267542       4.281   0.000000   0.2500   0.4375   0.5625         (41, 1600, 1408)
+conv2.1              SubMConv3d           25762    32    0.454091      14.531   0.000000   0.4688   0.5625   0.6875           (21, 800, 704)
+conv2.2              SubMConv3d           25762    32    0.476001      15.232   0.000000   0.4688   0.6875   0.8125           (21, 800, 704)
+conv3.0              SparseConv3d         25762    32    0.503242      16.104   0.000000   0.5312   0.7188   0.8125           (21, 800, 704)
+conv3.1              SubMConv3d           19089    64    0.568739      36.399   0.000000   0.5625   0.6875   0.7656           (11, 400, 352)
+conv3.2              SubMConv3d           19089    64    0.657063      42.052   0.000000   0.6719   0.8125   0.8906           (11, 400, 352)
+conv4.0              SparseConv3d         19089    64    0.725453      46.429   0.000052   0.7344   0.8750   0.9375           (11, 400, 352)
+conv4.1              SubMConv3d            8495    64    0.589761      37.745   0.000000   0.5938   0.7188   0.7969            (5, 200, 176)
+conv4.2              SubMConv3d            8495    64    0.625116      40.007   0.000000   0.6250   0.7656   0.8438            (5, 200, 176)
+conv_out             SparseConv3d          8495    64    0.596678      38.187   0.000000   0.5938   0.7344   0.7969            (5, 200, 176)
 
-Raw points: 122676
+Raw points: 18733
 Saved JSON: /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_input_feature_sparsity/000216_second_input_feature_sparsity.json
 Saved CSV:  /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_input_feature_sparsity/000216_second_input_feature_sparsity.csv
 
 Combined log: /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/logs/second_layer_input_feature_sparsity_000216.log
-Combined summary JSON: /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_input_feature_sparsity/second_input_feature_sparsity_1frames_seed0_20260707_153335_summary.json
+Combined summary JSON: /home/vipuser/桌面/OpenPCDet/accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/second_layer_input_feature_sparsity/second_input_feature_sparsity_1frames_seed0_20260708_112934_summary.json

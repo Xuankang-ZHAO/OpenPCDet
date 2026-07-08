@@ -11,7 +11,6 @@ import argparse
 import csv
 import json
 import os
-import random
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -19,12 +18,25 @@ from pathlib import Path
 import numpy as np
 import torch
 
+from mycode.kitti_frame_loader import (
+    add_data_mode_args,
+    build_kitti_dataset,
+    build_template_dataset,
+    choose_kitti_frame_ids,
+    choose_raw_frame_paths,
+    load_kitti_sample,
+    load_raw_sample,
+    resolve_data_mode,
+    resolve_project_root,
+)
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Per-layer input feature sparsity analysis for SECOND backbone')
     parser.add_argument('--cfg', type=str, default='tools/cfgs/kitti_models/second.yaml')
     parser.add_argument('--ckpt', type=str, default='mycode/second_7862.pth')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne')
+    add_data_mode_args(parser)
     parser.add_argument('--frame_id', type=str, default='', help='KITTI frame id, e.g. 000123. Leave empty for random pick.')
     parser.add_argument('--num_frames', type=int, default=1, help='Number of frames to analyze.')
     parser.add_argument('--seed', type=int, default=0)
@@ -33,55 +45,6 @@ def parse_args():
     parser.add_argument('--log_file', type=str, default='', help='Optional combined log file path.')
     parser.add_argument('--zero_threshold', type=float, default=0.0, help='Treat abs(x) <= threshold as zero.')
     return parser.parse_args()
-
-
-def resolve_project_root():
-    project_root = Path(__file__).resolve().parents[1]
-    if str(project_root) not in sys.path:
-        sys.path.insert(0, str(project_root))
-    return project_root
-
-
-def choose_frames(velodyne_dir, frame_id, seed, num_frames):
-    velodyne_path = Path(velodyne_dir)
-    if not velodyne_path.exists():
-        raise FileNotFoundError(f'Velodyne directory not found: {velodyne_path}')
-
-    if frame_id:
-        tokens = [token.strip() for token in frame_id.split(',') if token.strip()]
-        if num_frames != len(tokens):
-            raise ValueError('When --frame_id is provided, --num_frames must match the number of frame ids.')
-
-        frames = []
-        for token in tokens:
-            frame_name = token if token.endswith('.bin') else f'{token}.bin'
-            frame_path = velodyne_path / frame_name
-            if not frame_path.exists():
-                raise FileNotFoundError(f'Frame not found: {frame_path}')
-            frames.append(frame_path)
-        return frames
-
-    candidates = sorted(velodyne_path.glob('*.bin'))
-    if not candidates:
-        raise RuntimeError(f'No .bin files found in {velodyne_path}')
-    if num_frames > len(candidates):
-        raise ValueError(f'Requested {num_frames} frames, but only found {len(candidates)} point clouds.')
-
-    rng = random.Random(seed)
-    return rng.sample(candidates, num_frames)
-
-
-def build_inference_dataset(cfg_obj):
-    from pcdet.datasets.dataset import DatasetTemplate
-
-    return DatasetTemplate(dataset_cfg=cfg_obj.DATA_CONFIG, class_names=cfg_obj.CLASS_NAMES, training=False)
-
-
-def load_single_batch(dataset, frame_path):
-    points = np.fromfile(str(frame_path), dtype=np.float32).reshape(-1, 4)
-    sample = dataset.prepare_data({'points': points, 'frame_id': frame_path.stem})
-    batch = dataset.collate_batch([sample])
-    return batch, int(points.shape[0])
 
 
 def move_batch_to_device(batch_dict, device):
@@ -93,6 +56,8 @@ def move_batch_to_device(batch_dict, device):
             continue
         if isinstance(value, np.ndarray):
             if key == 'image_shape':
+                output[key] = torch.from_numpy(value).int().to(device)
+            elif key == 'voxel_coords':
                 output[key] = torch.from_numpy(value).int().to(device)
             else:
                 output[key] = torch.from_numpy(value).float().to(device)
@@ -308,7 +273,7 @@ def resolve_log_path(project_root, out_dir, requested_log_file, run_tag):
     return project_root / out_dir / f'{run_tag}.log'
 
 
-def analyze_frame(model, backbone, spconv, batch_torch, frame_path, raw_points, zero_threshold):
+def analyze_frame(model, backbone, spconv, batch_torch, frame_info, raw_points, zero_threshold):
     with torch.no_grad():
         batch_torch = model.vfe(batch_torch)
         input_record = make_input_record(backbone, batch_torch, zero_threshold)
@@ -321,8 +286,10 @@ def analyze_frame(model, backbone, spconv, batch_torch, frame_path, raw_points, 
             recorder.remove()
 
     return {
-        'frame_id': frame_path.stem,
-        'point_cloud_path': str(frame_path),
+        'frame_id': frame_info['frame_id'],
+        'point_cloud_path': frame_info['point_cloud_path'],
+        'data_loader': frame_info['data_loader'],
+        'fov_points_only': frame_info['fov_points_only'],
         'num_raw_points': int(raw_points),
         'num_voxels_after_vfe': int(input_record['active_voxels']),
         'records': [input_record] + recorder.records,
@@ -354,11 +321,17 @@ def main():
     finally:
         os.chdir(original_cwd)
 
-    frame_paths = choose_frames(velodyne_dir, args.frame_id, args.seed, args.num_frames)
-    dataset = build_inference_dataset(cfg)
     device = resolve_device(args.device)
 
     logger = common_utils.create_logger()
+    data_mode = resolve_data_mode(cfg, args.data_mode)
+    if data_mode == 'kitti':
+        dataset = build_kitti_dataset(cfg, project_root, args.kitti_root, logger)
+        frame_refs = choose_kitti_frame_ids(dataset, args.frame_id, args.seed, args.num_frames)
+    else:
+        dataset = build_template_dataset(cfg)
+        frame_refs = choose_raw_frame_paths(velodyne_dir, args.frame_id, args.seed, args.num_frames)
+
     model = build_network(model_cfg=cfg.MODEL, num_class=len(cfg.CLASS_NAMES), dataset=dataset)
     model.load_params_from_file(filename=str(ckpt_path), logger=logger, to_cpu=(device.type == 'cpu'))
     model.to(device)
@@ -375,15 +348,20 @@ def main():
 
     payloads = []
     log_sections = []
-    for frame_path in frame_paths:
-        batch, raw_points = load_single_batch(dataset, frame_path)
+    for frame_ref in frame_refs:
+        if data_mode == 'kitti':
+            sample, frame_info = load_kitti_sample(dataset, frame_ref)
+            raw_points = int(frame_info.get('num_raw_points', sample['points'].shape[0]))
+        else:
+            sample, frame_info, raw_points = load_raw_sample(dataset, frame_ref)
+        batch = dataset.collate_batch([sample])
         batch_torch = move_batch_to_device(batch, device)
         frame_payload = analyze_frame(
             model=model,
             backbone=backbone,
             spconv=spconv,
             batch_torch=batch_torch,
-            frame_path=frame_path,
+            frame_info=frame_info,
             raw_points=raw_points,
             zero_threshold=args.zero_threshold,
         )
@@ -393,12 +371,13 @@ def main():
             'device': str(device),
             'seed': args.seed,
             'zero_threshold': args.zero_threshold,
+            'data_mode': data_mode,
         })
         payloads.append(frame_payload)
 
-        formatted = format_records(frame_path.stem, device, frame_payload['records'])
+        formatted = format_records(frame_info['frame_id'], device, frame_payload['records'])
         print(formatted)
-        json_path, csv_path = save_records(project_root / args.out_dir, frame_path.stem, frame_payload)
+        json_path, csv_path = save_records(project_root / args.out_dir, frame_info['frame_id'], frame_payload)
         section_lines = [
             formatted,
             '',
@@ -422,6 +401,7 @@ def main():
         'seed': args.seed,
         'num_frames': args.num_frames,
         'zero_threshold': args.zero_threshold,
+        'data_mode': data_mode,
         'frames': [frame_payload['frame_id'] for frame_payload in payloads],
     }
 

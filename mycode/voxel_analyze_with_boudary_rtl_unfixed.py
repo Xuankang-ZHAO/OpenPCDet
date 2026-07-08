@@ -12,10 +12,20 @@ Run directly in the OpenPCDet folder: (openpcd) vipuser@ubuntu22:~/桌面/OpenPC
 import argparse
 import csv
 import os
+from pathlib import Path
 
 import numpy as np
 from tqdm import tqdm
 
+from mycode.kitti_frame_loader import (
+    add_data_mode_args,
+    build_kitti_dataset,
+    choose_frame_ids,
+    load_kitti_voxels,
+    load_raw_voxels_via_data_processor,
+    normalize_voxel_coords,
+    resolve_data_mode,
+)
 from mycode.rtl_unfixed_block_partition import (
     compute_rtl_unfixed_partition_counts,
     load_zone_specs,
@@ -30,48 +40,8 @@ def load_cfg_for_kitti():
     return cfg
 
 
-def find_bin_files(velodyne_dir, list_file=None):
-    if list_file == '':
-        list_file = None
-
-    if list_file is not None:
-        with open(list_file, 'r') as handle:
-            frame_ids = [line.strip() for line in handle.readlines() if line.strip()]
-        paths = [os.path.join(velodyne_dir, frame_id + '.bin') for frame_id in frame_ids]
-        return [path for path in paths if os.path.exists(path)]
-
-    return sorted(
-        os.path.join(velodyne_dir, file_name)
-        for file_name in os.listdir(velodyne_dir)
-        if file_name.endswith('.bin')
-    )
-
-
-def normalize_voxel_coords(coords):
-    if coords is None:
-        return None
-
-    if isinstance(coords, list):
-        coords = coords[0]
-
-    if hasattr(coords, 'cpu'):
-        coords = coords.cpu().numpy()
-
-    coords = coords.astype(np.int64)
-    if coords.ndim == 2 and coords.shape[1] == 4:
-        coords = coords[:, 1:4]
-
-    return coords
-
-
-def analyze_file(bin_path, data_proc, zone_specs, lidar_center_xy):
-    points = np.fromfile(bin_path, dtype=np.float32).reshape(-1, 4)
-    data_dict = {'points': points, 'use_lead_xyz': True}
-
-    for proc in data_proc.data_processor_queue:
-        data_dict = proc(data_dict)
-
-    coords = normalize_voxel_coords(data_dict.get('voxel_coords', None))
+def analyze_coords(coords, file_label, metadata, data_proc, zone_specs, lidar_center_xy):
+    coords = normalize_voxel_coords(coords)
     if coords is None:
         return None
 
@@ -94,7 +64,10 @@ def analyze_file(bin_path, data_proc, zone_specs, lidar_center_xy):
     empty_fraction = float(empty_blocks / total_blocks) if total_blocks > 0 else 0.0
 
     result = {
-        'file': os.path.basename(bin_path),
+        'file': file_label,
+        'data_loader': metadata.get('data_loader', ''),
+        'fov_points_only': metadata.get('fov_points_only', ''),
+        'data_mode': metadata.get('data_mode', ''),
         'total_voxels': int(total_voxels),
         'non_empty_voxels': int(non_empty_voxels),
         'voxel_sparsity': float(voxel_sparsity),
@@ -115,9 +88,17 @@ def analyze_file(bin_path, data_proc, zone_specs, lidar_center_xy):
     return result
 
 
+def analyze_file(bin_path, data_proc, zone_specs, lidar_center_xy):
+    coords, metadata = load_raw_voxels_via_data_processor(bin_path, data_proc)
+    return analyze_coords(coords, os.path.basename(bin_path), metadata, data_proc, zone_specs, lidar_center_xy)
+
+
 def write_results_csv(results, output_path):
     base_keys = [
         'file',
+        'data_loader',
+        'fov_points_only',
+        'data_mode',
         'total_voxels',
         'non_empty_voxels',
         'voxel_sparsity',
@@ -157,6 +138,7 @@ def main():
     parser = argparse.ArgumentParser(description='arg parser')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne', help='Path to KITTI velodyne folder (bin files)')
     parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/trainval.txt', help='Optional frame id list (one id per line); pass an empty string to scan the directory directly')
+    add_data_mode_args(parser)
     parser.add_argument('--out', type=str, default='mycode/output/block_v2_rtl_unfixed_zone4.csv', help='CSV output file')
     parser.add_argument('--zone_lut', type=str, default='mycode/block_size_lut_rtl_unfixed.txt', help='Path to zone block-size LUT for RTL unfixed partition')
     parser.add_argument('--lidar_center', type=str, default='0,800', help='LiDAR voxel center as "x,y" for zone lookup (e.g. 0,800 for KITTI)')
@@ -167,16 +149,17 @@ def main():
         args.list_file = None
 
     cfg_local = load_cfg_for_kitti()
+    data_mode = resolve_data_mode(cfg_local, args.data_mode)
 
     if not os.path.exists(args.velodyne_dir):
         raise FileNotFoundError(f'velodyne dir not found: {args.velodyne_dir}')
     if args.list_file is not None and not os.path.exists(args.list_file):
         raise FileNotFoundError(f'list file not found: {args.list_file}')
 
-    frame_paths = find_bin_files(args.velodyne_dir, args.list_file)
+    frame_ids = choose_frame_ids(args.velodyne_dir, args.list_file)
     if args.max_files is not None:
-        frame_paths = frame_paths[:args.max_files]
-    if not frame_paths:
+        frame_ids = frame_ids[:args.max_files]
+    if not frame_ids:
         raise RuntimeError('No .bin files found to process')
 
     lidar_center_xy = tuple(int(value) for value in args.lidar_center.split(','))
@@ -191,12 +174,24 @@ def main():
         num_point_features=num_point_features,
     )
 
+    kitti_dataset = None
+    if data_mode == 'kitti':
+        from pcdet.utils import common_utils
+
+        logger = common_utils.create_logger()
+        kitti_dataset = build_kitti_dataset(cfg_local, Path(cfg.ROOT_DIR), args.kitti_root, logger)
+
     grid_size = (int(data_proc.grid_size[0]), int(data_proc.grid_size[1]), int(data_proc.grid_size[2]))
     zone_specs = load_zone_specs(args.zone_lut, grid_size, lidar_center_xy)
 
     results = []
-    for frame_path in tqdm(frame_paths, desc='Processing'):
-        result = analyze_file(frame_path, data_proc, zone_specs, lidar_center_xy)
+    for frame_id in tqdm(frame_ids, desc='Processing'):
+        if data_mode == 'kitti':
+            coords, metadata = load_kitti_voxels(kitti_dataset, frame_id)
+            result = analyze_coords(coords, f'{frame_id}.bin', metadata, data_proc, zone_specs, lidar_center_xy)
+        else:
+            frame_path = os.path.join(args.velodyne_dir, frame_id + '.bin')
+            result = analyze_file(frame_path, data_proc, zone_specs, lidar_center_xy)
         if result is not None:
             results.append(result)
 

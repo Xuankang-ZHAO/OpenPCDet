@@ -10,6 +10,8 @@ drawn as a red `x` marker in the voxel coordinate space.
 """
 import os
 import argparse
+from pathlib import Path
+
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -18,26 +20,24 @@ from matplotlib import cm, colors
 
 from tqdm import tqdm
 
+from mycode.kitti_frame_loader import (
+    add_data_mode_args,
+    build_kitti_dataset,
+    choose_frame_ids,
+    load_kitti_voxels,
+    load_raw_voxels_via_data_processor,
+    normalize_voxel_coords,
+    resolve_data_mode,
+)
+from mycode.legacy.block_partition import compute_block_partition_map
 from pcdet.config import cfg, cfg_from_yaml_file
 from pcdet.datasets.processor.data_processor import DataProcessor
-from mycode.legacy.block_partition import compute_block_partition_map
 
 
 def load_cfg_for_kitti():
     cfg_file = os.path.join(cfg.ROOT_DIR, 'tools', 'cfgs', 'dataset_configs', 'kitti_dataset.yaml')
     cfg_from_yaml_file(cfg_file, cfg)
     return cfg
-
-
-def find_bin_files(velodyne_dir, list_file=None):
-    if list_file is not None:
-        with open(list_file, 'r') as f:
-            ids = [l.strip() for l in f.readlines() if l.strip()]
-        paths = [os.path.join(velodyne_dir, x + '.bin') for x in ids]
-        paths = [p for p in paths if os.path.exists(p)]
-    else:
-        paths = sorted([os.path.join(velodyne_dir, f) for f in os.listdir(velodyne_dir) if f.endswith('.bin')])
-    return paths
 
 
 def make_image_from_blocks(counts, blocks, grid_size):
@@ -111,11 +111,6 @@ def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
     ax.set_xlim(-0.5, nx - 0.5)
     ax.set_ylim(-0.5, ny - 0.5)
 
-    # draw axis lines (bottom and left) in data coords
-    # ax.plot([ -0.5, nx - 0.5 ], [ -0.5, -0.5 ], color='black', lw=1)
-    # ax.plot([ -0.5, -0.5 ], [ -0.5, ny - 0.5 ], color='black', lw=1)
-    # ax.plot([ -0.5, nx - 0.5 ], [ ny - 0.5, ny - 0.5 ], color='black', lw=1)
-    # ax.plot([ nx - 0.5, nx - 0.5 ], [ -0.5, ny - 0.5 ], color='black', lw=1)
     for spine in ax.spines.values():
         spine.set_visible(True)
 
@@ -161,10 +156,33 @@ def vis_and_save(img, lidar_center, out_path, cmap_name='magma'):
     plt.close(fig)
 
 
+def visualize_coords(coords, frame_id, data_proc, cfg_local, fixed_flag, bx, by, bz, block_lut, lidar_center, out_dir):
+    coords = normalize_voxel_coords(coords)
+    if coords is None:
+        return False
+
+    mode = 'fixed' if fixed_flag else 'unfixed'
+    grid_sz = getattr(data_proc, 'grid_size', None)
+    if grid_sz is None:
+        grid_sz = (cfg_local.POINT_CLOUD_RANGE[0], cfg_local.POINT_CLOUD_RANGE[1], cfg_local.POINT_CLOUD_RANGE[2]) if hasattr(cfg_local, 'POINT_CLOUD_RANGE') else (400, 400, 40)
+
+    if mode == 'fixed':
+        counts, blocks, total_blocks, _ = compute_block_partition_map(coords, grid_sz, (bx, by, bz), mode='fixed')
+    else:
+        counts, blocks, total_blocks, _ = compute_block_partition_map(coords, grid_sz, (bx, by, bz), mode='unfixed', lut_path=block_lut, lidar_center_xy=lidar_center)
+
+    gsize = tuple(int(x) for x in grid_sz)
+    img = make_image_from_blocks(counts, blocks, gsize)
+    out_path = os.path.join(out_dir, frame_id + '.png')
+    vis_and_save(img, lidar_center, out_path)
+    return True
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne')
     parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/analyze.txt', help='Optional frame id list (one id per line)')
+    add_data_mode_args(parser)
     parser.add_argument('--out_dir', type=str, default='mycode/output/block_vis2d_fixed')
     parser.add_argument('--block_size_x', type=int, default=10)
     parser.add_argument('--block_size_y', type=int, default=10)
@@ -175,13 +193,14 @@ def main():
     args = parser.parse_args()
 
     cfg_local = load_cfg_for_kitti()
+    data_mode = resolve_data_mode(cfg_local, args.data_mode)
 
     velodyne_dir = args.velodyne_dir
     if not os.path.exists(velodyne_dir):
         raise FileNotFoundError(f'velodyne dir not found: {velodyne_dir}')
 
-    paths = find_bin_files(velodyne_dir, args.list_file)
-    if len(paths) == 0:
+    frame_ids = choose_frame_ids(velodyne_dir, args.list_file)
+    if len(frame_ids) == 0:
         raise RuntimeError('No .bin files found to process')
 
     os.makedirs(args.out_dir, exist_ok=True)
@@ -192,46 +211,37 @@ def main():
                               training=False,
                               num_point_features=num_point_features)
 
+    kitti_dataset = None
+    if data_mode == 'kitti':
+        from pcdet.utils import common_utils
+
+        logger = common_utils.create_logger()
+        kitti_dataset = build_kitti_dataset(cfg_local, Path(cfg.ROOT_DIR), args.kitti_root, logger)
+
     fixed_flag = str(args.fixed_block_partition).lower() in ('1', 'true', 'yes', 'y', 't')
     bx = args.block_size_x; by = args.block_size_y; bz = args.block_size_z
     lidar_center = tuple(int(x) for x in args.lidar_center.split(',')) if args.lidar_center is not None else None
 
-    for p in tqdm(paths, desc='Visualizing'):
-        points = np.fromfile(p, dtype=np.float32).reshape(-1, 4)
-        data_dict = {'points': points, 'use_lead_xyz': True}
-        for proc in data_proc.data_processor_queue:
-            data_dict = proc(data_dict)
-
-        coords = data_dict.get('voxel_coords', None)
-        if coords is None:
-            continue
-        if isinstance(coords, list):
-            coords = coords[0]
-        if hasattr(coords, 'cpu'):
-            coords = coords.cpu().numpy()
-        coords = coords.astype(np.int64)
-        if coords.ndim == 2 and coords.shape[1] == 4:
-            coords = coords[:, 1:4]
-
-        mode = 'fixed' if fixed_flag else 'unfixed'
-        # prefer grid_size from data_proc
-        grid_sz = getattr(data_proc, 'grid_size', None)
-        if grid_sz is None:
-            # fallback: try cfg
-            grid_sz = (cfg_local.POINT_CLOUD_RANGE[0], cfg_local.POINT_CLOUD_RANGE[1], cfg_local.POINT_CLOUD_RANGE[2]) if hasattr(cfg_local, 'POINT_CLOUD_RANGE') else (400, 400, 40)
-
-        if mode == 'fixed':
-            counts, blocks, total_blocks, _ = compute_block_partition_map(coords, grid_sz, (bx, by, bz), mode='fixed')
+    for frame_id in tqdm(frame_ids, desc='Visualizing'):
+        if data_mode == 'kitti':
+            coords, _metadata = load_kitti_voxels(kitti_dataset, frame_id)
         else:
-            counts, blocks, total_blocks, _ = compute_block_partition_map(coords, grid_sz, (bx, by, bz), mode='unfixed', lut_path=args.block_lut, lidar_center_xy=lidar_center)
+            bin_path = os.path.join(velodyne_dir, frame_id + '.bin')
+            coords, _metadata = load_raw_voxels_via_data_processor(bin_path, data_proc)
 
-        gsize = tuple(int(x) for x in grid_sz)
-
-        img = make_image_from_blocks(counts, blocks, gsize)
-
-        base = os.path.splitext(os.path.basename(p))[0]
-        out_path = os.path.join(args.out_dir, base + '.png')
-        vis_and_save(img, lidar_center, out_path)
+        visualize_coords(
+            coords,
+            frame_id,
+            data_proc,
+            cfg_local,
+            fixed_flag,
+            bx,
+            by,
+            bz,
+            args.block_lut,
+            lidar_center,
+            args.out_dir,
+        )
 
 
 if __name__ == '__main__':

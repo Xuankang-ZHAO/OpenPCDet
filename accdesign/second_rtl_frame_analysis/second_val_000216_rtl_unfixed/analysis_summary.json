@@ -30,97 +30,106 @@
     "total_voxels": 90112000,
     "non_empty_voxels": 15000,
     "voxel_sparsity": 0.00016645951704545453,
-    "blocks_total": 1113,
-    "blocks_nonempty": 1113,
+    "blocks_total": 1128,
+    "blocks_nonempty": 1128,
     "blocks_empty": 0,
     "blocks_fraction_empty": 0.0,
-    "blocks_max_voxels": 287,
-    "blocks_mean_voxels_per_block": 18.315363881401616,
+    "blocks_max_voxels": 360,
+    "blocks_mean_voxels_per_block": 18.007978723404257,
     "occupancy_hist_top5_by_block_count": [
       {
-        "voxels_per_block": 2,
-        "block_count": 115
+        "voxels_per_block": 1,
+        "block_count": 78
       },
       {
-        "voxels_per_block": 1,
-        "block_count": 110
+        "voxels_per_block": 2,
+        "block_count": 75
+      },
+      {
+        "voxels_per_block": 8,
+        "block_count": 63
       },
       {
         "voxels_per_block": 3,
-        "block_count": 65
+        "block_count": 58
       },
       {
-        "voxels_per_block": 5,
-        "block_count": 62
-      },
-      {
-        "voxels_per_block": 4,
+        "voxels_per_block": 7,
         "block_count": 57
       }
-    ]
+    ],
+    "data_loader": "KittiDataset.__getitem__",
+    "fov_points_only": true,
+    "data_mode": "kitti"
   },
   "neighbor_count": {
+    "data_loader": "KittiDataset.__getitem__",
+    "fov_points_only": true,
+    "data_mode": "kitti",
     "valid_voxels": 15000,
     "counts_1_to_27": {
-      "1": 6705,
-      "2": 3063,
-      "3": 1652,
-      "4": 1083,
-      "5": 526,
-      "6": 382,
-      "7": 264,
-      "8": 224,
-      "9": 226,
-      "10": 142,
-      "11": 148,
-      "12": 116,
-      "13": 86,
-      "14": 57,
-      "15": 65,
-      "16": 52,
-      "17": 52,
-      "18": 51,
-      "19": 28,
-      "20": 32,
-      "21": 23,
-      "22": 14,
-      "23": 3,
-      "24": 3,
-      "25": 2,
-      "26": 1,
+      "1": 4107,
+      "2": 2206,
+      "3": 3918,
+      "4": 2606,
+      "5": 1200,
+      "6": 379,
+      "7": 174,
+      "8": 120,
+      "9": 66,
+      "10": 43,
+      "11": 36,
+      "12": 38,
+      "13": 27,
+      "14": 23,
+      "15": 20,
+      "16": 14,
+      "17": 15,
+      "18": 4,
+      "19": 3,
+      "20": 1,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
       "27": 0
     },
     "top5_neighbor_bins": [
       {
         "neighbor_count": 1,
-        "voxel_count": 6705
-      },
-      {
-        "neighbor_count": 2,
-        "voxel_count": 3063
+        "voxel_count": 4107
       },
       {
         "neighbor_count": 3,
-        "voxel_count": 1652
+        "voxel_count": 3918
       },
       {
         "neighbor_count": 4,
-        "voxel_count": 1083
+        "voxel_count": 2606
+      },
+      {
+        "neighbor_count": 2,
+        "voxel_count": 2206
       },
       {
         "neighbor_count": 5,
-        "voxel_count": 526
+        "voxel_count": 1200
       }
     ]
   },
   "chebyshev": {
+    "data_loader": "KittiDataset.__getitem__",
+    "fov_points_only": true,
+    "data_mode": "kitti",
     "total_voxels": 90112000,
     "non_empty_voxels": 15000,
     "voxel_sparsity": 0.00016645951704545453,
-    "min_nonzero_distance": 113,
+    "min_nonzero_distance": 109,
     "max_nonzero_distance": 1407,
-    "peak_distance": 532,
-    "peak_voxel_count": 267
+    "peak_distance": 153,
+    "peak_voxel_count": 146
   },
   "second_layer_sparsity": {
     "data_loader": "KittiDataset.__getitem__",
@@ -338,7 +347,10 @@
     ]
   },
   "second_layer_input_feature_sparsity": {
-    "num_raw_points": 122676,
+    "data_loader": "KittiDataset.__getitem__",
+    "fov_points_only": true,
+    "data_mode": "kitti",
+    "num_raw_points": 18733,
     "num_voxels_after_vfe": 15000,
     "records": [
       {
@@ -346,8 +358,8 @@
         "module_name": "conv_input",
         "active_voxels": 15000,
         "channels": 4,
-        "zero_ratio": 0.05418333333333333,
-        "avg_zero_channels_per_voxel": 0.21673333644866943,
+        "zero_ratio": 0.05246666666666667,
+        "avg_zero_channels_per_voxel": 0.20986667275428772,
         "all_zero_voxel_ratio": 0.0
       },
       {
@@ -355,8 +367,8 @@
         "module_name": "conv_input.0",
         "active_voxels": 15000,
         "channels": 4,
-        "zero_ratio": 0.05418333333333333,
-        "avg_zero_channels_per_voxel": 0.21673333644866943,
+        "zero_ratio": 0.05246666666666667,
+        "avg_zero_channels_per_voxel": 0.20986667275428772,
         "all_zero_voxel_ratio": 0.0
       },
       {
@@ -364,8 +376,8 @@
         "module_name": "conv1.0.0",
         "active_voxels": 15000,
         "channels": 16,
-        "zero_ratio": 0.46760833333333335,
-        "avg_zero_channels_per_voxel": 7.481733322143555,
+        "zero_ratio": 0.42668333333333336,
+        "avg_zero_channels_per_voxel": 6.82693338394165,
         "all_zero_voxel_ratio": 0.0
       },
       {
@@ -373,89 +385,89 @@
         "module_name": "conv2.0.0",
         "active_voxels": 15000,
         "channels": 16,
-        "zero_ratio": 0.330875,
-        "avg_zero_channels_per_voxel": 5.294000148773193,
+        "zero_ratio": 0.2675416666666667,
+        "avg_zero_channels_per_voxel": 4.280666828155518,
         "all_zero_voxel_ratio": 0.0
       },
       {
         "record_name": "conv2.1",
         "module_name": "conv2.1.0",
-        "active_voxels": 31292,
+        "active_voxels": 25762,
         "channels": 32,
-        "zero_ratio": 0.4555287693340151,
-        "avg_zero_channels_per_voxel": 14.576920509338379,
+        "zero_ratio": 0.4540905694433662,
+        "avg_zero_channels_per_voxel": 14.530898094177246,
         "all_zero_voxel_ratio": 0.0
       },
       {
         "record_name": "conv2.2",
         "module_name": "conv2.2.0",
-        "active_voxels": 31292,
+        "active_voxels": 25762,
         "channels": 32,
-        "zero_ratio": 0.5487764444586476,
-        "avg_zero_channels_per_voxel": 17.56084632873535,
-        "all_zero_voxel_ratio": 3.195704994141124e-05
+        "zero_ratio": 0.4760014750407577,
+        "avg_zero_channels_per_voxel": 15.232047080993652,
+        "all_zero_voxel_ratio": 0.0
       },
       {
         "record_name": "conv3.0",
         "module_name": "conv3.0.0",
-        "active_voxels": 31292,
+        "active_voxels": 25762,
         "channels": 32,
-        "zero_ratio": 0.5031987009459287,
-        "avg_zero_channels_per_voxel": 16.102357864379883,
+        "zero_ratio": 0.5032424210076858,
+        "avg_zero_channels_per_voxel": 16.103757858276367,
         "all_zero_voxel_ratio": 0.0
       },
       {
         "record_name": "conv3.1",
         "module_name": "conv3.1.0",
-        "active_voxels": 20242,
+        "active_voxels": 19089,
         "channels": 64,
-        "zero_ratio": 0.5582737933504595,
-        "avg_zero_channels_per_voxel": 35.729522705078125,
+        "zero_ratio": 0.5687388679344125,
+        "avg_zero_channels_per_voxel": 36.399288177490234,
         "all_zero_voxel_ratio": 0.0
       },
       {
         "record_name": "conv3.2",
         "module_name": "conv3.2.0",
-        "active_voxels": 20242,
+        "active_voxels": 19089,
         "channels": 64,
-        "zero_ratio": 0.6715276405493529,
-        "avg_zero_channels_per_voxel": 42.97776794433594,
+        "zero_ratio": 0.6570628044947352,
+        "avg_zero_channels_per_voxel": 42.05202102661133,
         "all_zero_voxel_ratio": 0.0
       },
       {
         "record_name": "conv4.0",
         "module_name": "conv4.0.0",
-        "active_voxels": 20242,
+        "active_voxels": 19089,
         "channels": 64,
-        "zero_ratio": 0.7190618515956921,
-        "avg_zero_channels_per_voxel": 46.01995849609375,
-        "all_zero_voxel_ratio": 0.0
+        "zero_ratio": 0.7254529768453036,
+        "avg_zero_channels_per_voxel": 46.428993225097656,
+        "all_zero_voxel_ratio": 5.23861926922109e-05
       },
       {
         "record_name": "conv4.1",
         "module_name": "conv4.1.0",
-        "active_voxels": 8831,
+        "active_voxels": 8495,
         "channels": 64,
-        "zero_ratio": 0.5869876004982448,
-        "avg_zero_channels_per_voxel": 37.56720733642578,
+        "zero_ratio": 0.5897605208946439,
+        "avg_zero_channels_per_voxel": 37.74467468261719,
         "all_zero_voxel_ratio": 0.0
       },
       {
         "record_name": "conv4.2",
         "module_name": "conv4.2.0",
-        "active_voxels": 8831,
+        "active_voxels": 8495,
         "channels": 64,
-        "zero_ratio": 0.6353399954705017,
-        "avg_zero_channels_per_voxel": 40.66175842285156,
+        "zero_ratio": 0.6251158769864626,
+        "avg_zero_channels_per_voxel": 40.007415771484375,
         "all_zero_voxel_ratio": 0.0
       },
       {
         "record_name": "conv_out",
         "module_name": "conv_out.0",
-        "active_voxels": 8831,
+        "active_voxels": 8495,
         "channels": 64,
-        "zero_ratio": 0.6084726389989809,
-        "avg_zero_channels_per_voxel": 38.9422492980957,
+        "zero_ratio": 0.5966781930547381,
+        "avg_zero_channels_per_voxel": 38.18740463256836,
         "all_zero_voxel_ratio": 0.0
       }
     ]

@@ -7,9 +7,20 @@ non-empty voxels and the histogram of neighbor counts (1..27).
 """
 import os
 import argparse
+from pathlib import Path
+
 import numpy as np
 from tqdm import tqdm
 
+from mycode.kitti_frame_loader import (
+    add_data_mode_args,
+    build_kitti_dataset,
+    choose_frame_ids,
+    load_kitti_voxels,
+    load_raw_voxels_via_data_processor,
+    normalize_voxel_coords,
+    resolve_data_mode,
+)
 from pcdet.config import cfg, cfg_from_yaml_file
 from pcdet.datasets.processor.data_processor import DataProcessor
 
@@ -21,39 +32,10 @@ def load_cfg_for_kitti():
     return cfg
 
 
-def find_bin_files(velodyne_dir, list_file=None):
-    if list_file is not None and os.path.exists(list_file):
-        with open(list_file, 'r') as f:
-            ids = [l.strip() for l in f.readlines() if l.strip()]
-        paths = [os.path.join(velodyne_dir, x + '.bin') for x in ids]
-        paths = [p for p in paths if os.path.exists(p)]
-    else:
-        paths = sorted([os.path.join(velodyne_dir, f) for f in os.listdir(velodyne_dir) if f.endswith('.bin')])
-    return paths
-
-
-def analyze_file(bin_path, data_proc):
-    points = np.fromfile(bin_path, dtype=np.float32).reshape(-1, 4)
-    data_dict = {'points': points, 'use_lead_xyz': True}
-
-    # Apply data processing pipeline to generate voxels
-    for proc in data_proc.data_processor_queue:
-        data_dict = proc(data_dict)
-
-    coords = data_dict.get('voxel_coords', None)
+def analyze_coords(coords, file_label, metadata, data_proc):
+    coords = normalize_voxel_coords(coords)
     if coords is None:
         return None
-
-    if isinstance(coords, list):
-        coords = coords[0]
-
-    if hasattr(coords, 'cpu'):
-        coords = coords.cpu().numpy()
-
-    coords = coords.astype(np.int64)
-    if coords.ndim == 2 and coords.shape[1] == 4:
-        # format: [batch_idx, z, y, x]
-        coords = coords[:, 1:4]
 
     # coords expected as [z, y, x]
     z_idx = coords[:, 0]
@@ -62,7 +44,6 @@ def analyze_file(bin_path, data_proc):
 
     # grid_size in data_proc is [nx, ny, nz] (x,y,z). We build occupancy as (nz, ny, nx)
     nx, ny, nz = int(data_proc.grid_size[0]), int(data_proc.grid_size[1]), int(data_proc.grid_size[2])
-    total_voxels = nx * ny * nz
 
     non_empty_voxels = coords.shape[0]
 
@@ -84,8 +65,8 @@ def analyze_file(bin_path, data_proc):
     # For each voxel compute sum over 3x3x3 slice in padded array
     neigh_counts = np.empty(non_empty_voxels, dtype=np.int32)
     for i in range(non_empty_voxels):
-        z = int(z_idx[i]) 
-        y = int(y_idx[i]) 
+        z = int(z_idx[i])
+        y = int(y_idx[i])
         x = int(x_idx[i])
         # in padded array the voxel is at (z+1, y+1, x+1); slice [z:z+3) covers -1..+1
         s = occ_p[z:(z + 3), y:(y + 3), x:(x + 3)]
@@ -94,16 +75,30 @@ def analyze_file(bin_path, data_proc):
     # histogram for counts 0..27 (we will ignore 0)
     hist = np.bincount(neigh_counts, minlength=28)
 
-    return {'file': os.path.basename(bin_path), 'non_empty_voxels': int(non_empty_voxels), 'neigh_hist': hist}
+    return {
+        'file': file_label,
+        'data_loader': metadata.get('data_loader', ''),
+        'fov_points_only': metadata.get('fov_points_only', ''),
+        'data_mode': metadata.get('data_mode', ''),
+        'non_empty_voxels': int(non_empty_voxels),
+        'neigh_hist': hist,
+    }
+
+
+def analyze_file(bin_path, data_proc):
+    coords, metadata = load_raw_voxels_via_data_processor(bin_path, data_proc)
+    return analyze_coords(coords, os.path.basename(bin_path), metadata, data_proc)
 
 
 def main():
     parser = argparse.ArgumentParser(description='Compute 3x3x3 neighbor-count distribution')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne', help='Path to KITTI velodyne folder (bin files)')
     parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/analyze.txt', help='Optional frame id list (one id per line)')
+    add_data_mode_args(parser)
     args = parser.parse_args()
 
     cfg_local = load_cfg_for_kitti()
+    data_mode = resolve_data_mode(cfg_local, args.data_mode)
 
     if args.velodyne_dir is None:
         velodyne_dir = os.path.join(cfg.ROOT_DIR, 'data', 'kitti', 'training', 'velodyne')
@@ -113,8 +108,8 @@ def main():
     if not os.path.exists(velodyne_dir):
         raise FileNotFoundError(f'velodyne dir not found: {velodyne_dir}')
 
-    paths = find_bin_files(velodyne_dir, args.list_file)
-    if len(paths) == 0:
+    frame_ids = choose_frame_ids(velodyne_dir, args.list_file)
+    if len(frame_ids) == 0:
         raise RuntimeError('No .bin files found to process')
 
     num_point_features = len(cfg_local.POINT_FEATURE_ENCODING.used_feature_list) if 'POINT_FEATURE_ENCODING' in cfg_local else 4
@@ -123,6 +118,13 @@ def main():
                               training=False,
                               num_point_features=num_point_features)
 
+    kitti_dataset = None
+    if data_mode == 'kitti':
+        from pcdet.utils import common_utils
+
+        logger = common_utils.create_logger()
+        kitti_dataset = build_kitti_dataset(cfg_local, Path(cfg.ROOT_DIR), args.kitti_root, logger)
+
     # Print a neat table: header once, then one row per file
     fname_w = 24
     count_w = 12
@@ -130,10 +132,16 @@ def main():
     header = f"{'file':{fname_w}} {'有效体素数':>{count_w}}"
     for k in range(1, 28):
         header += f" {k:>{col_w}}"
+    print(f'data_mode={data_mode} data_loader={"KittiDataset.__getitem__" if data_mode == "kitti" else "DataProcessor(raw_points)"}')
     print(header)
 
-    for p in tqdm(paths, desc='Processing'):
-        res = analyze_file(p, data_proc)
+    for frame_id in tqdm(frame_ids, desc='Processing'):
+        if data_mode == 'kitti':
+            coords, metadata = load_kitti_voxels(kitti_dataset, frame_id)
+            res = analyze_coords(coords, f'{frame_id}.bin', metadata, data_proc)
+        else:
+            bin_path = os.path.join(velodyne_dir, frame_id + '.bin')
+            res = analyze_file(bin_path, data_proc)
         if res is None:
             continue
         row = f"{res['file'][:fname_w]:{fname_w}} {res['non_empty_voxels']:>{count_w}d}"
