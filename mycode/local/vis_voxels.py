@@ -1,4 +1,5 @@
 """Schematic of KITTI voxelization (SECOND-style grid) with Open3D / matplotlib."""
+import os
 import sys
 from pathlib import Path
 
@@ -198,12 +199,20 @@ def save_matplotlib(corners, voxel_size, path, eye, lookat):
     return path
 
 
+def has_display():
+    return bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
+
+
 def show_interactive(mesh, lines, eye, lookat, up):
     vis = o3d.visualization.Visualizer()
-    vis.create_window(window_name="voxelization", width=1280, height=800)
+    if not vis.create_window(window_name="voxelization", width=1280, height=800):
+        return False
     vis.add_geometry(mesh)
     vis.add_geometry(lines)
     opt = vis.get_render_option()
+    if opt is None:
+        vis.destroy_window()
+        return False
     opt.mesh_show_back_face = True
     opt.light_on = False
 
@@ -213,6 +222,7 @@ def show_interactive(mesh, lines, eye, lookat, up):
     ctr.convert_from_pinhole_camera_parameters(params, allow_arbitrary=True)
     vis.run()
     vis.destroy_window()
+    return True
 
 
 def main():
@@ -230,8 +240,11 @@ def main():
 
     save_matplotlib(corners, voxel_size, OUT_PATH, eye, lookat)
     print(f"saved: {OUT_PATH}")
-    if "--save-only" not in sys.argv:
-        show_interactive(mesh, lines, eye, lookat, up)
+    if "--save-only" in sys.argv:
+        return
+    if has_display() and show_interactive(mesh, lines, eye, lookat, up):
+        return
+    print("no DISPLAY; skipped Open3D window")
 
 
 if __name__ == "__main__":
