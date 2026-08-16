@@ -18,7 +18,17 @@ TOOLS_DIR = REPO_ROOT / "tools"
 CFG_FILE = TOOLS_DIR / "cfgs/kitti_models/second_hw_qat.yaml"
 CKPT_PATH = REPO_ROOT / "output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth"
 BIN_PATH = LOCAL_DIR / "000008.bin"
+OUT_BIN = LOCAL_DIR / "det_000008.bin"
 OUT_PATH = LOCAL_DIR / "det_000008.png"
+BOX_EDGE_SAMPLES = 80
+BOX_EDGES = np.array(
+    [
+        [0, 1], [1, 2], [2, 3], [3, 0],
+        [4, 5], [5, 6], [6, 7], [7, 4],
+        [0, 4], [1, 5], [2, 6], [3, 7],
+    ],
+    dtype=np.int32,
+)
 
 CLASS_NAMES = ["Car", "Pedestrian", "Cyclist"]
 BOX_COLORS = {
@@ -33,6 +43,43 @@ def ensure_project_imports():
         if path not in sys.path:
             sys.path.insert(0, path)
     os.chdir(TOOLS_DIR)
+
+
+def box_corners(box7):
+    x, y, z, length, width, height, yaw = [float(v) for v in box7[:7]]
+    dx, dy, dz = length / 2.0, width / 2.0, height / 2.0
+    local = np.array(
+        [
+            [dx, dy, -dz], [dx, -dy, -dz], [-dx, -dy, -dz], [-dx, dy, -dz],
+            [dx, dy, dz], [dx, -dy, dz], [-dx, -dy, dz], [-dx, dy, dz],
+        ],
+        dtype=np.float64,
+    )
+    cos_yaw, sin_yaw = np.cos(yaw), np.sin(yaw)
+    rot = np.array([[cos_yaw, -sin_yaw, 0.0], [sin_yaw, cos_yaw, 0.0], [0.0, 0.0, 1.0]])
+    return local @ rot.T + np.array([x, y, z], dtype=np.float64)
+
+
+def sample_box_points(box7, label, n_per_edge=BOX_EDGE_SAMPLES):
+    corners = box_corners(box7)
+    t = np.linspace(0.0, 1.0, n_per_edge, dtype=np.float64)[:, None]
+    intensity = np.full((n_per_edge, 1), float(label), dtype=np.float64)
+    parts = []
+    for i, j in BOX_EDGES:
+        xyz = (1.0 - t) * corners[i] + t * corners[j]
+        parts.append(np.concatenate([xyz, intensity], axis=1))
+    return np.concatenate(parts, axis=0)
+
+
+def save_det_bin(src_pts, boxes, labels, path):
+    src_pts = np.asarray(src_pts, dtype=np.float32).reshape(-1, 4)
+    box_parts = [sample_box_points(box, label) for box, label in zip(boxes, labels)]
+    if box_parts:
+        merged = np.concatenate([src_pts.astype(np.float64)] + box_parts, axis=0)
+    else:
+        merged = src_pts.astype(np.float64)
+    merged.astype(np.float32).tofile(path)
+    return path, int(src_pts.shape[0]), int(merged.shape[0] - src_pts.shape[0])
 
 
 def box_line_set(box7):
@@ -148,11 +195,16 @@ def main():
             print(f"    score={score:.3f} xyz=({box[0]:.2f},{box[1]:.2f},{box[2]:.2f}) "
                   f"lwh=({box[3]:.2f},{box[4]:.2f},{box[5]:.2f}) yaw={box[6]:.3f}")
 
-    pcd, pts = load_kitti_bin(BIN_PATH)
-    save_offscreen(pcd, pts, boxes, labels, OUT_PATH)
-    print(f"saved: {OUT_PATH}")
-    if not has_display():
-        print("no DISPLAY; skipped Open3D window")
+    _, pts = load_kitti_bin(BIN_PATH)
+    out_bin, n_src, n_box = save_det_bin(pts, boxes, labels, OUT_BIN)
+    print(f"saved: {out_bin}")
+    print(f"source points: {n_src}")
+    print(f"box wireframe points: {n_box}")
+    print(f"total points: {n_src + n_box}")
+    if "--save-png" in sys.argv:
+        pcd, pts = load_kitti_bin(BIN_PATH)
+        save_offscreen(pcd, pts, boxes, labels, OUT_PATH)
+        print(f"saved: {OUT_PATH}")
 
 
 if __name__ == "__main__":
