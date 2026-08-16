@@ -69,6 +69,10 @@ def forward_camera(pts):
 
 
 def has_display():
+    # Windows has a desktop but no DISPLAY/WAYLAND_DISPLAY.
+    # OffscreenRenderer (EGL headless) is also unsupported on Windows.
+    if sys.platform == "win32":
+        return True
     return bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
 
 
@@ -130,8 +134,15 @@ def main():
         if show_interactive(pcd, pts, f"forward {bin_path.name}"):
             return
 
-    save_offscreen(pcd, pts, out_path)
-    print(f"saved: {out_path}")
+    try:
+        save_offscreen(pcd, pts, out_path)
+        print(f"saved: {out_path}")
+    except RuntimeError as exc:
+        if "EGL Headless" not in str(exc):
+            raise
+        if show_interactive(pcd, pts, f"forward {bin_path.name}"):
+            return
+        raise
     if not has_display():
         print("no DISPLAY; skipped Open3D window")
 
