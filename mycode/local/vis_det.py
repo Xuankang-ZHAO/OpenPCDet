@@ -1,8 +1,6 @@
-"""Run INT8 SECOND HW-QAT on local 000008.bin and save boxes from the same view."""
-import argparse
+"""Run FP32 SECOND baseline on local 000008.bin and save boxes as a KITTI bin."""
 import os
 import sys
-import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -10,13 +8,13 @@ import open3d as o3d
 import torch
 from open3d.visualization import rendering
 
-from vis_topdown import forward_camera, has_display, load_kitti_bin
+from vis_topdown import forward_camera, load_kitti_bin
 
 LOCAL_DIR = Path(__file__).resolve().parent
 REPO_ROOT = LOCAL_DIR.parents[1]
 TOOLS_DIR = REPO_ROOT / "tools"
-CFG_FILE = TOOLS_DIR / "cfgs/kitti_models/second_hw_qat.yaml"
-CKPT_PATH = REPO_ROOT / "output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth"
+CFG_FILE = TOOLS_DIR / "cfgs/kitti_models/second.yaml"
+CKPT_PATH = REPO_ROOT / "output/kitti_models/second/default/ckpt/checkpoint_epoch_80.pth"
 BIN_PATH = LOCAL_DIR / "000008.bin"
 OUT_BIN = LOCAL_DIR / "det_000008.bin"
 OUT_PATH = LOCAL_DIR / "det_000008.png"
@@ -121,32 +119,14 @@ def save_offscreen(pcd, pts, boxes, labels, path):
     return path
 
 
-def build_hw_int8_model(cfg, dataset, ckpt, logger):
+def build_fp32_model(cfg, dataset, ckpt, logger):
     from pcdet.models import build_network
-    from test_second_hw_qat import export_hw_payload, get_backbone
 
     model = build_network(model_cfg=cfg.MODEL, num_class=len(cfg.CLASS_NAMES), dataset=dataset)
     model.load_params_from_file(filename=str(ckpt), logger=logger, to_cpu=False)
     model.cuda()
     model.eval()
-
-    args = argparse.Namespace(
-        weight_quant="per_channel",
-        observer="max",
-        observer_momentum=0.95,
-        bias_bits=32,
-        shift_bits=5,
-        max_shift_rel_error=1.0,
-        emit_binary=False,
-        check_export=False,
-    )
-    backbone = get_backbone(model)
-    backbone.enable_hw_qat(False, weight_quant=args.weight_quant, observer=args.observer,
-                           observer_momentum=args.observer_momentum, fake_quant=False)
-    with tempfile.TemporaryDirectory(prefix="second_hw_qat_vis_") as tmp:
-        export_result = export_hw_payload(backbone, Path(tmp), args, logger)
-    backbone.enable_hw_reference(True, qparams=export_result["qparams"])
-    logger.info("Enabled HW-equivalent INT8 reference path")
+    logger.info("Loaded FP32 SECOND baseline: VoxelBackBone8x")
     return model
 
 
@@ -184,7 +164,7 @@ def main():
     logger.info("points file: %s" % BIN_PATH)
     logger.info("ckpt: %s" % CKPT_PATH)
 
-    model = build_hw_int8_model(cfg, dataset, CKPT_PATH, logger)
+    model = build_fp32_model(cfg, dataset, CKPT_PATH, logger)
     boxes, scores, labels = run_inference(model, dataset)
 
     print(f"detections: {len(boxes)}")
