@@ -9,6 +9,11 @@ from open3d.visualization import rendering
 
 BIN_PATH = Path(__file__).with_name("000008.bin")
 OUT_PATH = Path(__file__).with_name("forward_000008.png")
+BOX_COLORS = {
+    1: np.array([0.05, 0.72, 0.18]),
+    2: np.array([0.05, 0.62, 0.92]),
+    3: np.array([0.95, 0.72, 0.08]),
+}
 
 
 def jet_from_z(z):
@@ -24,9 +29,14 @@ def jet_from_z(z):
 
 def load_kitti_bin(path):
     pts = np.fromfile(path, dtype=np.float32).reshape(-1, 4)
+    colors = jet_from_z(pts[:, 2])
+    intensity = pts[:, 3]
+    box_mask = intensity >= 0.995
+    for label, color in BOX_COLORS.items():
+        colors[box_mask & (np.round(intensity) == label)] = color
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(pts[:, :3])
-    pcd.colors = o3d.utility.Vector3dVector(jet_from_z(pts[:, 2]))
+    pcd.colors = o3d.utility.Vector3dVector(colors)
     return pcd, pts
 
 
@@ -84,9 +94,9 @@ def save_offscreen(pcd, pts, path):
     return path
 
 
-def show_interactive(pcd, pts):
+def show_interactive(pcd, pts, title):
     vis = o3d.visualization.Visualizer()
-    if not vis.create_window(window_name=f"forward {BIN_PATH.name}", width=1280, height=800):
+    if not vis.create_window(window_name=title, width=1280, height=800):
         return False
     vis.add_geometry(pcd)
     opt = vis.get_render_option()
@@ -101,16 +111,27 @@ def show_interactive(pcd, pts):
     return True
 
 
+def resolve_paths():
+    extra = [arg for arg in sys.argv[1:] if arg != "--save-only"]
+    bin_path = Path(extra[0]) if extra else BIN_PATH
+    if not bin_path.is_absolute():
+        local = Path(__file__).with_name(bin_path.name)
+        bin_path = local if local.exists() else bin_path.resolve()
+    out_path = OUT_PATH if bin_path.resolve() == BIN_PATH.resolve() else bin_path.with_name(bin_path.stem + "_vis.png")
+    return bin_path, out_path
+
+
 def main():
-    pcd, pts = load_kitti_bin(BIN_PATH)
+    bin_path, out_path = resolve_paths()
+    pcd, pts = load_kitti_bin(bin_path)
     save_only = "--save-only" in sys.argv
 
     if not save_only and has_display():
-        if show_interactive(pcd, pts):
+        if show_interactive(pcd, pts, f"forward {bin_path.name}"):
             return
 
-    save_offscreen(pcd, pts, OUT_PATH)
-    print(f"saved: {OUT_PATH}")
+    save_offscreen(pcd, pts, out_path)
+    print(f"saved: {out_path}")
     if not has_display():
         print("no DISPLAY; skipped Open3D window")
 
