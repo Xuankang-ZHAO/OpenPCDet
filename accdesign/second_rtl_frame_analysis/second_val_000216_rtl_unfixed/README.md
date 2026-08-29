@@ -57,10 +57,10 @@ conda run -n openpcd python mycode/voxel_neighbour_count.py \
   --list_file accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/frame_list.txt
 ```
 
-`mycode/chebyshev_analyze.py`
+`draw/chebyshev_analyze/chebyshev_analyze.py`
 
 ```bash
-conda run -n openpcd python mycode/chebyshev_analyze.py \
+conda run -n openpcd python draw/chebyshev_analyze/chebyshev_analyze.py \
   --list_file accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/frame_list.txt \
   --lidar_center 0,800 \
   --out accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/chebyshev_stats_000216.csv

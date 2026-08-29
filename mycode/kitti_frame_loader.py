@@ -63,7 +63,9 @@ def add_data_mode_args(parser, default_mode='auto'):
         type=str,
         default=default_mode,
         choices=['auto', 'kitti', 'raw'],
-        help='auto uses KittiDataset for KITTI configs so FOV filtering matches normal inference.',
+        help='kitti: KittiDataset + camera FOV (matches inference). '
+        'raw: full velodyne, no FOV. Histograms are not comparable across modes. '
+        'auto picks kitti for KITTI configs.',
     )
 
 
