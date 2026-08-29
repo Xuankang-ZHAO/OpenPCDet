@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot MEAN_200_frames Chebyshev histograms for conv1–conv4 on one figure."""
+"""Plot MEAN_200_frames Chebyshev histograms as four stacked stage panels."""
 import argparse
 import csv
 from pathlib import Path
@@ -8,13 +8,18 @@ import matplotlib.pyplot as plt
 
 
 STAGES = (
-    ('conv1', 'chebyshev_stats_conv1.csv', 'conv1 (stride 1)'),
-    ('conv2', 'chebyshev_stats_conv2.csv', 'conv2 (stride 2)'),
-    ('conv3', 'chebyshev_stats_conv3.csv', 'conv3 (stride 4)'),
-    ('conv4', 'chebyshev_stats_conv4.csv', 'conv4 (stride 8)'),
+    ('conv1', 'chebyshev_stats_conv1.csv'),
+    ('conv2', 'chebyshev_stats_conv2.csv'),
+    ('conv3', 'chebyshev_stats_conv3.csv'),
+    ('conv4', 'chebyshev_stats_conv4.csv'),
 )
 
 VECTOR_SUFFIXES = ('.pdf', '.svg')
+
+# IEEE TCAS-I / IEEEtran journal: one column is about 3.5 in.
+# The stacked figure is drawn ~1/3 wider than one column (~4.67 in).
+IEEE_COLUMN_INCHES = 3.5
+IEEE_FIGURE_WIDTH_INCHES = IEEE_COLUMN_INCHES * (4.0 / 3.0)
 
 
 def load_mean_histogram(csv_path):
@@ -33,28 +38,52 @@ def load_mean_histogram(csv_path):
     return distances, counts, row
 
 
+def grid_label_xyz(spatial_shape_zyx):
+    nz, ny, nx = (int(part) for part in str(spatial_shape_zyx).split('x'))
+    return f'{nx} × {ny} × {nz}'
+
+
 def plot_mean_curves(csv_dir, out_path):
     csv_dir = Path(csv_dir)
     plt.rcParams.update({
-        'font.size': 11,
+        'font.size': 10,
         'axes.labelsize': 12,
         'axes.titlesize': 12,
-        'legend.fontsize': 10,
+        'legend.fontsize': 12,
+        'xtick.labelsize': 10,
+        'ytick.labelsize': 10,
         'pdf.fonttype': 42,
         'ps.fonttype': 42,
         'svg.fonttype': 'none',
     })
-    fig, ax = plt.subplots(figsize=(11, 6))
-    for _stage, filename, label in STAGES:
-        distances, counts, _row = load_mean_histogram(csv_dir / filename)
-        ax.plot(distances, counts, linewidth=1.6, label=label)
+    fig, axes = plt.subplots(
+        nrows=4,
+        ncols=1,
+        figsize=(IEEE_FIGURE_WIDTH_INCHES, 4.6),
+        sharex=False,
+    )
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
-    ax.set_xlabel('Chebyshev Distance')
-    ax.set_ylabel('Voxel Count')
-    ax.set_xlim(left=0)
-    ax.set_ylim(bottom=0)
-    ax.grid(True, alpha=0.3)
-    ax.legend()
+    for ax, color, (_stage, filename) in zip(axes, colors, STAGES):
+        distances, counts, row = load_mean_histogram(csv_dir / filename)
+        ax.plot(distances, counts, color=color, linewidth=1.0)
+        ax.set_xlim(0, distances[-1] if distances else 1)
+        ax.set_ylim(bottom=0)
+        ax.grid(True, alpha=0.3)
+        ax.yaxis.set_major_locator(plt.MaxNLocator(nbins=4, min_n_ticks=3))
+        ax.text(
+            0.985,
+            0.90,
+            grid_label_xyz(row["spatial_shape_zyx"]),
+            transform=ax.transAxes,
+            va='top',
+            ha='right',
+            fontsize=12,
+            bbox={'facecolor': 'white', 'edgecolor': 'none', 'alpha': 0.85, 'pad': 1.0},
+        )
+
+    axes[-1].set_xlabel('Chebyshev Distance')
+    fig.supylabel('Voxel Count', fontsize=12)
     fig.tight_layout()
 
     out_path = Path(out_path)
