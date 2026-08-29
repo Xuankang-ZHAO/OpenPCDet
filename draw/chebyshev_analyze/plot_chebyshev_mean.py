@@ -85,6 +85,7 @@ def plot_mean_curves(csv_dir, out_path):
     axes[-1].set_xlabel('Chebyshev Distance')
     fig.supylabel('Voxel Count', fontsize=12)
     fig.tight_layout()
+    fig.subplots_adjust(hspace=0.38)
 
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
