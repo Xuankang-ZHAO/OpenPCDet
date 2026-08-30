@@ -1,0 +1,167 @@
+{
+  "format_version": "second_rtl_golden_v2",
+  "package_kind": "frame_vector",
+  "word_bits": 64,
+  "byte_order": "little",
+  "model_package": {
+    "path": "accdesign/second_rtl_golden_packages/second_val_000216_golden",
+    "format_version": "second_rtl_golden_v2",
+    "manifest_sha256": "465ab46db636a64daccf8a7310052684fc2921ec6fb8cac9b234e6140aa74e88",
+    "weights_sha256": "6dc7e790abe541579f09088358416966ad5c05915228132df06ae08a1c85baa7",
+    "params_sha256": "248101219ef91013d40855936c130527410834b7bf69c44cdd9ca1fba12d8214",
+    "qat_checkpoint": "output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
+    "qat_checkpoint_sha256": "1dfc9c883ddb0d44aac15eed9f73f25ac11b9cb1e83fbb33828dd6ac93979793"
+  },
+  "sample": {
+    "split": "train",
+    "sample_id": "000001",
+    "split_index": 1,
+    "selection": "consecutive_filename",
+    "source": "data/kitti/training/velodyne",
+    "kitti_imageset": "val",
+    "point_cloud_relpath": "data/kitti/training/velodyne/000001.bin",
+    "point_cloud_sha256": "59a02fdaaab3b7e903713cb618e8f53efcaf71c144436ddfcdf4f28bdbd73d20",
+    "max_number_of_voxels": 15000,
+    "actual_voxel_count": 15000,
+    "hit_voxel_cap": true,
+    "fov_points_only": true
+  },
+  "raw_vfe_voxel_stream": {
+    "file": "raw_vfe_voxel_stream.bin",
+    "record_count": 15000,
+    "record_bytes": 16,
+    "word_length_per_record": 2,
+    "total_bytes": 240000,
+    "word_length": 30000,
+    "sha256": "fdfda5e0daf7514aab0f82617a7c706e12cc55ceb255a7d04983d552b0ef8090",
+    "sort_order": "vfe_output_order",
+    "owner_voxel_only": true,
+    "halo_expanded": false,
+    "bm_page_preallocated": false
+  },
+  "files": {
+    "raw_vfe_voxel_stream.bin": {
+      "path": "raw_vfe_voxel_stream.bin",
+      "bytes": 240000,
+      "word_length": 30000,
+      "sha256": "fdfda5e0daf7514aab0f82617a7c706e12cc55ceb255a7d04983d552b0ef8090"
+    },
+    "ofm_golden.bin": {
+      "path": "ofm_golden.bin",
+      "bytes": 12482560,
+      "word_length": 1560320,
+      "sha256": "4d842fec91729a40e2f887ab183f3e30b5abf8eefdf272e3edc9820d311bb2b5"
+    }
+  },
+  "layers": [
+    {
+      "layer_id": 0,
+      "ofm_golden": {
+        "word_offset": 0,
+        "word_length": 45000,
+        "record_count": 15000,
+        "sha256": "eafc7360564aea4afe42e37414f54a0d5571a3770bbae1db5198eff73ce5eb57"
+      }
+    },
+    {
+      "layer_id": 1,
+      "ofm_golden": {
+        "word_offset": 45000,
+        "word_length": 45000,
+        "record_count": 15000,
+        "sha256": "53cd463ecc1176cfebc63f8cc4abd6e2639edfb0c797d8cf1d2cde344040bd52"
+      }
+    },
+    {
+      "layer_id": 2,
+      "ofm_golden": {
+        "word_offset": 90000,
+        "word_length": 149020,
+        "record_count": 29804,
+        "sha256": "765e75e1cb46fb0c8d4ad5b1a9289c4cf7f08b870f523311519f4637c32aab2b"
+      }
+    },
+    {
+      "layer_id": 3,
+      "ofm_golden": {
+        "word_offset": 239020,
+        "word_length": 149020,
+        "record_count": 29804,
+        "sha256": "88d6334d12f0a0a4c3600a27db4c2c82978460c0a29696243873c938994ca9ef"
+      }
+    },
+    {
+      "layer_id": 4,
+      "ofm_golden": {
+        "word_offset": 388040,
+        "word_length": 149020,
+        "record_count": 29804,
+        "sha256": "6ef50a4e7afd1796f5e20c044e35be3302c7c761c5ad69e9df11014c4828f31a"
+      }
+    },
+    {
+      "layer_id": 5,
+      "ofm_golden": {
+        "word_offset": 537060,
+        "word_length": 195345,
+        "record_count": 21705,
+        "sha256": "d4d7bec34117564655b369b8acc5342c380877f0da6b45fb67990fa9ad0b19b7"
+      }
+    },
+    {
+      "layer_id": 6,
+      "ofm_golden": {
+        "word_offset": 732405,
+        "word_length": 195345,
+        "record_count": 21705,
+        "sha256": "0882add73b501936280be8ae92447f6e47de54bf01b3bdd9c6f257ffff751541"
+      }
+    },
+    {
+      "layer_id": 7,
+      "ofm_golden": {
+        "word_offset": 927750,
+        "word_length": 195345,
+        "record_count": 21705,
+        "sha256": "1993834d4c759aaa0ee2ee6cd2ff65db79b383c194788a8c7a12cd0f6366fbdc"
+      }
+    },
+    {
+      "layer_id": 8,
+      "ofm_golden": {
+        "word_offset": 1123095,
+        "word_length": 95076,
+        "record_count": 10564,
+        "sha256": "9b138b9b186bfc150c4f2ac6e74f361913c01454060b9675e16524e916c052df"
+      }
+    },
+    {
+      "layer_id": 9,
+      "ofm_golden": {
+        "word_offset": 1218171,
+        "word_length": 95076,
+        "record_count": 10564,
+        "sha256": "24ecb35c43f45081309761899f31b7e420ea1a90ee7bc6859b6ab241dbafcf98"
+      }
+    },
+    {
+      "layer_id": 10,
+      "ofm_golden": {
+        "word_offset": 1313247,
+        "word_length": 95076,
+        "record_count": 10564,
+        "sha256": "8d9a8407324b2ff5e244bcf99f953e32585e1f7b2219250e69aef76f7a30113c"
+      }
+    },
+    {
+      "layer_id": 11,
+      "ofm_golden": {
+        "word_offset": 1408323,
+        "word_length": 151997,
+        "record_count": 8941,
+        "sha256": "b908a64ddcf86f551b2d19038b919a3e2f897961b5e0fd60d8a3c3b7985dddeb"
+      }
+    }
+  ],
+  "exporter": "tools/accdesign/second_rtl_golden_export_scripts/export_second_rtl_frame_vectors.py"
+}
