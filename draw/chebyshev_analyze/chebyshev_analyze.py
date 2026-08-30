@@ -15,8 +15,10 @@ Chebyshev distance is still 2D in voxel XY. The LiDAR center is scaled with
 the backbone stride: (cx, cy) at stride s becomes (cx // s, cy // s), so
 KITTI default (0, 800) maps to (0, 400), (0, 200), (0, 100).
 
-`kitti` mode (FOV on) and `raw` mode (full velodyne, FOV off) are different
-input populations; do not compare their histograms.
+This script is locked to KITTI inference input: `KittiDataset.__getitem__()`
+with `FOV_POINTS_ONLY=True`, matching `tools/test.py` and RTL golden packages.
+Train and val infos are merged so consecutive `training/velodyne` IDs can be
+loaded without changing the eval preprocessor.
 
 `voxel_occupancy` is non_empty / total. `voxel_sparsity` is 1 - occupancy.
 
@@ -26,6 +28,7 @@ over the N processed frames.
 import os
 import argparse
 import csv
+import pickle
 from pathlib import Path
 
 import numpy as np
@@ -35,12 +38,10 @@ from tqdm import tqdm
 from mycode.kitti_frame_loader import (
     add_data_mode_args,
     build_kitti_dataset,
-    build_template_dataset,
     choose_frame_ids,
     get_class_names,
     get_dataset_cfg,
     load_kitti_sample,
-    load_raw_sample,
     normalize_frame_token,
     normalize_voxel_coords,
     resolve_data_mode,
@@ -72,6 +73,25 @@ BASE_CSV_KEYS = [
     'voxel_occupancy',
     'voxel_sparsity',
 ]
+
+
+def attach_trainval_infos(dataset):
+    """Keep eval preprocessing, but index every training/velodyne sample ID."""
+    infos = []
+    seen = set()
+    for name in ('kitti_infos_train.pkl', 'kitti_infos_val.pkl'):
+        path = Path(dataset.root_path) / name
+        if not path.exists():
+            raise FileNotFoundError(path)
+        with path.open('rb') as handle:
+            for info in pickle.load(handle):
+                lidar_idx = str(info['point_cloud']['lidar_idx'])
+                if lidar_idx in seen:
+                    continue
+                seen.add(lidar_idx)
+                infos.append(info)
+    dataset.kitti_infos = infos
+    return {str(info['point_cloud']['lidar_idx']): idx for idx, info in enumerate(infos)}
 
 
 def load_model_cfg(cfg_file):
@@ -326,11 +346,8 @@ def summarize_stage(stage_name, results, max_voxels):
         print(f'  dropped {dropped} out-of-range voxels')
 
 
-def load_frame_batch(dataset, velodyne_dir, frame_id, data_mode):
-    if data_mode == 'kitti':
-        sample, metadata = load_kitti_sample(dataset, frame_id)
-    else:
-        sample, metadata, _ = load_raw_sample(dataset, Path(velodyne_dir) / f'{frame_id}.bin')
+def load_frame_batch(dataset, frame_id):
+    sample, metadata = load_kitti_sample(dataset, frame_id)
     batch = dataset.collate_batch([sample])
     return batch, metadata
 
@@ -358,13 +375,13 @@ def extract_stage_coords(batch_dict, stage_spec, file_label, metadata, lidar_cen
 def main():
     parser = argparse.ArgumentParser(
         description='Chebyshev-distance histograms at SECOND conv1/conv2/conv3/conv4. '
-        'kitti (FOV) and raw (no FOV) histograms are not comparable.'
+        'Locked to KITTI FOV inference input (FOV_POINTS_ONLY=True).'
     )
     parser.add_argument('--cfg', type=str, default='tools/cfgs/kitti_models/second.yaml')
     parser.add_argument('--ckpt', type=str, default='', help='Optional checkpoint; occupancy indices do not need weights')
     parser.add_argument('--velodyne_dir', type=str, default='data/kitti/training/velodyne')
-    parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/analyze.txt')
-    add_data_mode_args(parser)
+    parser.add_argument('--list_file', type=str, default='draw/chebyshev_analyze/frame_list_200.txt')
+    add_data_mode_args(parser, default_mode='kitti')
     parser.add_argument('--out_dir', type=str, default='draw/chebyshev_analyze', help='Directory for per-stage CSVs')
     parser.add_argument('--lidar_center', type=str, default='0,800', help='LiDAR voxel center at stride 1 as "x,y"')
     parser.add_argument('--device', type=str, default='auto', help='auto|cpu|cuda|cuda:0')
@@ -373,6 +390,14 @@ def main():
     project_root = resolve_project_root()
     cfg_local = load_model_cfg(args.cfg)
     data_mode = resolve_data_mode(cfg_local, args.data_mode)
+    if data_mode != 'kitti':
+        raise RuntimeError(
+            'Chebyshev analysis is locked to --data_mode kitti (FOV_POINTS_ONLY=True) '
+            'so results match tools/test.py and RTL golden. Do not use raw.'
+        )
+    fov = bool(get_dataset_cfg(cfg_local).get('FOV_POINTS_ONLY', False))
+    if not fov:
+        raise RuntimeError('FOV_POINTS_ONLY must be True in the dataset config')
     max_voxels = max_voxels_from_cfg(cfg_local, training=False)
     lc = parse_lidar_center(args.lidar_center)
     device = resolve_device(args.device)
@@ -389,21 +414,16 @@ def main():
     from pcdet.utils import common_utils
 
     logger = common_utils.create_logger()
-    if data_mode == 'kitti':
-        dataset = build_kitti_dataset(cfg_local, Path(cfg.ROOT_DIR), args.kitti_root, logger)
-        fov = bool(get_dataset_cfg(cfg_local).get('FOV_POINTS_ONLY', False))
-        print(
-            f'data_mode=kitti; FOV_POINTS_ONLY={fov}; split=val; '
-            f'max_voxels={max_voxels}; lidar_center={lc[0]},{lc[1]}; device={device}. '
-            'Do not compare with --data_mode raw.'
-        )
-    else:
-        dataset = build_template_dataset(cfg_local)
-        print(
-            f'data_mode=raw; FOV_POINTS_ONLY=False; '
-            f'max_voxels={max_voxels}; lidar_center={lc[0]},{lc[1]}; device={device}. '
-            'Do not compare with --data_mode kitti (FOV).'
-        )
+    dataset = build_kitti_dataset(cfg_local, Path(cfg.ROOT_DIR), args.kitti_root, logger)
+    info_by_id = attach_trainval_infos(dataset)
+    missing = [frame_id for frame_id in frame_ids if frame_id not in info_by_id]
+    if missing:
+        raise RuntimeError(f'Frames not found in KITTI train/val infos: {missing[:8]}')
+    print(
+        f'data_mode=kitti; FOV_POINTS_ONLY={fov}; infos=train+val; '
+        f'max_voxels={max_voxels}; lidar_center={lc[0]},{lc[1]}; device={device}; '
+        f'n_frames={len(frame_ids)}. Matches tools/test.py and RTL golden input.'
+    )
 
     for spec in STAGE_SPECS:
         cx, cy = lidar_center_for_stride(lc, spec['stride'])
@@ -423,7 +443,7 @@ def main():
 
     stage_results = {spec['name']: [] for spec in STAGE_SPECS}
     for frame_id in tqdm(frame_ids, desc='Processing'):
-        batch, metadata = load_frame_batch(dataset, velodyne_dir, frame_id, data_mode)
+        batch, metadata = load_frame_batch(dataset, frame_id)
         batch_torch = move_batch_to_device(batch, device)
         with torch.no_grad():
             batch_torch = model.vfe(batch_torch)

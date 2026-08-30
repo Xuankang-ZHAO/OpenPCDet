@@ -29,6 +29,14 @@ def load_mean_histogram(csv_path):
     if not mean_rows:
         raise RuntimeError(f'No MEAN_* row found in {csv_path}')
     row = mean_rows[-1]
+    fov = str(row.get('fov_points_only', '')).strip().lower()
+    mode = str(row.get('data_mode', '')).strip().lower()
+    if mode == 'raw' or fov in ('false', '0', ''):
+        raise RuntimeError(
+            f'{csv_path} is not FOV=true KITTI inference input '
+            f'(data_mode={row.get("data_mode")}, fov_points_only={row.get("fov_points_only")}). '
+            'Regenerate with draw/chebyshev_analyze/chebyshev_analyze.py --data_mode kitti.'
+        )
     dist_cols = sorted(
         (col for col in row if col.startswith('dist_')),
         key=lambda name: int(name.split('_', 1)[1]),
