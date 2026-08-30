@@ -29,9 +29,7 @@
     "weight_scales_csv": "output/kitti_models/second_hw_qat/hw_qat_10ep/hw_export/weight_scales.csv",
     "weight_scales_sha256": "4461d1020c235eb55571b9928f10f9877a6a295af488f957e53aa0d70d52c4e4",
     "layer_inventory_csv": "output/kitti_models/second_hw_qat/hw_qat_10ep/hw_export/layer_inventory.csv",
-    "layer_inventory_sha256": "fcedd2cf06df72b3a73e10811746d965403b0d901bc7cd4051761c3e02aab0d6",
-    "zone_lut": "mycode/block_size_lut_rtl_unfixed.txt",
-    "zone_lut_sha256": "d5864716816058089c525af005d430a1c063a1fb4eba2a53990dda1b21ed856a"
+    "layer_inventory_sha256": "fcedd2cf06df72b3a73e10811746d965403b0d901bc7cd4051761c3e02aab0d6"
   },
   "quantization": {
     "signed": true,
@@ -159,7 +157,6 @@
     ]
   },
   "partition_geometry": {
-    "mode": "rtl_unfixed_zone",
     "grid_size_xyz": [
       1408,
       1600,
@@ -169,72 +166,6 @@
       41,
       1600,
       1408
-    ],
-    "lidar_center_xy": [
-      0,
-      800
-    ],
-    "zone_specs": [
-      {
-        "zone_id": 0,
-        "start_dist": 0,
-        "end_dist": 63,
-        "block_size_xyz": [
-          16,
-          32,
-          16
-        ],
-        "log2_block_size_xyz": [
-          4,
-          5,
-          4
-        ]
-      },
-      {
-        "zone_id": 1,
-        "start_dist": 64,
-        "end_dist": 511,
-        "block_size_xyz": [
-          16,
-          16,
-          16
-        ],
-        "log2_block_size_xyz": [
-          4,
-          4,
-          4
-        ]
-      },
-      {
-        "zone_id": 2,
-        "start_dist": 512,
-        "end_dist": 767,
-        "block_size_xyz": [
-          16,
-          32,
-          16
-        ],
-        "log2_block_size_xyz": [
-          4,
-          5,
-          4
-        ]
-      },
-      {
-        "zone_id": 3,
-        "start_dist": 768,
-        "end_dist": 2048,
-        "block_size_xyz": [
-          64,
-          64,
-          16
-        ],
-        "log2_block_size_xyz": [
-          6,
-          6,
-          4
-        ]
-      }
     ],
     "coord32": {
       "x_bits": [

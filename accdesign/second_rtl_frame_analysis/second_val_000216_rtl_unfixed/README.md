@@ -11,9 +11,6 @@ This directory contains analysis outputs for the KITTI point-cloud frame used by
 - Golden raw VFE stream: 15000 records, 240000 bytes
 - Grid size XYZ: `[1408, 1600, 40]`
 - Sparse shape ZYX: `[41, 1600, 1408]`
-- LiDAR center XY: `[0, 800]`
-- RTL unfixed zone LUT: `mycode/block_size_lut_rtl_unfixed.txt`
-- Zone LUT SHA-256: `d5864716816058089c525af005d430a1c063a1fb4eba2a53990dda1b21ed856a`
 
 All commands were run from the repository root with the `openpcd` conda environment. Unless `--data_mode raw` is passed explicitly, each script defaults to `KittiDataset.__getitem__()` with `FOV_POINTS_ONLY=True`, matching the golden exporter input path.
 
@@ -21,7 +18,7 @@ All commands were run from the repository root with the `openpcd` conda environm
 
 - `frame_list.txt`: single-frame list containing `000216`
 - `analysis_summary.json`: machine-readable summary extracted from all outputs
-- `block_v2_rtl_unfixed_zone4_000216.csv`: RTL unfixed block distribution from `voxel_analyze_with_boudary_rtl_unfixed.py`
+- `block_v2_rtl_unfixed_zone4_000216.csv`: RTL unfixed block distribution from `voxel_analyze.py`
 - `block_vis2d_fixed/000216.png`: fixed-block XY heatmap from `block_voxel_vis2d.py`
 - `chebyshev_stats_000216.csv`: Chebyshev-distance histogram from `chebyshev_analyze.py`
 - `logs/voxel_neighbour_count_000216.log`: 3x3x3 neighbor-count histogram from `voxel_neighbour_count.py`
@@ -31,13 +28,13 @@ All commands were run from the repository root with the `openpcd` conda environm
 
 ## Script Sources And Commands
 
-`mycode/voxel_analyze_with_boudary_rtl_unfixed.py`
+`mycode/rtl_unfixed/voxel_analyze.py`
 
 ```bash
-conda run -n openpcd python mycode/voxel_analyze_with_boudary_rtl_unfixed.py \
+conda run -n openpcd python mycode/rtl_unfixed/voxel_analyze.py \
   --list_file accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/frame_list.txt \
   --max_files 1 \
-  --zone_lut mycode/block_size_lut_rtl_unfixed.txt \
+  --zone_lut mycode/rtl_unfixed/zone_lut.txt \
   --lidar_center 0,800 \
   --out accdesign/second_rtl_frame_analysis/second_val_000216_rtl_unfixed/block_v2_rtl_unfixed_zone4_000216.csv
 ```
@@ -140,7 +137,7 @@ SECOND layer input feature sparsity from `second_layer_input_feature_sparsity.py
 ## Notes
 
 - All regenerated frame-analysis scripts now default to the KITTI dataset path (`--data_mode auto`) so their input voxel set matches the golden package's 15000 owner voxels.
-- `voxel_analyze_with_boudary_rtl_unfixed.py` uses the same RTL unfixed zone LUT and LiDAR center recorded by the golden manifest.
+- `voxel_analyze.py` is hardware block-partition analysis. Zone LUT and LiDAR center live in `mycode/rtl_unfixed/`, not in the golden package.
 - `block_voxel_vis2d.py` is the script's default fixed `10x10x6` block visualization. It is useful as a 2D occupancy view, but it is not the RTL unfixed block allocator result.
 - `second_layer_sparsity.py` and `second_layer_input_feature_sparsity.py` were regenerated with the HW-QAT golden config/checkpoint and the KITTI dataset path so their FOV filtering matches the golden package.
 - The SECOND sparsity outputs are model-hook analysis artifacts; the bit-exact RTL golden outputs remain in `accdesign/second_rtl_golden_packages/second_val_000216_golden/ofm_golden.bin`.

@@ -17,13 +17,7 @@
       41,
       1600,
       1408
-    ],
-    "lidar_center_xy": [
-      0,
-      800
-    ],
-    "zone_lut": "mycode/block_size_lut_rtl_unfixed.txt",
-    "zone_lut_sha256": "d5864716816058089c525af005d430a1c063a1fb4eba2a53990dda1b21ed856a"
+    ]
   },
   "rtl_unfixed_block_distribution": {
     "file": "000216.bin",

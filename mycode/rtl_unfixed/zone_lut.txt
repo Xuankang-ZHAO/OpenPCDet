@@ -1,0 +1,11 @@
+# Signed half-open nested-square zone LUT
+# Format per line: zone:outer_half_open_T:bx,by,bz
+# Coordinates are voxel indices relative to lidar_center (KITTI default 0,800).
+# Zone i < last occupies [-T,T) x [-T,T) minus inner zones. Negative T is inner,
+# positive T is outer. Last zone uses * and covers the remaining XY. Z is not used.
+# Block sizes must be powers of two. Each finite T must land on both adjacent
+# zones' XY block grids. All listed Z block sizes are 16.
+0:64:16,32,16
+1:512:16,16,16
+2:768:16,32,16
+3:*:64,64,16

@@ -49,8 +49,6 @@ def parse_args():
     parser.add_argument('--frame_pool_size', type=int, default=100)
     parser.add_argument('--random_seed', type=int, default=20260625)
     parser.add_argument('--output_root', default=str(repo_root / 'accdesign/second_rtl_golden_packages'))
-    parser.add_argument('--zone_lut', default=str(repo_root / 'mycode/block_size_lut_rtl_unfixed.txt'))
-    parser.add_argument('--lidar_center', default='0,800')
     parser.add_argument('--max_voxels', type=int, default=15000)
     parser.add_argument('--overwrite', action='store_true', default=False)
     return parser.parse_args()
@@ -228,39 +226,6 @@ def pack_int8_tile(values):
 
 def pack_u64(word):
     return struct.pack('<Q', int(word) & 0xFFFFFFFFFFFFFFFF)
-
-
-class ZoneSpec:
-    def __init__(self, zone_id, start_dist, end_dist, block_size_xyz):
-        self.zone_id = int(zone_id)
-        self.start_dist = int(start_dist)
-        self.end_dist = int(end_dist)
-        self.block_size_xyz = tuple(int(v) for v in block_size_xyz)
-        self.log2_block_size_xyz = tuple(int(math.log2(v)) for v in self.block_size_xyz)
-
-    def to_manifest(self):
-        return {
-            'zone_id': self.zone_id,
-            'start_dist': self.start_dist,
-            'end_dist': self.end_dist,
-            'block_size_xyz': list(self.block_size_xyz),
-            'log2_block_size_xyz': list(self.log2_block_size_xyz),
-        }
-
-
-def load_zone_specs(path):
-    specs = []
-    for raw_line in Path(path).read_text(encoding='ascii').splitlines():
-        line = raw_line.strip()
-        if not line or line.startswith('#'):
-            continue
-        zone_text, dist_text, size_text = line.split(':')
-        start_text, end_text = dist_text.split('-')
-        sizes = tuple(int(part.strip()) for part in size_text.split(','))
-        specs.append(ZoneSpec(int(zone_text), int(start_text), int(end_text), sizes))
-    if not specs:
-        raise RuntimeError(f'No zone specs loaded from {path}')
-    return specs
 
 
 def build_raw_vfe_voxel_stream(coords_zyx, q_features):
@@ -721,12 +686,8 @@ def main():
     backbone = model.backbone_3d
     qparams, _ = qparams_from_model(backbone, act_scales, hw_export_dir)
 
-    lidar_center_xy = tuple(int(part.strip()) for part in args.lidar_center.split(','))
-    if len(lidar_center_xy) != 2:
-        raise RuntimeError('--lidar_center must be x,y')
     grid_size_xyz = tuple(int(v) for v in dataset.grid_size.tolist())
     sparse_shape_zyx = tuple(int(v) for v in backbone.sparse_shape)
-    zone_specs = load_zone_specs(args.zone_lut)
     vfe_payload = build_raw_vfe_voxel_stream(voxel_coords_zyx, input_qfeatures)
 
     weights_payload, params_payload, ofm_payload, layer_entries = build_binaries(
@@ -768,8 +729,6 @@ def main():
         'weight_scales_sha256': sha256_file(hw_export_dir / 'weight_scales.csv'),
         'layer_inventory_csv': str((hw_export_dir / 'layer_inventory.csv').relative_to(repo_root)),
         'layer_inventory_sha256': sha256_file(hw_export_dir / 'layer_inventory.csv'),
-        'zone_lut': str(Path(args.zone_lut).relative_to(repo_root)),
-        'zone_lut_sha256': sha256_file(args.zone_lut),
     }
     quantization = {
         'signed': True,
@@ -779,11 +738,8 @@ def main():
         'activations': act_manifest_rows,
     }
     partition_geometry = {
-        'mode': 'rtl_unfixed_zone',
         'grid_size_xyz': list(grid_size_xyz),
         'sparse_shape_zyx': list(sparse_shape_zyx),
-        'lidar_center_xy': list(lidar_center_xy),
-        'zone_specs': [spec.to_manifest() for spec in zone_specs],
         'coord32': {
             'x_bits': [0, 10],
             'y_bits': [11, 21],

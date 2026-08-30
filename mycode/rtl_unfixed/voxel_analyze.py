@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
 """Analyze voxel sparsity with RTL-style unfixed zone block partitioning.
 
-This script keeps the same parser style, default KITTI data paths, and CSV
-statistics as the earlier software block analyzers, but uses the RTL-aligned
-unfixed partition semantics described in
-`online_block_partitioning_algorithm_summary.md`.
+Zones are nested signed half-open squares in XY around lidar_center (default
+0,800): T=64/512/768, negative boundary inner, positive boundary outer. Z is
+not used for zone. Each zone then uses a fixed XYZ block grid from the LUT.
 
-Run directly in the OpenPCDet folder: (openpcd) vipuser@ubuntu22:~/桌面/OpenPCDet$ python mycode/voxel_analyze_with_boudary_rtl_unfixed.py
+Run directly in the OpenPCDet folder: (openpcd) vipuser@ubuntu22:~/桌面/OpenPCDet$ python mycode/rtl_unfixed/voxel_analyze.py
 """
 
 import argparse
 import csv
 import os
+import sys
 from pathlib import Path
+
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
 
 import numpy as np
 from tqdm import tqdm
@@ -21,12 +25,13 @@ from mycode.kitti_frame_loader import (
     add_data_mode_args,
     build_kitti_dataset,
     choose_frame_ids,
+    get_dataset_cfg,
     load_kitti_voxels,
     load_raw_voxels_via_data_processor,
     normalize_voxel_coords,
     resolve_data_mode,
 )
-from mycode.rtl_unfixed_block_partition import (
+from mycode.rtl_unfixed.partition import (
     compute_rtl_unfixed_partition_counts,
     load_zone_specs,
 )
@@ -140,7 +145,7 @@ def main():
     parser.add_argument('--list_file', type=str, default='data/kitti/ImageSets/trainval.txt', help='Optional frame id list (one id per line); pass an empty string to scan the directory directly')
     add_data_mode_args(parser)
     parser.add_argument('--out', type=str, default='mycode/output/block_v2_rtl_unfixed_zone4.csv', help='CSV output file')
-    parser.add_argument('--zone_lut', type=str, default='mycode/block_size_lut_rtl_unfixed.txt', help='Path to zone block-size LUT for RTL unfixed partition')
+    parser.add_argument('--zone_lut', type=str, default='mycode/rtl_unfixed/zone_lut.txt', help='Path to zone block-size LUT for RTL unfixed partition')
     parser.add_argument('--lidar_center', type=str, default='0,800', help='LiDAR voxel center as "x,y" for zone lookup (e.g. 0,800 for KITTI)')
     parser.add_argument('--max_files', type=int, default=200, help='Optional limit for the number of frames to process')
     args = parser.parse_args()
@@ -177,6 +182,11 @@ def main():
     kitti_dataset = None
     if data_mode == 'kitti':
         from pcdet.utils import common_utils
+
+        dataset_cfg = get_dataset_cfg(cfg_local)
+        # training/velodyne frame ids span both splits; val-only infos cannot FOV-filter train frames.
+        if dataset_cfg.get('INFO_PATH', None) is not None:
+            dataset_cfg.INFO_PATH['test'] = ['kitti_infos_trainval.pkl']
 
         logger = common_utils.create_logger()
         kitti_dataset = build_kitti_dataset(cfg_local, Path(cfg.ROOT_DIR), args.kitti_root, logger)
