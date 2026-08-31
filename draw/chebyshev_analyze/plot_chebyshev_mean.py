@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Plot MEAN_200_frames Chebyshev histograms as four stacked stage panels."""
+"""Plot MEAN_200_frames Chebyshev histograms as four stacked stage panels.
+
+CSV bins are raw occupied-voxel counts per Chebyshev ring. The plotted y
+values are those counts divided by the actual XY ring length on the finite
+grid, so the curves show local density rather than circumference-biased totals.
+"""
 import argparse
 import csv
 from pathlib import Path
@@ -46,9 +51,60 @@ def load_mean_histogram(csv_path):
     return distances, counts, row
 
 
-def grid_label_xyz(spatial_shape_zyx):
+def parse_spatial_shape_zyx(spatial_shape_zyx):
     nz, ny, nx = (int(part) for part in str(spatial_shape_zyx).split('x'))
+    return nx, ny, nz
+
+
+def grid_label_xyz(spatial_shape_zyx):
+    nx, ny, nz = parse_spatial_shape_zyx(spatial_shape_zyx)
     return f'{nx} × {ny} × {nz}'
+
+
+def _clipped_inclusive_len(lo, hi, bound_lo, bound_hi):
+    start = max(int(lo), int(bound_lo))
+    stop = min(int(hi), int(bound_hi) - 1)
+    return max(0, stop - start + 1)
+
+
+def chebyshev_ring_circumference(nx, ny, cx, cy, dist):
+    """XY cell count at Chebyshev distance `dist`, clipped to the finite grid.
+
+    A full square ring has length 8d (d>=1), but KITTI's LiDAR center sits on
+    the x=0 edge and distant rings are cut by the Y/X bounds, so the plotted
+    density uses this actual ring length rather than 8d.
+    """
+    nx, ny, cx, cy, dist = int(nx), int(ny), int(cx), int(cy), int(dist)
+    if dist < 0:
+        return 0
+    if dist == 0:
+        return int(0 <= cx < nx and 0 <= cy < ny)
+
+    length = 0
+    right_x = cx + dist
+    if 0 <= right_x < nx:
+        length += _clipped_inclusive_len(cy - dist, cy + dist, 0, ny)
+    left_x = cx - dist
+    if 0 <= left_x < nx:
+        length += _clipped_inclusive_len(cy - dist, cy + dist, 0, ny)
+    top_y = cy + dist
+    if 0 <= top_y < ny:
+        length += _clipped_inclusive_len(cx - dist + 1, cx + dist - 1, 0, nx)
+    bottom_y = cy - dist
+    if 0 <= bottom_y < ny:
+        length += _clipped_inclusive_len(cx - dist + 1, cx + dist - 1, 0, nx)
+    return length
+
+
+def counts_to_ring_density(distances, counts, row):
+    nx, ny, _nz = parse_spatial_shape_zyx(row['spatial_shape_zyx'])
+    cx = int(row['lidar_center_x'])
+    cy = int(row['lidar_center_y'])
+    density = []
+    for dist, count in zip(distances, counts):
+        ring_len = chebyshev_ring_circumference(nx, ny, cx, cy, dist)
+        density.append((count / ring_len) if ring_len else 0.0)
+    return density
 
 
 def plot_mean_curves(csv_dir, out_path):
@@ -74,7 +130,8 @@ def plot_mean_curves(csv_dir, out_path):
 
     for ax, color, (_stage, filename) in zip(axes, colors, STAGES):
         distances, counts, row = load_mean_histogram(csv_dir / filename)
-        ax.plot(distances, counts, color=color, linewidth=1.0)
+        density = counts_to_ring_density(distances, counts, row)
+        ax.plot(distances, density, color=color, linewidth=1.0)
         ax.set_xlim(0, distances[-1] if distances else 1)
         ax.set_ylim(bottom=0)
         ax.grid(True, alpha=0.3)
@@ -91,7 +148,7 @@ def plot_mean_curves(csv_dir, out_path):
         )
 
     axes[-1].set_xlabel('Chebyshev Distance')
-    fig.supylabel('Voxel Count', fontsize=12)
+    fig.supylabel('Voxels / Ring Length', fontsize=12)
     fig.tight_layout()
     fig.subplots_adjust(hspace=0.38)
 
