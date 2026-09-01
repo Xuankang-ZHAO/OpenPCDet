@@ -38,7 +38,7 @@ def _linear_block_id(
     return int(block_x) + int(block_y) * num_bx + int(block_z) * (num_bx * num_by)
 
 
-def _grid_block_counts(grid_size: Tuple[int, int, int], block_size_xyz: Tuple[int, int, int]) -> Tuple[int, int, int]:
+def grid_block_counts(grid_size: Tuple[int, int, int], block_size_xyz: Tuple[int, int, int]) -> Tuple[int, int, int]:
     nx, ny, nz = (int(grid_size[0]), int(grid_size[1]), int(grid_size[2]))
     bx, by, bz = (int(block_size_xyz[0]), int(block_size_xyz[1]), int(block_size_xyz[2]))
     if min(nx, ny, nz, bx, by, bz) <= 0:
@@ -48,6 +48,10 @@ def _grid_block_counts(grid_size: Tuple[int, int, int], block_size_xyz: Tuple[in
         (ny + by - 1) // by,
         (nz + bz - 1) // bz,
     )
+
+
+def _grid_block_counts(grid_size: Tuple[int, int, int], block_size_xyz: Tuple[int, int, int]) -> Tuple[int, int, int]:
+    return grid_block_counts(grid_size, block_size_xyz)
 
 
 def _iter_rtl_block_ids_for_voxel(
@@ -128,8 +132,9 @@ def compute_rtl_fixed_partition_counts(
         total_blocks: number of tiles covering the voxel grid
         block_voxel_limit: bx * by * bz
     """
+    nx, ny, nz = (int(grid_size[0]), int(grid_size[1]), int(grid_size[2]))
     bx, by, bz = (int(block_size_xyz[0]), int(block_size_xyz[1]), int(block_size_xyz[2]))
-    num_blocks_xyz = _grid_block_counts(grid_size, (bx, by, bz))
+    num_blocks_xyz = grid_block_counts((nx, ny, nz), (bx, by, bz))
     total_blocks = int(num_blocks_xyz[0] * num_blocks_xyz[1] * num_blocks_xyz[2])
     block_voxel_limit = bx * by * bz
     counts = np.zeros(total_blocks, dtype=np.int64)
@@ -138,11 +143,14 @@ def compute_rtl_fixed_partition_counts(
         return counts, total_blocks, block_voxel_limit
 
     for z_idx, y_idx, x_idx in coords.astype(np.int64):
+        x_i, y_i, z_i = int(x_idx), int(y_idx), int(z_idx)
+        if not (0 <= x_i < nx and 0 <= y_i < ny and 0 <= z_i < nz):
+            continue
         for block_id in _iter_rtl_block_ids_for_voxel(
-            int(x_idx),
-            int(y_idx),
-            int(z_idx),
-            grid_size,
+            x_i,
+            y_i,
+            z_i,
+            (nx, ny, nz),
             (bx, by, bz),
             num_blocks_xyz,
         ):
