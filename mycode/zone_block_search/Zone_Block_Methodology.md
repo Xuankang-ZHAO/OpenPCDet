@@ -57,7 +57,7 @@ Table I 中不同类型的参数必须明确区分：
 | $C_P$ | 一个 DRAM page 的体素容量 | $C_P=64$ |
 | $C_{2P}$ | 两页直接处理阈值 | $C_{2P}=2C_P=128$；$N_b>C_{2P}$ 时 reshape |
 | $P_b$ | block 页数 | $P_b=\lceil N_b/C_P\rceil$ |
-| $\Delta d_s$ | stage $s$ 的 profiling 距离粒度和边界量化单位 | stage 0 取 64，stage 1 取 32，stage 2 取 16；宜由候选平面边长的最小公倍数确定 |
+| $\Delta d_s$ | stage $s$ 的 profiling 距离粒度和边界量化单位 | stage 0 取 64，stage 1 取 32，stage 2 与 stage 3 取 16；宜由候选平面边长的最小公倍数确定 |
 | $Z_{j,s}$ | stage $s$ 的第 $j$ 个细方形环 | 两个左闭右开嵌套矩形之差，详见2.1 |
 | $R_{j,k,s}$ | stage $s$ 的细方形环 $j$ 使用尺寸 $k$ 时的两页覆盖率 | 200帧样本中满足 $N_b\le128$ 的 block 比例 |
 | $q$ | 候选筛选所用分位数 | 工作值为 P97（$q=0.97$）；不是正确性条件 |
@@ -200,7 +200,7 @@ $$
 
 $\Delta d_0=64$ 不只是任意采样步长：它也是所有候选 $x/y$ 边长的公倍数。阈值 $T=64m$ 对应相对坐标范围 $[-64m,64m)$，四条 block-grid 边界分别位于 $x=x_{0,0}-64m$、$x=x_{0,0}+64m$、$y=y_{0,0}-64m$ 和 $y=y_{0,0}+64m$。这些位置同时是所有候选尺寸的 block 边界，所以每个细方形环都能完整切分 blocks，不会在内部 zone 边界上截断 block。左侧/下侧边界上的坐标属于内层矩形，右侧/上侧边界上的坐标属于外层矩形。
 
-对其他 stage，同样以 Table I 中该 stage 的 $(x_{0,s},y_{0,s})$ 为 anchor，并把两套方向菜单中所有候选 $B_x$ 和 $B_y$ 的最小公倍数作为 $\Delta d_s$；当候选尺寸均为2的幂次时，它通常就是最大的平面边长。也可以取该数值的整数倍作为更粗的距离粒度。Stage 1 的对应固定输入见4.2.1，搜索得到的两套方向方案见4.9。Stage 2 的固定输入见4.2.2，搜索得到的 $B_x>B_y$ 4-zone 见4.10。
+对其他 stage，同样以 Table I 中该 stage 的 $(x_{0,s},y_{0,s})$ 为 anchor，并把两套方向菜单中所有候选 $B_x$ 和 $B_y$ 的最小公倍数作为 $\Delta d_s$；当候选尺寸均为2的幂次时，它通常就是最大的平面边长。也可以取该数值的整数倍作为更粗的距离粒度。Stage 1 的对应固定输入见4.2.1，搜索得到的两套方向方案见4.9。Stage 2 的固定输入见4.2.2，搜索得到的 $B_x>B_y$ 4-zone 见4.10。Stage 3 的固定输入见4.2.3，搜索得到的 $B_x>B_y$ 4-zone 见4.11。
 
 ### 4.2.1 Stage 1 的固定输入与搜索空间
 
@@ -278,6 +278,42 @@ $$
 
 正方形尺寸由两套菜单共享。本轮写入文档的搜索结果来自 $B_x>B_y$ 菜单（见4.10）。
 
+### 4.2.3 Stage 3 的固定输入与搜索空间
+
+Stage 3 对应 VoxelBackBone8x 的 conv4 网格。profiling occupancy 由与 Stage 0 相同的 200 帧 KITTI FOV 体素，依次经 conv2.0、conv3.0 与 conv4.0 SparseConv 映射得到，而不是对 Stage-2 坐标做简单 `floor(/2)`。conv2.0 / conv3.0 均为 kernel=3、stride=2、padding=1；**conv4.0 的 padding 为 $(0,1,1)$**（$z$ 向 pad=0），因此 $z$ 维由 11 变为 5 而不是 6。固定输入为：
+
+- 体素网格 XYZ $(G_{x,3},G_{y,3},G_{z,3})=(176,200,5)$；
+- LiDAR reference $(x_{0,3},y_{0,3})=(0,100)$；
+- $B_z=8$。因 $B_z>G_{z,3}$，全部体素落在同一个 $z$-block，不产生内部 $z$-halo（与 Stage 1/2 的 $B_z<G_{z,s}$ 不同）；
+- $C_{2P}=128$，$q=0.97$；
+- $\Delta d_3=16$，原始 zone 边界写成 $T_{i,3}=16m$。
+
+$B_x>B_y$ 菜单与 Stage 2 相同：
+
+$$
+\mathcal B_3^{x>y}=\{
+4{\times}4{\times}8,\ 
+8{\times}4{\times}8,\ 
+8{\times}8{\times}8,\ 
+16{\times}8{\times}8,\ 
+16{\times}16{\times}8
+\}.
+$$
+
+$B_x<B_y$ 菜单为边对调的
+
+$$
+\mathcal B_3^{x<y}=\{
+4{\times}4{\times}8,\ 
+4{\times}8{\times}8,\ 
+8{\times}8{\times}8,\ 
+8{\times}16{\times}8,\ 
+16{\times}16{\times}8
+\}.
+$$
+
+正方形尺寸由两套菜单共享。本轮写入文档的搜索结果来自 $B_x>B_y$ 菜单（见4.11）。
+
 ### 4.3 逐尺寸全局 profiling
 
 先选择一个方向菜单，再对该菜单中的每个 $B_k$ 独立执行：
@@ -346,7 +382,7 @@ $$
 
 相对直接沿用 RLE 尺寸，该方案物化 block 数上升约两成多，但 profiling 200 帧中 $R_{\mathrm{frame}}<0.95$ 的帧由十余帧降到极少帧。
 
-Stage-1 按相同规则分别收敛 $B_x<B_y$ 与 $B_x>B_y$ 各一套 4-zone，边界均取 $224/352/448$；完整标签序列、对照实验与逐帧 $R$ 见4.9。Stage-2 在 $B_x>B_y$ 菜单上收敛为边界 $96/160/272$ 的 4-zone，见4.10。规律可概括为：
+Stage-1 按相同规则分别收敛 $B_x<B_y$ 与 $B_x>B_y$ 各一套 4-zone，边界均取 $224/352/448$；完整标签序列、对照实验与逐帧 $R$ 见4.9。Stage-2 在 $B_x>B_y$ 菜单上收敛为边界 $96/160/272$ 的 4-zone，见4.10。Stage-3 在 $B_x>B_y$ 菜单上收敛为边界 $16/64/96$ 的 4-zone，见4.11。规律可概括为：
 
 > **环级 P97 负责给出安全尺寸上界与换档位置；硬件收敛时宁小勿大，并以逐帧整场 $R$ 为可行性闸门。**
 
@@ -371,9 +407,9 @@ $q=0.97$ 是候选筛选的 profiling 参数，不是正确性条件。它表示
 
 ### 4.8 各 stage 独立重复
 
-stage 0、stage 1 与 stage 2 均已按上述流程完成 profiling 与保守 4-zone 收敛（分别见4.5、4.9与4.10）。对其余 stage 分别输入自己的 $B_z$、两个方向菜单、$\Delta d_s$、occupancy traces 和 Table I 中的 LiDAR reference，并以各自的 LiDAR reference 重新锚定 block grid，独立执行4.3–4.7。
+stage 0–3 均已按上述流程完成 profiling 与保守 4-zone 收敛（分别见4.5、4.9、4.10与4.11）。各 stage 分别输入自己的 $B_z$、两个方向菜单、$\Delta d_s$、occupancy traces 和 Table I 中的 LiDAR reference，并以各自的 LiDAR reference 重新锚定 block grid，独立执行4.3–4.7。
 
-不同 stage 的 zone boundaries、block sizes 和原始 zone 数都可以不同；一个 stage 的结果不能简单按比例缩放为另一个 stage 的结果。Stage 1 的 $704\times800\times21$ 网格与 $\Delta d_1=32$ 并不是把 Stage 0 的 $1408\times1600\times41$ 与 $\Delta d_0=64$ 做整数除法后自动成立，而是由 conv2 的 stride-2 几何与该 stage 菜单的平面边长重新确定；Stage 2 的 $352\times400\times11$ 与 $\Delta d_2=16$ 同样由 conv3 几何与该 stage 菜单重新确定。最终只需将各 stage 经 Golden model 选出的配置汇总到 Table I。
+不同 stage 的 zone boundaries、block sizes 和原始 zone 数都可以不同；一个 stage 的结果不能简单按比例缩放为另一个 stage 的结果。Stage 1 的 $704\times800\times21$ 网格与 $\Delta d_1=32$ 并不是把 Stage 0 的 $1408\times1600\times41$ 与 $\Delta d_0=64$ 做整数除法后自动成立，而是由 conv2 的 stride-2 几何与该 stage 菜单的平面边长重新确定；Stage 2 的 $352\times400\times11$ 与 $\Delta d_2=16$ 同样由 conv3 几何与该 stage 菜单重新确定；Stage 3 的 $176\times200\times5$ 与 $\Delta d_3=16$ 由 conv4（padding $(0,1,1)$）几何与该 stage 菜单重新确定。最终只需将各 stage 经 Golden model 选出的配置汇总到 Table I。
 
 ### 4.9 Stage 1 搜索结果（$q=0.97$，200 帧）
 
@@ -484,6 +520,43 @@ $$
 
 profiling 200 帧中没有 $R_{\mathrm{frame}}<0.95$ 的帧；最差帧为 000027，$R=0.950$。该布局保留为 Golden model 的 Stage-2 候选，不在本文档中提前宣布 Table I 的最终取值。
 
+### 4.11 Stage 3 搜索结果（$q=0.97$，200 帧）
+
+以下记录 Stage 3 在 $B_x>B_y$ 菜单上的搜索产物，供 Golden model 比较，而不是宣布已经是 Table I 的最终值。Profiling 集与 Stage 0/1/2 相同（KITTI training 顺序前 200 帧）。Occupancy 为 conv4.0 网格。环 0（$[0,16)$）样本 679，并非 low_sample；其 $B^*$ 为 $16\times8\times8$（同环 $16\times16\times8$ 的 $R=0.949$，未过 P97）。菜单最大档 $16\times16\times8$ 在全部 11 环上都不满足 $R\ge0.97$。
+
+**逐环 $B^*(j)$（$B_x>B_y$）。**
+
+| $j$ | $[T_{\mathrm{in}},T_{\mathrm{out}})$ | $B^*$ | $n$ | $R$ |
+|---|---|---|---|---|
+| 0 | $[0,16)$ | $16\times8\times8$ | 679 | 0.990 |
+| 1 | $[16,32)$ | $4\times4\times8$ | 9444 | 0.997 |
+| 2 | $[32,48)$ | $4\times4\times8$ | 12843 | 0.995 |
+| 3 | $[48,64)$ | $4\times4\times8$ | 14476 | 0.998 |
+| 4 | $[64,80)$ | $8\times4\times8$ | 7971 | 0.980 |
+| 5 | $[80,96)$ | $8\times4\times8$ | 8011 | 0.990 |
+| 6 | $[96,112)$ | $8\times8\times8$ | 4339 | 0.971 |
+| 7 | $[112,128)$ | $8\times8\times8$ | 3914 | 0.978 |
+| 8 | $[128,144)$ | $8\times8\times8$ | 3320 | 0.989 |
+| 9 | $[144,160)$ | $8\times8\times8$ | 2798 | 0.991 |
+| 10 | $[160,176)$ | $16\times8\times8$ | 1451 | 0.979 |
+
+RLE 后得到 5 个细 zone：$[0,16)$ 的 $16\times8$、$[16,64)$ 的 $4\times4$、$[64,96)$ 的 $8\times4$、$[96,160)$ 的 $8\times8$、$[160,\infty)$ 的 $16\times8$。按 4.5 做保守手动收敛：保留环 0 的 $16\times8$ 与近场 $[16,64)$ 的 $4\times4$、以及 $[64,96)$ 的 $8\times4$；把最外层 $[160,\infty)$ 的 $16\times8$ 收成更小的 $8\times8$，与 $[96,160)$ 合并。得到 4-zone：
+
+$$
+[0,16):\ 16{\times}8{\times}8,\quad
+[16,64):\ 4{\times}4{\times}8,\quad
+[64,96):\ 8{\times}4{\times}8,\quad
+[96,\infty):\ 8{\times}8{\times}8.
+$$
+
+边界 $T_{0,3}=16$、$T_{1,3}=64$、$T_{2,3}=96$。在同一 200 帧上按最终可变尺寸布局重跑 halo 与逐帧整场 $R$：
+
+| 配置 | pooled $R$ | 逐帧 mean / median / min | $R_{\mathrm{frame}}<0.97$ | $R_{\mathrm{frame}}<0.95$ | 平均物化 block/帧 |
+|---|---|---|---|---|---|
+| **Stage 3 搜索 4-zone**（$B_x>B_y$） | 0.991 | 0.991 / 0.995 / 0.932 | 10/200 | **1/200** | 350 |
+
+profiling 200 帧中 $R_{\mathrm{frame}}<0.95$ 仅 1 帧（000013，$R=0.932$）。该布局保留为 Golden model 的 Stage-3 候选，不在本文档中提前宣布 Table I 的最终取值。
+
 ---
 
 ## 5. 建议报告的统计量
@@ -516,13 +589,13 @@ Step 0  数据切分
 
 **Step 0 — 数据切分。** 从 KITTI training split 中选取约 200 帧作为 profiling 集；held-out validation 帧只用于最终报告。所有参数选择和 Golden-model 候选取舍均在 profiling 集上完成。
 
-**Step 1 — 固定搜索输入。** Fig. 5(a) 的 $\rho_s(d)$ 负责说明采用 Chebyshev 距离分区的动机。对当前 stage 固定 $B_z$、$B_x<B_y$ 与 $B_x>B_y$ 两套菜单、$q=0.97$ 和 $\Delta d_s$，并把 Table I 中该 stage 的 LiDAR reference 设为所有候选尺寸共同的 block-boundary anchor；stage 0 使用4.2给出的具体参数，stage 1 使用4.2.1，stage 2 使用4.2.2。
+**Step 1 — 固定搜索输入。** Fig. 5(a) 的 $\rho_s(d)$ 负责说明采用 Chebyshev 距离分区的动机。对当前 stage 固定 $B_z$、$B_x<B_y$ 与 $B_x>B_y$ 两套菜单、$q=0.97$ 和 $\Delta d_s$，并把 Table I 中该 stage 的 LiDAR reference 设为所有候选尺寸共同的 block-boundary anchor；stage 0 使用4.2给出的具体参数，stage 1 使用4.2.1，stage 2 使用4.2.2，stage 3 使用4.2.3。
 
 **Step 2 — 逐尺寸全局 profiling。** 分别对两个方向菜单中的每个 block shape 均匀铺满整个网格，并在所有发生分块的方向执行真实 halo 复制；特别地，只要 $B_z<G_{z,s}$，就必须包含 $z$ 向 halo。随后按2.1定义的细方形环汇总200帧中每个物化 block 的 $N_b$，并记录各组合的样本数；正方形尺寸的结果由两个菜单复用。
 
 **Step 3 — 逐环标记。** 计算 $R_{j,k,s}$，并在每个 $Z_{j,s}$ 中选择满足 $R_{j,k,s}\ge q$ 的最大尺寸。统计时同时记录各细方形环的样本数；若极远端区间几乎没有有效样本，则不依据该区间单独确定尺寸。
 
-**Step 4 — RLE 与保守手动收敛。** 两个方向菜单分别对 $B^*(j)$ 做 run-length merge，得到可多于4的细粒度原始 zones；**不做激进去抖**。再按硬件 zone 数量限制做保守手动合并：合并区间取较小/更安全尺寸，边界落在 $\Delta d_s$ 网格上。对收敛后的布局在 profiling 集上计算逐帧整场两页覆盖率，确认 $R_{\mathrm{frame}}$ 分布满足硬件约束后再进入下一步。Stage-0 工作示例见4.5；Stage-1 两套方向方案见4.9；Stage-2 的 $B_x>B_y$ 4-zone 见4.10。
+**Step 4 — RLE 与保守手动收敛。** 两个方向菜单分别对 $B^*(j)$ 做 run-length merge，得到可多于4的细粒度原始 zones；**不做激进去抖**。再按硬件 zone 数量限制做保守手动合并：合并区间取较小/更安全尺寸，边界落在 $\Delta d_s$ 网格上。对收敛后的布局在 profiling 集上计算逐帧整场两页覆盖率，确认 $R_{\mathrm{frame}}$ 分布满足硬件约束后再进入下一步。Stage-0 工作示例见4.5；Stage-1 两套方向方案见4.9；Stage-2 的 $B_x>B_y$ 4-zone 见4.10；Stage-3 的 $B_x>B_y$ 4-zone 见4.11。
 
 **Step 5 — 邻近候选与 Golden model 取舍。** 在 Step 4 基础方案附近生成少量边界或尺寸变体，并加入当前 Table I 的对应配置。按最终可变尺寸布局重新统计后，用 Golden model 先比较方向族，再选择该 stage 的最终参数。
 
@@ -587,4 +660,4 @@ Step 0  数据切分
 
 ## 9. 实施前仍需确定的输入
 
-1. **合法 block 菜单。** Stage 1 的两套菜单已在4.2.1给出，Stage 2 的两套菜单已在4.2.2给出。仍需确认 stage 3 的两套完整 $B_x\times B_y\times B_z$ 菜单；非正方形尺寸分别保持 $B_x<B_y$ 或 $B_x>B_y$，正方形尺寸共享。
+1. **合法 block 菜单。** Stage 0–3 的两套方向菜单已分别在4.2、4.2.1、4.2.2与4.2.3给出。非正方形尺寸分别保持 $B_x<B_y$ 或 $B_x>B_y$，正方形尺寸共享。后续只需在 Golden model 上比较各 stage 已记录的 4-zone 候选（及必要邻近变体），再写回 Table I。

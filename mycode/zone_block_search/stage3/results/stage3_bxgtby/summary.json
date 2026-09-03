@@ -1,0 +1,168 @@
+{
+  "stage": 3,
+  "grid_size_xyz": [
+    176,
+    200,
+    5
+  ],
+  "lidar_center_xy": [
+    0,
+    100
+  ],
+  "delta_d": 16,
+  "bz": 8,
+  "q": 0.97,
+  "two_page_limit": 128,
+  "menu": "Bx>By",
+  "menu_sizes": [
+    "4x4x8",
+    "8x4x8",
+    "8x8x8",
+    "16x8x8",
+    "16x16x8"
+  ],
+  "n_frames": 200,
+  "frame_list": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/zone_block_search/stage0/frame_list_200.txt",
+  "n_rings": 11,
+  "low_sample_threshold": 50,
+  "bstar": [
+    {
+      "ring_j": 0,
+      "interval": [
+        0,
+        16
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 679,
+      "coverage": "0.989691",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 1,
+      "interval": [
+        16,
+        32
+      ],
+      "Bstar": "4x4x8",
+      "n_samples": 9444,
+      "coverage": "0.997353",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 2,
+      "interval": [
+        32,
+        48
+      ],
+      "Bstar": "4x4x8",
+      "n_samples": 12843,
+      "coverage": "0.995017",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 3,
+      "interval": [
+        48,
+        64
+      ],
+      "Bstar": "4x4x8",
+      "n_samples": 14476,
+      "coverage": "0.998480",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 4,
+      "interval": [
+        64,
+        80
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 7971,
+      "coverage": "0.980053",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 5,
+      "interval": [
+        80,
+        96
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 8011,
+      "coverage": "0.989889",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 6,
+      "interval": [
+        96,
+        112
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 4339,
+      "coverage": "0.971192",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 7,
+      "interval": [
+        112,
+        128
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 3914,
+      "coverage": "0.977772",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 8,
+      "interval": [
+        128,
+        144
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 3320,
+      "coverage": "0.989458",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 9,
+      "interval": [
+        144,
+        160
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 2798,
+      "coverage": "0.991422",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 10,
+      "interval": [
+        160,
+        176
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 1451,
+      "coverage": "0.979325",
+      "low_sample": false,
+      "note": ""
+    }
+  ],
+  "outputs": {
+    "coverage_Rjk": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/zone_block_search/stage3/results/stage3_bxgtby/coverage_Rjk.csv",
+    "selected_Bstar": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/zone_block_search/stage3/results/stage3_bxgtby/selected_Bstar.csv"
+  },
+  "stopped_after": "step3",
+  "next": "Await review before Step 4 (RLE + conservative merge)"
+}
