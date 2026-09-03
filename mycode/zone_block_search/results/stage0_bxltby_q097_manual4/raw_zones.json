@@ -1,0 +1,59 @@
+{
+  "name": "q097_manual4_conservative",
+  "description": "Manual merge from q=0.97 B*: [0,192) 8x8, [192,384) 16x16, [384,576) 32x32, [576,*) 64x64",
+  "q_reference": 0.97,
+  "zones": [
+    {
+      "zone_id": 0,
+      "inner_T": 0,
+      "outer_T": 192,
+      "size": "8x8x16",
+      "bx": 8,
+      "by": 8,
+      "bz": 16,
+      "n_rings": 3,
+      "coverage_pooled": 0.9888439022736926,
+      "coverage_min_ring": 0.970322,
+      "n_samples_pooled": 61222
+    },
+    {
+      "zone_id": 1,
+      "inner_T": 192,
+      "outer_T": 384,
+      "size": "16x16x16",
+      "bx": 16,
+      "by": 16,
+      "bz": 16,
+      "n_rings": 3,
+      "coverage_pooled": 0.9837884198651674,
+      "coverage_min_ring": 0.970031,
+      "n_samples_pooled": 81731
+    },
+    {
+      "zone_id": 2,
+      "inner_T": 384,
+      "outer_T": 576,
+      "size": "32x32x16",
+      "bx": 32,
+      "by": 32,
+      "bz": 16,
+      "n_rings": 3,
+      "coverage_pooled": 0.9906421673278406,
+      "coverage_min_ring": 0.980583,
+      "n_samples_pooled": 29493
+    },
+    {
+      "zone_id": 3,
+      "inner_T": 576,
+      "outer_T": null,
+      "size": "64x64x16",
+      "bx": 64,
+      "by": 64,
+      "bz": 16,
+      "n_rings": 13,
+      "coverage_pooled": 0.9970347550865903,
+      "coverage_min_ring": 0.984598,
+      "n_samples_pooled": 31701
+    }
+  ]
+}

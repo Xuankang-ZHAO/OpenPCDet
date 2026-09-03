@@ -1,0 +1,135 @@
+{
+  "n_rings": 22,
+  "n_raw_unique_before": 6,
+  "n_label_changes_before": 6,
+  "n_raw_zones_after": 3,
+  "n_rings_relabeled": 3,
+  "relabeled_rings": [
+    1,
+    4,
+    5
+  ],
+  "reject_events": [
+    {
+      "ring_start": 1,
+      "ring_end_exclusive": 2,
+      "from": "16x16x16",
+      "to": "8x8x16",
+      "run_len": 1,
+      "action": "reject"
+    },
+    {
+      "ring_start": 4,
+      "ring_end_exclusive": 5,
+      "from": "16x16x16",
+      "to": "16x32x16",
+      "run_len": 1,
+      "action": "reject"
+    },
+    {
+      "ring_start": 5,
+      "ring_end_exclusive": 6,
+      "from": "16x16x16",
+      "to": "32x32x16",
+      "run_len": 1,
+      "action": "reject"
+    }
+  ],
+  "confirm_events": [
+    {
+      "ring_start": 6,
+      "ring_end_exclusive": 8,
+      "from": "16x16x16",
+      "to": "32x64x16",
+      "run_len": 2,
+      "action": "confirm"
+    },
+    {
+      "ring_start": 8,
+      "ring_end_exclusive": 22,
+      "from": "32x64x16",
+      "to": "64x64x16",
+      "run_len": 14,
+      "action": "confirm"
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": 0,
+      "ring_start": 0,
+      "ring_end_exclusive": 6,
+      "n_rings": 6,
+      "inner_T": 0,
+      "outer_T": 384,
+      "size": "16x16x16",
+      "bx": 16,
+      "by": 16,
+      "bz": 16,
+      "outer_T_display": 384,
+      "n_samples_pooled": 101215,
+      "coverage_pooled": 0.977998,
+      "coverage_min_ring": 0.907917
+    },
+    {
+      "zone_id": 1,
+      "ring_start": 6,
+      "ring_end_exclusive": 8,
+      "n_rings": 2,
+      "inner_T": 384,
+      "outer_T": 512,
+      "size": "32x64x16",
+      "bx": 32,
+      "by": 64,
+      "bz": 16,
+      "outer_T_display": 512,
+      "n_samples_pooled": 12508,
+      "coverage_pooled": 0.971298,
+      "coverage_min_ring": 0.960705
+    },
+    {
+      "zone_id": 2,
+      "ring_start": 8,
+      "ring_end_exclusive": 22,
+      "n_rings": 14,
+      "inner_T": 512,
+      "outer_T": null,
+      "size": "64x64x16",
+      "bx": 64,
+      "by": 64,
+      "bz": 16,
+      "outer_T_display": "*",
+      "n_samples_pooled": 35355,
+      "coverage_pooled": 0.994173,
+      "coverage_min_ring": 0.969349
+    }
+  ],
+  "table_i_reference": [
+    {
+      "zone_id": 0,
+      "outer_T": 64,
+      "size": "16x32x16"
+    },
+    {
+      "zone_id": 1,
+      "outer_T": 512,
+      "size": "16x16x16"
+    },
+    {
+      "zone_id": 2,
+      "outer_T": 768,
+      "size": "16x32x16"
+    },
+    {
+      "zone_id": 3,
+      "outer_T": null,
+      "size": "64x64x16"
+    }
+  ],
+  "lidar_center_xy": [
+    0,
+    800
+  ],
+  "delta_d": 64,
+  "rule": "A_two_ring_persistence",
+  "min_run": 2
+}

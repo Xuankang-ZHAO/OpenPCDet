@@ -1,0 +1,18 @@
+{
+  "lut": "0:192:8,8,16;1:384:16,16,16;2:576:32,32,16;3:*:64,64,16",
+  "lut_path": "mycode/zone_block_search/results/stage0_bxltby_q097_manual4/raw_zones_lut.txt",
+  "n_frames": 200,
+  "two_page_limit": 128,
+  "per_frame_R_mean": 0.9863518129745796,
+  "per_frame_R_median": 0.9911547890188988,
+  "per_frame_R_std": 0.013167446840046637,
+  "per_frame_R_p10": 0.965764882325796,
+  "per_frame_R_p90": 0.998539486319566,
+  "per_frame_R_min": 0.9462875197472354,
+  "per_frame_R_max": 1.0,
+  "pooled_R": 0.9883585906839328,
+  "total_materialized_blocks": 204099,
+  "mean_blocks_per_frame": 1020.495,
+  "frames_below_0_95": 2,
+  "frames_below_0_90": 0
+}

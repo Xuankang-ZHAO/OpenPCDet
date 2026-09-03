@@ -1,0 +1,138 @@
+{
+  "n_rings": 22,
+  "n_raw_unique_before": 6,
+  "n_label_changes_before": 5,
+  "n_raw_zones_after": 6,
+  "n_rings_relabeled": 0,
+  "relabeled_rings": [],
+  "reject_events": [],
+  "confirm_events": [],
+  "zones": [
+    {
+      "zone_id": 0,
+      "ring_start": 0,
+      "ring_end_exclusive": 1,
+      "n_rings": 1,
+      "inner_T": 0,
+      "outer_T": 64,
+      "size": "8x16x16",
+      "bx": 8,
+      "by": 16,
+      "bz": 16,
+      "outer_T_display": 64,
+      "n_samples_pooled": 87,
+      "coverage_pooled": 0.988506,
+      "coverage_min_ring": 0.988506
+    },
+    {
+      "zone_id": 1,
+      "ring_start": 1,
+      "ring_end_exclusive": 2,
+      "n_rings": 1,
+      "inner_T": 64,
+      "outer_T": 128,
+      "size": "8x8x16",
+      "bx": 8,
+      "by": 8,
+      "bz": 16,
+      "outer_T_display": 128,
+      "n_samples_pooled": 7177,
+      "coverage_pooled": 0.970322,
+      "coverage_min_ring": 0.970322
+    },
+    {
+      "zone_id": 2,
+      "ring_start": 2,
+      "ring_end_exclusive": 4,
+      "n_rings": 2,
+      "inner_T": 128,
+      "outer_T": 256,
+      "size": "16x16x16",
+      "bx": 16,
+      "by": 16,
+      "bz": 16,
+      "outer_T_display": 256,
+      "n_samples_pooled": 40456,
+      "coverage_pooled": 0.966828,
+      "coverage_min_ring": 0.96213
+    },
+    {
+      "zone_id": 3,
+      "ring_start": 4,
+      "ring_end_exclusive": 6,
+      "n_rings": 2,
+      "inner_T": 256,
+      "outer_T": 384,
+      "size": "16x32x16",
+      "bx": 16,
+      "by": 32,
+      "bz": 16,
+      "outer_T_display": 384,
+      "n_samples_pooled": 34011,
+      "coverage_pooled": 0.974861,
+      "coverage_min_ring": 0.96207
+    },
+    {
+      "zone_id": 4,
+      "ring_start": 6,
+      "ring_end_exclusive": 8,
+      "n_rings": 2,
+      "inner_T": 384,
+      "outer_T": 512,
+      "size": "32x64x16",
+      "bx": 32,
+      "by": 64,
+      "bz": 16,
+      "outer_T_display": 512,
+      "n_samples_pooled": 12508,
+      "coverage_pooled": 0.971298,
+      "coverage_min_ring": 0.960705
+    },
+    {
+      "zone_id": 5,
+      "ring_start": 8,
+      "ring_end_exclusive": 22,
+      "n_rings": 14,
+      "inner_T": 512,
+      "outer_T": null,
+      "size": "64x64x16",
+      "bx": 64,
+      "by": 64,
+      "bz": 16,
+      "outer_T_display": "*",
+      "n_samples_pooled": 35355,
+      "coverage_pooled": 0.994173,
+      "coverage_min_ring": 0.969349
+    }
+  ],
+  "table_i_reference": [
+    {
+      "zone_id": 0,
+      "outer_T": 64,
+      "size": "16x32x16"
+    },
+    {
+      "zone_id": 1,
+      "outer_T": 512,
+      "size": "16x16x16"
+    },
+    {
+      "zone_id": 2,
+      "outer_T": 768,
+      "size": "16x32x16"
+    },
+    {
+      "zone_id": 3,
+      "outer_T": null,
+      "size": "64x64x16"
+    }
+  ],
+  "lidar_center_xy": [
+    0,
+    800
+  ],
+  "delta_d": 64,
+  "rule": "no_debounce_raw_Bstar_RLE",
+  "min_run": 1,
+  "q": 0.96
+}

@@ -1,0 +1,5 @@
+zone_id,ring_start,ring_end_exclusive,n_rings,inner_T,outer_T,size,bx,by,bz,n_samples_pooled,coverage_pooled,coverage_min_ring
+0,0,3,3,0,192,8x8x16,8,8,16,61222,0.988844,0.970322
+1,3,6,3,192,384,16x16x16,16,16,16,81731,0.983788,0.970031
+2,6,9,3,384,576,32x32x16,32,32,16,29493,0.990642,0.980583
+3,9,22,13,576,*,64x64x16,64,64,16,31701,0.997035,0.984598

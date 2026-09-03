@@ -1,0 +1,8 @@
+# Auto-generated from Step4 raw_zones.csv
+# zone:outer_half_open_T:bx,by,bz
+0:64:8,16,16
+1:128:8,8,16
+2:256:16,16,16
+3:384:16,32,16
+4:512:32,64,16
+5:*:64,64,16

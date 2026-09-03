@@ -1,0 +1,24 @@
+Wrote mycode/zone_block_search/results/stage0_bxltby/debounced_labels.csv
+Wrote mycode/zone_block_search/results/stage0_bxltby/raw_zones.csv
+Wrote mycode/zone_block_search/results/stage0_bxltby/raw_zones.json
+Wrote mycode/zone_block_search/results/stage0_bxltby/step4_labels.png
+
+=== Step 4: Rule A (2-ring) + RLE ===
+rings=22  label_changes_before=6  raw_zones_after=3  rings_relabeled=3
+Rejected short runs:
+  rings [1,2) 8x8x16 (len=1) → keep 16x16x16
+  rings [4,5) 16x32x16 (len=1) → keep 16x16x16
+  rings [5,6) 32x32x16 (len=1) → keep 16x16x16
+Confirmed transitions:
+  rings [6,8) 16x16x16 → 32x64x16 (len=2)
+  rings [8,22) 32x64x16 → 64x64x16 (len=14)
+
+Raw zones (left-closed / right-open T about LiDAR center):
+ id      [Tin,Tout)          size    rings    n_pool   R_pool    R_min
+------------------------------------------------------------------------
+  0         [0,384)      16x16x16        6    101215    0.978    0.908
+  1       [384,512)      32x64x16        2     12508    0.971    0.961
+  2         [512,*)      64x64x16       14     35355    0.994    0.969
+------------------------------------------------------------------------
+Table I reference (stage0): T=64/512/768 → 16x32, 16x16, 16x32, 64x64
+Step 5 (hardware 4-zone merge / Golden model) not run.

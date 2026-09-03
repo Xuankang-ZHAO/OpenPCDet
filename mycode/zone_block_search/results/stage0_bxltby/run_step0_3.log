@@ -1,0 +1,58 @@
+=== Step 0–1: load voxels / fixed inputs ===
+grid=(1408, 1600, 41) lidar=(0, 800) delta_d=64 q=0.95
+menu Bx<By: ['8x8x16', '8x16x16', '16x16x16', '16x32x16', '32x32x16', '32x64x16', '64x64x16']
+Loaded 200 frames (cache=True)
+Validating vectorized partition vs rtl_unfixed single-zone...
+  8x8x16: OK rtl_n=1685 ours_n=1685 sum rtl/ours=26973/26973
+  8x16x16: OK rtl_n=1012 ours_n=1012 sum rtl/ours=24406/24406
+  16x16x16: OK rtl_n=652 ours_n=652 sum rtl/ours=22088/22088
+  16x32x16: OK rtl_n=404 ours_n=404 sum rtl/ours=20817/20817
+  32x32x16: OK rtl_n=252 ours_n=252 sum rtl/ours=19122/19122
+  32x64x16: OK rtl_n=164 ours_n=164 sum rtl/ours=18523/18523
+  64x64x16: OK rtl_n=111 ours_n=111 sum rtl/ours=18175/18175
+Validation passed.
+=== Step 2: per-size global profiling ===
+Profile 8x8x16:   0%|          | 0/200 [00:00<?, ?it/s]Profile 8x8x16:   6%|▋         | 13/200 [00:00<00:01, 128.90it/s]Profile 8x8x16:  14%|█▎        | 27/200 [00:00<00:01, 132.88it/s]Profile 8x8x16:  20%|██        | 41/200 [00:00<00:01, 134.45it/s]Profile 8x8x16:  28%|██▊       | 55/200 [00:00<00:01, 128.79it/s]Profile 8x8x16:  34%|███▍      | 68/200 [00:00<00:01, 123.18it/s]Profile 8x8x16:  40%|████      | 81/200 [00:00<00:01, 116.77it/s]Profile 8x8x16:  46%|████▋     | 93/200 [00:00<00:00, 112.07it/s]Profile 8x8x16:  52%|█████▎    | 105/200 [00:00<00:00, 113.33it/s]Profile 8x8x16:  58%|█████▊    | 117/200 [00:00<00:00, 112.46it/s]Profile 8x8x16:  65%|██████▌   | 130/200 [00:01<00:00, 114.94it/s]Profile 8x8x16:  72%|███████▏  | 143/200 [00:01<00:00, 118.21it/s]Profile 8x8x16:  78%|███████▊  | 156/200 [00:01<00:00, 120.28it/s]Profile 8x8x16:  84%|████████▍ | 169/200 [00:01<00:00, 117.41it/s]Profile 8x8x16:  91%|█████████ | 182/200 [00:01<00:00, 119.67it/s]Profile 8x8x16:  98%|█████████▊| 195/200 [00:01<00:00, 121.14it/s]                                                                    8x8x16: 720372 materialized block-frame instances, 22 rings with samples
+Profile 8x16x16:   0%|          | 0/200 [00:00<?, ?it/s]Profile 8x16x16:   9%|▉         | 18/200 [00:00<00:01, 178.18it/s]Profile 8x16x16:  18%|█▊        | 37/200 [00:00<00:00, 185.09it/s]Profile 8x16x16:  28%|██▊       | 56/200 [00:00<00:00, 185.02it/s]Profile 8x16x16:  38%|███▊      | 75/200 [00:00<00:00, 185.60it/s]Profile 8x16x16:  47%|████▋     | 94/200 [00:00<00:00, 185.03it/s]Profile 8x16x16:  57%|█████▋    | 114/200 [00:00<00:00, 187.45it/s]Profile 8x16x16:  66%|██████▋   | 133/200 [00:00<00:00, 184.87it/s]Profile 8x16x16:  76%|███████▌  | 152/200 [00:00<00:00, 183.29it/s]Profile 8x16x16:  86%|████████▌ | 171/200 [00:00<00:00, 179.51it/s]Profile 8x16x16:  94%|█████████▍| 189/200 [00:01<00:00, 177.67it/s]                                                                     8x16x16: 470166 materialized block-frame instances, 22 rings with samples
+Profile 16x16x16:   0%|          | 0/200 [00:00<?, ?it/s]Profile 16x16x16:  12%|█▏        | 23/200 [00:00<00:00, 222.97it/s]Profile 16x16x16:  23%|██▎       | 46/200 [00:00<00:00, 222.87it/s]Profile 16x16x16:  35%|███▌      | 70/200 [00:00<00:00, 225.82it/s]Profile 16x16x16:  46%|████▋     | 93/200 [00:00<00:00, 225.20it/s]Profile 16x16x16:  58%|█████▊    | 116/200 [00:00<00:00, 226.74it/s]Profile 16x16x16:  70%|██████▉   | 139/200 [00:00<00:00, 223.90it/s]Profile 16x16x16:  81%|████████  | 162/200 [00:00<00:00, 224.89it/s]Profile 16x16x16:  92%|█████████▎| 185/200 [00:00<00:00, 223.94it/s]                                                                      16x16x16: 302027 materialized block-frame instances, 22 rings with samples
+Profile 16x32x16:   0%|          | 0/200 [00:00<?, ?it/s]Profile 16x32x16:  14%|█▎        | 27/200 [00:00<00:00, 261.63it/s]Profile 16x32x16:  27%|██▋       | 54/200 [00:00<00:00, 257.54it/s]Profile 16x32x16:  40%|████      | 81/200 [00:00<00:00, 258.60it/s]Profile 16x32x16:  54%|█████▍    | 108/200 [00:00<00:00, 260.99it/s]Profile 16x32x16:  68%|██████▊   | 135/200 [00:00<00:00, 259.90it/s]Profile 16x32x16:  81%|████████  | 162/200 [00:00<00:00, 260.72it/s]Profile 16x32x16:  94%|█████████▍| 189/200 [00:00<00:00, 260.84it/s]                                                                      16x32x16: 200706 materialized block-frame instances, 22 rings with samples
+Profile 32x32x16:   0%|          | 0/200 [00:00<?, ?it/s]Profile 32x32x16:  16%|█▌        | 31/200 [00:00<00:00, 308.01it/s]Profile 32x32x16:  31%|███       | 62/200 [00:00<00:00, 304.35it/s]Profile 32x32x16:  46%|████▋     | 93/200 [00:00<00:00, 304.95it/s]Profile 32x32x16:  62%|██████▏   | 124/200 [00:00<00:00, 298.60it/s]Profile 32x32x16:  77%|███████▋  | 154/200 [00:00<00:00, 298.77it/s]Profile 32x32x16:  92%|█████████▎| 185/200 [00:00<00:00, 300.69it/s]                                                                      32x32x16: 127672 materialized block-frame instances, 22 rings with samples
+Profile 32x64x16:   0%|          | 0/200 [00:00<?, ?it/s]Profile 32x64x16:  17%|█▋        | 34/200 [00:00<00:00, 339.32it/s]Profile 32x64x16:  34%|███▍      | 68/200 [00:00<00:00, 338.92it/s]Profile 32x64x16:  51%|█████     | 102/200 [00:00<00:00, 331.63it/s]Profile 32x64x16:  68%|██████▊   | 136/200 [00:00<00:00, 332.21it/s]Profile 32x64x16:  85%|████████▌ | 170/200 [00:00<00:00, 333.22it/s]                                                                      32x64x16: 87136 materialized block-frame instances, 22 rings with samples
+Profile 64x64x16:   0%|          | 0/200 [00:00<?, ?it/s]Profile 64x64x16:  17%|█▋        | 34/200 [00:00<00:00, 333.77it/s]Profile 64x64x16:  34%|███▍      | 68/200 [00:00<00:00, 285.81it/s]Profile 64x64x16:  53%|█████▎    | 106/200 [00:00<00:00, 322.06it/s]Profile 64x64x16:  72%|███████▏  | 143/200 [00:00<00:00, 338.74it/s]Profile 64x64x16:  90%|█████████ | 181/200 [00:00<00:00, 351.16it/s]                                                                      64x64x16: 54607 materialized block-frame instances, 22 rings with samples
+=== Step 3: per-ring max passing size ===
+Wrote /home/vipuser/桌面/OpenPCDet/mycode/zone_block_search/results/stage0_bxltby/coverage_Rjk.csv
+Wrote /home/vipuser/桌面/OpenPCDet/mycode/zone_block_search/results/stage0_bxltby/selected_Bstar.csv
+Wrote /home/vipuser/桌面/OpenPCDet/mycode/zone_block_search/results/stage0_bxltby/summary.json
+Wrote /home/vipuser/桌面/OpenPCDet/mycode/zone_block_search/results/stage0_bxltby/coverage_heatmap.png
+Wrote /home/vipuser/桌面/OpenPCDet/mycode/zone_block_search/results/stage0_bxltby/coverage_heatmap.svg
+Wrote /home/vipuser/桌面/OpenPCDet/mycode/zone_block_search/results/stage0_bxltby/bstar_by_ring.png
+Wrote /home/vipuser/桌面/OpenPCDet/mycode/zone_block_search/results/stage0_bxltby/bstar_by_ring.svg
+Wrote /home/vipuser/桌面/OpenPCDet/mycode/zone_block_search/results/stage0_bxltby/samples_by_ring.png
+
+=== Step 3: per-ring B*(j) (Bx<By menu) — PAUSE for review ===
+   j      [Tin,Tout)            B*         n        R        flag
+--------------------------------------------------------------------
+   0          [0,64)      16x16x16        67    0.955            
+   1        [64,128)        8x8x16      7177    0.970            
+   2       [128,192)      16x16x16     16398    0.962            
+   3       [192,256)      16x16x16     24058    0.970            
+   4       [256,320)      16x32x16     16557    0.962            
+   5       [320,384)      32x32x16      9871    0.959            
+   6       [384,448)      32x64x16      6184    0.961            
+   7       [448,512)      32x64x16      6324    0.982            
+   8       [512,576)      64x64x16      3654    0.969            
+   9       [576,640)      64x64x16      3636    0.985            
+  10       [640,704)      64x64x16      3552    0.992            
+  11       [704,768)      64x64x16      3356    0.998            
+  12       [768,832)      64x64x16      3293    0.999            
+  13       [832,896)      64x64x16      2845    1.000            
+  14       [896,960)      64x64x16      2670    1.000            
+  15      [960,1024)      64x64x16      2472    1.000            
+  16     [1024,1088)      64x64x16      2153    1.000            
+  17     [1088,1152)      64x64x16      1866    1.000            
+  18     [1152,1216)      64x64x16      1763    1.000            
+  19     [1216,1280)      64x64x16      1607    1.000            
+  20     [1280,1344)      64x64x16      1356    1.000            
+  21     [1344,1408)      64x64x16      1132    1.000            
+--------------------------------------------------------------------
+Step 4 (debounce / merge) not run. Inspect results/ then instruct next steps.

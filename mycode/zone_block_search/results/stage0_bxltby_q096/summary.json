@@ -1,0 +1,302 @@
+{
+  "stage": 0,
+  "grid_size_xyz": [
+    1408,
+    1600,
+    41
+  ],
+  "lidar_center_xy": [
+    0,
+    800
+  ],
+  "delta_d": 64,
+  "bz": 16,
+  "q": 0.96,
+  "two_page_limit": 128,
+  "menu": "Bx<By",
+  "menu_sizes": [
+    "8x8x16",
+    "8x16x16",
+    "16x16x16",
+    "16x32x16",
+    "32x32x16",
+    "32x64x16",
+    "64x64x16"
+  ],
+  "n_frames": 200,
+  "frame_list": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/zone_block_search/frame_list_200.txt",
+  "n_rings": 22,
+  "low_sample_threshold": 50,
+  "bstar": [
+    {
+      "ring_j": 0,
+      "interval": [
+        0,
+        64
+      ],
+      "Bstar": "8x16x16",
+      "n_samples": 87,
+      "coverage": "0.988506",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 1,
+      "interval": [
+        64,
+        128
+      ],
+      "Bstar": "8x8x16",
+      "n_samples": 7177,
+      "coverage": "0.970322",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 2,
+      "interval": [
+        128,
+        192
+      ],
+      "Bstar": "16x16x16",
+      "n_samples": 16398,
+      "coverage": "0.962130",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 3,
+      "interval": [
+        192,
+        256
+      ],
+      "Bstar": "16x16x16",
+      "n_samples": 24058,
+      "coverage": "0.970031",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 4,
+      "interval": [
+        256,
+        320
+      ],
+      "Bstar": "16x32x16",
+      "n_samples": 16557,
+      "coverage": "0.962070",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 5,
+      "interval": [
+        320,
+        384
+      ],
+      "Bstar": "16x32x16",
+      "n_samples": 17454,
+      "coverage": "0.986994",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 6,
+      "interval": [
+        384,
+        448
+      ],
+      "Bstar": "32x64x16",
+      "n_samples": 6184,
+      "coverage": "0.960705",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 7,
+      "interval": [
+        448,
+        512
+      ],
+      "Bstar": "32x64x16",
+      "n_samples": 6324,
+      "coverage": "0.981657",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 8,
+      "interval": [
+        512,
+        576
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 3654,
+      "coverage": "0.969349",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 9,
+      "interval": [
+        576,
+        640
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 3636,
+      "coverage": "0.984598",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 10,
+      "interval": [
+        640,
+        704
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 3552,
+      "coverage": "0.992399",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 11,
+      "interval": [
+        704,
+        768
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 3356,
+      "coverage": "0.997616",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 12,
+      "interval": [
+        768,
+        832
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 3293,
+      "coverage": "0.999393",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 13,
+      "interval": [
+        832,
+        896
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 2845,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 14,
+      "interval": [
+        896,
+        960
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 2670,
+      "coverage": "0.999625",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 15,
+      "interval": [
+        960,
+        1024
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 2472,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 16,
+      "interval": [
+        1024,
+        1088
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 2153,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 17,
+      "interval": [
+        1088,
+        1152
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 1866,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 18,
+      "interval": [
+        1152,
+        1216
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 1763,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 19,
+      "interval": [
+        1216,
+        1280
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 1607,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 20,
+      "interval": [
+        1280,
+        1344
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 1356,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 21,
+      "interval": [
+        1344,
+        1408
+      ],
+      "Bstar": "64x64x16",
+      "n_samples": 1132,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    }
+  ],
+  "outputs": {
+    "coverage_Rjk": "mycode/zone_block_search/results/stage0_bxltby_q096/coverage_Rjk.csv",
+    "selected_Bstar": "mycode/zone_block_search/results/stage0_bxltby_q096/selected_Bstar.csv"
+  },
+  "stopped_after": "step3",
+  "next": "Await review before Step 4 (debounce + run-length merge)"
+}
