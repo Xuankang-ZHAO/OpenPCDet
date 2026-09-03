@@ -1,0 +1,300 @@
+{
+  "stage": 2,
+  "grid_size_xyz": [
+    352,
+    400,
+    11
+  ],
+  "lidar_center_xy": [
+    0,
+    200
+  ],
+  "delta_d": 16,
+  "bz": 8,
+  "q": 0.97,
+  "two_page_limit": 128,
+  "menu": "Bx>By",
+  "menu_sizes": [
+    "4x4x8",
+    "8x4x8",
+    "8x8x8",
+    "16x8x8",
+    "16x16x8"
+  ],
+  "n_frames": 200,
+  "frame_list": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/zone_block_search/stage0/frame_list_200.txt",
+  "n_rings": 22,
+  "low_sample_threshold": 50,
+  "bstar": [
+    {
+      "ring_j": 0,
+      "interval": [
+        0,
+        16
+      ],
+      "Bstar": "16x16x8",
+      "n_samples": 65,
+      "coverage": "1.000000",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 1,
+      "interval": [
+        16,
+        32
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 2642,
+      "coverage": "0.975776",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 2,
+      "interval": [
+        32,
+        48
+      ],
+      "Bstar": "4x4x8",
+      "n_samples": 15451,
+      "coverage": "0.989515",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 3,
+      "interval": [
+        48,
+        64
+      ],
+      "Bstar": "4x4x8",
+      "n_samples": 22114,
+      "coverage": "0.983314",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 4,
+      "interval": [
+        64,
+        80
+      ],
+      "Bstar": "4x4x8",
+      "n_samples": 26765,
+      "coverage": "0.988007",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 5,
+      "interval": [
+        80,
+        96
+      ],
+      "Bstar": "4x4x8",
+      "n_samples": 28512,
+      "coverage": "0.995090",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 6,
+      "interval": [
+        96,
+        112
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 15682,
+      "coverage": "0.974939",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 7,
+      "interval": [
+        112,
+        128
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 15969,
+      "coverage": "0.985347",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 8,
+      "interval": [
+        128,
+        144
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 15473,
+      "coverage": "0.990176",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 9,
+      "interval": [
+        144,
+        160
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 15036,
+      "coverage": "0.991155",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 10,
+      "interval": [
+        160,
+        176
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 8449,
+      "coverage": "0.974316",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 11,
+      "interval": [
+        176,
+        192
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 8080,
+      "coverage": "0.979208",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 12,
+      "interval": [
+        192,
+        208
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 7800,
+      "coverage": "0.986667",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 13,
+      "interval": [
+        208,
+        224
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 6974,
+      "coverage": "0.987812",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 14,
+      "interval": [
+        224,
+        240
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 6347,
+      "coverage": "0.989601",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 15,
+      "interval": [
+        240,
+        256
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 3826,
+      "coverage": "0.973340",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 16,
+      "interval": [
+        256,
+        272
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 3437,
+      "coverage": "0.980797",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 17,
+      "interval": [
+        272,
+        288
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 3035,
+      "coverage": "0.984185",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 18,
+      "interval": [
+        288,
+        304
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 2789,
+      "coverage": "0.989243",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 19,
+      "interval": [
+        304,
+        320
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 2649,
+      "coverage": "0.987165",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 20,
+      "interval": [
+        320,
+        336
+      ],
+      "Bstar": "16x16x8",
+      "n_samples": 1640,
+      "coverage": "0.971341",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 21,
+      "interval": [
+        336,
+        352
+      ],
+      "Bstar": "16x16x8",
+      "n_samples": 1478,
+      "coverage": "0.989175",
+      "low_sample": false,
+      "note": ""
+    }
+  ],
+  "outputs": {
+    "coverage_Rjk": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/zone_block_search/stage2/results/stage2_bxgtby/coverage_Rjk.csv",
+    "selected_Bstar": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/zone_block_search/stage2/results/stage2_bxgtby/selected_Bstar.csv"
+  },
+  "stopped_after": "step3",
+  "next": "Await review before Step 4 (RLE + conservative merge)"
+}

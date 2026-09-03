@@ -1,0 +1,5 @@
+zone_id,inner_T,outer_T,size,bx,by,bz,note
+0,0,224,8x8x8,8,8,8,schemeA variant Zone0 4x8->8x8
+1,224,352,8x16x8,8,16,8,manual4 unchanged
+2,352,448,16x16x8,16,16,8,manual4 unchanged
+3,448,inf,16x32x8,16,32,8,manual4 remainder unchanged

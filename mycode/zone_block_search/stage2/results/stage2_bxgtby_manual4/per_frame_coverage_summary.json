@@ -1,0 +1,28 @@
+{
+  "lut": "0:96:4,4,8;1:160:8,4,8;2:272:8,8,8;3:*:16,16,8",
+  "lut_path": "mycode/zone_block_search/stage2/results/stage2_bxgtby_manual4/raw_zones_lut.txt",
+  "n_frames": 200,
+  "grid_size_xyz": [
+    352,
+    400,
+    11
+  ],
+  "lidar_center_xy": [
+    0,
+    200
+  ],
+  "two_page_limit": 128,
+  "per_frame_R_mean": 0.9857427941021726,
+  "per_frame_R_median": 0.9892662382549476,
+  "per_frame_R_std": 0.011574660420710911,
+  "per_frame_R_p10": 0.9681729636676634,
+  "per_frame_R_p90": 0.9972148733828378,
+  "per_frame_R_min": 0.95,
+  "per_frame_R_max": 1.0,
+  "pooled_R": 0.9866354997713298,
+  "total_materialized_blocks": 216469,
+  "mean_blocks_per_frame": 1082.345,
+  "frames_below_0_97": 23,
+  "frames_below_0_95": 0,
+  "frames_below_0_90": 0
+}

@@ -1,0 +1,5 @@
+zone_id,inner_T,outer_T,size,bx,by,bz,note
+0,0,96,4x4x8,4,4,8,manual4 near-field
+1,96,160,8x4x8,8,4,8,manual4
+2,160,272,8x8x8,8,8,8,manual4
+3,272,inf,16x16x8,16,16,8,manual4 remainder
