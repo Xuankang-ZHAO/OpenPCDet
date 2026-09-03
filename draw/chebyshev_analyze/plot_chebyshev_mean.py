@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""Plot MEAN_200_frames Chebyshev histograms as four stacked stage panels.
+"""Plot Chebyshev ring-density curves as four stacked stage panels.
 
-CSV bins are raw occupied-voxel counts per Chebyshev ring. The plotted y
-values are those counts divided by the actual XY ring length on the finite
-grid, so the curves show local density rather than circumference-biased totals.
+CSV bins are raw occupied-voxel counts per Chebyshev ring. Each frame is first
+converted to a density profile (count / actual XY ring length on the finite
+grid). The solid line is the mean density over frames; the shaded band is the
+10th–90th percentile range of those per-frame densities.
 """
 import argparse
 import csv
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 STAGES = (
@@ -20,20 +22,24 @@ STAGES = (
 )
 
 VECTOR_SUFFIXES = ('.pdf', '.svg')
+PERCENTILE_LO = 10
+PERCENTILE_HI = 90
 
 # IEEE TCAS-I / IEEEtran journal: one column is about 3.5 in.
-# The stacked figure is drawn ~1/3 wider than one column (~4.67 in).
+# The stacked figure is drawn a bit under two-column width so the
+# Chebyshev axis is readable without becoming a full-page figure.
 IEEE_COLUMN_INCHES = 3.5
-IEEE_FIGURE_WIDTH_INCHES = IEEE_COLUMN_INCHES * (4.0 / 3.0)
+IEEE_FIGURE_WIDTH_INCHES = IEEE_COLUMN_INCHES * (12.0 / 7.0)
 
 
-def load_mean_histogram(csv_path):
-    with Path(csv_path).open(newline='') as handle:
-        rows = list(csv.DictReader(handle))
-    mean_rows = [row for row in rows if str(row.get('file', '')).startswith('MEAN_')]
-    if not mean_rows:
-        raise RuntimeError(f'No MEAN_* row found in {csv_path}')
-    row = mean_rows[-1]
+def _dist_columns(row):
+    return sorted(
+        (col for col in row if col.startswith('dist_')),
+        key=lambda name: int(name.split('_', 1)[1]),
+    )
+
+
+def _assert_kitti_fov(csv_path, row):
     fov = str(row.get('fov_points_only', '')).strip().lower()
     mode = str(row.get('data_mode', '')).strip().lower()
     if mode == 'raw' or fov in ('false', '0', ''):
@@ -42,13 +48,24 @@ def load_mean_histogram(csv_path):
             f'(data_mode={row.get("data_mode")}, fov_points_only={row.get("fov_points_only")}). '
             'Regenerate with draw/chebyshev_analyze/chebyshev_analyze.py --data_mode kitti.'
         )
-    dist_cols = sorted(
-        (col for col in row if col.startswith('dist_')),
-        key=lambda name: int(name.split('_', 1)[1]),
+
+
+def load_frame_histograms(csv_path):
+    """Load per-frame Chebyshev count histograms, skipping MEAN_* summary rows."""
+    with Path(csv_path).open(newline='') as handle:
+        rows = list(csv.DictReader(handle))
+    frame_rows = [row for row in rows if not str(row.get('file', '')).startswith('MEAN_')]
+    if not frame_rows:
+        raise RuntimeError(f'No per-frame rows found in {csv_path}')
+    sample = frame_rows[0]
+    _assert_kitti_fov(csv_path, sample)
+    dist_cols = _dist_columns(sample)
+    distances = np.array([int(col.split('_', 1)[1]) for col in dist_cols], dtype=np.int64)
+    counts = np.array(
+        [[float(row[col]) for col in dist_cols] for row in frame_rows],
+        dtype=np.float64,
     )
-    distances = [int(col.split('_', 1)[1]) for col in dist_cols]
-    counts = [float(row[col]) for col in dist_cols]
-    return distances, counts, row
+    return distances, counts, sample
 
 
 def parse_spatial_shape_zyx(spatial_shape_zyx):
@@ -97,14 +114,28 @@ def chebyshev_ring_circumference(nx, ny, cx, cy, dist):
 
 
 def counts_to_ring_density(distances, counts, row):
+    """Convert per-frame count histograms to density profiles, shape (N, D)."""
     nx, ny, _nz = parse_spatial_shape_zyx(row['spatial_shape_zyx'])
     cx = int(row['lidar_center_x'])
     cy = int(row['lidar_center_y'])
-    density = []
-    for dist, count in zip(distances, counts):
-        ring_len = chebyshev_ring_circumference(nx, ny, cx, cy, dist)
-        density.append((count / ring_len) if ring_len else 0.0)
+    counts = np.asarray(counts, dtype=np.float64)
+    if counts.ndim == 1:
+        counts = counts[None, :]
+    ring_len = np.array(
+        [chebyshev_ring_circumference(nx, ny, cx, cy, int(dist)) for dist in distances],
+        dtype=np.float64,
+    )
+    density = np.zeros_like(counts, dtype=np.float64)
+    valid = ring_len > 0
+    density[:, valid] = counts[:, valid] / ring_len[valid]
     return density
+
+
+def density_mean_and_percentiles(density, percentile_lo=PERCENTILE_LO, percentile_hi=PERCENTILE_HI):
+    mean = np.mean(density, axis=0)
+    p_lo = np.percentile(density, percentile_lo, axis=0)
+    p_hi = np.percentile(density, percentile_hi, axis=0)
+    return mean, p_lo, p_hi
 
 
 def plot_mean_curves(csv_dir, out_path):
@@ -129,10 +160,20 @@ def plot_mean_curves(csv_dir, out_path):
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
     for ax, color, (_stage, filename) in zip(axes, colors, STAGES):
-        distances, counts, row = load_mean_histogram(csv_dir / filename)
+        distances, counts, row = load_frame_histograms(csv_dir / filename)
         density = counts_to_ring_density(distances, counts, row)
-        ax.plot(distances, density, color=color, linewidth=1.0)
-        ax.set_xlim(0, distances[-1] if distances else 1)
+        mean, p_lo, p_hi = density_mean_and_percentiles(density)
+        ax.fill_between(
+            distances,
+            p_lo,
+            p_hi,
+            color=color,
+            alpha=0.28,
+            linewidth=0,
+            zorder=1,
+        )
+        ax.plot(distances, mean, color=color, linewidth=1.0, zorder=2)
+        ax.set_xlim(0, distances[-1] if len(distances) else 1)
         ax.set_ylim(bottom=0)
         ax.grid(True, alpha=0.3)
         ax.yaxis.set_major_locator(plt.MaxNLocator(nbins=4, min_n_ticks=3))
