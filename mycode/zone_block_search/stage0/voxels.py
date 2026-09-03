@@ -9,7 +9,7 @@ from typing import List, Optional, Sequence, Tuple
 
 import numpy as np
 
-from mycode.zone_block_search.config import (
+from mycode.zone_block_search.stage0.config import (
     DEFAULT_CFG,
     DEFAULT_KITTI_ROOT,
     FRAME_LIST_PATH,

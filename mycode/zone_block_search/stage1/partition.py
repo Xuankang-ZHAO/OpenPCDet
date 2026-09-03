@@ -15,7 +15,7 @@ from typing import Dict, Sequence, Tuple
 
 import numpy as np
 
-from mycode.zone_block_search.config import (
+from mycode.zone_block_search.stage1.config import (
     DELTA_D,
     GRID_SIZE_XYZ,
     LIDAR_CENTER_XY,

@@ -1,7 +1,7 @@
 # Zone-Aware Variable-Size Block Partitioning：方法论与实验参考
 
 > 本文档用于指导 zone 边界和 block size 的候选生成、少量配置比较与论文表述。
-> 核心方法链：**Fig. 5(a) 确立 Chebyshev 距离轴 → 按硬件对齐粒度构造左闭右开的细方形环 → 逐尺寸统计两页覆盖率 → 每个细方形环选择最大通过尺寸 → 合并连续标签 → Golden model 最终取舍。**
+> 核心方法链：**Fig. 5(a) 确立 Chebyshev 距离轴 → 按硬件对齐粒度构造左闭右开的细方形环 → 逐尺寸统计两页覆盖率 → 每个细方形环选择最大通过尺寸（工作分位 P97）→ 连续同标签 RLE 合并 → 保守手动收敛到硬件 zone 数并用整帧两页覆盖率验证 → Golden model 最终取舍。**
 >
 > 该流程不是全局优化器，也不要求大规模配置扫描。Table I 中各 stage 的 LiDAR reference 是固定输入；现有 zone thresholds 和 block sizes 仅是参考候选，算法的目标是为它们寻找更合适的替代值。
 
@@ -27,9 +27,9 @@ Table I 中不同类型的参数必须明确区分：
 
 1. 用 Fig. 5(a) 说明 Chebyshev 距离是有效的一维 profiling 轴；
 2. 按硬件对齐粒度将距离划成细区间，并对每个合法 block size 直接统计包含 halo 的逐块占用；
-3. 在每个细方形环中选择满足两页覆盖率要求的最大 block size；
-4. 去除短暂标签抖动并合并连续相同标签，得到原始 zone 边界和尺寸；
-5. 最后根据 zone 数量限制生成少量合并/邻近候选，用 Golden model 选择用于更新 Table I 的最终配置。
+3. 在每个细方形环中选择满足两页覆盖率要求（工作值 $q=0.97$，即 P97）的最大 block size；
+4. 对连续相同标签做 run-length merge，得到细粒度原始 zones；再按硬件 zone 数做**保守手动合并**（合并区间取较小/更安全尺寸），并用逐帧整场两页覆盖率验证；
+5. 最后在少量邻近候选上用 Golden model 选择用于更新 Table I 的最终配置。
 
 上述流程先在一个 stage 上建立并验证，随后对其余 stage 独立重复。每个 stage 使用自己的 occupancy profile、block-size 菜单和 zone thresholds；一个 stage 的具体阈值和尺寸不能简单按比例缩放为另一个 stage 的参数。
 
@@ -60,7 +60,7 @@ Table I 中不同类型的参数必须明确区分：
 | $\Delta d_s$ | stage $s$ 的 profiling 距离粒度和边界量化单位 | stage 0 取 64；宜由候选平面边长的最小公倍数确定 |
 | $Z_{j,s}$ | stage $s$ 的第 $j$ 个细方形环 | 两个左闭右开嵌套矩形之差，详见2.1 |
 | $R_{j,k,s}$ | stage $s$ 的细方形环 $j$ 使用尺寸 $k$ 时的两页覆盖率 | 200帧样本中满足 $N_b\le128$ 的 block 比例 |
-| $q$ | 候选筛选所用分位数 | 工作值为 P95；不是正确性条件 |
+| $q$ | 候选筛选所用分位数 | 工作值为 P97（$q=0.97$）；不是正确性条件 |
 | $T_{i,s}$ | stage $s$ 独立确定的第 $i$ 个 zone 边界 | 原始 zones 可有多个边界；最终为4个 zone 时对应 $T_{0,s},T_{1,s},T_{2,s}$ |
 
 profiling 中的统计对象是**实际被物化并分配页面的 block**。除核心区域含有 active voxel 的 block 外，自身核心为空、但因相邻 block 的 halo 复制而含有存储记录的 halo-only block 也会被物化并分配页面。因此，halo-only block 同样纳入 $N_b$、物化 block 数、页面数和两页覆盖率统计；该口径在所有候选尺寸下保持一致。
@@ -121,11 +121,11 @@ Halo 统计本身是三维规则，不因 stage 编号而改变。对于任一 s
 
 它不单独决定最终尺寸，也不需要承担尾部建模任务。
 
-### 3.2 为什么还需要块级 P95
+### 3.2 为什么还需要块级 P97
 
 径向平均会抹掉方位角差异、帧间变化和局部聚簇。相同 $\rho_s(d)$ 下，不同 block 的 $N_b$ 仍可能相差很大。因此，用 Fig. 5(a) 确定距离轴和大致结构后，再以直接测量的两页覆盖率 $R_{j,k,s}$ 判断某个具体尺寸是否经常超过两页。
 
-Fig. 5(a) 的 P10–P90 带与块级 P95 不需要一致：前者描述逐帧径向平均密度的波动，后者描述逐块存储占用的上尾。
+Fig. 5(a) 的 P10–P90 带与块级 P97 不需要一致：前者描述逐帧径向平均密度的波动，后者描述逐块存储占用的上尾。工作分位取 P97 而非 P95，是因为环级 pooled 覆盖率达标并不自动保证**逐帧整场**覆盖率达标；更严的环级阈值能为后续保守合并留下裕量。
 
 ---
 
@@ -133,7 +133,7 @@ Fig. 5(a) 的 P10–P90 带与块级 P95 不需要一致：前者描述逐帧径
 
 ### 4.1 算法性质
 
-该方法是一个**离线、profile-guided、基于经验分位数约束的离散网格搜索**。更具体地说，它对每个左闭右开的细方形环独立选择满足两页覆盖率要求的最大 block size，再通过标签去抖和连续区间合并提取 zone 边界。
+该方法是一个**离线、profile-guided、基于经验分位数约束的离散网格搜索**。更具体地说，它对每个左闭右开的细方形环独立选择满足两页覆盖率要求的最大 block size，再经 run-length merge 与保守手动收敛得到硬件可用的 zone 边界。
 
 它只遍历单个 stage 的有限 block-size 菜单，不扫描 zone 阈值与尺寸的全部笛卡尔积。zone 边界是逐环尺寸标签变化后的输出，而不是预先参与联合搜索的参数。
 
@@ -143,7 +143,7 @@ Fig. 5(a) 的 P10–P90 带与块级 P95 不需要一致：前者描述逐帧径
 
 - $B_z=16$。本轮搜索只调整 $xy$ 尺寸，$z$ 尺寸作为预先选定的设计参数；
 - $C_{2P}=128$。恰好128个体素仍占两页，因此通过条件使用 $N_b\le128$；
-- $q=0.95$。即初始尺寸要求至少约95%的 profiling block 不触发 reshape；
+- $q=0.97$。即初始尺寸要求至少约97%的 profiling block 不触发 reshape（环级经验 P97）；
 - $\Delta d_0=64$，所有原始 zone 边界均写成 $T_{i,0}=64m$，其中 $m$ 是非负整数；
 - 一个对所有候选尺寸统一的 block-grid anchor，固定为 Table I 中 stage 0 的 LiDAR reference $(x_{0,0},y_{0,0})=(0,800)$。
 
@@ -225,7 +225,7 @@ R_{j,k,0}
 =\frac{N_b\le128\text{ 的 block 数}}{\text{该细方形环的全部物化 block 数}}.
 $$
 
-$R_{j,k,0}\ge0.95$ 就表示至少约95%的样本不超过两页，也就是该细方形环的经验 P95 不超过128。
+$R_{j,k,0}\ge0.97$ 就表示至少约97%的样本不超过两页，也就是该细方形环的经验 P97 不超过128。
 
 随后，在当前方向菜单内，对每个宽度为64的细方形环选择满足覆盖率要求的最大尺寸：
 
@@ -235,40 +235,61 @@ $$
 
 当前方向菜单中的所有候选尺寸都应完成统计后再取最大通过者，不依赖覆盖率随尺寸严格单调的假设。若所有尺寸都通过，则选菜单中的最大尺寸；若所有尺寸都不通过，则以最小尺寸作为基础标签，并允许剩余异常 block reshape。两个方向菜单分别得到自己的标签序列和原始 zones。
 
-$B^*(j)$ 是该细方形环的 **P95-guided preferred size**，不是全局最优尺寸。尺寸大于它仍然是合法配置，只是更可能触发 reshape，可在后续少量候选中保留。
+$B^*(j)$ 是该细方形环的 **P97-guided preferred size**，不是全局最优尺寸。尺寸大于它仍然是合法配置，只是更可能触发 reshape，可在后续少量候选中保留。重要的是：$R_{j,k,s}$ 是多帧 pooled 统计，**环级 $R\ge q$ 并不保证每一帧的整场两页覆盖率都 $\ge q$**；因此后续合并必须以逐帧整场 $R$ 作为硬件可行性检查。
 
-### 4.5 标签去抖与原始 zone 提取
+### 4.5 从逐环标签到硬件 zone：RLE 与保守手动合并
 
 每个方向菜单都会形成一条离散标签序列。以下以 $B_x<B_y$ 菜单为示意；$B_x>B_y$ 菜单按相同步骤生成另一条序列：
 
 ```text
 细方形环： Z_0      Z_1       Z_2       Z_3      ...
-尺寸标签： 32x64    16x32     16x16     16x16   ...
+尺寸标签： 8x16     8x8       8x16      16x16   ...
 ```
 
-先执行一次简单去抖：只有当新尺寸标签连续出现至少两个细方形环时才确认换档；等价地，也可以对标签序列使用宽度为3的中值滤波。该规则只用于消除单环统计抖动，不改变持续存在的密度结构。
+**不做激进去抖。** Stage-0 实验表明：“新标签须连续出现至少两环才确认换档”或 3-bin 中值滤波这类规则，往往会把近场短程的小尺寸（如单环 `8×8`）抹掉，并强制相邻环使用更大尺寸。环级 pooled $R$ 仍可好看，但**逐帧整场** $R<0.95$ 的帧数明显上升，对要求整帧两页覆盖的硬件不可行。因此本流程**保留完整的 $B^*(j)$ 序列**，不以去抖为默认步骤。
 
-之后对连续相同标签执行 run-length merging。例如，$Z_2$ 和 $Z_3$ 连续采用 $16\times16\times16$ 时，可合并为同一个 zone，其内外边界分别为128和256。标签发生稳定变化的位置就是原始 zone boundaries。Fig. 5(a) 局部可能存在次峰，因此原始 zone 数可以多于4，也不要求不同 stage 得到相同的 zone 数。
+**第一步：run-length merge（RLE）。** 对连续相同标签直接合并。例如若干环连续采用 $16\times16\times16$ 时，合成一个细粒度原始 zone，内外边界为对应的 $64m$。标签变化处即为候选边界。Fig. 5(a) 局部可能存在次峰，因此 RLE 后的原始 zone 数可以多于硬件允许的 4，也不要求不同 stage 得到相同的 zone 数。
 
-### 4.6 硬件收敛与少量 Golden-model 候选
+**第二步：保守手动收敛到硬件 zone 数。** 当原始 zone 数超过硬件限制（如 4）时，在 P97 标签序列的指导下做少量、可解释的手动合并，遵循：
 
-两个方向菜单得到的原始 zones 分别作为 profiling 输出保留，不立即强制压缩成4个。需要映射到最终硬件时，对每个方向族分别执行：
+1. **合并区间取较小/更安全尺寸**：若一段距离上 RLE 给出多种档位，收敛后的 zone 优先采用该段内更小的平面尺寸（或菜单中更保守的一档），而不是取最大档或“平均”档；
+2. **边界落在 $\Delta d_s$ 网格上**，并与两侧 block size 对齐；
+3. **用 profiling 集做逐帧整场两页覆盖率验证**：对候选布局计算每帧
+   $R_{\mathrm{frame}}=\#\{N_b\le128\}/\text{该帧物化 block 数}$，
+   报告 mean / median / min，以及 $R_{\mathrm{frame}}<0.95$（或 $<q$）的帧比例。环级 pooled $R$ 不能代替该检查；
+4. 接受“物化 block 数适度增加”以换取整帧 $R$ 达标；这是存储侧可接受的折中。
 
-1. 合并对主要密度结构影响最小的短区间；
-2. 对有歧义的合并，分别保留相邻尺寸中较小档和较大档作为两个候选；
-3. 在稳定换档点附近，只考虑边界移动一个 $\Delta d_s$ 的邻近方案；
-4. 加入当前 Table I 的对应 stage 参数作为参考候选；
-5. 每个方向菜单只保留一个基础方案及必要的邻近方案，再将两套方向候选合并交给 Golden model；总候选数量控制在约 4–10 组。
+Stage-0（$B_x<B_y$，P97）上的工作示例：RLE 后得到多于 4 个细 zone；保守手动合并为
 
-合并到硬件允许的 zone 数以后，必须按最终可变尺寸布局重新执行 halo、页面和 reshape 统计。原始逐环覆盖率用于生成候选，不能代替对最终配置的验证。
+$$
+[0,192):\ 8{\times}8{\times}16,\quad
+[192,384):\ 16{\times}16{\times}16,\quad
+[384,576):\ 32{\times}32{\times}16,\quad
+[576,\infty):\ 64{\times}64{\times}16.
+$$
 
-Golden model 首先比较 $B_x<B_y$ 与 $B_x>B_y$ 两个方向族，再在较优方向附近比较少量边界或尺寸变体。建议以总 DRAM traffic 或总页面访问量作为主要选择指标；reshape 比例、halo 复制比和 active block 数用于解释结果，不建立复杂的多目标加权函数。
+相对直接沿用 RLE 尺寸，该方案物化 block 数上升约两成多，但 profiling 200 帧中 $R_{\mathrm{frame}}<0.95$ 的帧由十余帧降到极少帧。规律可概括为：
+
+> **环级 P97 负责给出安全尺寸上界与换档位置；硬件收敛时宁小勿大，并以逐帧整场 $R$ 为可行性闸门。**
+
+### 4.6 邻近候选与 Golden-model 取舍
+
+两个方向菜单各自保留一条经 4.5 收敛的基础方案。再按需生成少量变体：
+
+1. 在稳定边界附近，只考虑边界移动一个 $\Delta d_s$ 的邻近方案；
+2. 对有歧义的合并，保留“更小档”与“较大档”各一版，供流量对比；
+3. 加入当前 Table I 的对应 stage 参数作为参考候选；
+4. 每个方向菜单只保留一个基础方案及必要的邻近方案，再将两套方向候选合并交给 Golden model；总候选数量控制在约 4–10 组。
+
+合并到硬件允许的 zone 数以后，必须按最终可变尺寸布局重新执行 halo、页面、reshape 以及**逐帧整场 $R$** 统计。原始逐环覆盖率用于生成候选，不能代替对最终配置的验证。
+
+Golden model 首先比较 $B_x<B_y$ 与 $B_x>B_y$ 两个方向族，再在较优方向附近比较少量边界或尺寸变体。建议以总 DRAM traffic 或总页面访问量作为主要选择指标；reshape 比例、halo 复制比、active block 数和整帧 $R$ 分布用于解释结果，不建立复杂的多目标加权函数。
 
 ### 4.7 分位数敏感性
 
-$q=0.95$ 是候选筛选的 profiling 参数，不是正确性条件。它表示在200帧合并样本中，目标尺寸约有不超过5%的 block-frame instances 超过两页；它不保证 held-out 数据上严格不超过5%，也不代表受影响的体素或流量比例只有5%。
+$q=0.97$ 是候选筛选的 profiling 参数，不是正确性条件。它表示在200帧合并样本中，目标尺寸约有不超过3%的 block-frame instances 超过两页；它不保证 held-out 数据上严格不超过3%，也不代表受影响的体素或流量比例只有3%，更不保证逐帧整场 $R\ge0.97$。
 
-若需要敏感性分析，只需将 $q$ 改为0.90或0.98，重新执行逐环标签选择和合并，观察哪些稳定换档点发生变化。$q=0.98$ 比0.95更保守，$q=0.90$更宽松。对于较高分位数，必须同时报告各细方形环的有效样本数。
+若需要敏感性分析，可将 $q$ 改为0.95或0.98，重新执行逐环标签选择与保守合并，并对比逐帧整场 $R$ 分布与物化 block 数。$q=0.98$ 比0.97更保守，$q=0.95$更宽松；Stage-0 上由0.95提到0.97再配合保守合并，能显著降低 $R_{\mathrm{frame}}<0.95$ 的帧比例。对于较高分位数，必须同时报告各细方形环的有效样本数。
 
 ### 4.8 各 stage 独立重复
 
@@ -282,13 +303,13 @@ stage 0 可以作为论文和实验记录中的完整示例。完成相同脚本
 
 这些统计量用于解释 Golden model 的选择，不需要全部进入候选生成规则：
 
-1. **两页覆盖率**：满足 $N_b\le128$ 的 block 比例，以及 $P_b=1/2/>2$ 的 block 比例；
+1. **两页覆盖率**：满足 $N_b\le128$ 的 block 比例（环级 pooled 与**逐帧整场**均需报告），以及 $P_b=1/2/>2$ 的 block 比例；
 2. **reshape 影响**：reshape block 比例及其额外字节/页面比例，优先按流量报告；
 3. **页利用率**：
    $$U=\frac{\sum_bN_b}{C_P\sum_bP_b};$$
 4. **halo 复制比**：
    $$R_h=\frac{\sum_bN_b-N_{\mathrm{unique}}}{N_{\mathrm{unique}}};$$
-5. **active block 数与总页面数**：用于说明小 block 和大 block 的主要取舍。
+5. **active block 数与总页面数**：用于说明小 block 和大 block 的主要取舍，以及保守合并相对 RLE 方案的 block 数增幅。
 
 固定尺寸基线至少包含多个全局固定尺寸和 per-stage 最佳固定尺寸。固定尺寸与 zone-aware 必须使用相同的 halo、页分配和 reshape 规则。
 
@@ -300,25 +321,25 @@ stage 0 可以作为论文和实验记录中的完整示例。完成相同脚本
 Step 0  数据切分
   → Step 1  固定该 stage 的 B_z、两个方向菜单、距离粒度和 grid anchor
   → Step 2  分别遍历两个菜单中的候选尺寸，收集各细方形环的 N_b 样本
-  → Step 3  计算 R_j,k,s，并给每个区间标记最大通过尺寸
-  → Step 4  标签去抖 + run-length merging，得到原始 zones
-  → Step 5  按硬件数量合并并用 Golden model 比较少量候选
+  → Step 3  计算 R_j,k,s，并给每个区间标记最大通过尺寸（q=0.97 / P97）
+  → Step 4  RLE 合并连续同标签；保守手动收敛到硬件 zone 数；逐帧整场 R 验证
+  → Step 5  生成少量邻近候选并用 Golden model 比较
   → Step 6  held-out 数据上报告结果并比较固定尺寸基线
 ```
 
 **Step 0 — 数据切分。** 从 KITTI training split 中选取约 200 帧作为 profiling 集；held-out validation 帧只用于最终报告。所有参数选择和 Golden-model 候选取舍均在 profiling 集上完成。
 
-**Step 1 — 固定搜索输入。** Fig. 5(a) 的 $\rho_s(d)$ 负责说明采用 Chebyshev 距离分区的动机。对当前 stage 固定 $B_z$、$B_x<B_y$ 与 $B_x>B_y$ 两套菜单、$q$ 和 $\Delta d_s$，并把 Table I 中该 stage 的 LiDAR reference 设为所有候选尺寸共同的 block-boundary anchor；stage 0 使用4.2给出的具体参数。
+**Step 1 — 固定搜索输入。** Fig. 5(a) 的 $\rho_s(d)$ 负责说明采用 Chebyshev 距离分区的动机。对当前 stage 固定 $B_z$、$B_x<B_y$ 与 $B_x>B_y$ 两套菜单、$q=0.97$ 和 $\Delta d_s$，并把 Table I 中该 stage 的 LiDAR reference 设为所有候选尺寸共同的 block-boundary anchor；stage 0 使用4.2给出的具体参数。
 
 **Step 2 — 逐尺寸全局 profiling。** 分别对两个方向菜单中的每个 block shape 均匀铺满整个网格，并在所有发生分块的方向执行真实 halo 复制；特别地，只要 $B_z<G_{z,s}$，就必须包含 $z$ 向 halo。随后按2.1定义的细方形环汇总200帧中每个物化 block 的 $N_b$，并记录各组合的样本数；正方形尺寸的结果由两个菜单复用。
 
 **Step 3 — 逐环标记。** 计算 $R_{j,k,s}$，并在每个 $Z_{j,s}$ 中选择满足 $R_{j,k,s}\ge q$ 的最大尺寸。统计时同时记录各细方形环的样本数；若极远端区间几乎没有有效样本，则不依据该区间单独确定尺寸。
 
-**Step 4 — 提取原始 zones。** 两个方向菜单分别对尺寸标签使用“两区间持续”规则或3-bin中值滤波去抖，再通过 run-length merging 合并连续相同标签。此时允许两套结果的原始 zone 数不同且多于4。
+**Step 4 — RLE 与保守手动收敛。** 两个方向菜单分别对 $B^*(j)$ 做 run-length merge，得到可多于4的细粒度原始 zones；**不做激进去抖**。再按硬件 zone 数量限制做保守手动合并：合并区间取较小/更安全尺寸，边界落在 $\Delta d_s$ 网格上。对收敛后的布局在 profiling 集上计算逐帧整场两页覆盖率，确认 $R_{\mathrm{frame}}$ 分布满足硬件约束后再进入下一步。Stage-0 工作示例见4.5。
 
-**Step 5 — 硬件收敛与 Golden model 取舍。** 分别根据该 stage 的硬件 zone 数量限制合并两个方向族的原始 zones，在稳定边界附近生成少量邻近方案，并加入当前 Table I 的对应配置。按最终可变尺寸布局重新统计后，用 Golden model 先比较方向族，再选择该 stage 的最终参数。
+**Step 5 — 邻近候选与 Golden model 取舍。** 在 Step 4 基础方案附近生成少量边界或尺寸变体，并加入当前 Table I 的对应配置。按最终可变尺寸布局重新统计后，用 Golden model 先比较方向族，再选择该 stage 的最终参数。
 
-**Step 6 — held-out 验证。** 在 validation traces 上一次性报告最终 zone-aware 配置、多个固定尺寸和 per-stage 最佳固定尺寸的 block 数、页面数、halo、reshape 和 DRAM 指标。
+**Step 6 — held-out 验证。** 在 validation traces 上一次性报告最终 zone-aware 配置、多个固定尺寸和 per-stage 最佳固定尺寸的 block 数、页面数、halo、reshape、DRAM 指标以及逐帧整场 $R$。
 
 ---
 
@@ -339,22 +360,26 @@ Step 0  数据切分
 > uses half-open bounds, $-T\le x-x_0<T$ and $-T\le y-y_0<T$, so the negative boundary remains in
 > the inner zone while the positive boundary starts the outer zone. The profiling axis is divided into
 > correspondingly aligned square rings (64 voxels wide for Stage 0), and each ring selects the largest
-> block size for which at least 95% of the samples contain no more than 128 voxels, corresponding to
-> two 64-voxel pages; larger blocks remain valid and are handled by reshape. Short label fluctuations
-> are suppressed and consecutive bins with the same selected size are merged, so their transition
-> points directly form the initial zone boundaries. If the resulting number of zones exceeds the
-> hardware limit, we evaluate only a few adjacent merge and boundary variants from both orientation
-> families with the trace-driven Golden model and revalidate the final variable-size layout. The same profiling procedure is
-> independently repeated for the remaining stages, since each stage has its own occupancy profile,
-> block-size menu, distance granularity, and zone thresholds. This procedure narrows the design space
-> without claiming a closed-form global optimum, while outlier reshape preserves correctness.
+> block size for which at least 97% of the samples contain no more than 128 voxels, corresponding to
+> two 64-voxel pages; larger blocks remain valid and are handled by reshape. Consecutive rings with
+> the same selected size are run-length merged into fine zones. Aggressive label debouncing is avoided,
+> because suppressing short near-field small-size rings can raise the fraction of frames whose
+> whole-scene two-page coverage falls below the hardware target. When the number of fine zones exceeds
+> the hardware limit, we conservatively merge adjacent bins while preferring the smaller safe size in
+> each merged interval, then revalidate the layout with per-frame whole-scene coverage before comparing
+> a few adjacent variants from both orientation families with the trace-driven Golden model. The same
+> profiling procedure is independently repeated for the remaining stages, since each stage has its own
+> occupancy profile, block-size menu, distance granularity, and zone thresholds. This procedure narrows
+> the design space without claiming a closed-form global optimum, while outlier reshape preserves
+> correctness.
 
 ### 7.2 防御口径
 
 - 本方法不是逐帧自适应划分，而是低成本的离线 profiling 加静态配置；
-- Fig. 5(a) 负责说明距离轴，逐环两页覆盖率负责产生尺寸标签，Golden model 负责最终选择；
+- Fig. 5(a) 负责说明距离轴，逐环两页覆盖率（P97）负责产生尺寸标签，保守合并与逐帧整场 $R$ 负责硬件可行性，Golden model 负责最终流量取舍；
 - Fig. 5(a) 的对称 Chebyshev 距离只用于统计趋势；实际 zone 和 profiling bins 均使用 $x/y$ 同时判断的左闭右开矩形；
 - 不声称 optimal，贡献点是避免纯经验手调并显著缩小候选空间；
+- 环级 pooled 覆盖率达标不等于逐帧整场达标；激进去抖可能损害整帧 $R$，故不以去抖为默认步骤；
 - profiling 偏差只会使 reshape 或页面开销增加，不会造成存储溢出错误；
 - novelty 表述限定为在 block-based SCONV accelerator 中使用 zone-aware variable-size partitioning，不与通用八叉树或算法层自适应分区混为一谈。
 
@@ -366,6 +391,7 @@ Step 0  数据切分
 - 不建立多目标加权优化器、动态规划或逐帧 oracle；
 - 不把计算模式、搜索能耗、搜索阵列深度或分段方式纳入 zone 选择规则；
 - 不做逐帧八叉树、自适应建树或块内体素均衡；
+- 不以“两环持续 / 中值滤波”类激进去抖作为默认合并规则；
 - 不声称经验覆盖率规则给出全局最优解；
 - 不引入第二个 occupancy 定义，$N_b$ 始终表示实际存储记录数并包含 halo；
 - 正文方法控制在一个短段落，逐环覆盖率和标签序列可放补充材料或实验记录。

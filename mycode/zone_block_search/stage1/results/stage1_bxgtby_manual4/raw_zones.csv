@@ -1,0 +1,5 @@
+zone_id,inner_T,outer_T,size,bx,by,bz,note
+0,0,224,8x4x8,8,4,8,manual4 Bx>By
+1,224,352,16x8x8,16,8,8,manual4 Bx>By
+2,352,448,16x16x8,16,16,8,manual4 Bx>By
+3,448,inf,32x16x8,32,16,8,manual4 Bx>By remainder

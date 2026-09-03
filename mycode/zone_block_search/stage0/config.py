@@ -3,7 +3,7 @@
 from pathlib import Path
 
 PACKAGE_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = PACKAGE_DIR.parents[1]
+PROJECT_ROOT = PACKAGE_DIR.parents[2]  # OpenPCDet root (…/zone_block_search/stage0 → …)
 
 # Backbone sparse shape ZYX = [41, 1600, 1408] → XYZ grid below.
 # Voxelizer grid_size_z is 40; backbone pads +1. Occupancy coords use z in [0, 40).

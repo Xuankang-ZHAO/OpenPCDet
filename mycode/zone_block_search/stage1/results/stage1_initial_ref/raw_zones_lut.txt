@@ -1,0 +1,6 @@
+# Auto-generated Stage1 zone LUT (Bz=8)
+# zone:outer_half_open_T:bx,by,bz
+0:32:8,16,8
+1:256:8,8,8
+2:384:8,16,8
+3:*:32,32,8

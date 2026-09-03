@@ -16,7 +16,7 @@ from pathlib import Path
 import numpy as np
 from tqdm import tqdm
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
@@ -25,14 +25,14 @@ from mycode.rtl_unfixed.partition import (
     load_zone_specs,
     summarize_zone_specs,
 )
-from mycode.zone_block_search.config import (
+from mycode.zone_block_search.stage0.config import (
     GRID_SIZE_XYZ,
     LIDAR_CENTER_XY,
     RESULTS_DIR,
     TWO_PAGE_LIMIT,
     VOXEL_CACHE_PATH,
 )
-from mycode.zone_block_search.voxels import load_stage0_voxel_frames
+from mycode.zone_block_search.stage0.voxels import load_stage0_voxel_frames
 
 
 def raw_zones_to_lut_lines(raw_zones_csv: Path) -> list:

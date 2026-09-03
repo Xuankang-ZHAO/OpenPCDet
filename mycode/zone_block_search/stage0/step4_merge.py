@@ -15,11 +15,11 @@ import sys
 from pathlib import Path
 from typing import List, Optional, Sequence, Tuple
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from mycode.zone_block_search.config import (
+from mycode.zone_block_search.stage0.config import (
     DELTA_D,
     LIDAR_CENTER_XY,
     MENU_BX_LT_BY,

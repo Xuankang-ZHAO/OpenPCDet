@@ -1,0 +1,302 @@
+{
+  "stage": 1,
+  "grid_size_xyz": [
+    704,
+    800,
+    21
+  ],
+  "lidar_center_xy": [
+    0,
+    400
+  ],
+  "delta_d": 32,
+  "bz": 8,
+  "q": 0.97,
+  "two_page_limit": 128,
+  "menu": "Bx>By",
+  "menu_sizes": [
+    "4x4x8",
+    "8x4x8",
+    "8x8x8",
+    "16x8x8",
+    "16x16x8",
+    "32x16x8",
+    "32x32x8"
+  ],
+  "n_frames": 200,
+  "frame_list": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/zone_block_search/stage0/frame_list_200.txt",
+  "n_rings": 22,
+  "low_sample_threshold": 50,
+  "bstar": [
+    {
+      "ring_j": 0,
+      "interval": [
+        0,
+        32
+      ],
+      "Bstar": "32x32x8",
+      "n_samples": 42,
+      "coverage": "1.000000",
+      "low_sample": true,
+      "note": ""
+    },
+    {
+      "ring_j": 1,
+      "interval": [
+        32,
+        64
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 7807,
+      "coverage": "0.973357",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 2,
+      "interval": [
+        64,
+        96
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 45307,
+      "coverage": "0.981261",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 3,
+      "interval": [
+        96,
+        128
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 63299,
+      "coverage": "0.977567",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 4,
+      "interval": [
+        128,
+        160
+      ],
+      "Bstar": "8x4x8",
+      "n_samples": 71949,
+      "coverage": "0.983169",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 5,
+      "interval": [
+        160,
+        192
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 39737,
+      "coverage": "0.977427",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 6,
+      "interval": [
+        192,
+        224
+      ],
+      "Bstar": "8x8x8",
+      "n_samples": 36961,
+      "coverage": "0.983199",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 7,
+      "interval": [
+        224,
+        256
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 21305,
+      "coverage": "0.970476",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 8,
+      "interval": [
+        256,
+        288
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 19677,
+      "coverage": "0.978909",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 9,
+      "interval": [
+        288,
+        320
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 18269,
+      "coverage": "0.980513",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 10,
+      "interval": [
+        320,
+        352
+      ],
+      "Bstar": "16x8x8",
+      "n_samples": 16100,
+      "coverage": "0.986646",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 11,
+      "interval": [
+        352,
+        384
+      ],
+      "Bstar": "16x16x8",
+      "n_samples": 9496,
+      "coverage": "0.977359",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 12,
+      "interval": [
+        384,
+        416
+      ],
+      "Bstar": "16x16x8",
+      "n_samples": 8476,
+      "coverage": "0.984899",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 13,
+      "interval": [
+        416,
+        448
+      ],
+      "Bstar": "16x16x8",
+      "n_samples": 7295,
+      "coverage": "0.987114",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 14,
+      "interval": [
+        448,
+        480
+      ],
+      "Bstar": "16x16x8",
+      "n_samples": 6625,
+      "coverage": "0.988679",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 15,
+      "interval": [
+        480,
+        512
+      ],
+      "Bstar": "32x16x8",
+      "n_samples": 3923,
+      "coverage": "0.979353",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 16,
+      "interval": [
+        512,
+        544
+      ],
+      "Bstar": "32x32x8",
+      "n_samples": 2478,
+      "coverage": "0.971348",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 17,
+      "interval": [
+        544,
+        576
+      ],
+      "Bstar": "32x32x8",
+      "n_samples": 2293,
+      "coverage": "0.974706",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 18,
+      "interval": [
+        576,
+        608
+      ],
+      "Bstar": "32x32x8",
+      "n_samples": 1954,
+      "coverage": "0.986182",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 19,
+      "interval": [
+        608,
+        640
+      ],
+      "Bstar": "32x32x8",
+      "n_samples": 1745,
+      "coverage": "0.989685",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 20,
+      "interval": [
+        640,
+        672
+      ],
+      "Bstar": "32x32x8",
+      "n_samples": 1572,
+      "coverage": "0.995547",
+      "low_sample": false,
+      "note": ""
+    },
+    {
+      "ring_j": 21,
+      "interval": [
+        672,
+        704
+      ],
+      "Bstar": "32x32x8",
+      "n_samples": 1427,
+      "coverage": "0.999299",
+      "low_sample": false,
+      "note": ""
+    }
+  ],
+  "outputs": {
+    "coverage_Rjk": "mycode/zone_block_search/stage1/results/stage1_bxgtby/coverage_Rjk.csv",
+    "selected_Bstar": "mycode/zone_block_search/stage1/results/stage1_bxgtby/selected_Bstar.csv"
+  },
+  "stopped_after": "step3",
+  "next": "Await review before Step 4 (RLE + conservative merge)"
+}

@@ -17,11 +17,11 @@ from pathlib import Path
 import numpy as np
 from tqdm import tqdm
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from mycode.zone_block_search.config import (
+from mycode.zone_block_search.stage0.config import (
     COVERAGE_Q,
     DELTA_D,
     FRAME_LIST_PATH,
@@ -35,12 +35,12 @@ from mycode.zone_block_search.config import (
     menu_volume_rank,
     size_label,
 )
-from mycode.zone_block_search.partition import (
+from mycode.zone_block_search.stage0.partition import (
     accumulate_ring_nb_samples,
     summarize_ring_coverage,
     validate_against_rtl_unfixed,
 )
-from mycode.zone_block_search.voxels import load_stage0_voxel_frames
+from mycode.zone_block_search.stage0.voxels import load_stage0_voxel_frames
 
 
 def select_bstar(coverage_by_size: dict, menu=MENU_BX_LT_BY, q: float = COVERAGE_Q):
