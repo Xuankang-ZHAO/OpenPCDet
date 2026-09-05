@@ -120,6 +120,37 @@ def add_axis_arrows(ax) -> None:
     )
 
 
+OVERFLOW_GAP = 0.55
+BAR_WIDTH = 0.6
+
+
+def draw_xaxis_break(ax, x: float) -> None:
+    """Two diagonal slashes on the x-axis, marking a scale break."""
+    yspan = ax.get_ylim()[1] - ax.get_ylim()[0]
+    dy = 0.028 * yspan
+    dx = 0.10
+    gap = 0.075
+    ax.plot(
+        [x - 0.12, x + 0.18],
+        [0.0, 0.0],
+        color='white',
+        lw=2.4,
+        solid_capstyle='butt',
+        clip_on=False,
+        zorder=5,
+    )
+    for shift in (-gap / 2.0, gap / 2.0):
+        ax.plot(
+            [x + shift - dx, x + shift + dx],
+            [-dy, dy],
+            color='black',
+            lw=0.9,
+            solid_capstyle='butt',
+            clip_on=False,
+            zorder=6,
+        )
+
+
 def draw_stage_bars(
     ax,
     rows: Sequence[dict],
@@ -130,20 +161,32 @@ def draw_stage_bars(
     annotate: bool = True,
     source_rows: Optional[Sequence[dict]] = None,
 ) -> None:
-    shares = [100.0 * row['pct'] for row in rows]
-    colors = [bar_color(row['bin_hi'], row['bin_label']) for row in rows]
-    n_bins = len(rows)
-    xs = range(n_bins)
-    ax.bar(xs, shares, color=colors, edgecolor='none', width=1.0, align='center')
-    ax.set_xlim(-0.5, n_bins - 0.5)
+    regular = [row for row in rows if not row['bin_label'].startswith('>')]
+    overflow = [row for row in rows if row['bin_label'].startswith('>')]
+    shares = [100.0 * row['pct'] for row in regular]
+    colors = [bar_color(row['bin_hi'], row['bin_label']) for row in regular]
+    n_reg = len(regular)
+    xs = list(range(n_reg))
+    ax.bar(xs, shares, color=colors, edgecolor='none', width=BAR_WIDTH, align='center')
+    tick_pos = [i + 0.5 for i in xs]
+    tick_labels = [str(row['bin_hi']) for row in regular]
+    x_right = n_reg - 0.5
+    overflow_x = None
+    overflow_pct = 0.0
+    if overflow:
+        overflow_x = n_reg + OVERFLOW_GAP
+        overflow_pct = 100.0 * overflow[0]['pct']
+        ax.bar(
+            [overflow_x],
+            [overflow_pct],
+            color=bar_color(overflow[0]['bin_hi'], overflow[0]['bin_label']),
+            edgecolor='none',
+            width=BAR_WIDTH,
+            align='center',
+        )
+        x_right = overflow_x + 0.5
+    ax.set_xlim(-0.5, x_right)
     ax.margins(x=0)
-    tick_pos = []
-    tick_labels = []
-    for i, row in enumerate(rows):
-        if row['bin_label'].startswith('>'):
-            continue
-        tick_pos.append(i + 0.5)
-        tick_labels.append(str(row['bin_hi']))
     ax.set_xticks(tick_pos)
     ax.set_xticklabels(tick_labels, fontsize=10)
     ax.tick_params(axis='y', labelsize=10)
@@ -155,9 +198,22 @@ def draw_stage_bars(
             ax.set_xlabel(xlabel, fontsize=12)
     if ylabel:
         ax.set_ylabel('Fraction of nonempty blocks (%)', fontsize=12, labelpad=6)
-    ymax = max(shares) if shares else 1.0
+    all_shares = shares + [100.0 * row['pct'] for row in overflow]
+    ymax = max(all_shares) if all_shares else 1.0
     ax.set_ylim(0.0, max(ymax * 1.18, 5.0))
     apply_axes_style(ax)
+    if overflow and overflow_x is not None:
+        draw_xaxis_break(ax, n_reg - 0.5 + 0.5 * OVERFLOW_GAP)
+        ax.text(
+            overflow_x,
+            overflow_pct + 0.9,
+            r'$>128$',
+            ha='center',
+            va='bottom',
+            fontsize=10,
+            color='#333333',
+            clip_on=False,
+        )
     add_axis_arrows(ax)
 
     if annotate:
