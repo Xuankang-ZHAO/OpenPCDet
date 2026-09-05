@@ -59,7 +59,7 @@ def collapse_tail(rows: Sequence[dict], display_hi: int) -> List[dict]:
     kept.append({
         'bin_lo': overflow_lo,
         'bin_hi': overflow_hi,
-        'bin_label': f'{overflow_lo}+',
+        'bin_label': f'>{display_hi}',
         'n_blocks': sum(row['n_blocks'] for row in tail),
         'pct': sum(row['pct'] for row in tail),
     })
@@ -71,7 +71,7 @@ def cumulative_share(rows: Sequence[dict], limit: int) -> float:
 
 
 def bar_color(bin_hi: int, label: str) -> str:
-    if label.endswith('+') and bin_hi > TWO_PAGE:
+    if label.startswith('>') or (label.endswith('+') and bin_hi > TWO_PAGE):
         return COLOR_RESHAPE
     if bin_hi <= ONE_PAGE:
         return COLOR_LE64
@@ -83,8 +83,41 @@ def bar_color(bin_hi: int, label: str) -> str:
 def apply_axes_style(ax) -> None:
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
+    ax.tick_params(axis='y', pad=3.0)
     ax.yaxis.grid(True, linestyle=':', linewidth=0.7, alpha=0.7)
     ax.set_axisbelow(True)
+
+
+def add_axis_arrows(ax) -> None:
+    arrowprops = {
+        'arrowstyle': '-|>',
+        'mutation_scale': 9,
+        'color': 'black',
+        'lw': 0.8,
+        'shrinkA': 0,
+        'shrinkB': 0,
+        'clip_on': False,
+    }
+    ax.annotate(
+        '',
+        xy=(1.04, 0.0),
+        xytext=(1.0, 0.0),
+        xycoords='axes fraction',
+        textcoords='axes fraction',
+        arrowprops=arrowprops,
+        clip_on=False,
+        annotation_clip=False,
+    )
+    ax.annotate(
+        '',
+        xy=(0.0, 1.04),
+        xytext=(0.0, 1.0),
+        xycoords='axes fraction',
+        textcoords='axes fraction',
+        arrowprops=arrowprops,
+        clip_on=False,
+        annotation_clip=False,
+    )
 
 
 def draw_stage_bars(
@@ -92,23 +125,40 @@ def draw_stage_bars(
     rows: Sequence[dict],
     title: str,
     ylabel: bool = True,
+    xlabel: Optional[str] = None,
+    title_below: bool = False,
     annotate: bool = True,
     source_rows: Optional[Sequence[dict]] = None,
 ) -> None:
-    labels = [row['bin_label'] for row in rows]
     shares = [100.0 * row['pct'] for row in rows]
     colors = [bar_color(row['bin_hi'], row['bin_label']) for row in rows]
-    xs = range(len(rows))
-    ax.bar(xs, shares, color=colors, edgecolor='white', linewidth=0.4, width=0.86)
-    ax.set_xticks(list(xs))
-    ax.set_xticklabels(labels, rotation=45, ha='right', fontsize=8)
-    ax.set_title(title, fontsize=11)
-    ax.set_xlabel(r'$N_b$ interval (bin width = 16)')
+    n_bins = len(rows)
+    xs = range(n_bins)
+    ax.bar(xs, shares, color=colors, edgecolor='none', width=1.0, align='center')
+    ax.set_xlim(-0.5, n_bins - 0.5)
+    ax.margins(x=0)
+    tick_pos = []
+    tick_labels = []
+    for i, row in enumerate(rows):
+        if row['bin_label'].startswith('>'):
+            continue
+        tick_pos.append(i + 0.5)
+        tick_labels.append(str(row['bin_hi']))
+    ax.set_xticks(tick_pos)
+    ax.set_xticklabels(tick_labels, fontsize=10)
+    ax.tick_params(axis='y', labelsize=10)
+    if title_below:
+        ax.set_xlabel(title, fontsize=11, labelpad=2)
+    else:
+        ax.set_title(title, fontsize=11)
+        if xlabel:
+            ax.set_xlabel(xlabel, fontsize=12)
     if ylabel:
-        ax.set_ylabel('Share of materialized blocks (%)')
+        ax.set_ylabel('Fraction of nonempty blocks (%)', fontsize=12, labelpad=6)
     ymax = max(shares) if shares else 1.0
     ax.set_ylim(0.0, max(ymax * 1.18, 5.0))
     apply_axes_style(ax)
+    add_axis_arrows(ax)
 
     if annotate:
         ref_rows = source_rows if source_rows is not None else rows
@@ -121,33 +171,36 @@ def draw_stage_bars(
             transform=ax.transAxes,
             ha='right',
             va='top',
-            fontsize=8,
+            fontsize=12,
             bbox={'boxstyle': 'round,pad=0.25', 'facecolor': 'white', 'edgecolor': '#cccccc', 'alpha': 0.92},
         )
 
 
 def legend_handles() -> List[Patch]:
     return [
-        Patch(facecolor=COLOR_LE64, edgecolor='white', label=r'$N_b\leq 64$ (1 page)'),
-        Patch(facecolor=COLOR_LE128, edgecolor='white', label=r'$65\leq N_b\leq 128$ (2 pages)'),
-        Patch(facecolor=COLOR_RESHAPE, edgecolor='white', label=r'$N_b>128$ (reshape)'),
+        Patch(facecolor=COLOR_LE64, edgecolor='white', label='$N_b\\leq 64$\n(1 page)'),
+        Patch(facecolor=COLOR_LE128, edgecolor='white', label='$65\\leq N_b\\leq 128$\n(2 pages)'),
+        Patch(facecolor=COLOR_RESHAPE, edgecolor='white', label='$N_b>128$\n(reshape)'),
     ]
 
 
 def save_figure(fig, out_dir: Path, stem: str) -> Tuple[Path, Path]:
     png_path = out_dir / f'{stem}.png'
     svg_path = out_dir / f'{stem}.svg'
-    fig.savefig(png_path, dpi=200, bbox_inches='tight')
-    fig.savefig(svg_path, bbox_inches='tight')
+    fig.savefig(png_path, dpi=200, bbox_inches='tight', pad_inches=0.04)
+    fig.savefig(svg_path, bbox_inches='tight', pad_inches=0.04)
     plt.close(fig)
     return png_path, svg_path
 
 
+XLABEL_NB = rf'$N_b$ (bin width = {BIN_WIDTH})'
+
+
 def plot_stage(rows: Sequence[dict], stage: int, out_dir: Path, display_hi: int) -> Tuple[Path, Path]:
     plot_rows = collapse_tail(rows, display_hi)
-    fig, ax = plt.subplots(figsize=(10.5, 4.2))
-    draw_stage_bars(ax, plot_rows, f'Stage {stage}', source_rows=rows)
-    ax.legend(handles=legend_handles(), loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=3, frameon=False, fontsize=8)
+    fig, ax = plt.subplots(figsize=(6.3, 4.4))
+    draw_stage_bars(ax, plot_rows, f'Stage {stage}', xlabel=XLABEL_NB, source_rows=rows)
+    ax.legend(handles=legend_handles(), loc='upper center', bbox_to_anchor=(0.5, 1.28), ncol=3, frameon=False, fontsize=10)
     fig.tight_layout()
     return save_figure(fig, out_dir, f'stage{stage}_nb_bin_share')
 
@@ -157,21 +210,48 @@ def plot_all_stages(
     out_dir: Path,
     display_hi: int,
 ) -> Tuple[Path, Path]:
-    fig, axes = plt.subplots(2, 2, figsize=(12.8, 7.6), sharey=False)
-    for ax, stage in zip(axes.ravel(), STAGES):
+    fig, axes = plt.subplots(2, 2, figsize=(7.6, 6.7), sharey=False)
+    for index, (ax, stage) in enumerate(zip(axes.ravel(), STAGES)):
         rows = stage_rows[stage]
         plot_rows = collapse_tail(rows, display_hi)
-        draw_stage_bars(ax, plot_rows, f'Stage {stage}', source_rows=rows)
-    fig.legend(handles=legend_handles(), loc='upper center', ncol=3, frameon=False, fontsize=9, bbox_to_anchor=(0.5, 1.02))
-    fig.supxlabel(r'$N_b$ interval (bin width = 16)', y=0.01, fontsize=10)
-    fig.tight_layout(rect=(0.0, 0.02, 1.0, 0.96))
+        panel = chr(ord('a') + index)
+        draw_stage_bars(
+            ax,
+            plot_rows,
+            f'({panel}) Stage {stage}',
+            ylabel=False,
+            title_below=True,
+            source_rows=rows,
+        )
+    fig.supylabel('Fraction of nonempty blocks (%)', fontsize=12, x=0.02)
+    fig.tight_layout(rect=(0.02, 0.018, 1.0, 0.97), h_pad=1.4)
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    inv = fig.transFigure.inverted()
+    y0 = min(
+        inv.transform((0.0, ax.get_tightbbox(renderer).y0))[1]
+        for ax in axes[1, :]
+    )
+    y1 = max(
+        inv.transform((0.0, ax.get_tightbbox(renderer).y1))[1]
+        for ax in axes[0, :]
+    )
+    fig.legend(
+        handles=legend_handles(),
+        loc='lower center',
+        ncol=3,
+        frameon=False,
+        fontsize=10,
+        bbox_to_anchor=(0.5, min(y1 + 0.008, 0.99)),
+    )
+    fig.supxlabel(XLABEL_NB, y=max(y0 - 0.024, 0.0), fontsize=12)
     return save_figure(fig, out_dir, 'all_stages_nb_bin_share')
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Plot final-config N_b bin shares (width=16)')
     parser.add_argument('--out_dir', type=str, default=str(PACKAGE_DIR))
-    parser.add_argument('--display_hi', type=int, default=256, help='Keep explicit bins up to this N_b; merge the tail')
+    parser.add_argument('--display_hi', type=int, default=128, help='Keep explicit bins up to this N_b; merge the tail')
     parser.add_argument('--scope', type=str, default='all')
     return parser.parse_args()
 
