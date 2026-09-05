@@ -294,6 +294,7 @@ def compute_rtl_unfixed_partition_counts(
     grid_size: Tuple[int, int, int],
     zone_specs: Sequence[ZoneSpec],
     lidar_center_xy: Tuple[int, int],
+    return_keys: bool = False,
 ):
     """Aggregate RTL-emitted block requests into per-block counts.
 
@@ -302,14 +303,21 @@ def compute_rtl_unfixed_partition_counts(
         grid_size: full voxel grid size as (nx, ny, nz)
         zone_specs: validated zone specs from `load_zone_specs`
         lidar_center_xy: LiDAR center in voxel index space as (x, y)
+        return_keys: if True, also return sorted keys as an (N, 4) int64 array
+            of (zone_id, block_x, block_y, block_z)
 
     Returns:
         counts: per-block request counts ordered by sorted block key
         total_blocks: number of unique block keys observed in emitted requests
         block_voxel_limit: always -1 in unfixed mode
+        keys: only when return_keys=True; shape (N, 4)
     """
+    empty_counts = np.zeros(0, dtype=np.int64)
+    empty_keys = np.zeros((0, 4), dtype=np.int64)
     if coords is None or coords.size == 0:
-        return np.zeros(0, dtype=np.int64), 0, -1
+        if return_keys:
+            return empty_counts, 0, -1, empty_keys
+        return empty_counts, 0, -1
 
     counts_by_key = {}
 
@@ -326,4 +334,7 @@ def compute_rtl_unfixed_partition_counts(
 
     ordered_keys = sorted(counts_by_key)
     counts = np.array([counts_by_key[key] for key in ordered_keys], dtype=np.int64)
+    if return_keys:
+        keys = np.asarray(ordered_keys, dtype=np.int64).reshape(-1, 4)
+        return counts, len(ordered_keys), -1, keys
     return counts, len(ordered_keys), -1

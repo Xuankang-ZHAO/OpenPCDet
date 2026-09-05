@@ -1,0 +1,6 @@
+# Closed final Stage-2 zone LUT (halo N_b analysis)
+# zone:outer_half_open_T:bx,by,bz
+0:96:4,4,8
+1:160:8,4,8
+2:272:8,8,8
+3:*:16,16,8
