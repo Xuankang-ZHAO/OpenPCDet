@@ -1,0 +1,37 @@
+Frame: 000216
+GPU: NVIDIA GeForce RTX 3080
+Mode: HW-reference INT8 values in FP32 spconv kernels
+Warmup/Repeat: 10 / 50
+Backbone total mean: 15.347 ms  (p50=15.293, p90=15.712, std=0.273)
+
+Id   Name             Type               Nin  Cin     Nout Cout    MeanMs     P50Ms     P90Ms     StdMs   Share%
+----------------------------------------------------------------------------------------------------------------------
+0    conv_input.0     SubMConv3d       15000    4    15000   16     1.235     1.236     1.274     0.028     8.0%
+1    conv1.0.0        SubMConv3d       15000   16    15000   16     0.892     0.894     0.922     0.025     5.8%
+2    conv2.0.0        SparseConv3d     15000   16    25762   32     1.624     1.615     1.668     0.068    10.6%
+3    conv2.1.0        SubMConv3d       25762   32    25762   32     1.251     1.246     1.278     0.055     8.2%
+4    conv2.2.0        SubMConv3d       25762   32    25762   32     0.902     0.904     0.930     0.027     5.9%
+5    conv3.0.0        SparseConv3d     25762   32    19089   64     1.672     1.666     1.706     0.071    10.9%
+6    conv3.1.0        SubMConv3d       19089   64    19089   64     1.286     1.279     1.318     0.052     8.4%
+7    conv3.2.0        SubMConv3d       19089   64    19089   64     0.951     0.950     0.975     0.019     6.2%
+8    conv4.0.0        SparseConv3d     19089   64     8495   64     1.682     1.667     1.716     0.106    11.0%
+9    conv4.1.0        SubMConv3d        8495   64     8495   64     1.276     1.271     1.314     0.043     8.3%
+10   conv4.2.0        SubMConv3d        8495   64     8495   64     0.957     0.950     0.981     0.042     6.2%
+11   conv_out.0       SparseConv3d      8495   64     6612  128     1.619     1.598     1.711     0.091    10.6%
+
+{
+  "gpu": {
+    "index": 0,
+    "name": "NVIDIA GeForce RTX 3080",
+    "total_memory_bytes": 10488315904,
+    "major": 8,
+    "minor": 6,
+    "multi_processor_count": 68
+  },
+  "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
+  "frames": [
+    "000216"
+  ],
+  "json": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/output/second_backbone_int8_layer_latency/second_backbone_int8_layer_latency_NVIDIAGeForceRTX3080_20260916_153830.json",
+  "csv": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/output/second_backbone_int8_layer_latency/second_backbone_int8_layer_latency_NVIDIAGeForceRTX3080_20260916_153830.csv"
+}

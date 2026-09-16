@@ -1,0 +1,36 @@
+Frame: 000216
+GPU: NVIDIA GeForce RTX 3080
+
+Note: HW-reference INT8 values still live in FP32 CUDA tensors. delta/peak are allocator stats; int8_feat is the logical payload.
+
+Id   Name             Type               Nin  Cin     Nout Cout  OutFP32MB  OutINT8MB   IndiceMB    Wint8MB    DeltaMB    Peak+MB     LiveMB
+----------------------------------------------------------------------------------------------------------------------------------------------------
+0    conv_input.0     SubMConv3d       15000    4    15000   16      0.916      0.229      1.888      0.002      2.900      5.892     31.039
+1    conv1.0.0        SubMConv3d       15000   16    15000   16      0.916      0.229      1.888      0.007      0.916      4.633     31.955
+2    conv2.0.0        SparseConv3d     15000   16    25762   32      3.145      0.786      6.791      0.013      8.050     18.509     39.089
+3    conv2.1.0        SubMConv3d       25762   32    25762   32      3.145      0.786      9.641      0.026      5.996     18.790     45.085
+4    conv2.2.0        SubMConv3d       25762   32    25762   32      3.145      0.786      9.641      0.026      3.145     15.938     45.085
+5    conv3.0.0        SparseConv3d     25762   32    19089   64      4.660      1.165     14.894      0.053     11.065     29.327     53.006
+6    conv3.1.0        SubMConv3d       19089   64    19089   64      4.660      1.165     17.005      0.105      7.461     27.660     60.467
+7    conv3.2.0        SubMConv3d       19089   64    19089   64      4.660      1.165     17.005      0.105      5.371     24.860     61.177
+8    conv4.0.0        SparseConv3d     19089   64     8495   64      2.074      0.518     20.187      0.105      5.770     17.499     62.286
+9    conv4.1.0        SubMConv3d        8495   64     8495   64      2.074      0.518     21.126      0.105      3.527     12.670     65.813
+10   conv4.2.0        SubMConv3d        8495   64     8495   64      2.074      0.518     21.126      0.105      2.586     11.729     65.813
+11   conv_out.0       SparseConv3d      8495   64     6612  128      3.229      0.807     21.515      0.023      3.619     15.569     66.846
+
+{
+  "gpu": {
+    "index": 0,
+    "name": "NVIDIA GeForce RTX 3080",
+    "total_memory_bytes": 10488315904,
+    "major": 8,
+    "minor": 6,
+    "multi_processor_count": 68
+  },
+  "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
+  "frames": [
+    "000216"
+  ],
+  "json": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/output/second_backbone_int8_layer_vram/second_backbone_int8_layer_vram_NVIDIAGeForceRTX3080_20260916_151241.json",
+  "csv": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/output/second_backbone_int8_layer_vram/second_backbone_int8_layer_vram_NVIDIAGeForceRTX3080_20260916_151241.csv"
+}
