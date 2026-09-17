@@ -1,0 +1,2032 @@
+{
+  "cfg": "/home/vipuser/\u684c\u9762/OpenPCDet/tools/cfgs/kitti_models/second_hw_qat.yaml",
+  "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
+  "device": "cuda:0",
+  "weight_quant": "per_channel",
+  "mode": "hw_reference_int8",
+  "data_mode": "kitti",
+  "halo": true,
+  "bin_width": 16,
+  "coord_bytes": 8,
+  "feature_bytes_per_channel": 1,
+  "page_voxels": 64,
+  "peak_ifm_ofm_dram_bytes": 12358656,
+  "peak_ifm_ofm_layer_id": 6,
+  "peak_ifm_ofm_layer_name": "conv3.1.0",
+  "generated_at": "2026-09-17T11:35:23",
+  "frame": {
+    "split": "val",
+    "frame_id": "000216",
+    "point_cloud_path": "/home/vipuser/\u684c\u9762/OpenPCDet/data/kitti/training/velodyne/000216.bin",
+    "data_loader": "KittiDataset.__getitem__",
+    "fov_points_only": true
+  },
+  "layers": [
+    {
+      "layer_id": -1,
+      "layer_name": "input",
+      "conv_type": "InputSparseTensor",
+      "feature_channels": 4,
+      "bytes_per_voxel": 12,
+      "page_bytes": 768,
+      "pages": 1148,
+      "dram_bytes": 881664,
+      "packed_dram_bytes": 180000,
+      "occupancy": 0.20415940766550522,
+      "spatial_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "grid_size_xyz": [
+        1408,
+        1600,
+        41
+      ],
+      "stage": 0,
+      "lidar_center_xy": [
+        0,
+        800
+      ],
+      "lut": "0:192:8,8,16;1:384:16,16,16;2:576:32,32,16;3:*:64,64,16",
+      "lut_pretty": "Z0[192]:8x8x16; Z1[384]:16x16x16; Z2[576]:32x32x16; Z3[*]:64x64x16",
+      "nonempty_voxels": 15000,
+      "nonempty_blocks": 1110,
+      "mean_nb": 19.242342342342344,
+      "median_nb": 15.0,
+      "max_nb": 219,
+      "sum_nb": 21359,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 599,
+          "pct": 0.5396396396396397
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 356,
+          "pct": 0.3207207207207207
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 93,
+          "pct": 0.08378378378378379
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 31,
+          "pct": 0.027927927927927927
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 10,
+          "pct": 0.009009009009009009
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 8,
+          "pct": 0.007207207207207207
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 4,
+          "pct": 0.0036036036036036037
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 4,
+          "pct": 0.0036036036036036037
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 3,
+          "pct": 0.002702702702702703
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 209,
+          "bin_hi": 224,
+          "bin_label": "209-224",
+          "n_blocks": 2,
+          "pct": 0.0018018018018018018
+        }
+      ],
+      "ifm_ofm_dram_bytes": 881664
+    },
+    {
+      "layer_id": 0,
+      "layer_name": "conv_input.0",
+      "conv_type": "SubMConv3d",
+      "feature_channels": 16,
+      "bytes_per_voxel": 24,
+      "page_bytes": 1536,
+      "pages": 1148,
+      "dram_bytes": 1763328,
+      "packed_dram_bytes": 360000,
+      "occupancy": 0.20415940766550522,
+      "spatial_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "grid_size_xyz": [
+        1408,
+        1600,
+        41
+      ],
+      "stage": 0,
+      "lidar_center_xy": [
+        0,
+        800
+      ],
+      "lut": "0:192:8,8,16;1:384:16,16,16;2:576:32,32,16;3:*:64,64,16",
+      "lut_pretty": "Z0[192]:8x8x16; Z1[384]:16x16x16; Z2[576]:32x32x16; Z3[*]:64x64x16",
+      "nonempty_voxels": 15000,
+      "nonempty_blocks": 1110,
+      "mean_nb": 19.242342342342344,
+      "median_nb": 15.0,
+      "max_nb": 219,
+      "sum_nb": 21359,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 599,
+          "pct": 0.5396396396396397
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 356,
+          "pct": 0.3207207207207207
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 93,
+          "pct": 0.08378378378378379
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 31,
+          "pct": 0.027927927927927927
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 10,
+          "pct": 0.009009009009009009
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 8,
+          "pct": 0.007207207207207207
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 4,
+          "pct": 0.0036036036036036037
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 4,
+          "pct": 0.0036036036036036037
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 3,
+          "pct": 0.002702702702702703
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 209,
+          "bin_hi": 224,
+          "bin_label": "209-224",
+          "n_blocks": 2,
+          "pct": 0.0018018018018018018
+        }
+      ],
+      "ifm_ofm_dram_bytes": 2644992
+    },
+    {
+      "layer_id": 1,
+      "layer_name": "conv1.0.0",
+      "conv_type": "SubMConv3d",
+      "feature_channels": 16,
+      "bytes_per_voxel": 24,
+      "page_bytes": 1536,
+      "pages": 1148,
+      "dram_bytes": 1763328,
+      "packed_dram_bytes": 360000,
+      "occupancy": 0.20415940766550522,
+      "spatial_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "grid_size_xyz": [
+        1408,
+        1600,
+        41
+      ],
+      "stage": 0,
+      "lidar_center_xy": [
+        0,
+        800
+      ],
+      "lut": "0:192:8,8,16;1:384:16,16,16;2:576:32,32,16;3:*:64,64,16",
+      "lut_pretty": "Z0[192]:8x8x16; Z1[384]:16x16x16; Z2[576]:32x32x16; Z3[*]:64x64x16",
+      "nonempty_voxels": 15000,
+      "nonempty_blocks": 1110,
+      "mean_nb": 19.242342342342344,
+      "median_nb": 15.0,
+      "max_nb": 219,
+      "sum_nb": 21359,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 599,
+          "pct": 0.5396396396396397
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 356,
+          "pct": 0.3207207207207207
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 93,
+          "pct": 0.08378378378378379
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 31,
+          "pct": 0.027927927927927927
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 10,
+          "pct": 0.009009009009009009
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 8,
+          "pct": 0.007207207207207207
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 4,
+          "pct": 0.0036036036036036037
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 4,
+          "pct": 0.0036036036036036037
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 3,
+          "pct": 0.002702702702702703
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 209,
+          "bin_hi": 224,
+          "bin_label": "209-224",
+          "n_blocks": 2,
+          "pct": 0.0018018018018018018
+        }
+      ],
+      "ifm_ofm_dram_bytes": 3526656
+    },
+    {
+      "layer_id": 2,
+      "layer_name": "conv2.0.0",
+      "conv_type": "SparseConv3d",
+      "feature_channels": 32,
+      "bytes_per_voxel": 40,
+      "page_bytes": 2560,
+      "pages": 1781,
+      "dram_bytes": 4559360,
+      "packed_dram_bytes": 1030480,
+      "occupancy": 0.226014177428411,
+      "spatial_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "grid_size_xyz": [
+        704,
+        800,
+        21
+      ],
+      "stage": 1,
+      "lidar_center_xy": [
+        0,
+        400
+      ],
+      "lut": "0:224:8,8,8;1:352:16,8,8;2:448:16,16,8;3:*:32,16,8",
+      "lut_pretty": "Z0[224]:8x8x8; Z1[352]:16x8x8; Z2[448]:16x16x8; Z3[*]:32x16x8",
+      "nonempty_voxels": 25762,
+      "nonempty_blocks": 1511,
+      "mean_nb": 33.610191925876904,
+      "median_nb": 21.0,
+      "max_nb": 477,
+      "sum_nb": 50785,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 562,
+          "pct": 0.37193911317008604
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 435,
+          "pct": 0.2878888153540701
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 203,
+          "pct": 0.1343481138318994
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 113,
+          "pct": 0.07478491065519524
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 79,
+          "pct": 0.05228325612177366
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 32,
+          "pct": 0.021178027796161483
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 29,
+          "pct": 0.019192587690271344
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 16,
+          "pct": 0.010589013898080741
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 8,
+          "pct": 0.005294506949040371
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 7,
+          "pct": 0.004632693580410324
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 6,
+          "pct": 0.003970880211780278
+        },
+        {
+          "bin_lo": 209,
+          "bin_hi": 224,
+          "bin_label": "209-224",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 225,
+          "bin_hi": 240,
+          "bin_label": "225-240",
+          "n_blocks": 6,
+          "pct": 0.003970880211780278
+        },
+        {
+          "bin_lo": 241,
+          "bin_hi": 256,
+          "bin_label": "241-256",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 257,
+          "bin_hi": 272,
+          "bin_label": "257-272",
+          "n_blocks": 2,
+          "pct": 0.0013236267372600927
+        },
+        {
+          "bin_lo": 273,
+          "bin_hi": 288,
+          "bin_label": "273-288",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 289,
+          "bin_hi": 304,
+          "bin_label": "289-304",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 305,
+          "bin_hi": 320,
+          "bin_label": "305-320",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 321,
+          "bin_hi": 336,
+          "bin_label": "321-336",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 337,
+          "bin_hi": 352,
+          "bin_label": "337-352",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 353,
+          "bin_hi": 368,
+          "bin_label": "353-368",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 369,
+          "bin_hi": 384,
+          "bin_label": "369-384",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 385,
+          "bin_hi": 400,
+          "bin_label": "385-400",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 401,
+          "bin_hi": 416,
+          "bin_label": "401-416",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 417,
+          "bin_hi": 432,
+          "bin_label": "417-432",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 433,
+          "bin_hi": 448,
+          "bin_label": "433-448",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 449,
+          "bin_hi": 464,
+          "bin_label": "449-464",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 465,
+          "bin_hi": 480,
+          "bin_label": "465-480",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        }
+      ],
+      "ifm_ofm_dram_bytes": 6322688
+    },
+    {
+      "layer_id": 3,
+      "layer_name": "conv2.1.0",
+      "conv_type": "SubMConv3d",
+      "feature_channels": 32,
+      "bytes_per_voxel": 40,
+      "page_bytes": 2560,
+      "pages": 1781,
+      "dram_bytes": 4559360,
+      "packed_dram_bytes": 1030480,
+      "occupancy": 0.226014177428411,
+      "spatial_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "grid_size_xyz": [
+        704,
+        800,
+        21
+      ],
+      "stage": 1,
+      "lidar_center_xy": [
+        0,
+        400
+      ],
+      "lut": "0:224:8,8,8;1:352:16,8,8;2:448:16,16,8;3:*:32,16,8",
+      "lut_pretty": "Z0[224]:8x8x8; Z1[352]:16x8x8; Z2[448]:16x16x8; Z3[*]:32x16x8",
+      "nonempty_voxels": 25762,
+      "nonempty_blocks": 1511,
+      "mean_nb": 33.610191925876904,
+      "median_nb": 21.0,
+      "max_nb": 477,
+      "sum_nb": 50785,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 562,
+          "pct": 0.37193911317008604
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 435,
+          "pct": 0.2878888153540701
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 203,
+          "pct": 0.1343481138318994
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 113,
+          "pct": 0.07478491065519524
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 79,
+          "pct": 0.05228325612177366
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 32,
+          "pct": 0.021178027796161483
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 29,
+          "pct": 0.019192587690271344
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 16,
+          "pct": 0.010589013898080741
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 8,
+          "pct": 0.005294506949040371
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 7,
+          "pct": 0.004632693580410324
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 6,
+          "pct": 0.003970880211780278
+        },
+        {
+          "bin_lo": 209,
+          "bin_hi": 224,
+          "bin_label": "209-224",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 225,
+          "bin_hi": 240,
+          "bin_label": "225-240",
+          "n_blocks": 6,
+          "pct": 0.003970880211780278
+        },
+        {
+          "bin_lo": 241,
+          "bin_hi": 256,
+          "bin_label": "241-256",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 257,
+          "bin_hi": 272,
+          "bin_label": "257-272",
+          "n_blocks": 2,
+          "pct": 0.0013236267372600927
+        },
+        {
+          "bin_lo": 273,
+          "bin_hi": 288,
+          "bin_label": "273-288",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 289,
+          "bin_hi": 304,
+          "bin_label": "289-304",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 305,
+          "bin_hi": 320,
+          "bin_label": "305-320",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 321,
+          "bin_hi": 336,
+          "bin_label": "321-336",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 337,
+          "bin_hi": 352,
+          "bin_label": "337-352",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 353,
+          "bin_hi": 368,
+          "bin_label": "353-368",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 369,
+          "bin_hi": 384,
+          "bin_label": "369-384",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 385,
+          "bin_hi": 400,
+          "bin_label": "385-400",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 401,
+          "bin_hi": 416,
+          "bin_label": "401-416",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 417,
+          "bin_hi": 432,
+          "bin_label": "417-432",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 433,
+          "bin_hi": 448,
+          "bin_label": "433-448",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 449,
+          "bin_hi": 464,
+          "bin_label": "449-464",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 465,
+          "bin_hi": 480,
+          "bin_label": "465-480",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        }
+      ],
+      "ifm_ofm_dram_bytes": 9118720
+    },
+    {
+      "layer_id": 4,
+      "layer_name": "conv2.2.0",
+      "conv_type": "SubMConv3d",
+      "feature_channels": 32,
+      "bytes_per_voxel": 40,
+      "page_bytes": 2560,
+      "pages": 1781,
+      "dram_bytes": 4559360,
+      "packed_dram_bytes": 1030480,
+      "occupancy": 0.226014177428411,
+      "spatial_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "grid_size_xyz": [
+        704,
+        800,
+        21
+      ],
+      "stage": 1,
+      "lidar_center_xy": [
+        0,
+        400
+      ],
+      "lut": "0:224:8,8,8;1:352:16,8,8;2:448:16,16,8;3:*:32,16,8",
+      "lut_pretty": "Z0[224]:8x8x8; Z1[352]:16x8x8; Z2[448]:16x16x8; Z3[*]:32x16x8",
+      "nonempty_voxels": 25762,
+      "nonempty_blocks": 1511,
+      "mean_nb": 33.610191925876904,
+      "median_nb": 21.0,
+      "max_nb": 477,
+      "sum_nb": 50785,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 562,
+          "pct": 0.37193911317008604
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 435,
+          "pct": 0.2878888153540701
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 203,
+          "pct": 0.1343481138318994
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 113,
+          "pct": 0.07478491065519524
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 79,
+          "pct": 0.05228325612177366
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 32,
+          "pct": 0.021178027796161483
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 29,
+          "pct": 0.019192587690271344
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 16,
+          "pct": 0.010589013898080741
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 8,
+          "pct": 0.005294506949040371
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 7,
+          "pct": 0.004632693580410324
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 6,
+          "pct": 0.003970880211780278
+        },
+        {
+          "bin_lo": 209,
+          "bin_hi": 224,
+          "bin_label": "209-224",
+          "n_blocks": 3,
+          "pct": 0.001985440105890139
+        },
+        {
+          "bin_lo": 225,
+          "bin_hi": 240,
+          "bin_label": "225-240",
+          "n_blocks": 6,
+          "pct": 0.003970880211780278
+        },
+        {
+          "bin_lo": 241,
+          "bin_hi": 256,
+          "bin_label": "241-256",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 257,
+          "bin_hi": 272,
+          "bin_label": "257-272",
+          "n_blocks": 2,
+          "pct": 0.0013236267372600927
+        },
+        {
+          "bin_lo": 273,
+          "bin_hi": 288,
+          "bin_label": "273-288",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 289,
+          "bin_hi": 304,
+          "bin_label": "289-304",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 305,
+          "bin_hi": 320,
+          "bin_label": "305-320",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 321,
+          "bin_hi": 336,
+          "bin_label": "321-336",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 337,
+          "bin_hi": 352,
+          "bin_label": "337-352",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 353,
+          "bin_hi": 368,
+          "bin_label": "353-368",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        },
+        {
+          "bin_lo": 369,
+          "bin_hi": 384,
+          "bin_label": "369-384",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 385,
+          "bin_hi": 400,
+          "bin_label": "385-400",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 401,
+          "bin_hi": 416,
+          "bin_label": "401-416",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 417,
+          "bin_hi": 432,
+          "bin_label": "417-432",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 433,
+          "bin_hi": 448,
+          "bin_label": "433-448",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 449,
+          "bin_hi": 464,
+          "bin_label": "449-464",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 465,
+          "bin_hi": 480,
+          "bin_label": "465-480",
+          "n_blocks": 1,
+          "pct": 0.0006618133686300463
+        }
+      ],
+      "ifm_ofm_dram_bytes": 9118720
+    },
+    {
+      "layer_id": 5,
+      "layer_name": "conv3.0.0",
+      "conv_type": "SparseConv3d",
+      "feature_channels": 64,
+      "bytes_per_voxel": 72,
+      "page_bytes": 4608,
+      "pages": 1341,
+      "dram_bytes": 6179328,
+      "packed_dram_bytes": 1374408,
+      "occupancy": 0.22242030201342283,
+      "spatial_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "grid_size_xyz": [
+        352,
+        400,
+        11
+      ],
+      "stage": 2,
+      "lidar_center_xy": [
+        0,
+        200
+      ],
+      "lut": "0:96:4,4,8;1:160:8,4,8;2:272:8,8,8;3:*:16,16,8",
+      "lut_pretty": "Z0[96]:4x4x8; Z1[160]:8x4x8; Z2[272]:8x8x8; Z3[*]:16x16x8",
+      "nonempty_voxels": 19089,
+      "nonempty_blocks": 1132,
+      "mean_nb": 35.5273851590106,
+      "median_nb": 26.0,
+      "max_nb": 207,
+      "sum_nb": 40217,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 382,
+          "pct": 0.3374558303886926
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 301,
+          "pct": 0.2659010600706714
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 169,
+          "pct": 0.14929328621908128
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 99,
+          "pct": 0.08745583038869258
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 68,
+          "pct": 0.06007067137809187
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 47,
+          "pct": 0.04151943462897526
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 25,
+          "pct": 0.022084805653710248
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 14,
+          "pct": 0.012367491166077738
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 12,
+          "pct": 0.01060070671378092
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 4,
+          "pct": 0.0035335689045936395
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 8,
+          "pct": 0.007067137809187279
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 2,
+          "pct": 0.0017667844522968198
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 1,
+          "pct": 0.0008833922261484099
+        }
+      ],
+      "ifm_ofm_dram_bytes": 10738688
+    },
+    {
+      "layer_id": 6,
+      "layer_name": "conv3.1.0",
+      "conv_type": "SubMConv3d",
+      "feature_channels": 64,
+      "bytes_per_voxel": 72,
+      "page_bytes": 4608,
+      "pages": 1341,
+      "dram_bytes": 6179328,
+      "packed_dram_bytes": 1374408,
+      "occupancy": 0.22242030201342283,
+      "spatial_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "grid_size_xyz": [
+        352,
+        400,
+        11
+      ],
+      "stage": 2,
+      "lidar_center_xy": [
+        0,
+        200
+      ],
+      "lut": "0:96:4,4,8;1:160:8,4,8;2:272:8,8,8;3:*:16,16,8",
+      "lut_pretty": "Z0[96]:4x4x8; Z1[160]:8x4x8; Z2[272]:8x8x8; Z3[*]:16x16x8",
+      "nonempty_voxels": 19089,
+      "nonempty_blocks": 1132,
+      "mean_nb": 35.5273851590106,
+      "median_nb": 26.0,
+      "max_nb": 207,
+      "sum_nb": 40217,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 382,
+          "pct": 0.3374558303886926
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 301,
+          "pct": 0.2659010600706714
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 169,
+          "pct": 0.14929328621908128
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 99,
+          "pct": 0.08745583038869258
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 68,
+          "pct": 0.06007067137809187
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 47,
+          "pct": 0.04151943462897526
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 25,
+          "pct": 0.022084805653710248
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 14,
+          "pct": 0.012367491166077738
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 12,
+          "pct": 0.01060070671378092
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 4,
+          "pct": 0.0035335689045936395
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 8,
+          "pct": 0.007067137809187279
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 2,
+          "pct": 0.0017667844522968198
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 1,
+          "pct": 0.0008833922261484099
+        }
+      ],
+      "ifm_ofm_dram_bytes": 12358656
+    },
+    {
+      "layer_id": 7,
+      "layer_name": "conv3.2.0",
+      "conv_type": "SubMConv3d",
+      "feature_channels": 64,
+      "bytes_per_voxel": 72,
+      "page_bytes": 4608,
+      "pages": 1341,
+      "dram_bytes": 6179328,
+      "packed_dram_bytes": 1374408,
+      "occupancy": 0.22242030201342283,
+      "spatial_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "grid_size_xyz": [
+        352,
+        400,
+        11
+      ],
+      "stage": 2,
+      "lidar_center_xy": [
+        0,
+        200
+      ],
+      "lut": "0:96:4,4,8;1:160:8,4,8;2:272:8,8,8;3:*:16,16,8",
+      "lut_pretty": "Z0[96]:4x4x8; Z1[160]:8x4x8; Z2[272]:8x8x8; Z3[*]:16x16x8",
+      "nonempty_voxels": 19089,
+      "nonempty_blocks": 1132,
+      "mean_nb": 35.5273851590106,
+      "median_nb": 26.0,
+      "max_nb": 207,
+      "sum_nb": 40217,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 382,
+          "pct": 0.3374558303886926
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 301,
+          "pct": 0.2659010600706714
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 169,
+          "pct": 0.14929328621908128
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 99,
+          "pct": 0.08745583038869258
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 68,
+          "pct": 0.06007067137809187
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 47,
+          "pct": 0.04151943462897526
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 25,
+          "pct": 0.022084805653710248
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 14,
+          "pct": 0.012367491166077738
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 12,
+          "pct": 0.01060070671378092
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 4,
+          "pct": 0.0035335689045936395
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 8,
+          "pct": 0.007067137809187279
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 2,
+          "pct": 0.0017667844522968198
+        },
+        {
+          "bin_lo": 193,
+          "bin_hi": 208,
+          "bin_label": "193-208",
+          "n_blocks": 1,
+          "pct": 0.0008833922261484099
+        }
+      ],
+      "ifm_ofm_dram_bytes": 12358656
+    },
+    {
+      "layer_id": 8,
+      "layer_name": "conv4.0.0",
+      "conv_type": "SparseConv3d",
+      "feature_channels": 64,
+      "bytes_per_voxel": 72,
+      "page_bytes": 4608,
+      "pages": 501,
+      "dram_bytes": 2308608,
+      "packed_dram_bytes": 611640,
+      "occupancy": 0.264938872255489,
+      "spatial_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "grid_size_xyz": [
+        176,
+        200,
+        5
+      ],
+      "stage": 3,
+      "lidar_center_xy": [
+        0,
+        100
+      ],
+      "lut": "0:16:16,8,8;1:64:4,4,8;2:96:8,4,8;3:*:8,8,8",
+      "lut_pretty": "Z0[16]:16x8x8; Z1[64]:4x4x8; Z2[96]:8x4x8; Z3[*]:8x8x8",
+      "nonempty_voxels": 8495,
+      "nonempty_blocks": 407,
+      "mean_nb": 41.45454545454545,
+      "median_nb": 36.0,
+      "max_nb": 184,
+      "sum_nb": 16872,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 101,
+          "pct": 0.24815724815724816
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 92,
+          "pct": 0.22604422604422605
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 76,
+          "pct": 0.18673218673218672
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 49,
+          "pct": 0.12039312039312039
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 39,
+          "pct": 0.09582309582309582
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 23,
+          "pct": 0.056511056511056514
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 11,
+          "pct": 0.02702702702702703
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 11,
+          "pct": 0.02702702702702703
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 2,
+          "pct": 0.004914004914004914
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        }
+      ],
+      "ifm_ofm_dram_bytes": 8487936
+    },
+    {
+      "layer_id": 9,
+      "layer_name": "conv4.1.0",
+      "conv_type": "SubMConv3d",
+      "feature_channels": 64,
+      "bytes_per_voxel": 72,
+      "page_bytes": 4608,
+      "pages": 501,
+      "dram_bytes": 2308608,
+      "packed_dram_bytes": 611640,
+      "occupancy": 0.264938872255489,
+      "spatial_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "grid_size_xyz": [
+        176,
+        200,
+        5
+      ],
+      "stage": 3,
+      "lidar_center_xy": [
+        0,
+        100
+      ],
+      "lut": "0:16:16,8,8;1:64:4,4,8;2:96:8,4,8;3:*:8,8,8",
+      "lut_pretty": "Z0[16]:16x8x8; Z1[64]:4x4x8; Z2[96]:8x4x8; Z3[*]:8x8x8",
+      "nonempty_voxels": 8495,
+      "nonempty_blocks": 407,
+      "mean_nb": 41.45454545454545,
+      "median_nb": 36.0,
+      "max_nb": 184,
+      "sum_nb": 16872,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 101,
+          "pct": 0.24815724815724816
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 92,
+          "pct": 0.22604422604422605
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 76,
+          "pct": 0.18673218673218672
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 49,
+          "pct": 0.12039312039312039
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 39,
+          "pct": 0.09582309582309582
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 23,
+          "pct": 0.056511056511056514
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 11,
+          "pct": 0.02702702702702703
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 11,
+          "pct": 0.02702702702702703
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 2,
+          "pct": 0.004914004914004914
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        }
+      ],
+      "ifm_ofm_dram_bytes": 4617216
+    },
+    {
+      "layer_id": 10,
+      "layer_name": "conv4.2.0",
+      "conv_type": "SubMConv3d",
+      "feature_channels": 64,
+      "bytes_per_voxel": 72,
+      "page_bytes": 4608,
+      "pages": 501,
+      "dram_bytes": 2308608,
+      "packed_dram_bytes": 611640,
+      "occupancy": 0.264938872255489,
+      "spatial_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "grid_size_xyz": [
+        176,
+        200,
+        5
+      ],
+      "stage": 3,
+      "lidar_center_xy": [
+        0,
+        100
+      ],
+      "lut": "0:16:16,8,8;1:64:4,4,8;2:96:8,4,8;3:*:8,8,8",
+      "lut_pretty": "Z0[16]:16x8x8; Z1[64]:4x4x8; Z2[96]:8x4x8; Z3[*]:8x8x8",
+      "nonempty_voxels": 8495,
+      "nonempty_blocks": 407,
+      "mean_nb": 41.45454545454545,
+      "median_nb": 36.0,
+      "max_nb": 184,
+      "sum_nb": 16872,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 101,
+          "pct": 0.24815724815724816
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 92,
+          "pct": 0.22604422604422605
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 76,
+          "pct": 0.18673218673218672
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 49,
+          "pct": 0.12039312039312039
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 39,
+          "pct": 0.09582309582309582
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 23,
+          "pct": 0.056511056511056514
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 11,
+          "pct": 0.02702702702702703
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 11,
+          "pct": 0.02702702702702703
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 2,
+          "pct": 0.004914004914004914
+        },
+        {
+          "bin_lo": 145,
+          "bin_hi": 160,
+          "bin_label": "145-160",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        },
+        {
+          "bin_lo": 161,
+          "bin_hi": 176,
+          "bin_label": "161-176",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        },
+        {
+          "bin_lo": 177,
+          "bin_hi": 192,
+          "bin_label": "177-192",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        }
+      ],
+      "ifm_ofm_dram_bytes": 4617216
+    },
+    {
+      "layer_id": 11,
+      "layer_name": "conv_out.0",
+      "conv_type": "SparseConv3d",
+      "feature_channels": 128,
+      "bytes_per_voxel": 136,
+      "page_bytes": 8704,
+      "pages": 451,
+      "dram_bytes": 3925504,
+      "packed_dram_bytes": 899232,
+      "occupancy": 0.22907427937915742,
+      "spatial_shape_zyx": [
+        2,
+        200,
+        176
+      ],
+      "grid_size_xyz": [
+        176,
+        200,
+        2
+      ],
+      "stage": 3,
+      "lidar_center_xy": [
+        0,
+        100
+      ],
+      "lut": "0:16:16,8,8;1:64:4,4,8;2:96:8,4,8;3:*:8,8,8",
+      "lut_pretty": "Z0[16]:16x8x8; Z1[64]:4x4x8; Z2[96]:8x4x8; Z3[*]:8x8x8",
+      "nonempty_voxels": 6612,
+      "nonempty_blocks": 407,
+      "mean_nb": 32.13759213759214,
+      "median_nb": 28.0,
+      "max_nb": 138,
+      "sum_nb": 13080,
+      "histogram": [
+        {
+          "bin_lo": 1,
+          "bin_hi": 16,
+          "bin_label": "1-16",
+          "n_blocks": 130,
+          "pct": 0.3194103194103194
+        },
+        {
+          "bin_lo": 17,
+          "bin_hi": 32,
+          "bin_label": "17-32",
+          "n_blocks": 99,
+          "pct": 0.24324324324324326
+        },
+        {
+          "bin_lo": 33,
+          "bin_hi": 48,
+          "bin_label": "33-48",
+          "n_blocks": 76,
+          "pct": 0.18673218673218672
+        },
+        {
+          "bin_lo": 49,
+          "bin_hi": 64,
+          "bin_label": "49-64",
+          "n_blocks": 59,
+          "pct": 0.14496314496314497
+        },
+        {
+          "bin_lo": 65,
+          "bin_hi": 80,
+          "bin_label": "65-80",
+          "n_blocks": 35,
+          "pct": 0.085995085995086
+        },
+        {
+          "bin_lo": 81,
+          "bin_hi": 96,
+          "bin_label": "81-96",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        },
+        {
+          "bin_lo": 97,
+          "bin_hi": 112,
+          "bin_label": "97-112",
+          "n_blocks": 6,
+          "pct": 0.014742014742014743
+        },
+        {
+          "bin_lo": 113,
+          "bin_hi": 128,
+          "bin_label": "113-128",
+          "n_blocks": 0,
+          "pct": 0.0
+        },
+        {
+          "bin_lo": 129,
+          "bin_hi": 144,
+          "bin_label": "129-144",
+          "n_blocks": 1,
+          "pct": 0.002457002457002457
+        }
+      ],
+      "ifm_ofm_dram_bytes": 6234112
+    }
+  ]
+}
