@@ -1,0 +1,5893 @@
+{
+  "cfg": "/home/vipuser/\u684c\u9762/OpenPCDet/tools/cfgs/kitti_models/second_hw_qat.yaml",
+  "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
+  "device": "cuda:0",
+  "weight_quant": "per_channel",
+  "mode": "hw_reference_int8",
+  "data_mode": "kitti",
+  "halo_mode": "consumer_window_corner",
+  "partition_mode": "rtl_fixed",
+  "block_size_xyz": [
+    10,
+    10,
+    6
+  ],
+  "bin_width": 16,
+  "coord_bytes": 8,
+  "feature_bytes_per_channel": 1,
+  "page_voxels": 64,
+  "page_align_bytes": 512,
+  "peak_ifm_ofm_dram_bytes": 13459968,
+  "peak_ifm_ofm_pages": 8763,
+  "peak_ifm_ofm_layer_id": 1,
+  "peak_ifm_ofm_layer_name": "conv1.0.0",
+  "state_summary": {
+    "last_ofm_allocated": false,
+    "last_ofm_pages": 0,
+    "peak_layer_id": 1,
+    "peak_layer_name": "conv1.0.0",
+    "peak_pages": 8763,
+    "peak_bytes": 13459968,
+    "states": [
+      {
+        "state": "INIT",
+        "pages": 4342,
+        "sum_nb": 31912,
+        "nonempty_blocks": 4330,
+        "grid_tiles": 157920
+      },
+      {
+        "state": "L0",
+        "pages": 4421,
+        "sum_nb": 32439,
+        "nonempty_blocks": 4409,
+        "grid_tiles": 157920
+      },
+      {
+        "state": "L1",
+        "pages": 4342,
+        "sum_nb": 31912,
+        "nonempty_blocks": 4330,
+        "grid_tiles": 157920
+      },
+      {
+        "state": "L2",
+        "pages": 2380,
+        "sum_nb": 58144,
+        "nonempty_blocks": 2116,
+        "grid_tiles": 22720
+      },
+      {
+        "state": "L3",
+        "pages": 2380,
+        "sum_nb": 58144,
+        "nonempty_blocks": 2116,
+        "grid_tiles": 22720
+      },
+      {
+        "state": "L4",
+        "pages": 2255,
+        "sum_nb": 53457,
+        "nonempty_blocks": 2009,
+        "grid_tiles": 22720
+      },
+      {
+        "state": "L5",
+        "pages": 848,
+        "sum_nb": 32061,
+        "nonempty_blocks": 571,
+        "grid_tiles": 2880
+      },
+      {
+        "state": "L6",
+        "pages": 848,
+        "sum_nb": 32061,
+        "nonempty_blocks": 571,
+        "grid_tiles": 2880
+      },
+      {
+        "state": "L7",
+        "pages": 834,
+        "sum_nb": 31575,
+        "nonempty_blocks": 553,
+        "grid_tiles": 2880
+      },
+      {
+        "state": "L8",
+        "pages": 284,
+        "sum_nb": 12281,
+        "nonempty_blocks": 159,
+        "grid_tiles": 360
+      },
+      {
+        "state": "L9",
+        "pages": 284,
+        "sum_nb": 12281,
+        "nonempty_blocks": 159,
+        "grid_tiles": 360
+      },
+      {
+        "state": "L10",
+        "pages": 223,
+        "sum_nb": 8495,
+        "nonempty_blocks": 150,
+        "grid_tiles": 360
+      }
+    ]
+  },
+  "generated_at": "2026-09-17T14:03:28",
+  "frame": {
+    "split": "val",
+    "frame_id": "000216",
+    "point_cloud_path": "/home/vipuser/\u684c\u9762/OpenPCDet/data/kitti/training/velodyne/000216.bin",
+    "data_loader": "KittiDataset.__getitem__",
+    "fov_points_only": true
+  },
+  "layers": [
+    {
+      "layer_id": 0,
+      "layer_name": "conv_input.0",
+      "conv_type": "SubMConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        1,
+        1,
+        1
+      ],
+      "stride_zyx": [
+        1,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "cin": 4,
+      "cout": 16,
+      "ifm": {
+        "tensor_name": "input",
+        "tensor_layer_id": -1,
+        "conv_type": "InputSparseTensor",
+        "allocated": true,
+        "feature_channels": 4,
+        "feature_words": 1,
+        "page_stride": 2,
+        "page_bytes": 1024,
+        "pages": 4342,
+        "dram_bytes": 4446208,
+        "useful_bytes": 510592,
+        "occupancy": 0.11483763242745279,
+        "semantic_channel_bytes": 60000,
+        "semantic_ratio": 0.013494645324735145,
+        "spatial_shape_zyx": [
+          41,
+          1600,
+          1408
+        ],
+        "grid_size_xyz": [
+          1408,
+          1600,
+          41
+        ],
+        "stage": 0,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          141,
+          160,
+          7
+        ],
+        "grid_tiles": 157920,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 0,
+        "consumer_name": "conv_input.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          41,
+          1600,
+          1408
+        ],
+        "low_high_extent_xyz": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "nonempty_voxels": 15000,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 4330,
+        "mean_nb": 7.369976905311778,
+        "median_nb": 4.0,
+        "max_nb": 115,
+        "sum_nb": 31912,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 3886,
+            "pct": 0.897459584295612
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 347,
+            "pct": 0.08013856812933025
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 73,
+            "pct": 0.016859122401847577
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 12,
+            "pct": 0.002771362586605081
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 5,
+            "pct": 0.0011547344110854503
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 5,
+            "pct": 0.0011547344110854503
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 1,
+            "pct": 0.00023094688221709007
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 1,
+            "pct": 0.00023094688221709007
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv_input.0",
+        "tensor_layer_id": 0,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 16,
+        "feature_words": 2,
+        "page_stride": 3,
+        "page_bytes": 1536,
+        "pages": 4421,
+        "dram_bytes": 6790656,
+        "useful_bytes": 778536,
+        "occupancy": 0.1146481282515268,
+        "semantic_channel_bytes": 240000,
+        "semantic_ratio": 0.03534268265098394,
+        "spatial_shape_zyx": [
+          41,
+          1600,
+          1408
+        ],
+        "grid_size_xyz": [
+          1408,
+          1600,
+          41
+        ],
+        "stage": 0,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          141,
+          160,
+          7
+        ],
+        "grid_tiles": 157920,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 1,
+        "consumer_name": "conv1.0.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          41,
+          1600,
+          1408
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 15000,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 4409,
+        "mean_nb": 7.357450669085961,
+        "median_nb": 4.0,
+        "max_nb": 126,
+        "sum_nb": 32439,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 3947,
+            "pct": 0.8952143343161715
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 375,
+            "pct": 0.08505330006804264
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 64,
+            "pct": 0.01451576321161261
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 11,
+            "pct": 0.0024948968019959175
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 5,
+            "pct": 0.0011340440009072353
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 2,
+            "pct": 0.0004536176003628941
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 4,
+            "pct": 0.0009072352007257881
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 1,
+            "pct": 0.00022680880018144704
+          }
+        ]
+      },
+      "peak_dram_bytes": 11236864,
+      "peak_pages": 8763
+    },
+    {
+      "layer_id": 1,
+      "layer_name": "conv1.0.0",
+      "conv_type": "SubMConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        0,
+        0,
+        0
+      ],
+      "stride_zyx": [
+        1,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        41,
+        1600,
+        1408
+      ],
+      "cin": 16,
+      "cout": 16,
+      "ifm": {
+        "tensor_name": "conv_input.0",
+        "tensor_layer_id": 0,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 16,
+        "feature_words": 2,
+        "page_stride": 3,
+        "page_bytes": 1536,
+        "pages": 4421,
+        "dram_bytes": 6790656,
+        "useful_bytes": 778536,
+        "occupancy": 0.1146481282515268,
+        "semantic_channel_bytes": 240000,
+        "semantic_ratio": 0.03534268265098394,
+        "spatial_shape_zyx": [
+          41,
+          1600,
+          1408
+        ],
+        "grid_size_xyz": [
+          1408,
+          1600,
+          41
+        ],
+        "stage": 0,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          141,
+          160,
+          7
+        ],
+        "grid_tiles": 157920,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 1,
+        "consumer_name": "conv1.0.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          41,
+          1600,
+          1408
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 15000,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 4409,
+        "mean_nb": 7.357450669085961,
+        "median_nb": 4.0,
+        "max_nb": 126,
+        "sum_nb": 32439,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 3947,
+            "pct": 0.8952143343161715
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 375,
+            "pct": 0.08505330006804264
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 64,
+            "pct": 0.01451576321161261
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 11,
+            "pct": 0.0024948968019959175
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 5,
+            "pct": 0.0011340440009072353
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 2,
+            "pct": 0.0004536176003628941
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 4,
+            "pct": 0.0009072352007257881
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 1,
+            "pct": 0.00022680880018144704
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv1.0.0",
+        "tensor_layer_id": 1,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 16,
+        "feature_words": 2,
+        "page_stride": 3,
+        "page_bytes": 1536,
+        "pages": 4342,
+        "dram_bytes": 6669312,
+        "useful_bytes": 765888,
+        "occupancy": 0.11483763242745279,
+        "semantic_channel_bytes": 240000,
+        "semantic_ratio": 0.035985720865960386,
+        "spatial_shape_zyx": [
+          41,
+          1600,
+          1408
+        ],
+        "grid_size_xyz": [
+          1408,
+          1600,
+          41
+        ],
+        "stage": 0,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          141,
+          160,
+          7
+        ],
+        "grid_tiles": 157920,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 2,
+        "consumer_name": "conv2.0.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_stride_zyx": [
+          2,
+          2,
+          2
+        ],
+        "consumer_output_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "low_high_extent_xyz": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "nonempty_voxels": 15000,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 4330,
+        "mean_nb": 7.369976905311778,
+        "median_nb": 4.0,
+        "max_nb": 115,
+        "sum_nb": 31912,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 3886,
+            "pct": 0.897459584295612
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 347,
+            "pct": 0.08013856812933025
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 73,
+            "pct": 0.016859122401847577
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 12,
+            "pct": 0.002771362586605081
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 5,
+            "pct": 0.0011547344110854503
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 5,
+            "pct": 0.0011547344110854503
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 1,
+            "pct": 0.00023094688221709007
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 1,
+            "pct": 0.00023094688221709007
+          }
+        ]
+      },
+      "peak_dram_bytes": 13459968,
+      "peak_pages": 8763
+    },
+    {
+      "layer_id": 2,
+      "layer_name": "conv2.0.0",
+      "conv_type": "SparseConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        1,
+        1,
+        1
+      ],
+      "stride_zyx": [
+        2,
+        2,
+        2
+      ],
+      "output_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "cin": 16,
+      "cout": 32,
+      "ifm": {
+        "tensor_name": "conv1.0.0",
+        "tensor_layer_id": 1,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 16,
+        "feature_words": 2,
+        "page_stride": 3,
+        "page_bytes": 1536,
+        "pages": 4342,
+        "dram_bytes": 6669312,
+        "useful_bytes": 765888,
+        "occupancy": 0.11483763242745279,
+        "semantic_channel_bytes": 240000,
+        "semantic_ratio": 0.035985720865960386,
+        "spatial_shape_zyx": [
+          41,
+          1600,
+          1408
+        ],
+        "grid_size_xyz": [
+          1408,
+          1600,
+          41
+        ],
+        "stage": 0,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          141,
+          160,
+          7
+        ],
+        "grid_tiles": 157920,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 2,
+        "consumer_name": "conv2.0.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_stride_zyx": [
+          2,
+          2,
+          2
+        ],
+        "consumer_output_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "low_high_extent_xyz": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "nonempty_voxels": 15000,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 4330,
+        "mean_nb": 7.369976905311778,
+        "median_nb": 4.0,
+        "max_nb": 115,
+        "sum_nb": 31912,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 3886,
+            "pct": 0.897459584295612
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 347,
+            "pct": 0.08013856812933025
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 73,
+            "pct": 0.016859122401847577
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 12,
+            "pct": 0.002771362586605081
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 5,
+            "pct": 0.0011547344110854503
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 5,
+            "pct": 0.0011547344110854503
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 1,
+            "pct": 0.00023094688221709007
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 1,
+            "pct": 0.00023094688221709007
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv2.0.0",
+        "tensor_layer_id": 2,
+        "conv_type": "SparseConv3d",
+        "allocated": true,
+        "feature_channels": 32,
+        "feature_words": 4,
+        "page_stride": 5,
+        "page_bytes": 2560,
+        "pages": 2380,
+        "dram_bytes": 6092800,
+        "useful_bytes": 2325760,
+        "occupancy": 0.38172268907563023,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.1353046218487395,
+        "spatial_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "grid_size_xyz": [
+          704,
+          800,
+          21
+        ],
+        "stage": 1,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          71,
+          80,
+          4
+        ],
+        "grid_tiles": 22720,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 3,
+        "consumer_name": "conv2.1.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 25762,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 2116,
+        "mean_nb": 27.47826086956522,
+        "median_nb": 17.0,
+        "max_nb": 396,
+        "sum_nb": 58144,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 1031,
+            "pct": 0.4872400756143667
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 508,
+            "pct": 0.24007561436672967
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 245,
+            "pct": 0.11578449905482041
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 135,
+            "pct": 0.06379962192816635
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 51,
+            "pct": 0.024102079395085067
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 57,
+            "pct": 0.026937618147448016
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 23,
+            "pct": 0.010869565217391304
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 23,
+            "pct": 0.010869565217391304
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 13,
+            "pct": 0.006143667296786389
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 9,
+            "pct": 0.004253308128544423
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 4,
+            "pct": 0.001890359168241966
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.0004725897920604915
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 1,
+            "pct": 0.0004725897920604915
+          }
+        ]
+      },
+      "peak_dram_bytes": 12762112,
+      "peak_pages": 6722
+    },
+    {
+      "layer_id": 3,
+      "layer_name": "conv2.1.0",
+      "conv_type": "SubMConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        0,
+        0,
+        0
+      ],
+      "stride_zyx": [
+        1,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "cin": 32,
+      "cout": 32,
+      "ifm": {
+        "tensor_name": "conv2.0.0",
+        "tensor_layer_id": 2,
+        "conv_type": "SparseConv3d",
+        "allocated": true,
+        "feature_channels": 32,
+        "feature_words": 4,
+        "page_stride": 5,
+        "page_bytes": 2560,
+        "pages": 2380,
+        "dram_bytes": 6092800,
+        "useful_bytes": 2325760,
+        "occupancy": 0.38172268907563023,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.1353046218487395,
+        "spatial_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "grid_size_xyz": [
+          704,
+          800,
+          21
+        ],
+        "stage": 1,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          71,
+          80,
+          4
+        ],
+        "grid_tiles": 22720,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 3,
+        "consumer_name": "conv2.1.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 25762,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 2116,
+        "mean_nb": 27.47826086956522,
+        "median_nb": 17.0,
+        "max_nb": 396,
+        "sum_nb": 58144,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 1031,
+            "pct": 0.4872400756143667
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 508,
+            "pct": 0.24007561436672967
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 245,
+            "pct": 0.11578449905482041
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 135,
+            "pct": 0.06379962192816635
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 51,
+            "pct": 0.024102079395085067
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 57,
+            "pct": 0.026937618147448016
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 23,
+            "pct": 0.010869565217391304
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 23,
+            "pct": 0.010869565217391304
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 13,
+            "pct": 0.006143667296786389
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 9,
+            "pct": 0.004253308128544423
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 4,
+            "pct": 0.001890359168241966
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.0004725897920604915
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 1,
+            "pct": 0.0004725897920604915
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv2.1.0",
+        "tensor_layer_id": 3,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 32,
+        "feature_words": 4,
+        "page_stride": 5,
+        "page_bytes": 2560,
+        "pages": 2380,
+        "dram_bytes": 6092800,
+        "useful_bytes": 2325760,
+        "occupancy": 0.38172268907563023,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.1353046218487395,
+        "spatial_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "grid_size_xyz": [
+          704,
+          800,
+          21
+        ],
+        "stage": 1,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          71,
+          80,
+          4
+        ],
+        "grid_tiles": 22720,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 4,
+        "consumer_name": "conv2.2.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 25762,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 2116,
+        "mean_nb": 27.47826086956522,
+        "median_nb": 17.0,
+        "max_nb": 396,
+        "sum_nb": 58144,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 1031,
+            "pct": 0.4872400756143667
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 508,
+            "pct": 0.24007561436672967
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 245,
+            "pct": 0.11578449905482041
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 135,
+            "pct": 0.06379962192816635
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 51,
+            "pct": 0.024102079395085067
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 57,
+            "pct": 0.026937618147448016
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 23,
+            "pct": 0.010869565217391304
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 23,
+            "pct": 0.010869565217391304
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 13,
+            "pct": 0.006143667296786389
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 9,
+            "pct": 0.004253308128544423
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 4,
+            "pct": 0.001890359168241966
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.0004725897920604915
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 1,
+            "pct": 0.0004725897920604915
+          }
+        ]
+      },
+      "peak_dram_bytes": 12185600,
+      "peak_pages": 4760
+    },
+    {
+      "layer_id": 4,
+      "layer_name": "conv2.2.0",
+      "conv_type": "SubMConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        0,
+        0,
+        0
+      ],
+      "stride_zyx": [
+        1,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        21,
+        800,
+        704
+      ],
+      "cin": 32,
+      "cout": 32,
+      "ifm": {
+        "tensor_name": "conv2.1.0",
+        "tensor_layer_id": 3,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 32,
+        "feature_words": 4,
+        "page_stride": 5,
+        "page_bytes": 2560,
+        "pages": 2380,
+        "dram_bytes": 6092800,
+        "useful_bytes": 2325760,
+        "occupancy": 0.38172268907563023,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.1353046218487395,
+        "spatial_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "grid_size_xyz": [
+          704,
+          800,
+          21
+        ],
+        "stage": 1,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          71,
+          80,
+          4
+        ],
+        "grid_tiles": 22720,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 4,
+        "consumer_name": "conv2.2.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 25762,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 2116,
+        "mean_nb": 27.47826086956522,
+        "median_nb": 17.0,
+        "max_nb": 396,
+        "sum_nb": 58144,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 1031,
+            "pct": 0.4872400756143667
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 508,
+            "pct": 0.24007561436672967
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 245,
+            "pct": 0.11578449905482041
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 135,
+            "pct": 0.06379962192816635
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 51,
+            "pct": 0.024102079395085067
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 57,
+            "pct": 0.026937618147448016
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 23,
+            "pct": 0.010869565217391304
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 23,
+            "pct": 0.010869565217391304
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 13,
+            "pct": 0.006143667296786389
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 9,
+            "pct": 0.004253308128544423
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 4,
+            "pct": 0.001890359168241966
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 3,
+            "pct": 0.0014177693761814746
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 2,
+            "pct": 0.000945179584120983
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.0004725897920604915
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 1,
+            "pct": 0.0004725897920604915
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv2.2.0",
+        "tensor_layer_id": 4,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 32,
+        "feature_words": 4,
+        "page_stride": 5,
+        "page_bytes": 2560,
+        "pages": 2255,
+        "dram_bytes": 5772800,
+        "useful_bytes": 2138280,
+        "occupancy": 0.3704060421286031,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.14280487804878048,
+        "spatial_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "grid_size_xyz": [
+          704,
+          800,
+          21
+        ],
+        "stage": 1,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          71,
+          80,
+          4
+        ],
+        "grid_tiles": 22720,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 5,
+        "consumer_name": "conv3.0.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_stride_zyx": [
+          2,
+          2,
+          2
+        ],
+        "consumer_output_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "low_high_extent_xyz": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "nonempty_voxels": 25762,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 2009,
+        "mean_nb": 26.608760577401693,
+        "median_nb": 17.0,
+        "max_nb": 496,
+        "sum_nb": 53457,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 978,
+            "pct": 0.48680935788949725
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 512,
+            "pct": 0.2548531607765057
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 239,
+            "pct": 0.11896465903434544
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 92,
+            "pct": 0.045793927327028375
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 57,
+            "pct": 0.028372324539571926
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 62,
+            "pct": 0.03086112493777999
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 16,
+            "pct": 0.007964161274265804
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 15,
+            "pct": 0.007466401194624191
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 9,
+            "pct": 0.004479840716774514
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 7,
+            "pct": 0.003484320557491289
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 5,
+            "pct": 0.0024888003982080635
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 3,
+            "pct": 0.0014932802389248383
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 3,
+            "pct": 0.0014932802389248383
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 2,
+            "pct": 0.0009955201592832255
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 1,
+            "pct": 0.0004977600796416127
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 5,
+            "pct": 0.0024888003982080635
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 1,
+            "pct": 0.0004977600796416127
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 1,
+            "pct": 0.0004977600796416127
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 401,
+            "bin_hi": 416,
+            "bin_label": "401-416",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 417,
+            "bin_hi": 432,
+            "bin_label": "417-432",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 433,
+            "bin_hi": 448,
+            "bin_label": "433-448",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 449,
+            "bin_hi": 464,
+            "bin_label": "449-464",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 465,
+            "bin_hi": 480,
+            "bin_label": "465-480",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 481,
+            "bin_hi": 496,
+            "bin_label": "481-496",
+            "n_blocks": 1,
+            "pct": 0.0004977600796416127
+          }
+        ]
+      },
+      "peak_dram_bytes": 11865600,
+      "peak_pages": 4635
+    },
+    {
+      "layer_id": 5,
+      "layer_name": "conv3.0.0",
+      "conv_type": "SparseConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        1,
+        1,
+        1
+      ],
+      "stride_zyx": [
+        2,
+        2,
+        2
+      ],
+      "output_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "cin": 32,
+      "cout": 64,
+      "ifm": {
+        "tensor_name": "conv2.2.0",
+        "tensor_layer_id": 4,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 32,
+        "feature_words": 4,
+        "page_stride": 5,
+        "page_bytes": 2560,
+        "pages": 2255,
+        "dram_bytes": 5772800,
+        "useful_bytes": 2138280,
+        "occupancy": 0.3704060421286031,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.14280487804878048,
+        "spatial_shape_zyx": [
+          21,
+          800,
+          704
+        ],
+        "grid_size_xyz": [
+          704,
+          800,
+          21
+        ],
+        "stage": 1,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          71,
+          80,
+          4
+        ],
+        "grid_tiles": 22720,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 5,
+        "consumer_name": "conv3.0.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_stride_zyx": [
+          2,
+          2,
+          2
+        ],
+        "consumer_output_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "low_high_extent_xyz": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "nonempty_voxels": 25762,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 2009,
+        "mean_nb": 26.608760577401693,
+        "median_nb": 17.0,
+        "max_nb": 496,
+        "sum_nb": 53457,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 978,
+            "pct": 0.48680935788949725
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 512,
+            "pct": 0.2548531607765057
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 239,
+            "pct": 0.11896465903434544
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 92,
+            "pct": 0.045793927327028375
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 57,
+            "pct": 0.028372324539571926
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 62,
+            "pct": 0.03086112493777999
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 16,
+            "pct": 0.007964161274265804
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 15,
+            "pct": 0.007466401194624191
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 9,
+            "pct": 0.004479840716774514
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 7,
+            "pct": 0.003484320557491289
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 5,
+            "pct": 0.0024888003982080635
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 3,
+            "pct": 0.0014932802389248383
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 3,
+            "pct": 0.0014932802389248383
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 2,
+            "pct": 0.0009955201592832255
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 1,
+            "pct": 0.0004977600796416127
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 5,
+            "pct": 0.0024888003982080635
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 1,
+            "pct": 0.0004977600796416127
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 1,
+            "pct": 0.0004977600796416127
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 401,
+            "bin_hi": 416,
+            "bin_label": "401-416",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 417,
+            "bin_hi": 432,
+            "bin_label": "417-432",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 433,
+            "bin_hi": 448,
+            "bin_label": "433-448",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 449,
+            "bin_hi": 464,
+            "bin_label": "449-464",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 465,
+            "bin_hi": 480,
+            "bin_label": "465-480",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 481,
+            "bin_hi": 496,
+            "bin_label": "481-496",
+            "n_blocks": 1,
+            "pct": 0.0004977600796416127
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv3.0.0",
+        "tensor_layer_id": 5,
+        "conv_type": "SparseConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 848,
+        "dram_bytes": 3907584,
+        "useful_bytes": 2308392,
+        "occupancy": 0.5907466096698113,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.31264740566037735,
+        "spatial_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "grid_size_xyz": [
+          352,
+          400,
+          11
+        ],
+        "stage": 2,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          36,
+          40,
+          2
+        ],
+        "grid_tiles": 2880,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 6,
+        "consumer_name": "conv3.1.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
+        "nonempty_blocks": 571,
+        "mean_nb": 56.14886164623468,
+        "median_nb": 35.0,
+        "max_nb": 355,
+        "sum_nb": 32061,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 177,
+            "pct": 0.30998248686514884
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 101,
+            "pct": 0.17688266199649738
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 69,
+            "pct": 0.12084063047285463
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 48,
+            "pct": 0.0840630472854641
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 34,
+            "pct": 0.0595446584938704
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 31,
+            "pct": 0.0542907180385289
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 36,
+            "pct": 0.06304728546409807
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 14,
+            "pct": 0.024518388791593695
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 12,
+            "pct": 0.021015761821366025
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 13,
+            "pct": 0.02276707530647986
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 6,
+            "pct": 0.010507880910683012
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 4,
+            "pct": 0.0070052539404553416
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 5,
+            "pct": 0.008756567425569177
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 6,
+            "pct": 0.010507880910683012
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 3,
+            "pct": 0.005253940455341506
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          }
+        ]
+      },
+      "peak_dram_bytes": 9680384,
+      "peak_pages": 3103
+    },
+    {
+      "layer_id": 6,
+      "layer_name": "conv3.1.0",
+      "conv_type": "SubMConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        0,
+        0,
+        0
+      ],
+      "stride_zyx": [
+        1,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "cin": 64,
+      "cout": 64,
+      "ifm": {
+        "tensor_name": "conv3.0.0",
+        "tensor_layer_id": 5,
+        "conv_type": "SparseConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 848,
+        "dram_bytes": 3907584,
+        "useful_bytes": 2308392,
+        "occupancy": 0.5907466096698113,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.31264740566037735,
+        "spatial_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "grid_size_xyz": [
+          352,
+          400,
+          11
+        ],
+        "stage": 2,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          36,
+          40,
+          2
+        ],
+        "grid_tiles": 2880,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 6,
+        "consumer_name": "conv3.1.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
+        "nonempty_blocks": 571,
+        "mean_nb": 56.14886164623468,
+        "median_nb": 35.0,
+        "max_nb": 355,
+        "sum_nb": 32061,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 177,
+            "pct": 0.30998248686514884
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 101,
+            "pct": 0.17688266199649738
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 69,
+            "pct": 0.12084063047285463
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 48,
+            "pct": 0.0840630472854641
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 34,
+            "pct": 0.0595446584938704
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 31,
+            "pct": 0.0542907180385289
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 36,
+            "pct": 0.06304728546409807
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 14,
+            "pct": 0.024518388791593695
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 12,
+            "pct": 0.021015761821366025
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 13,
+            "pct": 0.02276707530647986
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 6,
+            "pct": 0.010507880910683012
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 4,
+            "pct": 0.0070052539404553416
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 5,
+            "pct": 0.008756567425569177
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 6,
+            "pct": 0.010507880910683012
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 3,
+            "pct": 0.005253940455341506
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv3.1.0",
+        "tensor_layer_id": 6,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 848,
+        "dram_bytes": 3907584,
+        "useful_bytes": 2308392,
+        "occupancy": 0.5907466096698113,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.31264740566037735,
+        "spatial_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "grid_size_xyz": [
+          352,
+          400,
+          11
+        ],
+        "stage": 2,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          36,
+          40,
+          2
+        ],
+        "grid_tiles": 2880,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 7,
+        "consumer_name": "conv3.2.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
+        "nonempty_blocks": 571,
+        "mean_nb": 56.14886164623468,
+        "median_nb": 35.0,
+        "max_nb": 355,
+        "sum_nb": 32061,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 177,
+            "pct": 0.30998248686514884
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 101,
+            "pct": 0.17688266199649738
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 69,
+            "pct": 0.12084063047285463
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 48,
+            "pct": 0.0840630472854641
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 34,
+            "pct": 0.0595446584938704
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 31,
+            "pct": 0.0542907180385289
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 36,
+            "pct": 0.06304728546409807
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 14,
+            "pct": 0.024518388791593695
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 12,
+            "pct": 0.021015761821366025
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 13,
+            "pct": 0.02276707530647986
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 6,
+            "pct": 0.010507880910683012
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 4,
+            "pct": 0.0070052539404553416
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 5,
+            "pct": 0.008756567425569177
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 6,
+            "pct": 0.010507880910683012
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 3,
+            "pct": 0.005253940455341506
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          }
+        ]
+      },
+      "peak_dram_bytes": 7815168,
+      "peak_pages": 1696
+    },
+    {
+      "layer_id": 7,
+      "layer_name": "conv3.2.0",
+      "conv_type": "SubMConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        0,
+        0,
+        0
+      ],
+      "stride_zyx": [
+        1,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        11,
+        400,
+        352
+      ],
+      "cin": 64,
+      "cout": 64,
+      "ifm": {
+        "tensor_name": "conv3.1.0",
+        "tensor_layer_id": 6,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 848,
+        "dram_bytes": 3907584,
+        "useful_bytes": 2308392,
+        "occupancy": 0.5907466096698113,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.31264740566037735,
+        "spatial_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "grid_size_xyz": [
+          352,
+          400,
+          11
+        ],
+        "stage": 2,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          36,
+          40,
+          2
+        ],
+        "grid_tiles": 2880,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 7,
+        "consumer_name": "conv3.2.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
+        "nonempty_blocks": 571,
+        "mean_nb": 56.14886164623468,
+        "median_nb": 35.0,
+        "max_nb": 355,
+        "sum_nb": 32061,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 177,
+            "pct": 0.30998248686514884
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 101,
+            "pct": 0.17688266199649738
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 69,
+            "pct": 0.12084063047285463
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 48,
+            "pct": 0.0840630472854641
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 34,
+            "pct": 0.0595446584938704
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 31,
+            "pct": 0.0542907180385289
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 36,
+            "pct": 0.06304728546409807
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 14,
+            "pct": 0.024518388791593695
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 12,
+            "pct": 0.021015761821366025
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 13,
+            "pct": 0.02276707530647986
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 6,
+            "pct": 0.010507880910683012
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 4,
+            "pct": 0.0070052539404553416
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 5,
+            "pct": 0.008756567425569177
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 6,
+            "pct": 0.010507880910683012
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 2,
+            "pct": 0.0035026269702276708
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 3,
+            "pct": 0.005253940455341506
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 1,
+            "pct": 0.0017513134851138354
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv3.2.0",
+        "tensor_layer_id": 7,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 834,
+        "dram_bytes": 3843072,
+        "useful_bytes": 2273400,
+        "occupancy": 0.5915580035971223,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.31789568345323743,
+        "spatial_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "grid_size_xyz": [
+          352,
+          400,
+          11
+        ],
+        "stage": 2,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          36,
+          40,
+          2
+        ],
+        "grid_tiles": 2880,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 8,
+        "consumer_name": "conv4.0.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          1,
+          1
+        ],
+        "consumer_stride_zyx": [
+          2,
+          2,
+          2
+        ],
+        "consumer_output_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "low_high_extent_xyz": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-2,0]",
+        "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
+        "nonempty_blocks": 553,
+        "mean_nb": 57.09764918625678,
+        "median_nb": 36.0,
+        "max_nb": 375,
+        "sum_nb": 31575,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 165,
+            "pct": 0.298372513562387
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 98,
+            "pct": 0.17721518987341772
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 67,
+            "pct": 0.12115732368896925
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 39,
+            "pct": 0.0705244122965642
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 42,
+            "pct": 0.0759493670886076
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 32,
+            "pct": 0.05786618444846293
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 30,
+            "pct": 0.054249547920433995
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 20,
+            "pct": 0.03616636528028933
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 14,
+            "pct": 0.02531645569620253
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 10,
+            "pct": 0.018083182640144666
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 5,
+            "pct": 0.009041591320072333
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 8,
+            "pct": 0.014466546112115732
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 5,
+            "pct": 0.009041591320072333
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 3,
+            "pct": 0.0054249547920434
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.003616636528028933
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 6,
+            "pct": 0.0108499095840868
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 2,
+            "pct": 0.003616636528028933
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          }
+        ]
+      },
+      "peak_dram_bytes": 7750656,
+      "peak_pages": 1682
+    },
+    {
+      "layer_id": 8,
+      "layer_name": "conv4.0.0",
+      "conv_type": "SparseConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        0,
+        1,
+        1
+      ],
+      "stride_zyx": [
+        2,
+        2,
+        2
+      ],
+      "output_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "cin": 64,
+      "cout": 64,
+      "ifm": {
+        "tensor_name": "conv3.2.0",
+        "tensor_layer_id": 7,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 834,
+        "dram_bytes": 3843072,
+        "useful_bytes": 2273400,
+        "occupancy": 0.5915580035971223,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.31789568345323743,
+        "spatial_shape_zyx": [
+          11,
+          400,
+          352
+        ],
+        "grid_size_xyz": [
+          352,
+          400,
+          11
+        ],
+        "stage": 2,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          36,
+          40,
+          2
+        ],
+        "grid_tiles": 2880,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 8,
+        "consumer_name": "conv4.0.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          1,
+          1
+        ],
+        "consumer_stride_zyx": [
+          2,
+          2,
+          2
+        ],
+        "consumer_output_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "low_high_extent_xyz": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-2,0]",
+        "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
+        "nonempty_blocks": 553,
+        "mean_nb": 57.09764918625678,
+        "median_nb": 36.0,
+        "max_nb": 375,
+        "sum_nb": 31575,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 165,
+            "pct": 0.298372513562387
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 98,
+            "pct": 0.17721518987341772
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 67,
+            "pct": 0.12115732368896925
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 39,
+            "pct": 0.0705244122965642
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 42,
+            "pct": 0.0759493670886076
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 32,
+            "pct": 0.05786618444846293
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 30,
+            "pct": 0.054249547920433995
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 20,
+            "pct": 0.03616636528028933
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 14,
+            "pct": 0.02531645569620253
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 10,
+            "pct": 0.018083182640144666
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 5,
+            "pct": 0.009041591320072333
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 8,
+            "pct": 0.014466546112115732
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 5,
+            "pct": 0.009041591320072333
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 3,
+            "pct": 0.0054249547920434
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.003616636528028933
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 6,
+            "pct": 0.0108499095840868
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 2,
+            "pct": 0.003616636528028933
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 1,
+            "pct": 0.0018083182640144665
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv4.0.0",
+        "tensor_layer_id": 8,
+        "conv_type": "SparseConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 284,
+        "dram_bytes": 1308672,
+        "useful_bytes": 884232,
+        "occupancy": 0.6756712147887324,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.4154440532081377,
+        "spatial_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "grid_size_xyz": [
+          176,
+          200,
+          5
+        ],
+        "stage": 3,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          18,
+          20,
+          1
+        ],
+        "grid_tiles": 360,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 9,
+        "consumer_name": "conv4.1.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
+        "nonempty_blocks": 159,
+        "mean_nb": 77.23899371069183,
+        "median_nb": 57.0,
+        "max_nb": 390,
+        "sum_nb": 12281,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 32,
+            "pct": 0.20125786163522014
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 26,
+            "pct": 0.16352201257861634
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 14,
+            "pct": 0.0880503144654088
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 15,
+            "pct": 0.09433962264150944
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 13,
+            "pct": 0.08176100628930817
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 9,
+            "pct": 0.05660377358490566
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 12,
+            "pct": 0.07547169811320754
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 7,
+            "pct": 0.0440251572327044
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 5,
+            "pct": 0.031446540880503145
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 8,
+            "pct": 0.050314465408805034
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 4,
+            "pct": 0.025157232704402517
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.012578616352201259
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.006289308176100629
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 2,
+            "pct": 0.012578616352201259
+          }
+        ]
+      },
+      "peak_dram_bytes": 5151744,
+      "peak_pages": 1118
+    },
+    {
+      "layer_id": 9,
+      "layer_name": "conv4.1.0",
+      "conv_type": "SubMConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        0,
+        0,
+        0
+      ],
+      "stride_zyx": [
+        1,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "cin": 64,
+      "cout": 64,
+      "ifm": {
+        "tensor_name": "conv4.0.0",
+        "tensor_layer_id": 8,
+        "conv_type": "SparseConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 284,
+        "dram_bytes": 1308672,
+        "useful_bytes": 884232,
+        "occupancy": 0.6756712147887324,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.4154440532081377,
+        "spatial_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "grid_size_xyz": [
+          176,
+          200,
+          5
+        ],
+        "stage": 3,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          18,
+          20,
+          1
+        ],
+        "grid_tiles": 360,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 9,
+        "consumer_name": "conv4.1.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
+        "nonempty_blocks": 159,
+        "mean_nb": 77.23899371069183,
+        "median_nb": 57.0,
+        "max_nb": 390,
+        "sum_nb": 12281,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 32,
+            "pct": 0.20125786163522014
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 26,
+            "pct": 0.16352201257861634
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 14,
+            "pct": 0.0880503144654088
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 15,
+            "pct": 0.09433962264150944
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 13,
+            "pct": 0.08176100628930817
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 9,
+            "pct": 0.05660377358490566
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 12,
+            "pct": 0.07547169811320754
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 7,
+            "pct": 0.0440251572327044
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 5,
+            "pct": 0.031446540880503145
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 8,
+            "pct": 0.050314465408805034
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 4,
+            "pct": 0.025157232704402517
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.012578616352201259
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.006289308176100629
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 2,
+            "pct": 0.012578616352201259
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv4.1.0",
+        "tensor_layer_id": 9,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 284,
+        "dram_bytes": 1308672,
+        "useful_bytes": 884232,
+        "occupancy": 0.6756712147887324,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.4154440532081377,
+        "spatial_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "grid_size_xyz": [
+          176,
+          200,
+          5
+        ],
+        "stage": 3,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          18,
+          20,
+          1
+        ],
+        "grid_tiles": 360,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 10,
+        "consumer_name": "conv4.2.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
+        "nonempty_blocks": 159,
+        "mean_nb": 77.23899371069183,
+        "median_nb": 57.0,
+        "max_nb": 390,
+        "sum_nb": 12281,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 32,
+            "pct": 0.20125786163522014
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 26,
+            "pct": 0.16352201257861634
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 14,
+            "pct": 0.0880503144654088
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 15,
+            "pct": 0.09433962264150944
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 13,
+            "pct": 0.08176100628930817
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 9,
+            "pct": 0.05660377358490566
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 12,
+            "pct": 0.07547169811320754
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 7,
+            "pct": 0.0440251572327044
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 5,
+            "pct": 0.031446540880503145
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 8,
+            "pct": 0.050314465408805034
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 4,
+            "pct": 0.025157232704402517
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.012578616352201259
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.006289308176100629
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 2,
+            "pct": 0.012578616352201259
+          }
+        ]
+      },
+      "peak_dram_bytes": 2617344,
+      "peak_pages": 568
+    },
+    {
+      "layer_id": 10,
+      "layer_name": "conv4.2.0",
+      "conv_type": "SubMConv3d",
+      "kernel_zyx": [
+        3,
+        3,
+        3
+      ],
+      "padding_zyx": [
+        0,
+        0,
+        0
+      ],
+      "stride_zyx": [
+        1,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        5,
+        200,
+        176
+      ],
+      "cin": 64,
+      "cout": 64,
+      "ifm": {
+        "tensor_name": "conv4.1.0",
+        "tensor_layer_id": 9,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 284,
+        "dram_bytes": 1308672,
+        "useful_bytes": 884232,
+        "occupancy": 0.6756712147887324,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.4154440532081377,
+        "spatial_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "grid_size_xyz": [
+          176,
+          200,
+          5
+        ],
+        "stage": 3,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          18,
+          20,
+          1
+        ],
+        "grid_tiles": 360,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 10,
+        "consumer_name": "conv4.2.0",
+        "consumer_kernel_zyx": [
+          3,
+          3,
+          3
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          1,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "low_high_extent_xyz": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
+        "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
+        "nonempty_blocks": 159,
+        "mean_nb": 77.23899371069183,
+        "median_nb": 57.0,
+        "max_nb": 390,
+        "sum_nb": 12281,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 32,
+            "pct": 0.20125786163522014
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 26,
+            "pct": 0.16352201257861634
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 14,
+            "pct": 0.0880503144654088
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 15,
+            "pct": 0.09433962264150944
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 13,
+            "pct": 0.08176100628930817
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 9,
+            "pct": 0.05660377358490566
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 12,
+            "pct": 0.07547169811320754
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 7,
+            "pct": 0.0440251572327044
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 5,
+            "pct": 0.031446540880503145
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 8,
+            "pct": 0.050314465408805034
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 4,
+            "pct": 0.025157232704402517
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 3,
+            "pct": 0.018867924528301886
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 2,
+            "pct": 0.012578616352201259
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 289,
+            "bin_hi": 304,
+            "bin_label": "289-304",
+            "n_blocks": 1,
+            "pct": 0.006289308176100629
+          },
+          {
+            "bin_lo": 305,
+            "bin_hi": 320,
+            "bin_label": "305-320",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 321,
+            "bin_hi": 336,
+            "bin_label": "321-336",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 337,
+            "bin_hi": 352,
+            "bin_label": "337-352",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 353,
+            "bin_hi": 368,
+            "bin_label": "353-368",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 369,
+            "bin_hi": 384,
+            "bin_label": "369-384",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 385,
+            "bin_hi": 400,
+            "bin_label": "385-400",
+            "n_blocks": 2,
+            "pct": 0.012578616352201259
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv4.2.0",
+        "tensor_layer_id": 10,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 223,
+        "dram_bytes": 1027584,
+        "useful_bytes": 611640,
+        "occupancy": 0.5952214125560538,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.5290857000498256,
+        "spatial_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "grid_size_xyz": [
+          176,
+          200,
+          5
+        ],
+        "stage": 3,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          18,
+          20,
+          1
+        ],
+        "grid_tiles": 360,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 11,
+        "consumer_name": "conv_out.0",
+        "consumer_kernel_zyx": [
+          3,
+          1,
+          1
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          2,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          2,
+          200,
+          176
+        ],
+        "low_high_extent_xyz": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:none y:none z:[-2,0]",
+        "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
+        "nonempty_blocks": 150,
+        "mean_nb": 56.63333333333333,
+        "median_nb": 40.5,
+        "max_nb": 285,
+        "sum_nb": 8495,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 46,
+            "pct": 0.30666666666666664
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 22,
+            "pct": 0.14666666666666667
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 16,
+            "pct": 0.10666666666666667
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 13,
+            "pct": 0.08666666666666667
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 9,
+            "pct": 0.06
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 19,
+            "pct": 0.12666666666666668
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 7,
+            "pct": 0.04666666666666667
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 4,
+            "pct": 0.02666666666666667
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 2,
+            "pct": 0.013333333333333334
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 4,
+            "pct": 0.02666666666666667
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 4,
+            "pct": 0.02666666666666667
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.013333333333333334
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 2,
+            "pct": 0.013333333333333334
+          }
+        ]
+      },
+      "peak_dram_bytes": 2336256,
+      "peak_pages": 507
+    },
+    {
+      "layer_id": 11,
+      "layer_name": "conv_out.0",
+      "conv_type": "SparseConv3d",
+      "kernel_zyx": [
+        3,
+        1,
+        1
+      ],
+      "padding_zyx": [
+        0,
+        0,
+        0
+      ],
+      "stride_zyx": [
+        2,
+        1,
+        1
+      ],
+      "output_shape_zyx": [
+        2,
+        200,
+        176
+      ],
+      "cin": 64,
+      "cout": 128,
+      "ifm": {
+        "tensor_name": "conv4.2.0",
+        "tensor_layer_id": 10,
+        "conv_type": "SubMConv3d",
+        "allocated": true,
+        "feature_channels": 64,
+        "feature_words": 8,
+        "page_stride": 9,
+        "page_bytes": 4608,
+        "pages": 223,
+        "dram_bytes": 1027584,
+        "useful_bytes": 611640,
+        "occupancy": 0.5952214125560538,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.5290857000498256,
+        "spatial_shape_zyx": [
+          5,
+          200,
+          176
+        ],
+        "grid_size_xyz": [
+          176,
+          200,
+          5
+        ],
+        "stage": 3,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          18,
+          20,
+          1
+        ],
+        "grid_tiles": 360,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": 11,
+        "consumer_name": "conv_out.0",
+        "consumer_kernel_zyx": [
+          3,
+          1,
+          1
+        ],
+        "consumer_padding_zyx": [
+          0,
+          0,
+          0
+        ],
+        "consumer_stride_zyx": [
+          2,
+          1,
+          1
+        ],
+        "consumer_output_shape_zyx": [
+          2,
+          200,
+          176
+        ],
+        "low_high_extent_xyz": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "extent_label": "x:none y:none z:[-2,0]",
+        "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
+        "nonempty_blocks": 150,
+        "mean_nb": 56.63333333333333,
+        "median_nb": 40.5,
+        "max_nb": 285,
+        "sum_nb": 8495,
+        "histogram": [
+          {
+            "bin_lo": 1,
+            "bin_hi": 16,
+            "bin_label": "1-16",
+            "n_blocks": 46,
+            "pct": 0.30666666666666664
+          },
+          {
+            "bin_lo": 17,
+            "bin_hi": 32,
+            "bin_label": "17-32",
+            "n_blocks": 22,
+            "pct": 0.14666666666666667
+          },
+          {
+            "bin_lo": 33,
+            "bin_hi": 48,
+            "bin_label": "33-48",
+            "n_blocks": 16,
+            "pct": 0.10666666666666667
+          },
+          {
+            "bin_lo": 49,
+            "bin_hi": 64,
+            "bin_label": "49-64",
+            "n_blocks": 13,
+            "pct": 0.08666666666666667
+          },
+          {
+            "bin_lo": 65,
+            "bin_hi": 80,
+            "bin_label": "65-80",
+            "n_blocks": 9,
+            "pct": 0.06
+          },
+          {
+            "bin_lo": 81,
+            "bin_hi": 96,
+            "bin_label": "81-96",
+            "n_blocks": 19,
+            "pct": 0.12666666666666668
+          },
+          {
+            "bin_lo": 97,
+            "bin_hi": 112,
+            "bin_label": "97-112",
+            "n_blocks": 7,
+            "pct": 0.04666666666666667
+          },
+          {
+            "bin_lo": 113,
+            "bin_hi": 128,
+            "bin_label": "113-128",
+            "n_blocks": 4,
+            "pct": 0.02666666666666667
+          },
+          {
+            "bin_lo": 129,
+            "bin_hi": 144,
+            "bin_label": "129-144",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 145,
+            "bin_hi": 160,
+            "bin_label": "145-160",
+            "n_blocks": 2,
+            "pct": 0.013333333333333334
+          },
+          {
+            "bin_lo": 161,
+            "bin_hi": 176,
+            "bin_label": "161-176",
+            "n_blocks": 4,
+            "pct": 0.02666666666666667
+          },
+          {
+            "bin_lo": 177,
+            "bin_hi": 192,
+            "bin_label": "177-192",
+            "n_blocks": 4,
+            "pct": 0.02666666666666667
+          },
+          {
+            "bin_lo": 193,
+            "bin_hi": 208,
+            "bin_label": "193-208",
+            "n_blocks": 2,
+            "pct": 0.013333333333333334
+          },
+          {
+            "bin_lo": 209,
+            "bin_hi": 224,
+            "bin_label": "209-224",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 225,
+            "bin_hi": 240,
+            "bin_label": "225-240",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 241,
+            "bin_hi": 256,
+            "bin_label": "241-256",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 257,
+            "bin_hi": 272,
+            "bin_label": "257-272",
+            "n_blocks": 0,
+            "pct": 0.0
+          },
+          {
+            "bin_lo": 273,
+            "bin_hi": 288,
+            "bin_label": "273-288",
+            "n_blocks": 2,
+            "pct": 0.013333333333333334
+          }
+        ]
+      },
+      "ofm": {
+        "tensor_name": "conv_out.0",
+        "tensor_layer_id": 11,
+        "conv_type": "SparseConv3d",
+        "allocated": false,
+        "feature_channels": 128,
+        "feature_words": 16,
+        "page_stride": 17,
+        "page_bytes": 8704,
+        "pages": 0,
+        "dram_bytes": 0,
+        "useful_bytes": 0,
+        "occupancy": 0.0,
+        "semantic_channel_bytes": 846336,
+        "semantic_ratio": 0.0,
+        "spatial_shape_zyx": [
+          2,
+          200,
+          176
+        ],
+        "grid_size_xyz": [
+          176,
+          200,
+          2
+        ],
+        "stage": 3,
+        "block_size_xyz": [
+          10,
+          10,
+          6
+        ],
+        "num_blocks_xyz": [
+          18,
+          20,
+          1
+        ],
+        "grid_tiles": 360,
+        "block_voxel_limit": 600,
+        "consumer_layer_id": null,
+        "consumer_name": null,
+        "consumer_kernel_zyx": null,
+        "consumer_padding_zyx": null,
+        "consumer_stride_zyx": null,
+        "consumer_output_shape_zyx": null,
+        "low_high_extent_xyz": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "extent_label": "x:none y:none z:none",
+        "nonempty_voxels": 6612,
+        "coordinate_count": 6612,
+        "coordinate_sha256": "1d2eb76d8ff82da1c4a693a1b7c7f4b594089f036126d31c6571a07250756e4f",
+        "coordinate_unique": true,
+        "nonempty_blocks": 0,
+        "mean_nb": 0.0,
+        "median_nb": 0.0,
+        "max_nb": 0,
+        "sum_nb": 0,
+        "histogram": []
+      },
+      "peak_dram_bytes": 1027584,
+      "peak_pages": 223
+    }
+  ]
+}
