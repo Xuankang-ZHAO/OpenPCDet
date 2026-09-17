@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 """INT8 SECOND 3D-backbone occupancy under the proposed zone/block LUT.
 
-Runs hardware-reference INT8 inference of VoxelBackBone8x_HWQAT on KITTI
-val/000216, then partitions each layer's active voxels with the closed final
-zone LUT (including RTL boundary/halo copies). Writes markdown tables for:
-
-  - nonempty voxel count per layer
-  - nonempty (materialized) block count per layer
-  - histogram of per-block voxel counts N_b, where N_b includes halo copies
-  - page-allocated DRAM: ceil(N_b / 64) pages per block, page = 64 * (8 + C) bytes
+Halo is generated from the *consumer* (next) layer: 3-tap axes use
+neg=padding, pos=2-padding; 1-tap axes emit no halo. Pages hold 64 voxels
+and the page byte size is 64*(8+C) rounded up to 512B. Per-layer IFM and OFM
+are counted separately; peak DRAM is IFM+OFM coresident.
 """
 
 from __future__ import annotations
@@ -21,7 +17,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 import numpy as np
 import torch
@@ -39,7 +35,11 @@ from mycode.kitti_frame_loader import (
     normalize_voxel_coords,
     resolve_data_mode,
 )
-from mycode.rtl_unfixed.partition import compute_rtl_unfixed_partition_counts, summarize_zone_specs
+from mycode.rtl_unfixed.partition import (
+    _compute_block_key,
+    _lookup_zone_spec,
+    summarize_zone_specs,
+)
 from mycode.zone_block_search.block_nb_analysis import (
     FINAL_LUTS,
     lut_lines_from_final,
@@ -49,11 +49,10 @@ from mycode.zone_block_search.block_nb_analysis import (
 
 BIN_WIDTH = 16
 PAGE_VOXELS = 64
+PAGE_ALIGN_BYTES = 512
 COORD_BYTES = 8
 FEATURE_BYTES_PER_CHANNEL = 1
 
-# Output sparse-shape ZYX → proposed stage LUT.
-# conv_out keeps Stage-3 XY and LiDAR ref, but Z becomes 2.
 STAGE_BY_ZYX = {
     (41, 1600, 1408): 0,
     (21, 800, 704): 1,
@@ -69,10 +68,12 @@ LIDAR_CENTER_BY_STAGE = {
     3: (0, 100),
 }
 
+HaloXYZ = Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]]
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Proposed-LUT INT8 SECOND 3D-backbone nonempty voxel/block histogram'
+        description='Proposed-LUT INT8 SECOND 3D-backbone IFM/OFM DRAM footprint'
     )
     parser.add_argument('--cfg', type=str, default='tools/cfgs/kitti_models/second_hw_qat.yaml')
     parser.add_argument(
@@ -153,6 +154,66 @@ def lut_label(stage: int) -> str:
     return '; '.join(parts)
 
 
+def as_int_triple(value) -> Tuple[int, int, int]:
+    if isinstance(value, int):
+        return (int(value), int(value), int(value))
+    seq = list(value)
+    if len(seq) == 1:
+        item = int(seq[0])
+        return (item, item, item)
+    return tuple(int(item) for item in seq)
+
+
+def conv_geometry(conv) -> dict:
+    kernel = as_int_triple(conv.kernel_size)
+    padding = as_int_triple(getattr(conv, 'padding', 0))
+    stride = as_int_triple(getattr(conv, 'stride', 1))
+    return {
+        'kernel_zyx': list(kernel),
+        'padding_zyx': list(padding),
+        'stride_zyx': list(stride),
+        'cin': int(conv.in_channels),
+        'cout': int(conv.out_channels),
+        'conv_type': type(conv).__name__,
+    }
+
+
+def halo_extent_one(kernel: int, padding: int) -> Tuple[int, int]:
+    """Return (neg, pos) along one axis."""
+    kernel = int(kernel)
+    padding = int(padding)
+    if kernel <= 1:
+        return (0, 0)
+    if kernel == 3:
+        return (padding, 2 - padding)
+    return (padding, kernel - 1 - padding)
+
+
+def halo_xyz_from_consumer(consumer: Optional[dict]) -> HaloXYZ:
+    """Halo extents in XYZ as ((neg,pos) x3). No consumer => no halo."""
+    if consumer is None:
+        return ((0, 0), (0, 0), (0, 0))
+    kz, ky, kx = consumer['kernel_zyx']
+    pz, py, px = consumer['padding_zyx']
+    return (
+        halo_extent_one(kx, px),
+        halo_extent_one(ky, py),
+        halo_extent_one(kz, pz),
+    )
+
+
+def format_halo(halo_xyz: HaloXYZ) -> str:
+    axes = ('x', 'y', 'z')
+    parts = []
+    for axis, (neg, pos) in zip(axes, halo_xyz):
+        if neg == 0 and pos == 0:
+            parts.append(f'{axis}:none')
+        else:
+            neg_s = f'-{neg}' if neg else '0'
+            parts.append(f'{axis}:[{neg_s},+{pos}]')
+    return ' '.join(parts)
+
+
 def enable_hw_reference(model, project_root: Path, out_dir: Path, weight_quant: str, logger):
     tools_dir = project_root / 'tools'
     if str(tools_dir) not in sys.path:
@@ -183,11 +244,12 @@ def enable_hw_reference(model, project_root: Path, out_dir: Path, weight_quant: 
     return export_result
 
 
-def capture_layer_outputs(backbone, batch_after_vfe) -> List[dict]:
+def capture_layer_outputs(backbone, batch_after_vfe) -> Tuple[List[dict], List[dict]]:
     captured: List[dict] = []
+    consumers: List[dict] = []
     orig_layer = backbone._forward_hw_reference_layer
 
-    def record(layer_id, layer_name, conv_type, sparse_tensor):
+    def record(layer_id, layer_name, conv_type, sparse_tensor, geom=None):
         shape = spatial_shape_zyx(sparse_tensor)
         coords = coords_from_sparse(sparse_tensor)
         captured.append({
@@ -198,14 +260,21 @@ def capture_layer_outputs(backbone, batch_after_vfe) -> List[dict]:
             'feature_channels': int(sparse_tensor.features.shape[1]),
             'active_voxels': int(coords.shape[0]),
             'coords_zyx': coords,
+            'geom': geom,
         })
 
     def wrapped(sparse_tensor, layer_id, layer_info):
-        name, conv, _bn, _relu, act_key = layer_info
+        name, conv, _bn, _relu, _act_key = layer_info
+        geom = conv_geometry(conv)
+        geom['layer_id'] = layer_id
+        geom['module_name'] = name
+        geom['output_shape_zyx'] = None
+        consumers.append(geom)
         if layer_id == 0:
             record(-1, 'input', 'InputSparseTensor', sparse_tensor)
         output = orig_layer(sparse_tensor, layer_id, layer_info)
-        record(layer_id, name, type(conv).__name__, output)
+        geom['output_shape_zyx'] = list(spatial_shape_zyx(output))
+        record(layer_id, name, type(conv).__name__, output, geom=dict(geom))
         return output
 
     backbone._forward_hw_reference_layer = wrapped
@@ -214,13 +283,24 @@ def capture_layer_outputs(backbone, batch_after_vfe) -> List[dict]:
             _ = backbone(batch_after_vfe)
     finally:
         backbone._forward_hw_reference_layer = orig_layer
-    return captured
+    return captured, consumers
 
 
 def pages_for_nb(nb: int, page_voxels: int = PAGE_VOXELS) -> int:
     if nb <= 0:
         return 0
     return int((int(nb) + page_voxels - 1) // page_voxels)
+
+
+def align_up(value: int, alignment: int) -> int:
+    if alignment <= 1:
+        return int(value)
+    return int((int(value) + alignment - 1) // alignment * alignment)
+
+
+def aligned_page_bytes(channels: int) -> Tuple[int, int]:
+    raw = PAGE_VOXELS * (COORD_BYTES + int(channels) * FEATURE_BYTES_PER_CHANNEL)
+    return raw, align_up(raw, PAGE_ALIGN_BYTES)
 
 
 def format_mib(num_bytes: int) -> str:
@@ -231,17 +311,97 @@ def format_pct(ratio: float) -> str:
     return f'{100.0 * ratio:.2f}%'
 
 
-def attach_page_dram(layer_rows: Sequence[dict]) -> int:
-    """Add IFM+OFM coresident DRAM and return the pipeline peak."""
-    peak = 0
-    for index, row in enumerate(layer_rows):
-        if index == 0:
-            coresident = int(row['dram_bytes'])
-        else:
-            coresident = int(layer_rows[index - 1]['dram_bytes'] + row['dram_bytes'])
-        row['ifm_ofm_dram_bytes'] = coresident
-        peak = max(peak, coresident)
-    return peak
+def _axis_copy_dir(coord: int, origin: int, log2_block: int, coord_max: int, neg: int, pos: int) -> int:
+    if neg <= 0 and pos <= 0:
+        return 0
+    rel = int(coord) - int(origin)
+    local = rel & ((1 << log2_block) - 1)
+    block = 1 << log2_block
+    if pos > 0 and local < pos:
+        dest = int(coord) - local - 1
+        if dest >= 0:
+            return -1
+    if neg > 0 and local >= block - neg:
+        dest = int(coord) + (block - local)
+        if dest <= coord_max:
+            return 1
+    return 0
+
+
+def _cross_boundary_coord(coord: int, origin: int, log2_block: int, direction: int) -> int:
+    if direction == 0:
+        return int(coord)
+    rel = int(coord) - int(origin)
+    local = rel & ((1 << log2_block) - 1)
+    block = 1 << log2_block
+    if direction < 0:
+        return int(coord) - local - 1
+    return int(coord) + (block - local)
+
+
+def iter_consumer_halo_block_keys(
+    x_idx: int,
+    y_idx: int,
+    z_idx: int,
+    grid_size: Tuple[int, int, int],
+    zone_specs: Sequence,
+    lidar_center_xy: Tuple[int, int],
+    halo_xyz: HaloXYZ,
+) -> Iterable[Tuple[int, int, int, int]]:
+    nx, ny, nz = (int(grid_size[0]), int(grid_size[1]), int(grid_size[2]))
+    cx, cy = int(lidar_center_xy[0]), int(lidar_center_xy[1])
+    primary = _lookup_zone_spec(zone_specs, x_idx, y_idx, lidar_center_xy)
+    yield _compute_block_key(x_idx, y_idx, z_idx, primary, lidar_center_xy)
+
+    log2_bx, log2_by, log2_bz = primary.log2_block_size_xyz
+    dx = _axis_copy_dir(x_idx, cx, log2_bx, nx - 1, halo_xyz[0][0], halo_xyz[0][1])
+    dy = _axis_copy_dir(y_idx, cy, log2_by, ny - 1, halo_xyz[1][0], halo_xyz[1][1])
+    dz = _axis_copy_dir(z_idx, 0, log2_bz, nz - 1, halo_xyz[2][0], halo_xyz[2][1])
+
+    for halo_index in range(1, 8):
+        if (halo_index & 0b001) and dx == 0:
+            continue
+        if (halo_index & 0b010) and dy == 0:
+            continue
+        if (halo_index & 0b100) and dz == 0:
+            continue
+
+        dest_x = _cross_boundary_coord(x_idx, cx, log2_bx, dx if (halo_index & 0b001) else 0)
+        dest_y = _cross_boundary_coord(y_idx, cy, log2_by, dy if (halo_index & 0b010) else 0)
+        dest_z = _cross_boundary_coord(z_idx, 0, log2_bz, dz if (halo_index & 0b100) else 0)
+        if not (0 <= dest_x < nx and 0 <= dest_y < ny and 0 <= dest_z < nz):
+            continue
+
+        halo_spec = _lookup_zone_spec(zone_specs, dest_x, dest_y, lidar_center_xy)
+        yield _compute_block_key(dest_x, dest_y, dest_z, halo_spec, lidar_center_xy)
+
+
+def compute_consumer_halo_partition_counts(
+    coords: np.ndarray,
+    grid_size: Tuple[int, int, int],
+    zone_specs: Sequence,
+    lidar_center_xy: Tuple[int, int],
+    halo_xyz: HaloXYZ,
+):
+    if coords is None or coords.size == 0:
+        return np.zeros(0, dtype=np.int64), 0
+
+    counts_by_key: Dict[Tuple[int, int, int, int], int] = {}
+    for z_idx, y_idx, x_idx in coords.astype(np.int64):
+        for block_key in iter_consumer_halo_block_keys(
+            int(x_idx),
+            int(y_idx),
+            int(z_idx),
+            grid_size,
+            zone_specs,
+            lidar_center_xy,
+            halo_xyz,
+        ):
+            counts_by_key[block_key] = counts_by_key.get(block_key, 0) + 1
+
+    ordered_keys = sorted(counts_by_key)
+    counts = np.array([counts_by_key[key] for key in ordered_keys], dtype=np.int64)
+    return counts, len(ordered_keys)
 
 
 def histogram_from_counts(counts: np.ndarray, bin_edges: Sequence[Tuple[int, int]]) -> List[dict]:
@@ -259,57 +419,93 @@ def histogram_from_counts(counts: np.ndarray, bin_edges: Sequence[Tuple[int, int
     return rows
 
 
-def analyze_layer(layer: dict, bin_width: int) -> dict:
-    shape_zyx = tuple(layer['spatial_shape_zyx'])
+def analyze_tensor(tensor: dict, consumer: Optional[dict], bin_width: int) -> dict:
+    shape_zyx = tuple(tensor['spatial_shape_zyx'])
     stage = stage_for_spatial(shape_zyx)
     grid_xyz = grid_xyz_from_zyx(shape_zyx)
     lidar_center = LIDAR_CENTER_BY_STAGE[stage]
     zone_specs = zone_specs_from_lut_lines(lut_lines_from_final(stage))
-    counts, n_blocks, _limit = compute_rtl_unfixed_partition_counts(
-        layer['coords_zyx'],
+    halo_xyz = halo_xyz_from_consumer(consumer)
+    counts, n_blocks = compute_consumer_halo_partition_counts(
+        tensor['coords_zyx'],
         grid_xyz,
         zone_specs,
         lidar_center,
+        halo_xyz,
     )
     nonempty_counts = counts[counts > 0] if counts.size else np.zeros(0, dtype=np.int64)
     max_nb = int(nonempty_counts.max()) if nonempty_counts.size else 0
-    bin_edges = make_bin_edges(max_nb, width=bin_width)
-    channels = int(layer['feature_channels'])
+    channels = int(tensor['feature_channels'])
     bytes_per_voxel = COORD_BYTES + channels * FEATURE_BYTES_PER_CHANNEL
-    page_bytes = PAGE_VOXELS * bytes_per_voxel
-    if nonempty_counts.size:
-        total_pages = int(sum(pages_for_nb(int(nb)) for nb in nonempty_counts))
-    else:
-        total_pages = 0
+    raw_page_bytes, page_bytes = aligned_page_bytes(channels)
+    total_pages = int(sum(pages_for_nb(int(nb)) for nb in nonempty_counts)) if nonempty_counts.size else 0
     dram_bytes = total_pages * page_bytes
-    packed_dram_bytes = int(layer['active_voxels']) * bytes_per_voxel
-    occupancy = float(packed_dram_bytes / dram_bytes) if dram_bytes else 0.0
+    unique_voxels = int(tensor['active_voxels'])
+    sum_nb = int(nonempty_counts.sum()) if nonempty_counts.size else 0
+    packed = unique_voxels * bytes_per_voxel
+    packed_halo = sum_nb * bytes_per_voxel
     return {
-        'layer_id': layer['layer_id'],
-        'layer_name': layer['layer_name'],
-        'conv_type': layer['conv_type'],
+        'tensor_name': tensor['layer_name'],
+        'tensor_layer_id': tensor['layer_id'],
+        'conv_type': tensor['conv_type'],
         'feature_channels': channels,
         'bytes_per_voxel': bytes_per_voxel,
+        'raw_page_bytes': raw_page_bytes,
         'page_bytes': page_bytes,
         'pages': total_pages,
         'dram_bytes': dram_bytes,
-        'packed_dram_bytes': packed_dram_bytes,
-        'occupancy': occupancy,
+        'packed_dram_bytes': packed,
+        'occupancy': float(packed / dram_bytes) if dram_bytes else 0.0,
+        'packed_halo_dram_bytes': packed_halo,
+        'occupancy_halo': float(packed_halo / dram_bytes) if dram_bytes else 0.0,
         'spatial_shape_zyx': list(shape_zyx),
         'grid_size_xyz': list(grid_xyz),
         'stage': stage,
         'lidar_center_xy': list(lidar_center),
         'lut': summarize_zone_specs(zone_specs),
-        'lut_pretty': lut_label(stage),
-        'nonempty_voxels': int(layer['active_voxels']),
+        'consumer_layer_id': None if consumer is None else consumer['layer_id'],
+        'consumer_name': None if consumer is None else consumer['module_name'],
+        'consumer_kernel_zyx': None if consumer is None else list(consumer['kernel_zyx']),
+        'consumer_padding_zyx': None if consumer is None else list(consumer['padding_zyx']),
+        'consumer_stride_zyx': None if consumer is None else list(consumer['stride_zyx']),
+        'consumer_output_shape_zyx': None if consumer is None else consumer.get('output_shape_zyx'),
+        'halo_xyz': [list(item) for item in halo_xyz],
+        'halo_label': format_halo(halo_xyz),
+        'nonempty_voxels': unique_voxels,
         'nonempty_blocks': int(n_blocks),
         'mean_nb': float(np.mean(nonempty_counts)) if nonempty_counts.size else 0.0,
         'median_nb': float(np.median(nonempty_counts)) if nonempty_counts.size else 0.0,
         'max_nb': max_nb,
-        'sum_nb': int(nonempty_counts.sum()) if nonempty_counts.size else 0,
-        'histogram': histogram_from_counts(nonempty_counts, bin_edges),
-        'block_voxel_counts': [int(v) for v in nonempty_counts.tolist()],
+        'sum_nb': sum_nb,
+        'histogram': histogram_from_counts(nonempty_counts, make_bin_edges(max_nb, width=bin_width)),
     }
+
+
+def build_layer_rows(tensors: Sequence[dict], consumers: Sequence[dict], bin_width: int) -> List[dict]:
+    tensor_stats = []
+    for index, tensor in enumerate(tensors):
+        consumer = consumers[index] if index < len(consumers) else None
+        tensor_stats.append(analyze_tensor(tensor, consumer, bin_width))
+
+    rows = []
+    for layer_id, consumer in enumerate(consumers):
+        ifm = tensor_stats[layer_id]
+        ofm = tensor_stats[layer_id + 1]
+        rows.append({
+            'layer_id': layer_id,
+            'layer_name': consumer['module_name'],
+            'conv_type': consumer['conv_type'],
+            'kernel_zyx': list(consumer['kernel_zyx']),
+            'padding_zyx': list(consumer['padding_zyx']),
+            'stride_zyx': list(consumer['stride_zyx']),
+            'output_shape_zyx': list(consumer['output_shape_zyx']),
+            'cin': consumer['cin'],
+            'cout': consumer['cout'],
+            'ifm': ifm,
+            'ofm': ofm,
+            'peak_dram_bytes': int(ifm['dram_bytes'] + ofm['dram_bytes']),
+        })
+    return rows
 
 
 def md_escape(text) -> str:
@@ -323,20 +519,47 @@ def markdown_table(headers: Sequence[str], rows: Sequence[Sequence[object]]) -> 
     return '\n'.join([header_line, sep_line, *body])
 
 
-def unified_bin_edges(layer_rows: Sequence[dict], bin_width: int) -> List[Tuple[int, int]]:
-    max_nb = max((int(row['max_nb']) for row in layer_rows), default=0)
-    return make_bin_edges(max_nb, width=bin_width)
+def tensor_stat_cells(stats: dict) -> List[object]:
+    return [
+        stats['feature_channels'],
+        stats['halo_label'],
+        stats['nonempty_voxels'],
+        stats['nonempty_blocks'],
+        stats['sum_nb'],
+        stats['pages'],
+        stats['raw_page_bytes'],
+        stats['page_bytes'],
+        stats['dram_bytes'],
+        format_mib(stats['dram_bytes']),
+        stats['packed_dram_bytes'],
+        format_pct(float(stats['occupancy'])),
+        stats['packed_halo_dram_bytes'],
+        format_pct(float(stats['occupancy_halo'])),
+    ]
 
 
-def histogram_lookup(layer_row: dict) -> Dict[str, int]:
-    return {item['bin_label']: int(item['n_blocks']) for item in layer_row['histogram']}
+def tensor_table_headers(prefix: str) -> List[str]:
+    return [
+        f'{prefix} C',
+        f'{prefix} halo',
+        f'{prefix} voxels (不含halo)',
+        f'{prefix} blocks (含halo)',
+        f'{prefix} Sum N_b',
+        f'{prefix} pages',
+        f'{prefix} raw page Byte',
+        f'{prefix} aligned page Byte',
+        f'{prefix} DRAM Byte',
+        f'{prefix} DRAM MiB',
+        f'{prefix} 紧凑 (无halo) Byte',
+        f'{prefix} 占用率 (无halo)',
+        f'{prefix} 紧凑 (含halo) Byte',
+        f'{prefix} 占用率 (含halo)',
+    ]
 
 
 def build_markdown(payload: dict) -> str:
     frame = payload['frame']
     layers = payload['layers']
-    bin_width = int(payload['bin_width'])
-    bin_edges = unified_bin_edges(layers, bin_width)
     peak_bytes = int(payload.get('peak_ifm_ofm_dram_bytes', 0))
     peak_layer = payload.get('peak_ifm_ofm_layer_name', '')
 
@@ -350,23 +573,17 @@ def build_markdown(payload: dict) -> str:
         f"- Mode: hardware-reference INT8 (`{payload['mode']}`)",
         f"- Device: `{payload['device']}`",
         f"- Data loader: `{frame['data_loader']}` (FOV_POINTS_ONLY={frame['fov_points_only']})",
-        f"- Halo / boundary copy: **enabled** (RTL 1..7 neighbor copies)",
-        f"- Histogram bin width: `{bin_width}` (closed intervals `1-{bin_width}`, `{bin_width+1}-{2*bin_width}`, ...)",
         f"- Generated: `{payload['generated_at']}`",
         '',
-        'Block partitioning uses the closed proposed LUT. `N_b` of a nonempty block is the number of stored voxels **including halo copies**. Halo-only blocks are counted as nonempty.',
+        '## DRAM / halo rules',
         '',
-        '## DRAM page allocation',
-        '',
-        f"- Coordinate: `{COORD_BYTES}` Byte / voxel",
-        f"- Feature: `{FEATURE_BYTES_PER_CHANNEL}` Byte / channel; channels follow SECOND 3D backbone (`accdesign` / HW-QAT)",
-        f"- Voxel record: `{COORD_BYTES} + C` Byte",
-        f"- Pages per block: `ceil(N_b / {PAGE_VOXELS})` (N_b includes halo copies)",
-        f"- Page capacity: `{PAGE_VOXELS} * ( {COORD_BYTES} + C )` Byte",
-        f"- Layer DRAM: `sum_blocks ceil(N_b / {PAGE_VOXELS}) * page_capacity`",
-        f"- Packed DRAM: `Nonempty voxels × (8 + C)`，不含边界复制、也不按页对齐",
-        f"- Occupancy: `Packed DRAM / 本层 page DRAM`",
-        f"- Pipeline peak (IFM+OFM coresident): `{peak_bytes}` Byte = `{format_mib(peak_bytes)}` MiB at `{peak_layer}`",
+        '- Halo is generated from the **consumer (next) layer** kernel / padding / output shape.',
+        '- 3-tap axis: `neg=padding`, `pos=2-padding`. 1-tap axis: no halo.',
+        '- Last OFM (`conv_out`) has no 3D consumer, so OFM halo is none.',
+        f'- Coordinate `{COORD_BYTES}` Byte, feature `{FEATURE_BYTES_PER_CHANNEL}` Byte/channel, voxel `{COORD_BYTES}+C` Byte.',
+        f'- Pages per block: `ceil(N_b / {PAGE_VOXELS})`; raw page `{PAGE_VOXELS}*(8+C)`, then **align up to {PAGE_ALIGN_BYTES} Byte**.',
+        '- Layer peak DRAM = IFM allocated pages + OFM allocated pages (coresident).',
+        f'- Pipeline peak: `{peak_bytes}` Byte = `{format_mib(peak_bytes)}` MiB at `{peak_layer}`',
         '',
         '## Proposed LUT',
         '',
@@ -378,174 +595,146 @@ def build_markdown(payload: dict) -> str:
             ],
         ),
         '',
-        '`conv_out` keeps Stage 3 XY / LiDAR reference, with spatial Z reduced to 2.',
-        '',
-        '## Per-layer nonempty voxels, blocks, and DRAM',
+        '## Per-layer IFM / OFM peak DRAM',
         '',
         markdown_table(
             [
-                'Layer',
-                'Name',
-                'Type',
-                'Stage',
-                'Spatial ZYX',
-                '通道数 C',
-                '单个体素 Byte (8+C)',
-                'Nonempty voxels (不含边界复制)',
-                'Nonempty blocks (含边界复制)',
-                'Mean N_b',
-                'Median N_b',
-                'Max N_b',
-                'Sum N_b (with halo)',
-                'Pages (ceil(N_b/64) 求和)',
-                'Page 容量 Byte',
-                '本层 DRAM Byte',
-                '本层 DRAM MiB',
-                '紧凑 DRAM Byte (体素数×(8+C)，不含边界复制)',
-                '占用率 (紧凑/按页)',
-                'IFM+OFM 驻留 Byte',
-                'IFM+OFM 驻留 MiB',
+                'Layer', 'Name', 'Type',
+                'Kernel ZYX', 'Pad ZYX', 'Stride ZYX', 'Output ZYX',
+                'IFM C', 'OFM C',
+                'IFM halo', 'OFM halo',
+                'IFM DRAM Byte', 'IFM DRAM MiB',
+                'OFM DRAM Byte', 'OFM DRAM MiB',
+                'Peak IFM+OFM Byte', 'Peak MiB',
+                'IFM 占用率(含halo)', 'OFM 占用率(含halo)',
             ],
             [
                 [
                     row['layer_id'],
                     row['layer_name'],
                     row['conv_type'],
-                    row['stage'],
-                    'x'.join(str(v) for v in row['spatial_shape_zyx']),
-                    row['feature_channels'],
-                    row['bytes_per_voxel'],
-                    row['nonempty_voxels'],
-                    row['nonempty_blocks'],
-                    f"{row['mean_nb']:.2f}",
-                    f"{row['median_nb']:.1f}",
-                    row['max_nb'],
-                    row['sum_nb'],
-                    row['pages'],
-                    row['page_bytes'],
-                    row['dram_bytes'],
-                    format_mib(row['dram_bytes']),
-                    row['packed_dram_bytes'],
-                    format_pct(float(row['occupancy'])),
-                    row.get('ifm_ofm_dram_bytes', ''),
-                    format_mib(int(row.get('ifm_ofm_dram_bytes', 0))),
+                    'x'.join(str(v) for v in row['kernel_zyx']),
+                    'x'.join(str(v) for v in row['padding_zyx']),
+                    'x'.join(str(v) for v in row['stride_zyx']),
+                    'x'.join(str(v) for v in row['output_shape_zyx']),
+                    row['ifm']['feature_channels'],
+                    row['ofm']['feature_channels'],
+                    row['ifm']['halo_label'],
+                    row['ofm']['halo_label'],
+                    row['ifm']['dram_bytes'],
+                    format_mib(row['ifm']['dram_bytes']),
+                    row['ofm']['dram_bytes'],
+                    format_mib(row['ofm']['dram_bytes']),
+                    row['peak_dram_bytes'],
+                    format_mib(row['peak_dram_bytes']),
+                    format_pct(float(row['ifm']['occupancy_halo'])),
+                    format_pct(float(row['ofm']['occupancy_halo'])),
                 ]
                 for row in layers
             ],
         ),
         '',
-        '## Nonempty-block N_b histogram',
+        '## Per-layer IFM DRAM',
         '',
-        'Each cell is the number of nonempty blocks whose voxel count (including halo) falls in that bin.',
+        markdown_table(
+            ['Layer', 'Name'] + tensor_table_headers('IFM'),
+            [[row['layer_id'], row['layer_name'], *tensor_stat_cells(row['ifm'])] for row in layers],
+        ),
+        '',
+        '## Per-layer OFM DRAM',
+        '',
+        markdown_table(
+            ['Layer', 'Name'] + tensor_table_headers('OFM'),
+            [[row['layer_id'], row['layer_name'], *tensor_stat_cells(row['ofm'])] for row in layers],
+        ),
+        '',
+        '## IFM / OFM histogram detail',
         '',
     ]
 
-    hist_headers = ['Layer', 'Name', 'Stage', 'Nonempty blocks'] + [f'{lo}-{hi}' for lo, hi in bin_edges]
-    hist_rows = []
     for row in layers:
-        lookup = histogram_lookup(row)
-        cells = [
-            row['layer_id'],
-            row['layer_name'],
-            row['stage'],
-            row['nonempty_blocks'],
-        ]
-        for lo, hi in bin_edges:
-            cells.append(lookup.get(f'{lo}-{hi}', 0))
-        hist_rows.append(cells)
-    lines.append(markdown_table(hist_headers, hist_rows))
-    lines.append('')
-
-    lines.append('## Per-layer histogram detail')
-    lines.append('')
-    for row in layers:
-        lines.append(
-            f"### Layer {row['layer_id']}: `{row['layer_name']}` (stage {row['stage']})"
-        )
+        lines.append(f"### Layer {row['layer_id']}: `{row['layer_name']}`")
         lines.append('')
         lines.append(
-            f"- Spatial ZYX `{ 'x'.join(str(v) for v in row['spatial_shape_zyx']) }`, "
-            f"LiDAR `({row['lidar_center_xy'][0]},{row['lidar_center_xy'][1]})`"
-        )
-        lines.append(f"- LUT: `{row['lut_pretty']}`")
-        lines.append(
-            f"- 通道数 C `{row['feature_channels']}`, voxel `{row['bytes_per_voxel']}` Byte, "
-            f"page `{row['page_bytes']}` Byte, pages `{row['pages']}`"
+            f"- Kernel ZYX `{ 'x'.join(str(v) for v in row['kernel_zyx']) }`, "
+            f"pad `{ 'x'.join(str(v) for v in row['padding_zyx']) }`, "
+            f"stride `{ 'x'.join(str(v) for v in row['stride_zyx']) }`, "
+            f"output `{ 'x'.join(str(v) for v in row['output_shape_zyx']) }`"
         )
         lines.append(
-            f"- Nonempty voxels `{row['nonempty_voxels']}` (不含边界复制), "
-            f"nonempty blocks `{row['nonempty_blocks']}` (含边界复制)"
+            f"- Peak `{row['peak_dram_bytes']}` Byte = `{format_mib(row['peak_dram_bytes'])}` MiB "
+            f"(IFM `{format_mib(row['ifm']['dram_bytes'])}` + OFM `{format_mib(row['ofm']['dram_bytes'])}`)"
         )
-        lines.append(
-            f"- 本层 DRAM `{row['dram_bytes']}` Byte = `{format_mib(row['dram_bytes'])}` MiB; "
-            f"紧凑 DRAM `{row['packed_dram_bytes']}` Byte; "
-            f"占用率 `{format_pct(float(row['occupancy']))}`; "
-            f"IFM+OFM 驻留 `{row.get('ifm_ofm_dram_bytes', 0)}` Byte = "
-            f"`{format_mib(int(row.get('ifm_ofm_dram_bytes', 0)))}` MiB"
-        )
-        lines.append('')
-        if not row['histogram']:
-            lines.append('_No nonempty blocks._')
+        for kind, stats in (('IFM', row['ifm']), ('OFM', row['ofm'])):
             lines.append('')
-            continue
-        detail_rows = [
-            [item['bin_label'], item['n_blocks'], f"{100.0 * item['pct']:.2f}%"]
-            for item in row['histogram']
-            if item['n_blocks'] > 0
-        ]
-        if not detail_rows:
-            lines.append('_No nonempty blocks._')
-        else:
-            lines.append(markdown_table(['N_b bin', 'Nonempty blocks', 'Share'], detail_rows))
+            lines.append(
+                f"- **{kind}** `{stats['tensor_name']}` C=`{stats['feature_channels']}` "
+                f"halo `{stats['halo_label']}` consumer `{stats['consumer_name']}`"
+            )
+            lines.append(
+                f"  voxels `{stats['nonempty_voxels']}` (no halo), blocks `{stats['nonempty_blocks']}`, "
+                f"Sum N_b `{stats['sum_nb']}`, pages `{stats['pages']}`, "
+                f"page `{stats['raw_page_bytes']}→{stats['page_bytes']}` Byte, "
+                f"DRAM `{stats['dram_bytes']}` Byte (`{format_mib(stats['dram_bytes'])}` MiB), "
+                f"occ no-halo `{format_pct(float(stats['occupancy']))}`, "
+                f"occ halo `{format_pct(float(stats['occupancy_halo']))}`"
+            )
+            detail_rows = [
+                [item['bin_label'], item['n_blocks'], f"{100.0 * item['pct']:.2f}%"]
+                for item in stats['histogram']
+                if item['n_blocks'] > 0
+            ]
+            if detail_rows:
+                lines.append('')
+                lines.append(markdown_table([f'{kind} N_b bin', 'Blocks', 'Share'], detail_rows))
         lines.append('')
 
     return '\n'.join(lines).rstrip() + '\n'
 
 
-def json_ready_layers(layers: Sequence[dict]) -> List[dict]:
-    out = []
-    for row in layers:
-        item = dict(row)
-        item.pop('block_voxel_counts', None)
-        out.append(item)
+def flatten_layer_csv_row(row: dict) -> dict:
+    out = {
+        'layer_id': row['layer_id'],
+        'layer_name': row['layer_name'],
+        'conv_type': row['conv_type'],
+        'kernel_zyx': 'x'.join(str(v) for v in row['kernel_zyx']),
+        'padding_zyx': 'x'.join(str(v) for v in row['padding_zyx']),
+        'stride_zyx': 'x'.join(str(v) for v in row['stride_zyx']),
+        'output_shape_zyx': 'x'.join(str(v) for v in row['output_shape_zyx']),
+        'peak_dram_bytes': row['peak_dram_bytes'],
+        'peak_dram_mib': format_mib(row['peak_dram_bytes']),
+    }
+    for prefix, stats in (('ifm', row['ifm']), ('ofm', row['ofm'])):
+        out.update({
+            f'{prefix}_c': stats['feature_channels'],
+            f'{prefix}_halo': stats['halo_label'],
+            f'{prefix}_voxels': stats['nonempty_voxels'],
+            f'{prefix}_blocks': stats['nonempty_blocks'],
+            f'{prefix}_sum_nb': stats['sum_nb'],
+            f'{prefix}_pages': stats['pages'],
+            f'{prefix}_raw_page_bytes': stats['raw_page_bytes'],
+            f'{prefix}_page_bytes': stats['page_bytes'],
+            f'{prefix}_dram_bytes': stats['dram_bytes'],
+            f'{prefix}_dram_mib': format_mib(stats['dram_bytes']),
+            f'{prefix}_packed_bytes': stats['packed_dram_bytes'],
+            f'{prefix}_occupancy': f"{float(stats['occupancy']):.6f}",
+            f'{prefix}_packed_halo_bytes': stats['packed_halo_dram_bytes'],
+            f'{prefix}_occupancy_halo': f"{float(stats['occupancy_halo']):.6f}",
+        })
     return out
 
 
-def write_histogram_csv(path: Path, layers: Sequence[dict], bin_edges: Sequence[Tuple[int, int]]) -> None:
-    fieldnames = [
-        'layer_id', 'layer_name', 'stage', 'channels', 'bytes_per_voxel', 'page_bytes',
-        'pages', 'dram_bytes', 'dram_mib', 'packed_dram_bytes', 'occupancy',
-        'ifm_ofm_dram_bytes', 'ifm_ofm_dram_mib',
-        'nonempty_voxels', 'nonempty_blocks', 'mean_nb', 'max_nb',
-    ]
-    fieldnames.extend(f'bin_{lo}_{hi}' for lo, hi in bin_edges)
+def write_layer_csv(path: Path, layers: Sequence[dict]) -> None:
+    rows = [flatten_layer_csv_row(row) for row in layers]
+    fieldnames = list(rows[0].keys()) if rows else []
     with path.open('w', newline='', encoding='utf-8') as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
-        for row in layers:
-            lookup = histogram_lookup(row)
-            csv_row = {
-                'layer_id': row['layer_id'],
-                'layer_name': row['layer_name'],
-                'stage': row['stage'],
-                'channels': row['feature_channels'],
-                'bytes_per_voxel': row['bytes_per_voxel'],
-                'page_bytes': row['page_bytes'],
-                'pages': row['pages'],
-                'dram_bytes': row['dram_bytes'],
-                'dram_mib': format_mib(row['dram_bytes']),
-                'packed_dram_bytes': row['packed_dram_bytes'],
-                'occupancy': f"{float(row['occupancy']):.6f}",
-                'ifm_ofm_dram_bytes': row.get('ifm_ofm_dram_bytes', ''),
-                'ifm_ofm_dram_mib': format_mib(int(row.get('ifm_ofm_dram_bytes', 0))),
-                'nonempty_voxels': row['nonempty_voxels'],
-                'nonempty_blocks': row['nonempty_blocks'],
-                'mean_nb': f"{row['mean_nb']:.4f}",
-                'max_nb': row['max_nb'],
-            }
-            for lo, hi in bin_edges:
-                csv_row[f'bin_{lo}_{hi}'] = lookup.get(f'{lo}-{hi}', 0)
-            writer.writerow(csv_row)
+        writer.writerows(rows)
+
+
+def json_ready_layers(layers: Sequence[dict]) -> List[dict]:
+    return [json.loads(json.dumps(row)) for row in layers]
 
 
 def main():
@@ -599,11 +788,9 @@ def main():
     with torch.no_grad():
         batch_after_vfe = model.vfe(batch_torch)
 
-    captured = capture_layer_outputs(model.backbone_3d, batch_after_vfe)
-    layer_rows = [analyze_layer(layer, args.bin_width) for layer in captured]
-    peak_bytes = attach_page_dram(layer_rows)
-    peak_row = max(layer_rows, key=lambda row: int(row['ifm_ofm_dram_bytes']))
-    bin_edges = unified_bin_edges(layer_rows, args.bin_width)
+    tensors, consumers = capture_layer_outputs(model.backbone_3d, batch_after_vfe)
+    layer_rows = build_layer_rows(tensors, consumers, args.bin_width)
+    peak_row = max(layer_rows, key=lambda row: int(row['peak_dram_bytes']))
 
     payload = {
         'cfg': str(cfg_path),
@@ -612,12 +799,13 @@ def main():
         'weight_quant': args.weight_quant,
         'mode': 'hw_reference_int8',
         'data_mode': data_mode,
-        'halo': True,
+        'halo_mode': 'consumer_kernel_padding_asymmetric',
         'bin_width': args.bin_width,
         'coord_bytes': COORD_BYTES,
         'feature_bytes_per_channel': FEATURE_BYTES_PER_CHANNEL,
         'page_voxels': PAGE_VOXELS,
-        'peak_ifm_ofm_dram_bytes': peak_bytes,
+        'page_align_bytes': PAGE_ALIGN_BYTES,
+        'peak_ifm_ofm_dram_bytes': int(peak_row['peak_dram_bytes']),
         'peak_ifm_ofm_layer_id': peak_row['layer_id'],
         'peak_ifm_ofm_layer_name': peak_row['layer_name'],
         'generated_at': datetime.now().isoformat(timespec='seconds'),
@@ -640,7 +828,7 @@ def main():
     md_path.write_text(markdown, encoding='utf-8')
     with json_path.open('w', encoding='utf-8') as handle:
         json.dump(payload, handle, indent=2)
-    write_histogram_csv(csv_path, layer_rows, bin_edges)
+    write_layer_csv(csv_path, layer_rows)
 
     print(markdown)
     print(f'Saved markdown: {md_path}')
