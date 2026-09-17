@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """INT8 SECOND 3D-backbone occupancy under the proposed zone/block LUT.
 
-Halo is generated from the *consumer* (next) layer: 3-tap axes use
-neg=padding, pos=2-padding; 1-tap axes emit no halo. Pages hold 64 voxels
-and the page byte size is 64*(8+C) rounded up to 512B. Per-layer IFM and OFM
-are counted separately; peak DRAM is IFM+OFM coresident.
+Halo extents come from the consumer (next) layer:
+  low_extent  = kernel_size - 1 - padding
+  high_extent = padding
+1-tap axes emit no halo. Window-corner mapping re-runs zone lookup at each
+corner. Pages pack 64 voxels; page_bytes = (1 + ceil(C/8)) * 512.
+Per-layer IFM and OFM are counted separately; conv_out OFM is not paged.
+Peak DRAM is coresident IFM+allocated-OFM.
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import sys
@@ -68,7 +72,16 @@ LIDAR_CENTER_BY_STAGE = {
     3: (0, 100),
 }
 
-HaloXYZ = Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]]
+# 000216 allocated states INIT..L10 (L11 OFM is not paged).
+EXPECTED_STATE_PAGES = [1150, 1128, 1150, 1556, 1556, 1781, 1349, 1349, 1320, 488, 488, 365]
+EXPECTED_STATE_SUM_NB = [21358, 21002, 21358, 44913, 44913, 50785, 40485, 40485, 40175, 16591, 16591, 8495]
+EXPECTED_PEAK_LAYER_ID = 6
+EXPECTED_PEAK_PAGES = 1349 + 1349
+EXPECTED_PEAK_BYTES = 12432384
+
+ExtentXYZ = Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]]
+XYKey = Tuple[int, int, int]
+BlockKey = Tuple[int, int, int, int]
 
 
 def parse_args():
@@ -178,40 +191,56 @@ def conv_geometry(conv) -> dict:
     }
 
 
-def halo_extent_one(kernel: int, padding: int) -> Tuple[int, int]:
-    """Return (neg, pos) along one axis."""
+def extent_one(kernel: int, padding: int) -> Tuple[int, int]:
+    """Return (low_extent, high_extent) along one axis."""
     kernel = int(kernel)
     padding = int(padding)
     if kernel <= 1:
         return (0, 0)
-    if kernel == 3:
-        return (padding, 2 - padding)
-    return (padding, kernel - 1 - padding)
+    return (kernel - 1 - padding, padding)
 
 
-def halo_xyz_from_consumer(consumer: Optional[dict]) -> HaloXYZ:
-    """Halo extents in XYZ as ((neg,pos) x3). No consumer => no halo."""
+def extent_xyz_from_consumer(consumer: Optional[dict]) -> ExtentXYZ:
     if consumer is None:
         return ((0, 0), (0, 0), (0, 0))
     kz, ky, kx = consumer['kernel_zyx']
     pz, py, px = consumer['padding_zyx']
     return (
-        halo_extent_one(kx, px),
-        halo_extent_one(ky, py),
-        halo_extent_one(kz, pz),
+        extent_one(kx, px),
+        extent_one(ky, py),
+        extent_one(kz, pz),
     )
 
 
-def format_halo(halo_xyz: HaloXYZ) -> str:
+def format_extent(extent_xyz: ExtentXYZ) -> str:
     axes = ('x', 'y', 'z')
     parts = []
-    for axis, (neg, pos) in zip(axes, halo_xyz):
-        if neg == 0 and pos == 0:
+    for axis, (low, high) in zip(axes, extent_xyz):
+        if low == 0 and high == 0:
             parts.append(f'{axis}:none')
-        else:
-            neg_s = f'-{neg}' if neg else '0'
-            parts.append(f'{axis}:[{neg_s},+{pos}]')
+            continue
+        low_s = f'-{low}' if low else '0'
+        high_s = f'+{high}' if high else '0'
+        parts.append(f'{axis}:[{low_s},{high_s}]')
     return ' '.join(parts)
+
+
+def coordinate_identity(coords_zyx: np.ndarray) -> dict:
+    if coords_zyx is None or np.asarray(coords_zyx).size == 0:
+        payload = np.zeros((0, 3), dtype='<i4')
+        return {
+            'coordinate_count': 0,
+            'coordinate_sha256': hashlib.sha256(payload.tobytes()).hexdigest(),
+            'coordinate_unique': True,
+        }
+    arr = np.ascontiguousarray(np.asarray(coords_zyx)[:, :3], dtype='<i4')
+    unique = np.unique(arr, axis=0)
+    unique = np.ascontiguousarray(unique, dtype='<i4')
+    return {
+        'coordinate_count': int(unique.shape[0]),
+        'coordinate_sha256': hashlib.sha256(unique.tobytes()).hexdigest(),
+        'coordinate_unique': bool(unique.shape[0] == arr.shape[0]),
+    }
 
 
 def enable_hw_reference(model, project_root: Path, out_dir: Path, weight_quant: str, logger):
@@ -292,15 +321,11 @@ def pages_for_nb(nb: int, page_voxels: int = PAGE_VOXELS) -> int:
     return int((int(nb) + page_voxels - 1) // page_voxels)
 
 
-def align_up(value: int, alignment: int) -> int:
-    if alignment <= 1:
-        return int(value)
-    return int((int(value) + alignment - 1) // alignment * alignment)
-
-
-def aligned_page_bytes(channels: int) -> Tuple[int, int]:
-    raw = PAGE_VOXELS * (COORD_BYTES + int(channels) * FEATURE_BYTES_PER_CHANNEL)
-    return raw, align_up(raw, PAGE_ALIGN_BYTES)
+def page_layout(channels: int) -> Tuple[int, int, int]:
+    feature_words = (int(channels) + 7) // 8
+    page_stride = 1 + feature_words
+    page_bytes = page_stride * PAGE_ALIGN_BYTES
+    return feature_words, page_stride, page_bytes
 
 
 def format_mib(num_bytes: int) -> str:
@@ -311,91 +336,94 @@ def format_pct(ratio: float) -> str:
     return f'{100.0 * ratio:.2f}%'
 
 
-def _axis_copy_dir(coord: int, origin: int, log2_block: int, coord_max: int, neg: int, pos: int) -> int:
-    if neg <= 0 and pos <= 0:
-        return 0
-    rel = int(coord) - int(origin)
-    local = rel & ((1 << log2_block) - 1)
-    block = 1 << log2_block
-    if pos > 0 and local < pos:
-        dest = int(coord) - local - 1
-        if dest >= 0:
-            return -1
-    if neg > 0 and local >= block - neg:
-        dest = int(coord) + (block - local)
-        if dest <= coord_max:
-            return 1
-    return 0
+def _map_xy(
+    x_idx: int,
+    y_idx: int,
+    zone_specs: Sequence,
+    lidar_center_xy: Tuple[int, int],
+) -> Tuple[object, XYKey]:
+    spec = _lookup_zone_spec(zone_specs, x_idx, y_idx, lidar_center_xy)
+    zone_id, block_x, block_y, _block_z = _compute_block_key(
+        x_idx, y_idx, 0, spec, lidar_center_xy
+    )
+    return spec, (int(zone_id), int(block_x), int(block_y))
 
 
-def _cross_boundary_coord(coord: int, origin: int, log2_block: int, direction: int) -> int:
-    if direction == 0:
-        return int(coord)
-    rel = int(coord) - int(origin)
-    local = rel & ((1 << log2_block) - 1)
-    block = 1 << log2_block
-    if direction < 0:
-        return int(coord) - local - 1
-    return int(coord) + (block - local)
+def _window_bounds(
+    coord: int,
+    low_extent: int,
+    high_extent: int,
+    coord_max: int,
+) -> Tuple[int, int]:
+    lo = max(0, int(coord) - int(low_extent))
+    hi = min(int(coord_max), int(coord) + int(high_extent))
+    return lo, hi
 
 
-def iter_consumer_halo_block_keys(
+def iter_window_corner_block_keys(
     x_idx: int,
     y_idx: int,
     z_idx: int,
     grid_size: Tuple[int, int, int],
     zone_specs: Sequence,
     lidar_center_xy: Tuple[int, int],
-    halo_xyz: HaloXYZ,
-) -> Iterable[Tuple[int, int, int, int]]:
+    extent_xyz: ExtentXYZ,
+) -> Iterable[BlockKey]:
     nx, ny, nz = (int(grid_size[0]), int(grid_size[1]), int(grid_size[2]))
-    cx, cy = int(lidar_center_xy[0]), int(lidar_center_xy[1])
-    primary = _lookup_zone_spec(zone_specs, x_idx, y_idx, lidar_center_xy)
-    yield _compute_block_key(x_idx, y_idx, z_idx, primary, lidar_center_xy)
+    (low_x, high_x), (low_y, high_y), (low_z, high_z) = extent_xyz
+    x_lo, x_hi = _window_bounds(x_idx, low_x, high_x, nx - 1)
+    y_lo, y_hi = _window_bounds(y_idx, low_y, high_y, ny - 1)
+    z_lo, z_hi = _window_bounds(z_idx, low_z, high_z, nz - 1)
 
-    log2_bx, log2_by, log2_bz = primary.log2_block_size_xyz
-    dx = _axis_copy_dir(x_idx, cx, log2_bx, nx - 1, halo_xyz[0][0], halo_xyz[0][1])
-    dy = _axis_copy_dir(y_idx, cy, log2_by, ny - 1, halo_xyz[1][0], halo_xyz[1][1])
-    dz = _axis_copy_dir(z_idx, 0, log2_bz, nz - 1, halo_xyz[2][0], halo_xyz[2][1])
-
-    for halo_index in range(1, 8):
-        if (halo_index & 0b001) and dx == 0:
+    primary_spec, primary_xy = _map_xy(x_idx, y_idx, zone_specs, lidar_center_xy)
+    xy_entries = [(primary_spec, primary_xy)]
+    seen_xy = {primary_xy}
+    for px, py in ((x_lo, y_lo), (x_lo, y_hi), (x_hi, y_lo), (x_hi, y_hi)):
+        spec, xy_key = _map_xy(px, py, zone_specs, lidar_center_xy)
+        if xy_key in seen_xy:
             continue
-        if (halo_index & 0b010) and dy == 0:
-            continue
-        if (halo_index & 0b100) and dz == 0:
-            continue
+        seen_xy.add(xy_key)
+        xy_entries.append((spec, xy_key))
 
-        dest_x = _cross_boundary_coord(x_idx, cx, log2_bx, dx if (halo_index & 0b001) else 0)
-        dest_y = _cross_boundary_coord(y_idx, cy, log2_by, dy if (halo_index & 0b010) else 0)
-        dest_z = _cross_boundary_coord(z_idx, 0, log2_bz, dz if (halo_index & 0b100) else 0)
-        if not (0 <= dest_x < nx and 0 <= dest_y < ny and 0 <= dest_z < nz):
-            continue
+    seen_block_keys = set()
+    for spec, xy_key in xy_entries:
+        log2_bz = spec.log2_block_size_xyz[2]
+        primary_z = int(z_idx) >> log2_bz
+        low_bz = int(z_lo) >> log2_bz
+        high_bz = int(z_hi) >> log2_bz
+        z_indices = [primary_z]
+        if low_bz != primary_z:
+            z_indices.append(low_bz)
+        elif high_bz != primary_z:
+            z_indices.append(high_bz)
+        for block_z in z_indices:
+            key = (xy_key[0], xy_key[1], xy_key[2], int(block_z))
+            if key in seen_block_keys:
+                continue
+            seen_block_keys.add(key)
+            yield key
 
-        halo_spec = _lookup_zone_spec(zone_specs, dest_x, dest_y, lidar_center_xy)
-        yield _compute_block_key(dest_x, dest_y, dest_z, halo_spec, lidar_center_xy)
 
-
-def compute_consumer_halo_partition_counts(
+def compute_window_corner_partition_counts(
     coords: np.ndarray,
     grid_size: Tuple[int, int, int],
     zone_specs: Sequence,
     lidar_center_xy: Tuple[int, int],
-    halo_xyz: HaloXYZ,
+    extent_xyz: ExtentXYZ,
 ):
     if coords is None or coords.size == 0:
         return np.zeros(0, dtype=np.int64), 0
 
-    counts_by_key: Dict[Tuple[int, int, int, int], int] = {}
+    counts_by_key: Dict[BlockKey, int] = {}
     for z_idx, y_idx, x_idx in coords.astype(np.int64):
-        for block_key in iter_consumer_halo_block_keys(
+        for block_key in iter_window_corner_block_keys(
             int(x_idx),
             int(y_idx),
             int(z_idx),
             grid_size,
             zone_specs,
             lidar_center_xy,
-            halo_xyz,
+            extent_xyz,
         ):
             counts_by_key[block_key] = counts_by_key.get(block_key, 0) + 1
 
@@ -419,45 +447,69 @@ def histogram_from_counts(counts: np.ndarray, bin_edges: Sequence[Tuple[int, int
     return rows
 
 
-def analyze_tensor(tensor: dict, consumer: Optional[dict], bin_width: int) -> dict:
+def analyze_tensor(
+    tensor: dict,
+    consumer: Optional[dict],
+    bin_width: int,
+    allocate_pages: bool = True,
+) -> dict:
     shape_zyx = tuple(tensor['spatial_shape_zyx'])
     stage = stage_for_spatial(shape_zyx)
     grid_xyz = grid_xyz_from_zyx(shape_zyx)
     lidar_center = LIDAR_CENTER_BY_STAGE[stage]
     zone_specs = zone_specs_from_lut_lines(lut_lines_from_final(stage))
-    halo_xyz = halo_xyz_from_consumer(consumer)
-    counts, n_blocks = compute_consumer_halo_partition_counts(
-        tensor['coords_zyx'],
-        grid_xyz,
-        zone_specs,
-        lidar_center,
-        halo_xyz,
-    )
-    nonempty_counts = counts[counts > 0] if counts.size else np.zeros(0, dtype=np.int64)
-    max_nb = int(nonempty_counts.max()) if nonempty_counts.size else 0
+    extent_xyz = extent_xyz_from_consumer(consumer)
+    identity = coordinate_identity(tensor['coords_zyx'])
     channels = int(tensor['feature_channels'])
-    bytes_per_voxel = COORD_BYTES + channels * FEATURE_BYTES_PER_CHANNEL
-    raw_page_bytes, page_bytes = aligned_page_bytes(channels)
-    total_pages = int(sum(pages_for_nb(int(nb)) for nb in nonempty_counts)) if nonempty_counts.size else 0
-    dram_bytes = total_pages * page_bytes
+    feature_words, page_stride, page_bytes = page_layout(channels)
     unique_voxels = int(tensor['active_voxels'])
-    sum_nb = int(nonempty_counts.sum()) if nonempty_counts.size else 0
-    packed = unique_voxels * bytes_per_voxel
-    packed_halo = sum_nb * bytes_per_voxel
+    semantic_channel_bytes = unique_voxels * channels * FEATURE_BYTES_PER_CHANNEL
+
+    if allocate_pages:
+        counts, n_blocks = compute_window_corner_partition_counts(
+            tensor['coords_zyx'],
+            grid_xyz,
+            zone_specs,
+            lidar_center,
+            extent_xyz,
+        )
+        nonempty_counts = counts[counts > 0] if counts.size else np.zeros(0, dtype=np.int64)
+        max_nb = int(nonempty_counts.max()) if nonempty_counts.size else 0
+        total_pages = int(sum(pages_for_nb(int(nb)) for nb in nonempty_counts)) if nonempty_counts.size else 0
+        sum_nb = int(nonempty_counts.sum()) if nonempty_counts.size else 0
+        dram_bytes = total_pages * page_bytes
+        useful_bytes = sum_nb * page_stride * COORD_BYTES
+        occupancy = float(sum_nb / (total_pages * PAGE_VOXELS)) if total_pages else 0.0
+        histogram = histogram_from_counts(nonempty_counts, make_bin_edges(max_nb, width=bin_width))
+        mean_nb = float(np.mean(nonempty_counts)) if nonempty_counts.size else 0.0
+        median_nb = float(np.median(nonempty_counts)) if nonempty_counts.size else 0.0
+    else:
+        n_blocks = 0
+        max_nb = 0
+        total_pages = 0
+        sum_nb = 0
+        dram_bytes = 0
+        useful_bytes = 0
+        occupancy = 0.0
+        histogram = []
+        mean_nb = 0.0
+        median_nb = 0.0
+
     return {
         'tensor_name': tensor['layer_name'],
         'tensor_layer_id': tensor['layer_id'],
         'conv_type': tensor['conv_type'],
+        'allocated': bool(allocate_pages),
         'feature_channels': channels,
-        'bytes_per_voxel': bytes_per_voxel,
-        'raw_page_bytes': raw_page_bytes,
+        'feature_words': feature_words,
+        'page_stride': page_stride,
         'page_bytes': page_bytes,
         'pages': total_pages,
         'dram_bytes': dram_bytes,
-        'packed_dram_bytes': packed,
-        'occupancy': float(packed / dram_bytes) if dram_bytes else 0.0,
-        'packed_halo_dram_bytes': packed_halo,
-        'occupancy_halo': float(packed_halo / dram_bytes) if dram_bytes else 0.0,
+        'useful_bytes': useful_bytes,
+        'occupancy': occupancy,
+        'semantic_channel_bytes': semantic_channel_bytes,
+        'semantic_ratio': float(semantic_channel_bytes / dram_bytes) if dram_bytes else 0.0,
         'spatial_shape_zyx': list(shape_zyx),
         'grid_size_xyz': list(grid_xyz),
         'stage': stage,
@@ -469,28 +521,34 @@ def analyze_tensor(tensor: dict, consumer: Optional[dict], bin_width: int) -> di
         'consumer_padding_zyx': None if consumer is None else list(consumer['padding_zyx']),
         'consumer_stride_zyx': None if consumer is None else list(consumer['stride_zyx']),
         'consumer_output_shape_zyx': None if consumer is None else consumer.get('output_shape_zyx'),
-        'halo_xyz': [list(item) for item in halo_xyz],
-        'halo_label': format_halo(halo_xyz),
+        'low_high_extent_xyz': [list(item) for item in extent_xyz],
+        'extent_label': format_extent(extent_xyz),
         'nonempty_voxels': unique_voxels,
+        'coordinate_count': identity['coordinate_count'],
+        'coordinate_sha256': identity['coordinate_sha256'],
+        'coordinate_unique': identity['coordinate_unique'],
         'nonempty_blocks': int(n_blocks),
-        'mean_nb': float(np.mean(nonempty_counts)) if nonempty_counts.size else 0.0,
-        'median_nb': float(np.median(nonempty_counts)) if nonempty_counts.size else 0.0,
+        'mean_nb': mean_nb,
+        'median_nb': median_nb,
         'max_nb': max_nb,
         'sum_nb': sum_nb,
-        'histogram': histogram_from_counts(nonempty_counts, make_bin_edges(max_nb, width=bin_width)),
+        'histogram': histogram,
     }
 
 
-def build_layer_rows(tensors: Sequence[dict], consumers: Sequence[dict], bin_width: int) -> List[dict]:
+def build_layer_rows(tensors: Sequence[dict], consumers: Sequence[dict], bin_width: int) -> Tuple[List[dict], List[dict]]:
     tensor_stats = []
+    last_tensor_index = len(tensors) - 1
     for index, tensor in enumerate(tensors):
         consumer = consumers[index] if index < len(consumers) else None
-        tensor_stats.append(analyze_tensor(tensor, consumer, bin_width))
+        allocate = index != last_tensor_index
+        tensor_stats.append(analyze_tensor(tensor, consumer, bin_width, allocate_pages=allocate))
 
     rows = []
     for layer_id, consumer in enumerate(consumers):
         ifm = tensor_stats[layer_id]
         ofm = tensor_stats[layer_id + 1]
+        ofm_bytes = int(ofm['dram_bytes']) if ofm['allocated'] else 0
         rows.append({
             'layer_id': layer_id,
             'layer_name': consumer['module_name'],
@@ -503,9 +561,63 @@ def build_layer_rows(tensors: Sequence[dict], consumers: Sequence[dict], bin_wid
             'cout': consumer['cout'],
             'ifm': ifm,
             'ofm': ofm,
-            'peak_dram_bytes': int(ifm['dram_bytes'] + ofm['dram_bytes']),
+            'peak_dram_bytes': int(ifm['dram_bytes'] + ofm_bytes),
+            'peak_pages': int(ifm['pages'] + (ofm['pages'] if ofm['allocated'] else 0)),
         })
-    return rows
+    return rows, tensor_stats
+
+
+def state_label(tensor_layer_id: int) -> str:
+    if tensor_layer_id < 0:
+        return 'INIT'
+    return f'L{tensor_layer_id}'
+
+
+def build_acceptance(tensor_stats: Sequence[dict], layer_rows: Sequence[dict]) -> dict:
+    allocated_states = [stats for stats in tensor_stats if stats['allocated']]
+    page_rows = []
+    sum_rows = []
+    for index, stats in enumerate(allocated_states):
+        expected_pages = EXPECTED_STATE_PAGES[index] if index < len(EXPECTED_STATE_PAGES) else None
+        expected_sum = EXPECTED_STATE_SUM_NB[index] if index < len(EXPECTED_STATE_SUM_NB) else None
+        page_rows.append({
+            'state': state_label(stats['tensor_layer_id']),
+            'pages': stats['pages'],
+            'expected_pages': expected_pages,
+            'match': expected_pages is not None and stats['pages'] == expected_pages,
+        })
+        sum_rows.append({
+            'state': state_label(stats['tensor_layer_id']),
+            'sum_nb': stats['sum_nb'],
+            'expected_sum_nb': expected_sum,
+            'match': expected_sum is not None and stats['sum_nb'] == expected_sum,
+        })
+
+    last_ofm = tensor_stats[-1]
+    peak_row = max(layer_rows, key=lambda row: int(row['peak_dram_bytes']))
+    peak_ok = (
+        peak_row['layer_id'] == EXPECTED_PEAK_LAYER_ID
+        and peak_row['peak_pages'] == EXPECTED_PEAK_PAGES
+        and peak_row['peak_dram_bytes'] == EXPECTED_PEAK_BYTES
+        and last_ofm['pages'] == 0
+        and not last_ofm['allocated']
+    )
+    pages_ok = all(item['match'] for item in page_rows)
+    sum_ok = all(item['match'] for item in sum_rows)
+    return {
+        'pages_match': pages_ok,
+        'sum_nb_match': sum_ok,
+        'peak_match': peak_ok,
+        'passed': pages_ok and sum_ok and peak_ok,
+        'last_ofm_allocated': last_ofm['allocated'],
+        'last_ofm_pages': last_ofm['pages'],
+        'peak_layer_id': peak_row['layer_id'],
+        'peak_layer_name': peak_row['layer_name'],
+        'peak_pages': peak_row['peak_pages'],
+        'peak_bytes': peak_row['peak_dram_bytes'],
+        'states': page_rows,
+        'copies': sum_rows,
+    }
 
 
 def md_escape(text) -> str:
@@ -519,41 +631,55 @@ def markdown_table(headers: Sequence[str], rows: Sequence[Sequence[object]]) -> 
     return '\n'.join([header_line, sep_line, *body])
 
 
+def occupancy_cell(stats: dict) -> str:
+    if not stats['allocated'] or stats['pages'] == 0:
+        return 'n/a'
+    return format_pct(float(stats['occupancy']))
+
+
+def semantic_cell(stats: dict) -> str:
+    if not stats['allocated'] or stats['dram_bytes'] == 0:
+        return 'n/a'
+    return format_pct(float(stats['semantic_ratio']))
+
+
 def tensor_stat_cells(stats: dict) -> List[object]:
     return [
         stats['feature_channels'],
-        stats['halo_label'],
+        stats['extent_label'],
         stats['nonempty_voxels'],
-        stats['nonempty_blocks'],
-        stats['sum_nb'],
+        stats['nonempty_blocks'] if stats['allocated'] else 0,
+        stats['sum_nb'] if stats['allocated'] else 0,
         stats['pages'],
-        stats['raw_page_bytes'],
+        stats['feature_words'],
+        stats['page_stride'],
         stats['page_bytes'],
         stats['dram_bytes'],
         format_mib(stats['dram_bytes']),
-        stats['packed_dram_bytes'],
-        format_pct(float(stats['occupancy'])),
-        stats['packed_halo_dram_bytes'],
-        format_pct(float(stats['occupancy_halo'])),
+        stats['useful_bytes'],
+        occupancy_cell(stats),
+        stats['semantic_channel_bytes'],
+        semantic_cell(stats),
     ]
 
 
 def tensor_table_headers(prefix: str) -> List[str]:
     return [
         f'{prefix} C',
-        f'{prefix} halo',
+        f'{prefix} extent',
         f'{prefix} voxels (不含halo)',
         f'{prefix} blocks (含halo)',
         f'{prefix} Sum N_b',
         f'{prefix} pages',
-        f'{prefix} raw page Byte',
-        f'{prefix} aligned page Byte',
+        f'{prefix} feature_words',
+        f'{prefix} page_stride',
+        f'{prefix} page Byte',
         f'{prefix} DRAM Byte',
         f'{prefix} DRAM MiB',
-        f'{prefix} 紧凑 (无halo) Byte',
-        f'{prefix} 占用率 (无halo)',
-        f'{prefix} 紧凑 (含halo) Byte',
-        f'{prefix} 占用率 (含halo)',
+        f'{prefix} useful Byte',
+        f'{prefix} 占用率 (page slot)',
+        f'{prefix} 有效通道 Byte',
+        f'{prefix} 语义压缩率',
     ]
 
 
@@ -562,6 +688,8 @@ def build_markdown(payload: dict) -> str:
     layers = payload['layers']
     peak_bytes = int(payload.get('peak_ifm_ofm_dram_bytes', 0))
     peak_layer = payload.get('peak_ifm_ofm_layer_name', '')
+    peak_pages = int(payload.get('peak_ifm_ofm_pages', 0))
+    acceptance = payload.get('acceptance', {})
 
     lines = [
         '# Proposed Page Allocation: INT8 SECOND 3D Backbone Block Occupancy',
@@ -575,15 +703,19 @@ def build_markdown(payload: dict) -> str:
         f"- Data loader: `{frame['data_loader']}` (FOV_POINTS_ONLY={frame['fov_points_only']})",
         f"- Generated: `{payload['generated_at']}`",
         '',
-        '## DRAM / halo rules',
+        '## DRAM / extent rules',
         '',
-        '- Halo is generated from the **consumer (next) layer** kernel / padding / output shape.',
-        '- 3-tap axis: `neg=padding`, `pos=2-padding`. 1-tap axis: no halo.',
-        '- Last OFM (`conv_out`) has no 3D consumer, so OFM halo is none.',
-        f'- Coordinate `{COORD_BYTES}` Byte, feature `{FEATURE_BYTES_PER_CHANNEL}` Byte/channel, voxel `{COORD_BYTES}+C` Byte.',
-        f'- Pages per block: `ceil(N_b / {PAGE_VOXELS})`; raw page `{PAGE_VOXELS}*(8+C)`, then **align up to {PAGE_ALIGN_BYTES} Byte**.',
-        '- Layer peak DRAM = IFM allocated pages + OFM allocated pages (coresident).',
-        f'- Pipeline peak: `{peak_bytes}` Byte = `{format_mib(peak_bytes)}` MiB at `{peak_layer}`',
+        '- Extent is generated from the **consumer (next) layer** kernel / padding / output shape.',
+        '- `low_extent = kernel_size - 1 - padding`, `high_extent = padding`. Displayed as `[-low,+high]`.',
+        '- 1-tap axis: no halo (`none`). Last OFM (`conv_out`) is a logical network output and is **not paged**.',
+        '- Window-corner mapping: primary XY plus the four window corners, each with a fresh zone lookup.',
+        '- Alternate Z prefers `block_z(z_lo)` if it differs from primary Z, otherwise a different `block_z(z_hi)`.',
+        '- Per-owner `seen_block_keys` ensures each full block key is counted at most once.',
+        f'- `feature_words = ceil(C / 8)`, `page_stride = 1 + feature_words`, `page_bytes = page_stride × {PAGE_ALIGN_BYTES}`.',
+        f'- Pages per block: `ceil(N_b / {PAGE_VOXELS})`. Physical occupancy: `Sum_N_b / (pages × {PAGE_VOXELS})`.',
+        '- Useful bytes: `Sum_N_b × page_stride × 8`. Effective-channel bytes (`voxels × C`) are a semantic ratio, not physical occupancy.',
+        '- Layer peak DRAM = IFM allocated pages + OFM allocated pages (coresident). L11 peak = IFM only.',
+        f'- Pipeline peak: `{peak_pages}` pages, `{peak_bytes}` Byte = `{format_mib(peak_bytes)}` MiB at `{peak_layer}`',
         '',
         '## Proposed LUT',
         '',
@@ -595,6 +727,28 @@ def build_markdown(payload: dict) -> str:
             ],
         ),
         '',
+        '## Static acceptance (000216)',
+        '',
+        f"- Pages match: `{acceptance.get('pages_match')}`",
+        f"- Halo copies match: `{acceptance.get('sum_nb_match')}`",
+        f"- Peak match: `{acceptance.get('peak_match')}` (expect L6 `{EXPECTED_PEAK_PAGES}` pages / `{EXPECTED_PEAK_BYTES}` Byte)",
+        f"- L11 OFM pages: `{acceptance.get('last_ofm_pages')}` (must be 0)",
+        f"- Overall: **{'PASS' if acceptance.get('passed') else 'FAIL'}**",
+        '',
+        markdown_table(
+            ['State', 'Pages', 'Expected pages', 'Sum N_b', 'Expected Sum N_b'],
+            [
+                [
+                    page_row['state'],
+                    page_row['pages'],
+                    page_row['expected_pages'],
+                    copy_row['sum_nb'],
+                    copy_row['expected_sum_nb'],
+                ]
+                for page_row, copy_row in zip(acceptance.get('states', []), acceptance.get('copies', []))
+            ],
+        ),
+        '',
         '## Per-layer IFM / OFM peak DRAM',
         '',
         markdown_table(
@@ -602,11 +756,12 @@ def build_markdown(payload: dict) -> str:
                 'Layer', 'Name', 'Type',
                 'Kernel ZYX', 'Pad ZYX', 'Stride ZYX', 'Output ZYX',
                 'IFM C', 'OFM C',
-                'IFM halo', 'OFM halo',
+                'IFM extent', 'OFM extent',
+                'IFM pages', 'OFM pages',
                 'IFM DRAM Byte', 'IFM DRAM MiB',
                 'OFM DRAM Byte', 'OFM DRAM MiB',
-                'Peak IFM+OFM Byte', 'Peak MiB',
-                'IFM 占用率(含halo)', 'OFM 占用率(含halo)',
+                'Peak pages', 'Peak Byte', 'Peak MiB',
+                'IFM 占用率(page slot)', 'OFM 占用率(page slot)',
             ],
             [
                 [
@@ -619,18 +774,49 @@ def build_markdown(payload: dict) -> str:
                     'x'.join(str(v) for v in row['output_shape_zyx']),
                     row['ifm']['feature_channels'],
                     row['ofm']['feature_channels'],
-                    row['ifm']['halo_label'],
-                    row['ofm']['halo_label'],
+                    row['ifm']['extent_label'],
+                    row['ofm']['extent_label'] if row['ofm']['allocated'] else 'not paged',
+                    row['ifm']['pages'],
+                    row['ofm']['pages'],
                     row['ifm']['dram_bytes'],
                     format_mib(row['ifm']['dram_bytes']),
                     row['ofm']['dram_bytes'],
                     format_mib(row['ofm']['dram_bytes']),
+                    row['peak_pages'],
                     row['peak_dram_bytes'],
                     format_mib(row['peak_dram_bytes']),
-                    format_pct(float(row['ifm']['occupancy_halo'])),
-                    format_pct(float(row['ofm']['occupancy_halo'])),
+                    occupancy_cell(row['ifm']),
+                    occupancy_cell(row['ofm']),
                 ]
                 for row in layers
+            ],
+        ),
+        '',
+        '## Coordinate identity',
+        '',
+        markdown_table(
+            ['Layer', 'Name', 'Tensor', 'Count', 'Unique', 'SHA-256'],
+            [
+                cell
+                for row in layers
+                for cell in (
+                    [
+                        row['layer_id'],
+                        row['layer_name'],
+                        'IFM',
+                        row['ifm']['coordinate_count'],
+                        row['ifm']['coordinate_unique'],
+                        row['ifm']['coordinate_sha256'],
+                    ],
+                    [
+                        row['layer_id'],
+                        row['layer_name'],
+                        'OFM',
+                        row['ofm']['coordinate_count'],
+                        row['ofm']['coordinate_unique'],
+                        row['ofm']['coordinate_sha256'],
+                    ],
+                )
             ],
         ),
         '',
@@ -662,22 +848,29 @@ def build_markdown(payload: dict) -> str:
             f"output `{ 'x'.join(str(v) for v in row['output_shape_zyx']) }`"
         )
         lines.append(
-            f"- Peak `{row['peak_dram_bytes']}` Byte = `{format_mib(row['peak_dram_bytes'])}` MiB "
+            f"- Peak `{row['peak_pages']}` pages / `{row['peak_dram_bytes']}` Byte = `{format_mib(row['peak_dram_bytes'])}` MiB "
             f"(IFM `{format_mib(row['ifm']['dram_bytes'])}` + OFM `{format_mib(row['ofm']['dram_bytes'])}`)"
         )
         for kind, stats in (('IFM', row['ifm']), ('OFM', row['ofm'])):
             lines.append('')
+            if not stats['allocated']:
+                lines.append(
+                    f"- **{kind}** `{stats['tensor_name']}` C=`{stats['feature_channels']}` "
+                    f"logical output only: voxels `{stats['nonempty_voxels']}`, "
+                    f"sha256 `{stats['coordinate_sha256']}`, allocated pages `0`"
+                )
+                continue
             lines.append(
                 f"- **{kind}** `{stats['tensor_name']}` C=`{stats['feature_channels']}` "
-                f"halo `{stats['halo_label']}` consumer `{stats['consumer_name']}`"
+                f"extent `{stats['extent_label']}` consumer `{stats['consumer_name']}`"
             )
             lines.append(
-                f"  voxels `{stats['nonempty_voxels']}` (no halo), blocks `{stats['nonempty_blocks']}`, "
-                f"Sum N_b `{stats['sum_nb']}`, pages `{stats['pages']}`, "
-                f"page `{stats['raw_page_bytes']}→{stats['page_bytes']}` Byte, "
+                f"  voxels `{stats['nonempty_voxels']}` (no halo), sha256 `{stats['coordinate_sha256']}`, "
+                f"blocks `{stats['nonempty_blocks']}`, Sum N_b `{stats['sum_nb']}`, pages `{stats['pages']}`, "
+                f"page_stride `{stats['page_stride']}`, page `{stats['page_bytes']}` Byte, "
                 f"DRAM `{stats['dram_bytes']}` Byte (`{format_mib(stats['dram_bytes'])}` MiB), "
-                f"occ no-halo `{format_pct(float(stats['occupancy']))}`, "
-                f"occ halo `{format_pct(float(stats['occupancy_halo']))}`"
+                f"useful `{stats['useful_bytes']}` Byte, occ `{occupancy_cell(stats)}`, "
+                f"semantic `{semantic_cell(stats)}`"
             )
             detail_rows = [
                 [item['bin_label'], item['n_blocks'], f"{100.0 * item['pct']:.2f}%"]
@@ -701,25 +894,31 @@ def flatten_layer_csv_row(row: dict) -> dict:
         'padding_zyx': 'x'.join(str(v) for v in row['padding_zyx']),
         'stride_zyx': 'x'.join(str(v) for v in row['stride_zyx']),
         'output_shape_zyx': 'x'.join(str(v) for v in row['output_shape_zyx']),
+        'peak_pages': row['peak_pages'],
         'peak_dram_bytes': row['peak_dram_bytes'],
         'peak_dram_mib': format_mib(row['peak_dram_bytes']),
     }
     for prefix, stats in (('ifm', row['ifm']), ('ofm', row['ofm'])):
         out.update({
             f'{prefix}_c': stats['feature_channels'],
-            f'{prefix}_halo': stats['halo_label'],
+            f'{prefix}_extent': stats['extent_label'],
+            f'{prefix}_allocated': int(stats['allocated']),
             f'{prefix}_voxels': stats['nonempty_voxels'],
+            f'{prefix}_coordinate_count': stats['coordinate_count'],
+            f'{prefix}_coordinate_sha256': stats['coordinate_sha256'],
+            f'{prefix}_coordinate_unique': int(stats['coordinate_unique']),
             f'{prefix}_blocks': stats['nonempty_blocks'],
             f'{prefix}_sum_nb': stats['sum_nb'],
             f'{prefix}_pages': stats['pages'],
-            f'{prefix}_raw_page_bytes': stats['raw_page_bytes'],
+            f'{prefix}_feature_words': stats['feature_words'],
+            f'{prefix}_page_stride': stats['page_stride'],
             f'{prefix}_page_bytes': stats['page_bytes'],
             f'{prefix}_dram_bytes': stats['dram_bytes'],
             f'{prefix}_dram_mib': format_mib(stats['dram_bytes']),
-            f'{prefix}_packed_bytes': stats['packed_dram_bytes'],
+            f'{prefix}_useful_bytes': stats['useful_bytes'],
             f'{prefix}_occupancy': f"{float(stats['occupancy']):.6f}",
-            f'{prefix}_packed_halo_bytes': stats['packed_halo_dram_bytes'],
-            f'{prefix}_occupancy_halo': f"{float(stats['occupancy_halo']):.6f}",
+            f'{prefix}_semantic_channel_bytes': stats['semantic_channel_bytes'],
+            f'{prefix}_semantic_ratio': f"{float(stats['semantic_ratio']):.6f}",
         })
     return out
 
@@ -789,8 +988,9 @@ def main():
         batch_after_vfe = model.vfe(batch_torch)
 
     tensors, consumers = capture_layer_outputs(model.backbone_3d, batch_after_vfe)
-    layer_rows = build_layer_rows(tensors, consumers, args.bin_width)
+    layer_rows, tensor_stats = build_layer_rows(tensors, consumers, args.bin_width)
     peak_row = max(layer_rows, key=lambda row: int(row['peak_dram_bytes']))
+    acceptance = build_acceptance(tensor_stats, layer_rows)
 
     payload = {
         'cfg': str(cfg_path),
@@ -799,15 +999,17 @@ def main():
         'weight_quant': args.weight_quant,
         'mode': 'hw_reference_int8',
         'data_mode': data_mode,
-        'halo_mode': 'consumer_kernel_padding_asymmetric',
+        'halo_mode': 'consumer_window_corner',
         'bin_width': args.bin_width,
         'coord_bytes': COORD_BYTES,
         'feature_bytes_per_channel': FEATURE_BYTES_PER_CHANNEL,
         'page_voxels': PAGE_VOXELS,
         'page_align_bytes': PAGE_ALIGN_BYTES,
         'peak_ifm_ofm_dram_bytes': int(peak_row['peak_dram_bytes']),
+        'peak_ifm_ofm_pages': int(peak_row['peak_pages']),
         'peak_ifm_ofm_layer_id': peak_row['layer_id'],
         'peak_ifm_ofm_layer_name': peak_row['layer_name'],
+        'acceptance': acceptance,
         'generated_at': datetime.now().isoformat(timespec='seconds'),
         'frame': {
             'split': 'val',
@@ -834,6 +1036,19 @@ def main():
     print(f'Saved markdown: {md_path}')
     print(f'Saved JSON:     {json_path}')
     print(f'Saved CSV:      {csv_path}')
+    print(f"Acceptance: {'PASS' if acceptance['passed'] else 'FAIL'}")
+    if not acceptance['passed']:
+        for item in acceptance['states']:
+            if not item['match']:
+                print(f"  pages {item['state']}: got {item['pages']} expected {item['expected_pages']}")
+        for item in acceptance['copies']:
+            if not item['match']:
+                print(f"  sum_nb {item['state']}: got {item['sum_nb']} expected {item['expected_sum_nb']}")
+        if not acceptance['peak_match']:
+            print(
+                f"  peak: L{acceptance['peak_layer_id']} {acceptance['peak_pages']} pages "
+                f"{acceptance['peak_bytes']} Byte; last OFM pages {acceptance['last_ofm_pages']}"
+            )
 
 
 if __name__ == '__main__':

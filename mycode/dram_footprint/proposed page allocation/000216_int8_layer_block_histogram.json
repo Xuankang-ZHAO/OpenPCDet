@@ -5,16 +5,177 @@
   "weight_quant": "per_channel",
   "mode": "hw_reference_int8",
   "data_mode": "kitti",
-  "halo_mode": "consumer_kernel_padding_asymmetric",
+  "halo_mode": "consumer_window_corner",
   "bin_width": 16,
   "coord_bytes": 8,
   "feature_bytes_per_channel": 1,
   "page_voxels": 64,
   "page_align_bytes": 512,
   "peak_ifm_ofm_dram_bytes": 12432384,
+  "peak_ifm_ofm_pages": 2698,
   "peak_ifm_ofm_layer_id": 6,
   "peak_ifm_ofm_layer_name": "conv3.1.0",
-  "generated_at": "2026-09-17T13:21:38",
+  "acceptance": {
+    "pages_match": true,
+    "sum_nb_match": true,
+    "peak_match": true,
+    "passed": true,
+    "last_ofm_allocated": false,
+    "last_ofm_pages": 0,
+    "peak_layer_id": 6,
+    "peak_layer_name": "conv3.1.0",
+    "peak_pages": 2698,
+    "peak_bytes": 12432384,
+    "states": [
+      {
+        "state": "INIT",
+        "pages": 1150,
+        "expected_pages": 1150,
+        "match": true
+      },
+      {
+        "state": "L0",
+        "pages": 1128,
+        "expected_pages": 1128,
+        "match": true
+      },
+      {
+        "state": "L1",
+        "pages": 1150,
+        "expected_pages": 1150,
+        "match": true
+      },
+      {
+        "state": "L2",
+        "pages": 1556,
+        "expected_pages": 1556,
+        "match": true
+      },
+      {
+        "state": "L3",
+        "pages": 1556,
+        "expected_pages": 1556,
+        "match": true
+      },
+      {
+        "state": "L4",
+        "pages": 1781,
+        "expected_pages": 1781,
+        "match": true
+      },
+      {
+        "state": "L5",
+        "pages": 1349,
+        "expected_pages": 1349,
+        "match": true
+      },
+      {
+        "state": "L6",
+        "pages": 1349,
+        "expected_pages": 1349,
+        "match": true
+      },
+      {
+        "state": "L7",
+        "pages": 1320,
+        "expected_pages": 1320,
+        "match": true
+      },
+      {
+        "state": "L8",
+        "pages": 488,
+        "expected_pages": 488,
+        "match": true
+      },
+      {
+        "state": "L9",
+        "pages": 488,
+        "expected_pages": 488,
+        "match": true
+      },
+      {
+        "state": "L10",
+        "pages": 365,
+        "expected_pages": 365,
+        "match": true
+      }
+    ],
+    "copies": [
+      {
+        "state": "INIT",
+        "sum_nb": 21358,
+        "expected_sum_nb": 21358,
+        "match": true
+      },
+      {
+        "state": "L0",
+        "sum_nb": 21002,
+        "expected_sum_nb": 21002,
+        "match": true
+      },
+      {
+        "state": "L1",
+        "sum_nb": 21358,
+        "expected_sum_nb": 21358,
+        "match": true
+      },
+      {
+        "state": "L2",
+        "sum_nb": 44913,
+        "expected_sum_nb": 44913,
+        "match": true
+      },
+      {
+        "state": "L3",
+        "sum_nb": 44913,
+        "expected_sum_nb": 44913,
+        "match": true
+      },
+      {
+        "state": "L4",
+        "sum_nb": 50785,
+        "expected_sum_nb": 50785,
+        "match": true
+      },
+      {
+        "state": "L5",
+        "sum_nb": 40485,
+        "expected_sum_nb": 40485,
+        "match": true
+      },
+      {
+        "state": "L6",
+        "sum_nb": 40485,
+        "expected_sum_nb": 40485,
+        "match": true
+      },
+      {
+        "state": "L7",
+        "sum_nb": 40175,
+        "expected_sum_nb": 40175,
+        "match": true
+      },
+      {
+        "state": "L8",
+        "sum_nb": 16591,
+        "expected_sum_nb": 16591,
+        "match": true
+      },
+      {
+        "state": "L9",
+        "sum_nb": 16591,
+        "expected_sum_nb": 16591,
+        "match": true
+      },
+      {
+        "state": "L10",
+        "sum_nb": 8495,
+        "expected_sum_nb": 8495,
+        "match": true
+      }
+    ]
+  },
+  "generated_at": "2026-09-17T13:43:49",
   "frame": {
     "split": "val",
     "frame_id": "000216",
@@ -53,16 +214,17 @@
         "tensor_name": "input",
         "tensor_layer_id": -1,
         "conv_type": "InputSparseTensor",
+        "allocated": true,
         "feature_channels": 4,
-        "bytes_per_voxel": 12,
-        "raw_page_bytes": 768,
+        "feature_words": 1,
+        "page_stride": 2,
         "page_bytes": 1024,
-        "pages": 1148,
-        "dram_bytes": 1175552,
-        "packed_dram_bytes": 180000,
-        "occupancy": 0.15311955574912892,
-        "packed_halo_dram_bytes": 256308,
-        "occupancy_halo": 0.2180320394163763,
+        "pages": 1150,
+        "dram_bytes": 1177600,
+        "useful_bytes": 341728,
+        "occupancy": 0.29019021739130435,
+        "semantic_channel_bytes": 60000,
+        "semantic_ratio": 0.050951086956521736,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -101,7 +263,7 @@
           1600,
           1408
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             1,
             1
@@ -115,76 +277,79 @@
             1
           ]
         ],
-        "halo_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
         "nonempty_voxels": 15000,
-        "nonempty_blocks": 1110,
-        "mean_nb": 19.242342342342344,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1112,
+        "mean_nb": 19.2068345323741,
         "median_nb": 15.0,
         "max_nb": 219,
-        "sum_nb": 21359,
+        "sum_nb": 21358,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 599,
-            "pct": 0.5396396396396397
+            "n_blocks": 600,
+            "pct": 0.539568345323741
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 356,
-            "pct": 0.3207207207207207
+            "n_blocks": 357,
+            "pct": 0.3210431654676259
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 93,
-            "pct": 0.08378378378378379
+            "n_blocks": 94,
+            "pct": 0.08453237410071943
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 31,
-            "pct": 0.027927927927927927
+            "n_blocks": 30,
+            "pct": 0.02697841726618705
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 10,
-            "pct": 0.009009009009009009
+            "pct": 0.008992805755395683
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 8,
-            "pct": 0.007207207207207207
+            "pct": 0.007194244604316547
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 4,
-            "pct": 0.0036036036036036037
+            "pct": 0.0035971223021582736
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 4,
-            "pct": 0.0036036036036036037
+            "pct": 0.0035971223021582736
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.002702702702702703
+            "pct": 0.002697841726618705
           },
           {
             "bin_lo": 145,
@@ -219,7 +384,7 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 2,
-            "pct": 0.0018018018018018018
+            "pct": 0.0017985611510791368
           }
         ]
       },
@@ -227,16 +392,17 @@
         "tensor_name": "conv_input.0",
         "tensor_layer_id": 0,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 16,
-        "bytes_per_voxel": 24,
-        "raw_page_bytes": 1536,
+        "feature_words": 2,
+        "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 1127,
-        "dram_bytes": 1731072,
-        "packed_dram_bytes": 360000,
-        "occupancy": 0.20796362023070097,
-        "packed_halo_dram_bytes": 503424,
-        "occupancy_halo": 0.29081632653061223,
+        "pages": 1128,
+        "dram_bytes": 1732608,
+        "useful_bytes": 504048,
+        "occupancy": 0.2909186613475177,
+        "semantic_channel_bytes": 240000,
+        "semantic_ratio": 0.1385195035460993,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -275,90 +441,93 @@
           1600,
           1408
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 15000,
-        "nonempty_blocks": 1093,
-        "mean_nb": 19.19121683440073,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1094,
+        "mean_nb": 19.19744058500914,
         "median_nb": 15.0,
         "max_nb": 212,
-        "sum_nb": 20976,
+        "sum_nb": 21002,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 585,
-            "pct": 0.535224153705398
+            "n_blocks": 586,
+            "pct": 0.5356489945155393
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 355,
-            "pct": 0.32479414455626715
+            "pct": 0.32449725776965266
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
             "n_blocks": 94,
-            "pct": 0.08600182982616651
+            "pct": 0.08592321755027423
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 30,
-            "pct": 0.027447392497712716
+            "pct": 0.027422303473491772
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 11,
-            "pct": 0.010064043915827997
+            "pct": 0.010054844606946984
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 4,
-            "pct": 0.0036596523330283625
+            "pct": 0.003656307129798903
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 7,
-            "pct": 0.006404391582799634
+            "pct": 0.006398537477148081
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 3,
-            "pct": 0.0027447392497712718
+            "pct": 0.002742230347349177
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 2,
-            "pct": 0.0018298261665141812
+            "pct": 0.0018281535648994515
           },
           {
             "bin_lo": 145,
@@ -379,7 +548,7 @@
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 1,
-            "pct": 0.0009149130832570906
+            "pct": 0.0009140767824497258
           },
           {
             "bin_lo": 193,
@@ -393,11 +562,12 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 1,
-            "pct": 0.0009149130832570906
+            "pct": 0.0009140767824497258
           }
         ]
       },
-      "peak_dram_bytes": 2906624
+      "peak_dram_bytes": 2910208,
+      "peak_pages": 2278
     },
     {
       "layer_id": 1,
@@ -429,16 +599,17 @@
         "tensor_name": "conv_input.0",
         "tensor_layer_id": 0,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 16,
-        "bytes_per_voxel": 24,
-        "raw_page_bytes": 1536,
+        "feature_words": 2,
+        "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 1127,
-        "dram_bytes": 1731072,
-        "packed_dram_bytes": 360000,
-        "occupancy": 0.20796362023070097,
-        "packed_halo_dram_bytes": 503424,
-        "occupancy_halo": 0.29081632653061223,
+        "pages": 1128,
+        "dram_bytes": 1732608,
+        "useful_bytes": 504048,
+        "occupancy": 0.2909186613475177,
+        "semantic_channel_bytes": 240000,
+        "semantic_ratio": 0.1385195035460993,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -477,90 +648,93 @@
           1600,
           1408
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 15000,
-        "nonempty_blocks": 1093,
-        "mean_nb": 19.19121683440073,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1094,
+        "mean_nb": 19.19744058500914,
         "median_nb": 15.0,
         "max_nb": 212,
-        "sum_nb": 20976,
+        "sum_nb": 21002,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 585,
-            "pct": 0.535224153705398
+            "n_blocks": 586,
+            "pct": 0.5356489945155393
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 355,
-            "pct": 0.32479414455626715
+            "pct": 0.32449725776965266
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
             "n_blocks": 94,
-            "pct": 0.08600182982616651
+            "pct": 0.08592321755027423
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 30,
-            "pct": 0.027447392497712716
+            "pct": 0.027422303473491772
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 11,
-            "pct": 0.010064043915827997
+            "pct": 0.010054844606946984
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 4,
-            "pct": 0.0036596523330283625
+            "pct": 0.003656307129798903
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 7,
-            "pct": 0.006404391582799634
+            "pct": 0.006398537477148081
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 3,
-            "pct": 0.0027447392497712718
+            "pct": 0.002742230347349177
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 2,
-            "pct": 0.0018298261665141812
+            "pct": 0.0018281535648994515
           },
           {
             "bin_lo": 145,
@@ -581,7 +755,7 @@
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 1,
-            "pct": 0.0009149130832570906
+            "pct": 0.0009140767824497258
           },
           {
             "bin_lo": 193,
@@ -595,7 +769,7 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 1,
-            "pct": 0.0009149130832570906
+            "pct": 0.0009140767824497258
           }
         ]
       },
@@ -603,16 +777,17 @@
         "tensor_name": "conv1.0.0",
         "tensor_layer_id": 1,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 16,
-        "bytes_per_voxel": 24,
-        "raw_page_bytes": 1536,
+        "feature_words": 2,
+        "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 1148,
-        "dram_bytes": 1763328,
-        "packed_dram_bytes": 360000,
-        "occupancy": 0.20415940766550522,
-        "packed_halo_dram_bytes": 512616,
-        "occupancy_halo": 0.29070938588850176,
+        "pages": 1150,
+        "dram_bytes": 1766400,
+        "useful_bytes": 512592,
+        "occupancy": 0.29019021739130435,
+        "semantic_channel_bytes": 240000,
+        "semantic_ratio": 0.1358695652173913,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -651,7 +826,7 @@
           800,
           704
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             1,
             1
@@ -665,76 +840,79 @@
             1
           ]
         ],
-        "halo_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
         "nonempty_voxels": 15000,
-        "nonempty_blocks": 1110,
-        "mean_nb": 19.242342342342344,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1112,
+        "mean_nb": 19.2068345323741,
         "median_nb": 15.0,
         "max_nb": 219,
-        "sum_nb": 21359,
+        "sum_nb": 21358,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 599,
-            "pct": 0.5396396396396397
+            "n_blocks": 600,
+            "pct": 0.539568345323741
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 356,
-            "pct": 0.3207207207207207
+            "n_blocks": 357,
+            "pct": 0.3210431654676259
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 93,
-            "pct": 0.08378378378378379
+            "n_blocks": 94,
+            "pct": 0.08453237410071943
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 31,
-            "pct": 0.027927927927927927
+            "n_blocks": 30,
+            "pct": 0.02697841726618705
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 10,
-            "pct": 0.009009009009009009
+            "pct": 0.008992805755395683
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 8,
-            "pct": 0.007207207207207207
+            "pct": 0.007194244604316547
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 4,
-            "pct": 0.0036036036036036037
+            "pct": 0.0035971223021582736
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 4,
-            "pct": 0.0036036036036036037
+            "pct": 0.0035971223021582736
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.002702702702702703
+            "pct": 0.002697841726618705
           },
           {
             "bin_lo": 145,
@@ -769,11 +947,12 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 2,
-            "pct": 0.0018018018018018018
+            "pct": 0.0017985611510791368
           }
         ]
       },
-      "peak_dram_bytes": 3494400
+      "peak_dram_bytes": 3499008,
+      "peak_pages": 2278
     },
     {
       "layer_id": 2,
@@ -805,16 +984,17 @@
         "tensor_name": "conv1.0.0",
         "tensor_layer_id": 1,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 16,
-        "bytes_per_voxel": 24,
-        "raw_page_bytes": 1536,
+        "feature_words": 2,
+        "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 1148,
-        "dram_bytes": 1763328,
-        "packed_dram_bytes": 360000,
-        "occupancy": 0.20415940766550522,
-        "packed_halo_dram_bytes": 512616,
-        "occupancy_halo": 0.29070938588850176,
+        "pages": 1150,
+        "dram_bytes": 1766400,
+        "useful_bytes": 512592,
+        "occupancy": 0.29019021739130435,
+        "semantic_channel_bytes": 240000,
+        "semantic_ratio": 0.1358695652173913,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -853,7 +1033,7 @@
           800,
           704
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             1,
             1
@@ -867,76 +1047,79 @@
             1
           ]
         ],
-        "halo_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
         "nonempty_voxels": 15000,
-        "nonempty_blocks": 1110,
-        "mean_nb": 19.242342342342344,
+        "coordinate_count": 15000,
+        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1112,
+        "mean_nb": 19.2068345323741,
         "median_nb": 15.0,
         "max_nb": 219,
-        "sum_nb": 21359,
+        "sum_nb": 21358,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 599,
-            "pct": 0.5396396396396397
+            "n_blocks": 600,
+            "pct": 0.539568345323741
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 356,
-            "pct": 0.3207207207207207
+            "n_blocks": 357,
+            "pct": 0.3210431654676259
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 93,
-            "pct": 0.08378378378378379
+            "n_blocks": 94,
+            "pct": 0.08453237410071943
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 31,
-            "pct": 0.027927927927927927
+            "n_blocks": 30,
+            "pct": 0.02697841726618705
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 10,
-            "pct": 0.009009009009009009
+            "pct": 0.008992805755395683
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 8,
-            "pct": 0.007207207207207207
+            "pct": 0.007194244604316547
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 4,
-            "pct": 0.0036036036036036037
+            "pct": 0.0035971223021582736
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 4,
-            "pct": 0.0036036036036036037
+            "pct": 0.0035971223021582736
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.002702702702702703
+            "pct": 0.002697841726618705
           },
           {
             "bin_lo": 145,
@@ -971,7 +1154,7 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 2,
-            "pct": 0.0018018018018018018
+            "pct": 0.0017985611510791368
           }
         ]
       },
@@ -979,16 +1162,17 @@
         "tensor_name": "conv2.0.0",
         "tensor_layer_id": 2,
         "conv_type": "SparseConv3d",
+        "allocated": true,
         "feature_channels": 32,
-        "bytes_per_voxel": 40,
-        "raw_page_bytes": 2560,
+        "feature_words": 4,
+        "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1554,
-        "dram_bytes": 3978240,
-        "packed_dram_bytes": 1030480,
-        "occupancy": 0.2590291184041184,
-        "packed_halo_dram_bytes": 1795600,
-        "occupancy_halo": 0.4513553732303732,
+        "pages": 1556,
+        "dram_bytes": 3983360,
+        "useful_bytes": 1796520,
+        "occupancy": 0.45100618573264784,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.206956940874036,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1027,160 +1211,163 @@
           800,
           704
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 25762,
-        "nonempty_blocks": 1315,
-        "mean_nb": 34.136882129277566,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1316,
+        "mean_nb": 34.128419452887535,
         "median_nb": 21.0,
         "max_nb": 499,
-        "sum_nb": 44890,
+        "sum_nb": 44913,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 511,
-            "pct": 0.3885931558935361
+            "n_blocks": 512,
+            "pct": 0.3890577507598784
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 329,
-            "pct": 0.25019011406844105
+            "pct": 0.25
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
             "n_blocks": 205,
-            "pct": 0.155893536121673
+            "pct": 0.15577507598784193
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 98,
-            "pct": 0.07452471482889733
+            "n_blocks": 97,
+            "pct": 0.0737082066869301
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 70,
-            "pct": 0.053231939163498096
+            "n_blocks": 71,
+            "pct": 0.053951367781155016
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 19,
-            "pct": 0.014448669201520912
+            "pct": 0.014437689969604863
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 17,
-            "pct": 0.012927756653992395
+            "pct": 0.012917933130699088
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 23,
-            "pct": 0.01749049429657795
+            "pct": 0.017477203647416412
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 10,
-            "pct": 0.0076045627376425855
+            "pct": 0.007598784194528876
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 5,
-            "pct": 0.0038022813688212928
+            "pct": 0.003799392097264438
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.00532319391634981
+            "pct": 0.005319148936170213
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.0045627376425855515
+            "pct": 0.004559270516717325
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
-            "n_blocks": 4,
-            "pct": 0.003041825095057034
+            "n_blocks": 3,
+            "pct": 0.0022796352583586625
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
-            "n_blocks": 3,
-            "pct": 0.0022813688212927757
+            "n_blocks": 4,
+            "pct": 0.00303951367781155
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 2,
-            "pct": 0.001520912547528517
+            "pct": 0.001519756838905775
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 273,
             "bin_hi": 288,
             "bin_label": "273-288",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 289,
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 305,
@@ -1208,7 +1395,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 369,
@@ -1271,11 +1458,12 @@
             "bin_hi": 512,
             "bin_label": "497-512",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           }
         ]
       },
-      "peak_dram_bytes": 5741568
+      "peak_dram_bytes": 5749760,
+      "peak_pages": 2706
     },
     {
       "layer_id": 3,
@@ -1307,16 +1495,17 @@
         "tensor_name": "conv2.0.0",
         "tensor_layer_id": 2,
         "conv_type": "SparseConv3d",
+        "allocated": true,
         "feature_channels": 32,
-        "bytes_per_voxel": 40,
-        "raw_page_bytes": 2560,
+        "feature_words": 4,
+        "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1554,
-        "dram_bytes": 3978240,
-        "packed_dram_bytes": 1030480,
-        "occupancy": 0.2590291184041184,
-        "packed_halo_dram_bytes": 1795600,
-        "occupancy_halo": 0.4513553732303732,
+        "pages": 1556,
+        "dram_bytes": 3983360,
+        "useful_bytes": 1796520,
+        "occupancy": 0.45100618573264784,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.206956940874036,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1355,160 +1544,163 @@
           800,
           704
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 25762,
-        "nonempty_blocks": 1315,
-        "mean_nb": 34.136882129277566,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1316,
+        "mean_nb": 34.128419452887535,
         "median_nb": 21.0,
         "max_nb": 499,
-        "sum_nb": 44890,
+        "sum_nb": 44913,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 511,
-            "pct": 0.3885931558935361
+            "n_blocks": 512,
+            "pct": 0.3890577507598784
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 329,
-            "pct": 0.25019011406844105
+            "pct": 0.25
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
             "n_blocks": 205,
-            "pct": 0.155893536121673
+            "pct": 0.15577507598784193
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 98,
-            "pct": 0.07452471482889733
+            "n_blocks": 97,
+            "pct": 0.0737082066869301
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 70,
-            "pct": 0.053231939163498096
+            "n_blocks": 71,
+            "pct": 0.053951367781155016
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 19,
-            "pct": 0.014448669201520912
+            "pct": 0.014437689969604863
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 17,
-            "pct": 0.012927756653992395
+            "pct": 0.012917933130699088
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 23,
-            "pct": 0.01749049429657795
+            "pct": 0.017477203647416412
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 10,
-            "pct": 0.0076045627376425855
+            "pct": 0.007598784194528876
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 5,
-            "pct": 0.0038022813688212928
+            "pct": 0.003799392097264438
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.00532319391634981
+            "pct": 0.005319148936170213
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.0045627376425855515
+            "pct": 0.004559270516717325
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
-            "n_blocks": 4,
-            "pct": 0.003041825095057034
+            "n_blocks": 3,
+            "pct": 0.0022796352583586625
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
-            "n_blocks": 3,
-            "pct": 0.0022813688212927757
+            "n_blocks": 4,
+            "pct": 0.00303951367781155
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 2,
-            "pct": 0.001520912547528517
+            "pct": 0.001519756838905775
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 273,
             "bin_hi": 288,
             "bin_label": "273-288",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 289,
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 305,
@@ -1536,7 +1728,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 369,
@@ -1599,7 +1791,7 @@
             "bin_hi": 512,
             "bin_label": "497-512",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           }
         ]
       },
@@ -1607,16 +1799,17 @@
         "tensor_name": "conv2.1.0",
         "tensor_layer_id": 3,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 32,
-        "bytes_per_voxel": 40,
-        "raw_page_bytes": 2560,
+        "feature_words": 4,
+        "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1554,
-        "dram_bytes": 3978240,
-        "packed_dram_bytes": 1030480,
-        "occupancy": 0.2590291184041184,
-        "packed_halo_dram_bytes": 1795600,
-        "occupancy_halo": 0.4513553732303732,
+        "pages": 1556,
+        "dram_bytes": 3983360,
+        "useful_bytes": 1796520,
+        "occupancy": 0.45100618573264784,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.206956940874036,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1655,160 +1848,163 @@
           800,
           704
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 25762,
-        "nonempty_blocks": 1315,
-        "mean_nb": 34.136882129277566,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1316,
+        "mean_nb": 34.128419452887535,
         "median_nb": 21.0,
         "max_nb": 499,
-        "sum_nb": 44890,
+        "sum_nb": 44913,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 511,
-            "pct": 0.3885931558935361
+            "n_blocks": 512,
+            "pct": 0.3890577507598784
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 329,
-            "pct": 0.25019011406844105
+            "pct": 0.25
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
             "n_blocks": 205,
-            "pct": 0.155893536121673
+            "pct": 0.15577507598784193
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 98,
-            "pct": 0.07452471482889733
+            "n_blocks": 97,
+            "pct": 0.0737082066869301
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 70,
-            "pct": 0.053231939163498096
+            "n_blocks": 71,
+            "pct": 0.053951367781155016
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 19,
-            "pct": 0.014448669201520912
+            "pct": 0.014437689969604863
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 17,
-            "pct": 0.012927756653992395
+            "pct": 0.012917933130699088
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 23,
-            "pct": 0.01749049429657795
+            "pct": 0.017477203647416412
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 10,
-            "pct": 0.0076045627376425855
+            "pct": 0.007598784194528876
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 5,
-            "pct": 0.0038022813688212928
+            "pct": 0.003799392097264438
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.00532319391634981
+            "pct": 0.005319148936170213
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.0045627376425855515
+            "pct": 0.004559270516717325
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
-            "n_blocks": 4,
-            "pct": 0.003041825095057034
+            "n_blocks": 3,
+            "pct": 0.0022796352583586625
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
-            "n_blocks": 3,
-            "pct": 0.0022813688212927757
+            "n_blocks": 4,
+            "pct": 0.00303951367781155
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 2,
-            "pct": 0.001520912547528517
+            "pct": 0.001519756838905775
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 273,
             "bin_hi": 288,
             "bin_label": "273-288",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 289,
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 305,
@@ -1836,7 +2032,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 369,
@@ -1899,11 +2095,12 @@
             "bin_hi": 512,
             "bin_label": "497-512",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           }
         ]
       },
-      "peak_dram_bytes": 7956480
+      "peak_dram_bytes": 7966720,
+      "peak_pages": 3112
     },
     {
       "layer_id": 4,
@@ -1935,16 +2132,17 @@
         "tensor_name": "conv2.1.0",
         "tensor_layer_id": 3,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 32,
-        "bytes_per_voxel": 40,
-        "raw_page_bytes": 2560,
+        "feature_words": 4,
+        "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1554,
-        "dram_bytes": 3978240,
-        "packed_dram_bytes": 1030480,
-        "occupancy": 0.2590291184041184,
-        "packed_halo_dram_bytes": 1795600,
-        "occupancy_halo": 0.4513553732303732,
+        "pages": 1556,
+        "dram_bytes": 3983360,
+        "useful_bytes": 1796520,
+        "occupancy": 0.45100618573264784,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.206956940874036,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1983,160 +2181,163 @@
           800,
           704
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 25762,
-        "nonempty_blocks": 1315,
-        "mean_nb": 34.136882129277566,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
+        "nonempty_blocks": 1316,
+        "mean_nb": 34.128419452887535,
         "median_nb": 21.0,
         "max_nb": 499,
-        "sum_nb": 44890,
+        "sum_nb": 44913,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 511,
-            "pct": 0.3885931558935361
+            "n_blocks": 512,
+            "pct": 0.3890577507598784
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 329,
-            "pct": 0.25019011406844105
+            "pct": 0.25
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
             "n_blocks": 205,
-            "pct": 0.155893536121673
+            "pct": 0.15577507598784193
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 98,
-            "pct": 0.07452471482889733
+            "n_blocks": 97,
+            "pct": 0.0737082066869301
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 70,
-            "pct": 0.053231939163498096
+            "n_blocks": 71,
+            "pct": 0.053951367781155016
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 19,
-            "pct": 0.014448669201520912
+            "pct": 0.014437689969604863
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 17,
-            "pct": 0.012927756653992395
+            "pct": 0.012917933130699088
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 23,
-            "pct": 0.01749049429657795
+            "pct": 0.017477203647416412
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 10,
-            "pct": 0.0076045627376425855
+            "pct": 0.007598784194528876
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 5,
-            "pct": 0.0038022813688212928
+            "pct": 0.003799392097264438
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.00532319391634981
+            "pct": 0.005319148936170213
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.0045627376425855515
+            "pct": 0.004559270516717325
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
-            "n_blocks": 4,
-            "pct": 0.003041825095057034
+            "n_blocks": 3,
+            "pct": 0.0022796352583586625
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
-            "n_blocks": 3,
-            "pct": 0.0022813688212927757
+            "n_blocks": 4,
+            "pct": 0.00303951367781155
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 2,
-            "pct": 0.001520912547528517
+            "pct": 0.001519756838905775
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 273,
             "bin_hi": 288,
             "bin_label": "273-288",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 289,
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 305,
@@ -2164,7 +2365,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           },
           {
             "bin_lo": 369,
@@ -2227,7 +2428,7 @@
             "bin_hi": 512,
             "bin_label": "497-512",
             "n_blocks": 1,
-            "pct": 0.0007604562737642585
+            "pct": 0.0007598784194528875
           }
         ]
       },
@@ -2235,16 +2436,17 @@
         "tensor_name": "conv2.2.0",
         "tensor_layer_id": 4,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 32,
-        "bytes_per_voxel": 40,
-        "raw_page_bytes": 2560,
+        "feature_words": 4,
+        "page_stride": 5,
         "page_bytes": 2560,
         "pages": 1781,
         "dram_bytes": 4559360,
-        "packed_dram_bytes": 1030480,
-        "occupancy": 0.226014177428411,
-        "packed_halo_dram_bytes": 2031400,
-        "occupancy_halo": 0.44554498877035376,
+        "useful_bytes": 2031400,
+        "occupancy": 0.44554498877035376,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.1808113419427288,
         "spatial_shape_zyx": [
           21,
           800,
@@ -2283,7 +2485,7 @@
           400,
           352
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             1,
             1
@@ -2297,8 +2499,11 @@
             1
           ]
         ],
-        "halo_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
         "nonempty_voxels": 25762,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
         "nonempty_blocks": 1511,
         "mean_nb": 33.610191925876904,
         "median_nb": 21.0,
@@ -2316,15 +2521,15 @@
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 435,
-            "pct": 0.2878888153540701
+            "n_blocks": 434,
+            "pct": 0.2872270019854401
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 203,
-            "pct": 0.1343481138318994
+            "n_blocks": 204,
+            "pct": 0.13500992720052946
           },
           {
             "bin_lo": 49,
@@ -2393,15 +2598,15 @@
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
-            "n_blocks": 6,
-            "pct": 0.003970880211780278
+            "n_blocks": 5,
+            "pct": 0.0033090668431502318
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
-            "n_blocks": 3,
-            "pct": 0.001985440105890139
+            "n_blocks": 4,
+            "pct": 0.0026472534745201853
           },
           {
             "bin_lo": 225,
@@ -2517,7 +2722,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 8537600
+      "peak_dram_bytes": 8542720,
+      "peak_pages": 3337
     },
     {
       "layer_id": 5,
@@ -2549,16 +2755,17 @@
         "tensor_name": "conv2.2.0",
         "tensor_layer_id": 4,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 32,
-        "bytes_per_voxel": 40,
-        "raw_page_bytes": 2560,
+        "feature_words": 4,
+        "page_stride": 5,
         "page_bytes": 2560,
         "pages": 1781,
         "dram_bytes": 4559360,
-        "packed_dram_bytes": 1030480,
-        "occupancy": 0.226014177428411,
-        "packed_halo_dram_bytes": 2031400,
-        "occupancy_halo": 0.44554498877035376,
+        "useful_bytes": 2031400,
+        "occupancy": 0.44554498877035376,
+        "semantic_channel_bytes": 824384,
+        "semantic_ratio": 0.1808113419427288,
         "spatial_shape_zyx": [
           21,
           800,
@@ -2597,7 +2804,7 @@
           400,
           352
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             1,
             1
@@ -2611,8 +2818,11 @@
             1
           ]
         ],
-        "halo_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
         "nonempty_voxels": 25762,
+        "coordinate_count": 25762,
+        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "coordinate_unique": true,
         "nonempty_blocks": 1511,
         "mean_nb": 33.610191925876904,
         "median_nb": 21.0,
@@ -2630,15 +2840,15 @@
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 435,
-            "pct": 0.2878888153540701
+            "n_blocks": 434,
+            "pct": 0.2872270019854401
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 203,
-            "pct": 0.1343481138318994
+            "n_blocks": 204,
+            "pct": 0.13500992720052946
           },
           {
             "bin_lo": 49,
@@ -2707,15 +2917,15 @@
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
-            "n_blocks": 6,
-            "pct": 0.003970880211780278
+            "n_blocks": 5,
+            "pct": 0.0033090668431502318
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
-            "n_blocks": 3,
-            "pct": 0.001985440105890139
+            "n_blocks": 4,
+            "pct": 0.0026472534745201853
           },
           {
             "bin_lo": 225,
@@ -2835,16 +3045,17 @@
         "tensor_name": "conv3.0.0",
         "tensor_layer_id": 5,
         "conv_type": "SparseConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
         "pages": 1349,
         "dram_bytes": 6216192,
-        "packed_dram_bytes": 1374408,
-        "occupancy": 0.22110127872498148,
-        "packed_halo_dram_bytes": 2911824,
-        "occupancy_halo": 0.468425685693106,
+        "useful_bytes": 2914920,
+        "occupancy": 0.46892373980726465,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.1965344699777613,
         "spatial_shape_zyx": [
           11,
           400,
@@ -2883,48 +3094,51 @@
           400,
           352
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
         "nonempty_blocks": 1138,
-        "mean_nb": 35.5377855887522,
+        "mean_nb": 35.57557117750439,
         "median_nb": 25.0,
         "max_nb": 252,
-        "sum_nb": 40442,
+        "sum_nb": 40485,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 409,
-            "pct": 0.359402460456942
+            "n_blocks": 406,
+            "pct": 0.35676625659050965
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 297,
-            "pct": 0.2609841827768014
+            "n_blocks": 299,
+            "pct": 0.2627416520210896
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 162,
-            "pct": 0.14235500878734622
+            "n_blocks": 163,
+            "pct": 0.14323374340949033
           },
           {
             "bin_lo": 49,
@@ -3019,7 +3233,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 10775552
+      "peak_dram_bytes": 10775552,
+      "peak_pages": 3130
     },
     {
       "layer_id": 6,
@@ -3051,16 +3266,17 @@
         "tensor_name": "conv3.0.0",
         "tensor_layer_id": 5,
         "conv_type": "SparseConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
         "pages": 1349,
         "dram_bytes": 6216192,
-        "packed_dram_bytes": 1374408,
-        "occupancy": 0.22110127872498148,
-        "packed_halo_dram_bytes": 2911824,
-        "occupancy_halo": 0.468425685693106,
+        "useful_bytes": 2914920,
+        "occupancy": 0.46892373980726465,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.1965344699777613,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3099,48 +3315,51 @@
           400,
           352
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
         "nonempty_blocks": 1138,
-        "mean_nb": 35.5377855887522,
+        "mean_nb": 35.57557117750439,
         "median_nb": 25.0,
         "max_nb": 252,
-        "sum_nb": 40442,
+        "sum_nb": 40485,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 409,
-            "pct": 0.359402460456942
+            "n_blocks": 406,
+            "pct": 0.35676625659050965
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 297,
-            "pct": 0.2609841827768014
+            "n_blocks": 299,
+            "pct": 0.2627416520210896
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 162,
-            "pct": 0.14235500878734622
+            "n_blocks": 163,
+            "pct": 0.14323374340949033
           },
           {
             "bin_lo": 49,
@@ -3239,16 +3458,17 @@
         "tensor_name": "conv3.1.0",
         "tensor_layer_id": 6,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
         "pages": 1349,
         "dram_bytes": 6216192,
-        "packed_dram_bytes": 1374408,
-        "occupancy": 0.22110127872498148,
-        "packed_halo_dram_bytes": 2911824,
-        "occupancy_halo": 0.468425685693106,
+        "useful_bytes": 2914920,
+        "occupancy": 0.46892373980726465,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.1965344699777613,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3287,48 +3507,51 @@
           400,
           352
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
         "nonempty_blocks": 1138,
-        "mean_nb": 35.5377855887522,
+        "mean_nb": 35.57557117750439,
         "median_nb": 25.0,
         "max_nb": 252,
-        "sum_nb": 40442,
+        "sum_nb": 40485,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 409,
-            "pct": 0.359402460456942
+            "n_blocks": 406,
+            "pct": 0.35676625659050965
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 297,
-            "pct": 0.2609841827768014
+            "n_blocks": 299,
+            "pct": 0.2627416520210896
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 162,
-            "pct": 0.14235500878734622
+            "n_blocks": 163,
+            "pct": 0.14323374340949033
           },
           {
             "bin_lo": 49,
@@ -3423,7 +3646,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 12432384
+      "peak_dram_bytes": 12432384,
+      "peak_pages": 2698
     },
     {
       "layer_id": 7,
@@ -3455,16 +3679,17 @@
         "tensor_name": "conv3.1.0",
         "tensor_layer_id": 6,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
         "pages": 1349,
         "dram_bytes": 6216192,
-        "packed_dram_bytes": 1374408,
-        "occupancy": 0.22110127872498148,
-        "packed_halo_dram_bytes": 2911824,
-        "occupancy_halo": 0.468425685693106,
+        "useful_bytes": 2914920,
+        "occupancy": 0.46892373980726465,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.1965344699777613,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3503,48 +3728,51 @@
           400,
           352
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
         "nonempty_blocks": 1138,
-        "mean_nb": 35.5377855887522,
+        "mean_nb": 35.57557117750439,
         "median_nb": 25.0,
         "max_nb": 252,
-        "sum_nb": 40442,
+        "sum_nb": 40485,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 409,
-            "pct": 0.359402460456942
+            "n_blocks": 406,
+            "pct": 0.35676625659050965
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 297,
-            "pct": 0.2609841827768014
+            "n_blocks": 299,
+            "pct": 0.2627416520210896
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 162,
-            "pct": 0.14235500878734622
+            "n_blocks": 163,
+            "pct": 0.14323374340949033
           },
           {
             "bin_lo": 49,
@@ -3643,16 +3871,17 @@
         "tensor_name": "conv3.2.0",
         "tensor_layer_id": 7,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
         "pages": 1320,
         "dram_bytes": 6082560,
-        "packed_dram_bytes": 1374408,
-        "occupancy": 0.2259588068181818,
-        "packed_halo_dram_bytes": 2892744,
-        "occupancy_halo": 0.47558001893939394,
+        "useful_bytes": 2892600,
+        "occupancy": 0.4755563446969697,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.20085227272727274,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3691,7 +3920,7 @@
           200,
           176
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             1,
             1
@@ -3701,17 +3930,20 @@
             1
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[-1,+1] y:[-1,+1] z:[0,+2]",
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-2,0]",
         "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
         "nonempty_blocks": 1105,
-        "mean_nb": 36.35927601809955,
+        "mean_nb": 36.35746606334842,
         "median_nb": 26.0,
-        "max_nb": 244,
-        "sum_nb": 40177,
+        "max_nb": 242,
+        "sum_nb": 40175,
         "histogram": [
           {
             "bin_lo": 1,
@@ -3731,15 +3963,15 @@
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 164,
-            "pct": 0.14841628959276018
+            "n_blocks": 165,
+            "pct": 0.1493212669683258
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 90,
-            "pct": 0.08144796380090498
+            "n_blocks": 89,
+            "pct": 0.08054298642533937
           },
           {
             "bin_lo": 65,
@@ -3827,7 +4059,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 12298752
+      "peak_dram_bytes": 12298752,
+      "peak_pages": 2669
     },
     {
       "layer_id": 8,
@@ -3859,16 +4092,17 @@
         "tensor_name": "conv3.2.0",
         "tensor_layer_id": 7,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
         "pages": 1320,
         "dram_bytes": 6082560,
-        "packed_dram_bytes": 1374408,
-        "occupancy": 0.2259588068181818,
-        "packed_halo_dram_bytes": 2892744,
-        "occupancy_halo": 0.47558001893939394,
+        "useful_bytes": 2892600,
+        "occupancy": 0.4755563446969697,
+        "semantic_channel_bytes": 1221696,
+        "semantic_ratio": 0.20085227272727274,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3907,7 +4141,7 @@
           200,
           176
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             1,
             1
@@ -3917,17 +4151,20 @@
             1
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[-1,+1] y:[-1,+1] z:[0,+2]",
+        "extent_label": "x:[-1,+1] y:[-1,+1] z:[-2,0]",
         "nonempty_voxels": 19089,
+        "coordinate_count": 19089,
+        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "coordinate_unique": true,
         "nonempty_blocks": 1105,
-        "mean_nb": 36.35927601809955,
+        "mean_nb": 36.35746606334842,
         "median_nb": 26.0,
-        "max_nb": 244,
-        "sum_nb": 40177,
+        "max_nb": 242,
+        "sum_nb": 40175,
         "histogram": [
           {
             "bin_lo": 1,
@@ -3947,15 +4184,15 @@
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 164,
-            "pct": 0.14841628959276018
+            "n_blocks": 165,
+            "pct": 0.1493212669683258
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 90,
-            "pct": 0.08144796380090498
+            "n_blocks": 89,
+            "pct": 0.08054298642533937
           },
           {
             "bin_lo": 65,
@@ -4047,16 +4284,17 @@
         "tensor_name": "conv4.0.0",
         "tensor_layer_id": 8,
         "conv_type": "SparseConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 486,
-        "dram_bytes": 2239488,
-        "packed_dram_bytes": 611640,
-        "occupancy": 0.27311599794238683,
-        "packed_halo_dram_bytes": 1192608,
-        "occupancy_halo": 0.5325360082304527,
+        "pages": 488,
+        "dram_bytes": 2248704,
+        "useful_bytes": 1194552,
+        "occupancy": 0.5312179815573771,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.24177481785063754,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4095,27 +4333,30 @@
           200,
           176
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
         "nonempty_blocks": 394,
-        "mean_nb": 42.04060913705584,
+        "mean_nb": 42.109137055837564,
         "median_nb": 36.0,
         "max_nb": 173,
-        "sum_nb": 16564,
+        "sum_nb": 16591,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4128,29 +4369,29 @@
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 101,
-            "pct": 0.2563451776649746
+            "n_blocks": 100,
+            "pct": 0.25380710659898476
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 77,
-            "pct": 0.19543147208121828
+            "n_blocks": 78,
+            "pct": 0.19796954314720813
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 41,
-            "pct": 0.10406091370558376
+            "n_blocks": 39,
+            "pct": 0.09898477157360407
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 46,
-            "pct": 0.116751269035533
+            "n_blocks": 48,
+            "pct": 0.1218274111675127
           },
           {
             "bin_lo": 81,
@@ -4196,7 +4437,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 8322048
+      "peak_dram_bytes": 8331264,
+      "peak_pages": 1808
     },
     {
       "layer_id": 9,
@@ -4228,16 +4470,17 @@
         "tensor_name": "conv4.0.0",
         "tensor_layer_id": 8,
         "conv_type": "SparseConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 486,
-        "dram_bytes": 2239488,
-        "packed_dram_bytes": 611640,
-        "occupancy": 0.27311599794238683,
-        "packed_halo_dram_bytes": 1192608,
-        "occupancy_halo": 0.5325360082304527,
+        "pages": 488,
+        "dram_bytes": 2248704,
+        "useful_bytes": 1194552,
+        "occupancy": 0.5312179815573771,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.24177481785063754,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4276,27 +4519,30 @@
           200,
           176
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
         "nonempty_blocks": 394,
-        "mean_nb": 42.04060913705584,
+        "mean_nb": 42.109137055837564,
         "median_nb": 36.0,
         "max_nb": 173,
-        "sum_nb": 16564,
+        "sum_nb": 16591,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4309,29 +4555,29 @@
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 101,
-            "pct": 0.2563451776649746
+            "n_blocks": 100,
+            "pct": 0.25380710659898476
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 77,
-            "pct": 0.19543147208121828
+            "n_blocks": 78,
+            "pct": 0.19796954314720813
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 41,
-            "pct": 0.10406091370558376
+            "n_blocks": 39,
+            "pct": 0.09898477157360407
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 46,
-            "pct": 0.116751269035533
+            "n_blocks": 48,
+            "pct": 0.1218274111675127
           },
           {
             "bin_lo": 81,
@@ -4381,16 +4627,17 @@
         "tensor_name": "conv4.1.0",
         "tensor_layer_id": 9,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 486,
-        "dram_bytes": 2239488,
-        "packed_dram_bytes": 611640,
-        "occupancy": 0.27311599794238683,
-        "packed_halo_dram_bytes": 1192608,
-        "occupancy_halo": 0.5325360082304527,
+        "pages": 488,
+        "dram_bytes": 2248704,
+        "useful_bytes": 1194552,
+        "occupancy": 0.5312179815573771,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.24177481785063754,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4429,27 +4676,30 @@
           200,
           176
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
         "nonempty_blocks": 394,
-        "mean_nb": 42.04060913705584,
+        "mean_nb": 42.109137055837564,
         "median_nb": 36.0,
         "max_nb": 173,
-        "sum_nb": 16564,
+        "sum_nb": 16591,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4462,29 +4712,29 @@
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 101,
-            "pct": 0.2563451776649746
+            "n_blocks": 100,
+            "pct": 0.25380710659898476
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 77,
-            "pct": 0.19543147208121828
+            "n_blocks": 78,
+            "pct": 0.19796954314720813
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 41,
-            "pct": 0.10406091370558376
+            "n_blocks": 39,
+            "pct": 0.09898477157360407
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 46,
-            "pct": 0.116751269035533
+            "n_blocks": 48,
+            "pct": 0.1218274111675127
           },
           {
             "bin_lo": 81,
@@ -4530,7 +4780,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 4478976
+      "peak_dram_bytes": 4497408,
+      "peak_pages": 976
     },
     {
       "layer_id": 10,
@@ -4562,16 +4813,17 @@
         "tensor_name": "conv4.1.0",
         "tensor_layer_id": 9,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 486,
-        "dram_bytes": 2239488,
-        "packed_dram_bytes": 611640,
-        "occupancy": 0.27311599794238683,
-        "packed_halo_dram_bytes": 1192608,
-        "occupancy_halo": 0.5325360082304527,
+        "pages": 488,
+        "dram_bytes": 2248704,
+        "useful_bytes": 1194552,
+        "occupancy": 0.5312179815573771,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.24177481785063754,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4610,27 +4862,30 @@
           200,
           176
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:[0,+2] y:[0,+2] z:[0,+2]",
+        "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
         "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
         "nonempty_blocks": 394,
-        "mean_nb": 42.04060913705584,
+        "mean_nb": 42.109137055837564,
         "median_nb": 36.0,
         "max_nb": 173,
-        "sum_nb": 16564,
+        "sum_nb": 16591,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4643,29 +4898,29 @@
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 101,
-            "pct": 0.2563451776649746
+            "n_blocks": 100,
+            "pct": 0.25380710659898476
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 77,
-            "pct": 0.19543147208121828
+            "n_blocks": 78,
+            "pct": 0.19796954314720813
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 41,
-            "pct": 0.10406091370558376
+            "n_blocks": 39,
+            "pct": 0.09898477157360407
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 46,
-            "pct": 0.116751269035533
+            "n_blocks": 48,
+            "pct": 0.1218274111675127
           },
           {
             "bin_lo": 81,
@@ -4715,16 +4970,17 @@
         "tensor_name": "conv4.2.0",
         "tensor_layer_id": 10,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
         "pages": 365,
         "dram_bytes": 1681920,
-        "packed_dram_bytes": 611640,
+        "useful_bytes": 611640,
         "occupancy": 0.3636558219178082,
-        "packed_halo_dram_bytes": 611640,
-        "occupancy_halo": 0.3636558219178082,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.3232496194824962,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4763,7 +5019,7 @@
           200,
           176
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             0,
             0
@@ -4773,12 +5029,15 @@
             0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:none y:none z:[0,+2]",
+        "extent_label": "x:none y:none z:[-2,0]",
         "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
         "nonempty_blocks": 351,
         "mean_nb": 24.202279202279204,
         "median_nb": 20.0,
@@ -4850,7 +5109,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 3921408
+      "peak_dram_bytes": 3930624,
+      "peak_pages": 853
     },
     {
       "layer_id": 11,
@@ -4882,16 +5142,17 @@
         "tensor_name": "conv4.2.0",
         "tensor_layer_id": 10,
         "conv_type": "SubMConv3d",
+        "allocated": true,
         "feature_channels": 64,
-        "bytes_per_voxel": 72,
-        "raw_page_bytes": 4608,
+        "feature_words": 8,
+        "page_stride": 9,
         "page_bytes": 4608,
         "pages": 365,
         "dram_bytes": 1681920,
-        "packed_dram_bytes": 611640,
+        "useful_bytes": 611640,
         "occupancy": 0.3636558219178082,
-        "packed_halo_dram_bytes": 611640,
-        "occupancy_halo": 0.3636558219178082,
+        "semantic_channel_bytes": 543680,
+        "semantic_ratio": 0.3232496194824962,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4930,7 +5191,7 @@
           200,
           176
         ],
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             0,
             0
@@ -4940,12 +5201,15 @@
             0
           ],
           [
-            0,
-            2
+            2,
+            0
           ]
         ],
-        "halo_label": "x:none y:none z:[0,+2]",
+        "extent_label": "x:none y:none z:[-2,0]",
         "nonempty_voxels": 8495,
+        "coordinate_count": 8495,
+        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "coordinate_unique": true,
         "nonempty_blocks": 351,
         "mean_nb": 24.202279202279204,
         "median_nb": 20.0,
@@ -5021,16 +5285,17 @@
         "tensor_name": "conv_out.0",
         "tensor_layer_id": 11,
         "conv_type": "SparseConv3d",
+        "allocated": false,
         "feature_channels": 128,
-        "bytes_per_voxel": 136,
-        "raw_page_bytes": 8704,
+        "feature_words": 16,
+        "page_stride": 17,
         "page_bytes": 8704,
-        "pages": 356,
-        "dram_bytes": 3098624,
-        "packed_dram_bytes": 899232,
-        "occupancy": 0.29020365168539325,
-        "packed_halo_dram_bytes": 899232,
-        "occupancy_halo": 0.29020365168539325,
+        "pages": 0,
+        "dram_bytes": 0,
+        "useful_bytes": 0,
+        "occupancy": 0.0,
+        "semantic_channel_bytes": 846336,
+        "semantic_ratio": 0.0,
         "spatial_shape_zyx": [
           2,
           200,
@@ -5053,7 +5318,7 @@
         "consumer_padding_zyx": null,
         "consumer_stride_zyx": null,
         "consumer_output_shape_zyx": null,
-        "halo_xyz": [
+        "low_high_extent_xyz": [
           [
             0,
             0
@@ -5067,59 +5332,20 @@
             0
           ]
         ],
-        "halo_label": "x:none y:none z:none",
+        "extent_label": "x:none y:none z:none",
         "nonempty_voxels": 6612,
-        "nonempty_blocks": 351,
-        "mean_nb": 18.837606837606838,
-        "median_nb": 16.0,
-        "max_nb": 87,
-        "sum_nb": 6612,
-        "histogram": [
-          {
-            "bin_lo": 1,
-            "bin_hi": 16,
-            "bin_label": "1-16",
-            "n_blocks": 182,
-            "pct": 0.5185185185185185
-          },
-          {
-            "bin_lo": 17,
-            "bin_hi": 32,
-            "bin_label": "17-32",
-            "n_blocks": 138,
-            "pct": 0.39316239316239315
-          },
-          {
-            "bin_lo": 33,
-            "bin_hi": 48,
-            "bin_label": "33-48",
-            "n_blocks": 20,
-            "pct": 0.05698005698005698
-          },
-          {
-            "bin_lo": 49,
-            "bin_hi": 64,
-            "bin_label": "49-64",
-            "n_blocks": 6,
-            "pct": 0.017094017094017096
-          },
-          {
-            "bin_lo": 65,
-            "bin_hi": 80,
-            "bin_label": "65-80",
-            "n_blocks": 4,
-            "pct": 0.011396011396011397
-          },
-          {
-            "bin_lo": 81,
-            "bin_hi": 96,
-            "bin_label": "81-96",
-            "n_blocks": 1,
-            "pct": 0.002849002849002849
-          }
-        ]
+        "coordinate_count": 6612,
+        "coordinate_sha256": "1d2eb76d8ff82da1c4a693a1b7c7f4b594089f036126d31c6571a07250756e4f",
+        "coordinate_unique": true,
+        "nonempty_blocks": 0,
+        "mean_nb": 0.0,
+        "median_nb": 0.0,
+        "max_nb": 0,
+        "sum_nb": 0,
+        "histogram": []
       },
-      "peak_dram_bytes": 4780544
+      "peak_dram_bytes": 1681920,
+      "peak_pages": 365
     }
   ]
 }
