@@ -4,7 +4,7 @@
 CSV bins are raw occupied-voxel counts per Chebyshev ring. Each frame is first
 converted to a density profile (count / actual XY ring length on the finite
 grid). The solid line is the mean density over frames; the shaded band is the
-10th–90th percentile range of those per-frame densities.
+0–100th percentile range of those per-frame densities.
 """
 import argparse
 import csv
@@ -22,8 +22,8 @@ STAGES = (
 )
 
 VECTOR_SUFFIXES = ('.pdf', '.svg')
-PERCENTILE_LO = 10
-PERCENTILE_HI = 90
+PERCENTILE_LO = 0
+PERCENTILE_HI = 100
 
 # IEEE TCAS-I / IEEEtran journal: one column is about 3.5 in.
 # The stacked figure is drawn a bit under two-column width so the
@@ -196,10 +196,10 @@ def plot_mean_curves(csv_dir, out_path):
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     saved = [out_path]
-    fig.savefig(out_path, dpi=300, bbox_inches='tight')
+    fig.savefig(out_path, dpi=300, bbox_inches='tight', pad_inches=0)
     for suffix in VECTOR_SUFFIXES:
         vector_path = out_path.with_suffix(suffix)
-        fig.savefig(vector_path, bbox_inches='tight')
+        fig.savefig(vector_path, bbox_inches='tight', pad_inches=0)
         saved.append(vector_path)
     plt.close(fig)
     return saved
