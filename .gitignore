@@ -33,3 +33,7 @@ venv/
 !/accdesign/**/*.pth
 !/accdesign/data/
 !/accdesign/data/**
+
+# Bytecode stays local even inside the tracked accdesign tree.
+accdesign/**/__pycache__/
+accdesign/**/*.pyc
