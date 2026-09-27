@@ -49,7 +49,7 @@ def parse_args():
     parser.add_argument('--frame_pool_size', type=int, default=100)
     parser.add_argument('--random_seed', type=int, default=20260625)
     parser.add_argument('--output_root', default=str(repo_root / 'accdesign/second_rtl_golden_packages'))
-    parser.add_argument('--max_voxels', type=int, default=15000)
+    parser.add_argument('--max_voxels', type=int, default=40000)
     parser.add_argument('--overwrite', action='store_true', default=False)
     return parser.parse_args()
 

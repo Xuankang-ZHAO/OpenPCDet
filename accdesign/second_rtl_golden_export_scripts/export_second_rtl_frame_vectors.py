@@ -42,7 +42,7 @@ def parse_args():
         '--output_root',
         default=str(repo_root / 'accdesign/second_rtl_golden_packages/frames'),
     )
-    parser.add_argument('--max_voxels', type=int, default=15000)
+    parser.add_argument('--max_voxels', type=int, default=40000)
     parser.add_argument('--overwrite', action='store_true', default=False)
     return parser.parse_args()
 

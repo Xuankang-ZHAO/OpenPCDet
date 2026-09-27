@@ -1,10 +1,10 @@
 {
   "package_dir": "/home/vipuser/\u684c\u9762/OpenPCDet/accdesign/second_rtl_golden_packages/second_val_000216_golden",
   "sample_id": "000216",
-  "actual_voxel_count": 15000,
-  "max_number_of_voxels": 15000,
-  "hit_voxel_cap": true,
+  "actual_voxel_count": 15118,
+  "max_number_of_voxels": 40000,
+  "hit_voxel_cap": false,
   "format_version": "second_rtl_golden_v2",
-  "raw_vfe_voxel_stream_bytes": 240000,
-  "manifest_sha256": "465ab46db636a64daccf8a7310052684fc2921ec6fb8cac9b234e6140aa74e88"
+  "raw_vfe_voxel_stream_bytes": 241888,
+  "manifest_sha256": "806cc27be689e89390e2f3b442a44dfff7a8f480023f2baa508d8ce45beed13d"
 }

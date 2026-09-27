@@ -23,3 +23,28 @@
 2026-08-30 21:51:28,090   INFO  Exporting train/000017 (18/20)
 2026-08-30 21:51:39,939   INFO  Exporting train/000018 (19/20)
 2026-08-30 21:51:51,880   INFO  Exporting train/000019 (20/20)
+2026-09-27 14:42:41,067   INFO  Loading KITTI dataset
+2026-09-27 14:42:41,337   INFO  Total samples for KITTI dataset: 3769
+2026-09-27 14:42:41,874   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth to CPU
+2026-09-27 14:42:41,927   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py8aaad69
+2026-09-27 14:42:41,937   INFO  ==> Done (loaded 189/189)
+2026-09-27 14:42:41,954   INFO  Exporting train/000000 (1/20)
+2026-09-27 14:42:47,643   INFO  Exporting train/000001 (2/20)
+2026-09-27 14:42:57,025   INFO  Exporting train/000002 (3/20)
+2026-09-27 14:43:01,951   INFO  Exporting train/000003 (4/20)
+2026-09-27 14:43:07,075   INFO  Exporting train/000004 (5/20)
+2026-09-27 14:43:16,659   INFO  Exporting train/000005 (6/20)
+2026-09-27 14:43:26,959   INFO  Exporting train/000006 (7/20)
+2026-09-27 14:43:34,050   INFO  Exporting train/000007 (8/20)
+2026-09-27 14:43:44,624   INFO  Exporting train/000008 (9/20)
+2026-09-27 14:43:50,320   INFO  Exporting train/000009 (10/20)
+2026-09-27 14:43:59,927   INFO  Exporting train/000010 (11/20)
+2026-09-27 14:44:07,334   INFO  Exporting train/000011 (12/20)
+2026-09-27 14:44:14,865   INFO  Exporting train/000012 (13/20)
+2026-09-27 14:44:23,883   INFO  Exporting train/000013 (14/20)
+2026-09-27 14:44:34,884   INFO  Exporting train/000014 (15/20)
+2026-09-27 14:44:46,147   INFO  Exporting train/000015 (16/20)
+2026-09-27 14:44:52,521   INFO  Exporting train/000016 (17/20)
+2026-09-27 14:44:59,892   INFO  Exporting train/000017 (18/20)
+2026-09-27 14:45:09,078   INFO  Exporting train/000018 (19/20)
+2026-09-27 14:45:18,861   INFO  Exporting train/000019 (20/20)
