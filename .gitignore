@@ -37,3 +37,14 @@ venv/
 # Bytecode stays local even inside the tracked accdesign tree.
 accdesign/**/__pycache__/
 accdesign/**/*.pyc
+
+# DRAM comparison runs rewrite the same INT8 weight tables beside their outputs.
+# Keep only the exports under the three scheme directories.
+mycode/dram_footprint/*_hw_export/
+mycode/dram_footprint/*/hw_export/
+!mycode/dram_footprint/nonempty-block fixed allocation/hw_export/
+!mycode/dram_footprint/nonempty-block fixed allocation/hw_export/**
+!mycode/dram_footprint/page_with_fixed_block/hw_export/
+!mycode/dram_footprint/page_with_fixed_block/hw_export/**
+!mycode/dram_footprint/proposed page allocation/hw_export/
+!mycode/dram_footprint/proposed page allocation/hw_export/**
