@@ -21,7 +21,8 @@ venv/
 !/output/kitti_models/second_hw_qat/hw_qat_10ep_per_tensor/ckpt/checkpoint_epoch_10.pth
 #version.py
 #*.csv
-*.png
+# Dataset PNGs stay local with the ignored data/ directory.
+# PNGs in every other directory are tracked.
 
 # accdesign: always track RTL golden-vector packages and export scripts
 !/accdesign/
