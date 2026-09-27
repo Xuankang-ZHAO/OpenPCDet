@@ -324,7 +324,8 @@ def analyze_layers(modules: dict, tensors, consumers, bin_width: int, block_size
         'coordinate_sha256': {
             'input': tensors[0]['active_voxels'],
             'input_sha256': cap_layers[0]['ifm']['coordinate_sha256'],
-            'hit_voxel_cap': int(tensors[0]['active_voxels']) >= 15000,
+            'voxel_cap': 40000,
+            'hit_voxel_cap': int(tensors[0]['active_voxels']) >= 40000,
         },
     }
 
@@ -335,7 +336,8 @@ def build_markdown(payload: dict) -> str:
         '# 三种 Block Structuring 方案在 train 000000–000019 上的稳定性与泛化',
         '',
         '本文件复现 `feature_map_dram_hash_entry_comparison.md` 在 KITTI `val/000216` 上的口径，',
-        '对 `accdesign/second_rtl_golden_packages/frames` 中的 20 帧补充 golden（`train/000000`–`train/000019`）做相同实验。',
+        '对 filename `000000`–`000019` 做相同实验。',
+        '体素上限是 `kitti_dataset.yaml` 的 `MAX_NUMBER_OF_VOXELS.test=40000`。',
         '',
         '- 加载：KITTI FOV（`FOV_POINTS_ONLY=True`），与 golden 导出一致。',
         '- 模型：hardware-reference INT8 SECOND 3D backbone，checkpoint `checkpoint_epoch_10.pth`。',
@@ -348,7 +350,7 @@ def build_markdown(payload: dict) -> str:
         '',
         '## 20 帧执行时峰值总表',
         '',
-        '| Frame | 输入体素 | 触达 15000 上限 | 固定容量 DRAM | 固定块 Page DRAM | Proposed DRAM | 固定容量 Hash | 固定块 Page Hash | Proposed Hash | DRAM vs 固定容量 | Hash vs 固定容量 | DRAM vs 固定块 Page | Hash vs 固定块 Page |',
+        '| Frame | 输入体素 | 触达 40000 上限 | 固定容量 DRAM | 固定块 Page DRAM | Proposed DRAM | 固定容量 Hash | 固定块 Page Hash | Proposed Hash | DRAM vs 固定容量 | Hash vs 固定容量 | DRAM vs 固定块 Page | Hash vs 固定块 Page |',
         '| --- | ---: | :---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |',
     ]
     dram_vs_cap = []
@@ -396,7 +398,7 @@ def build_markdown(payload: dict) -> str:
             '',
             f"- Point cloud: `{frame['point_cloud_path']}`",
             f"- 输入体素: `{frame['coordinate_sha256']['input']}`，坐标 SHA-256 `{frame['coordinate_sha256']['input_sha256']}`",
-            f"- 触达 15000 voxel 上限: `{frame['coordinate_sha256']['hit_voxel_cap']}`",
+            f"- 触达 40000 voxel 上限: `{frame['coordinate_sha256']['hit_voxel_cap']}`",
             '',
             '### 按 Feature Map 去重后的对比',
             '',
@@ -438,6 +440,14 @@ def main():
         cfg_from_yaml_file(str(cfg_path), cfg)
     finally:
         os.chdir(original_cwd)
+
+    voxel_cap = None
+    for processor in cfg.DATA_CONFIG.DATA_PROCESSOR:
+        if processor.NAME == 'transform_points_to_voxels':
+            voxel_cap = int(processor.MAX_NUMBER_OF_VOXELS['test'])
+            break
+    if voxel_cap != 40000:
+        raise RuntimeError(f'MAX_NUMBER_OF_VOXELS.test={voxel_cap}, expected 40000')
 
     device = proposed.resolve_device(args.device)
     if device.type == 'cuda':
@@ -492,6 +502,7 @@ def main():
         'device': str(device),
         'mode': 'hw_reference_int8',
         'split': 'train',
+        'max_number_of_voxels_test': voxel_cap,
         'id_start': int(args.id_start),
         'id_end': int(args.id_end),
         'generated_at': datetime.now().isoformat(timespec='seconds'),

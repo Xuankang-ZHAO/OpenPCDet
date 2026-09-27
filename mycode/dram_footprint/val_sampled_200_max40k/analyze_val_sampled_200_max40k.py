@@ -30,7 +30,7 @@ from mycode.kitti_frame_loader import (
 )
 
 VOXEL_CAP = 40000
-DEFAULT_FRAME_LIST = _DRAM_DIR / 'val_sampled_200_frame_ids.txt'
+DEFAULT_FRAME_LIST = _SCRIPT_DIR / 'val_sampled_200_frame_ids.txt'
 
 
 def load_module(module_name: str, path: Path):
@@ -42,7 +42,7 @@ def load_module(module_name: str, path: Path):
 
 ref = load_module(
     'dram_cmp_ref_000200_max40k',
-    _DRAM_DIR / 'analyze_train_000200_000219_comparison.py',
+    _DRAM_DIR / 'analyze_train_000000_000019_comparison.py',
 )
 SCHEME_META = ref.SCHEME_META
 
@@ -192,8 +192,8 @@ def build_markdown(payload: dict) -> str:
     lines = [
         f'# 三种 Block Structuring 方案在 {n_frames} 帧 KITTI val 抽样上的稳定性与泛化（体素上限 {VOXEL_CAP}）',
         '',
-        '本文件复现 `../val_sampled_200_feature_map_dram_hash_entry_comparison.md` 的帧集合、模型与三种方案。',
-        f'唯一变化是 `kitti_dataset.yaml` 的 `MAX_NUMBER_OF_VOXELS.test` 为 `{VOXEL_CAP}`（此前为 15000）。',
+        '本文件使用与 `feature_map_dram_hash_entry_comparison.md` 相同的三种方案和峰值口径。',
+        f'体素上限是 `kitti_dataset.yaml` 的 `MAX_NUMBER_OF_VOXELS.test={VOXEL_CAP}`。',
         '帧 ID 使用上一次分层抽样写出的列表，不再重新抽样。',
         '',
         f'- 体素上限：test 模式 `{payload["max_number_of_voxels"]["test"]}`，来源 `{payload["max_number_of_voxels"]["source"]}`。',

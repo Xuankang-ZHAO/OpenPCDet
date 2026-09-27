@@ -1,11 +1,11 @@
 # 三种 Block Structuring 方案在 200 帧 KITTI val 抽样上的稳定性与泛化（体素上限 40000）
 
-本文件复现 `../val_sampled_200_feature_map_dram_hash_entry_comparison.md` 的帧集合、模型与三种方案。
-唯一变化是 `kitti_dataset.yaml` 的 `MAX_NUMBER_OF_VOXELS.test` 为 `40000`（此前为 15000）。
+本文件使用与 `feature_map_dram_hash_entry_comparison.md` 相同的三种方案和峰值口径。
+体素上限是 `kitti_dataset.yaml` 的 `MAX_NUMBER_OF_VOXELS.test=40000`。
 帧 ID 使用上一次分层抽样写出的列表，不再重新抽样。
 
 - 体素上限：test 模式 `40000`，来源 `tools/cfgs/dataset_configs/kitti_dataset.yaml`。
-- 帧来源：`/home/vipuser/桌面/OpenPCDet/mycode/dram_footprint/val_sampled_200_frame_ids.txt`
+- 帧来源：`/home/vipuser/桌面/OpenPCDet/mycode/dram_footprint/val_sampled_200_max40k/val_sampled_200_frame_ids.txt`
 - 抽样：`from_list`，seed=`20260919`，池大小=`3769`。
 - 帧 ID 列表：`/home/vipuser/桌面/OpenPCDet/mycode/dram_footprint/val_sampled_200_max40k/val_sampled_200_frame_ids.txt`
 - 抽样记录：前 20 个 ID 为 `000005`, `000061`, `000094`, `000156`, `000196`, `000246`, `000265`, `000284`, `000324`, `000373`, `000385`, `000448`, `000451`, `000498`, `000555`, `000558`, `000625`, `000639`, `000684`, `000754` … 共 200 帧，完整列表见 `val_sampled_200_frame_ids.txt`

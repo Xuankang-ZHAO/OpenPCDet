@@ -1,0 +1,425 @@
+{
+  "cfg": "/home/vipuser/\u684c\u9762/OpenPCDet/tools/cfgs/kitti_models/second_hw_qat.yaml",
+  "ckpt": "/home/vipuser/\u684c\u9762/OpenPCDet/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth",
+  "device": "cuda:0",
+  "mode": "hw_reference_int8",
+  "max_number_of_voxels_test": 40000,
+  "generated_at": "2026-09-27T16:20:13",
+  "frames": [
+    {
+      "feature_maps": {
+        "fixed_capacity": [
+          {
+            "name": "\u521d\u59cb\u8f93\u5165",
+            "name_html": "\u521d\u59cb\u8f93\u5165",
+            "voxels": 15118,
+            "channels": 4,
+            "dram_bytes": 31248000,
+            "blocks": 4340,
+            "hash_entries": 4340,
+            "blocks_gt_128": 0
+          },
+          {
+            "name": "conv_input.0",
+            "name_html": "<code>conv_input.0</code>",
+            "voxels": 15118,
+            "channels": 16,
+            "dram_bytes": 63662400,
+            "blocks": 4421,
+            "hash_entries": 4421,
+            "blocks_gt_128": 0
+          },
+          {
+            "name": "conv1.0.0",
+            "name_html": "<code>conv1.0.0</code>",
+            "voxels": 15118,
+            "channels": 16,
+            "dram_bytes": 62496000,
+            "blocks": 4340,
+            "hash_entries": 4340,
+            "blocks_gt_128": 0
+          },
+          {
+            "name": "conv2.0.0",
+            "name_html": "<code>conv2.0.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 50784000,
+            "blocks": 2116,
+            "hash_entries": 2116,
+            "blocks_gt_128": 45
+          },
+          {
+            "name": "conv2.1.0",
+            "name_html": "<code>conv2.1.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 50784000,
+            "blocks": 2116,
+            "hash_entries": 2116,
+            "blocks_gt_128": 45
+          },
+          {
+            "name": "conv2.2.0",
+            "name_html": "<code>conv2.2.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 48216000,
+            "blocks": 2009,
+            "hash_entries": 2009,
+            "blocks_gt_128": 39
+          },
+          {
+            "name": "conv3.0.0",
+            "name_html": "<code>conv3.0.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 24667200,
+            "blocks": 571,
+            "hash_entries": 571,
+            "blocks_gt_128": 61
+          },
+          {
+            "name": "conv3.1.0",
+            "name_html": "<code>conv3.1.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 24667200,
+            "blocks": 571,
+            "hash_entries": 571,
+            "blocks_gt_128": 61
+          },
+          {
+            "name": "conv3.2.0",
+            "name_html": "<code>conv3.2.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 23889600,
+            "blocks": 553,
+            "hash_entries": 553,
+            "blocks_gt_128": 60
+          },
+          {
+            "name": "conv4.0.0",
+            "name_html": "<code>conv4.0.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 6868800,
+            "blocks": 159,
+            "hash_entries": 159,
+            "blocks_gt_128": 31
+          },
+          {
+            "name": "conv4.1.0",
+            "name_html": "<code>conv4.1.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 6868800,
+            "blocks": 159,
+            "hash_entries": 159,
+            "blocks_gt_128": 31
+          },
+          {
+            "name": "conv4.2.0",
+            "name_html": "<code>conv4.2.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 6480000,
+            "blocks": 150,
+            "hash_entries": 150,
+            "blocks_gt_128": 14
+          }
+        ],
+        "fixed_page": [
+          {
+            "name": "\u521d\u59cb\u8f93\u5165",
+            "name_html": "\u521d\u59cb\u8f93\u5165",
+            "voxels": 15118,
+            "channels": 4,
+            "dram_bytes": 4456448,
+            "blocks": 4340,
+            "hash_entries": 4352,
+            "blocks_gt_128": 0
+          },
+          {
+            "name": "conv_input.0",
+            "name_html": "<code>conv_input.0</code>",
+            "voxels": 15118,
+            "channels": 16,
+            "dram_bytes": 6809088,
+            "blocks": 4421,
+            "hash_entries": 4433,
+            "blocks_gt_128": 0
+          },
+          {
+            "name": "conv1.0.0",
+            "name_html": "<code>conv1.0.0</code>",
+            "voxels": 15118,
+            "channels": 16,
+            "dram_bytes": 6684672,
+            "blocks": 4340,
+            "hash_entries": 4352,
+            "blocks_gt_128": 0
+          },
+          {
+            "name": "conv2.0.0",
+            "name_html": "<code>conv2.0.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 6097920,
+            "blocks": 2116,
+            "hash_entries": 2382,
+            "blocks_gt_128": 45
+          },
+          {
+            "name": "conv2.1.0",
+            "name_html": "<code>conv2.1.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 6097920,
+            "blocks": 2116,
+            "hash_entries": 2382,
+            "blocks_gt_128": 45
+          },
+          {
+            "name": "conv2.2.0",
+            "name_html": "<code>conv2.2.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 5777920,
+            "blocks": 2009,
+            "hash_entries": 2257,
+            "blocks_gt_128": 39
+          },
+          {
+            "name": "conv3.0.0",
+            "name_html": "<code>conv3.0.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 3907584,
+            "blocks": 571,
+            "hash_entries": 848,
+            "blocks_gt_128": 61
+          },
+          {
+            "name": "conv3.1.0",
+            "name_html": "<code>conv3.1.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 3907584,
+            "blocks": 571,
+            "hash_entries": 848,
+            "blocks_gt_128": 61
+          },
+          {
+            "name": "conv3.2.0",
+            "name_html": "<code>conv3.2.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 3843072,
+            "blocks": 553,
+            "hash_entries": 834,
+            "blocks_gt_128": 60
+          },
+          {
+            "name": "conv4.0.0",
+            "name_html": "<code>conv4.0.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 1308672,
+            "blocks": 159,
+            "hash_entries": 284,
+            "blocks_gt_128": 31
+          },
+          {
+            "name": "conv4.1.0",
+            "name_html": "<code>conv4.1.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 1308672,
+            "blocks": 159,
+            "hash_entries": 284,
+            "blocks_gt_128": 31
+          },
+          {
+            "name": "conv4.2.0",
+            "name_html": "<code>conv4.2.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 1027584,
+            "blocks": 150,
+            "hash_entries": 223,
+            "blocks_gt_128": 14
+          }
+        ],
+        "proposed": [
+          {
+            "name": "\u521d\u59cb\u8f93\u5165",
+            "name_html": "\u521d\u59cb\u8f93\u5165",
+            "voxels": 15118,
+            "channels": 4,
+            "dram_bytes": 1182720,
+            "blocks": 1117,
+            "hash_entries": 1155,
+            "blocks_gt_128": 5
+          },
+          {
+            "name": "conv_input.0",
+            "name_html": "<code>conv_input.0</code>",
+            "voxels": 15118,
+            "channels": 16,
+            "dram_bytes": 1741824,
+            "blocks": 1100,
+            "hash_entries": 1134,
+            "blocks_gt_128": 4
+          },
+          {
+            "name": "conv1.0.0",
+            "name_html": "<code>conv1.0.0</code>",
+            "voxels": 15118,
+            "channels": 16,
+            "dram_bytes": 1774080,
+            "blocks": 1117,
+            "hash_entries": 1155,
+            "blocks_gt_128": 5
+          },
+          {
+            "name": "conv2.0.0",
+            "name_html": "<code>conv2.0.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 3991040,
+            "blocks": 1318,
+            "hash_entries": 1559,
+            "blocks_gt_128": 43
+          },
+          {
+            "name": "conv2.1.0",
+            "name_html": "<code>conv2.1.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 3991040,
+            "blocks": 1318,
+            "hash_entries": 1559,
+            "blocks_gt_128": 43
+          },
+          {
+            "name": "conv2.2.0",
+            "name_html": "<code>conv2.2.0</code>",
+            "voxels": 25846,
+            "channels": 32,
+            "dram_bytes": 4561920,
+            "blocks": 1512,
+            "hash_entries": 1782,
+            "blocks_gt_128": 42
+          },
+          {
+            "name": "conv3.0.0",
+            "name_html": "<code>conv3.0.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 6225408,
+            "blocks": 1140,
+            "hash_entries": 1351,
+            "blocks_gt_128": 31
+          },
+          {
+            "name": "conv3.1.0",
+            "name_html": "<code>conv3.1.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 6225408,
+            "blocks": 1140,
+            "hash_entries": 1351,
+            "blocks_gt_128": 31
+          },
+          {
+            "name": "conv3.2.0",
+            "name_html": "<code>conv3.2.0</code>",
+            "voxels": 19116,
+            "channels": 64,
+            "dram_bytes": 6091776,
+            "blocks": 1107,
+            "hash_entries": 1322,
+            "blocks_gt_128": 33
+          },
+          {
+            "name": "conv4.0.0",
+            "name_html": "<code>conv4.0.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 2248704,
+            "blocks": 394,
+            "hash_entries": 488,
+            "blocks_gt_128": 4
+          },
+          {
+            "name": "conv4.1.0",
+            "name_html": "<code>conv4.1.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 2248704,
+            "blocks": 394,
+            "hash_entries": 488,
+            "blocks_gt_128": 4
+          },
+          {
+            "name": "conv4.2.0",
+            "name_html": "<code>conv4.2.0</code>",
+            "voxels": 8499,
+            "channels": 64,
+            "dram_bytes": 1681920,
+            "blocks": 351,
+            "hash_entries": 365,
+            "blocks_gt_128": 1
+          }
+        ]
+      },
+      "peaks": {
+        "fixed_capacity": {
+          "dram_bytes": 126158400,
+          "dram_mib": "120.3140",
+          "dram_layer_id": 1,
+          "dram_layer_name": "conv1.0.0",
+          "hash_entries": 8761,
+          "hash_layer_id": 0,
+          "hash_layer_name": "conv_input.0"
+        },
+        "fixed_page": {
+          "dram_bytes": 13493760,
+          "dram_mib": "12.8687",
+          "dram_layer_id": 1,
+          "dram_layer_name": "conv1.0.0",
+          "hash_entries": 8785,
+          "hash_layer_id": 0,
+          "hash_layer_name": "conv_input.0"
+        },
+        "proposed": {
+          "dram_bytes": 12450816,
+          "dram_mib": "11.8740",
+          "dram_layer_id": 6,
+          "dram_layer_name": "conv3.1.0",
+          "hash_entries": 3341,
+          "hash_layer_id": 4,
+          "hash_layer_name": "conv2.2.0"
+        }
+      },
+      "reductions": {
+        "dram_vs_capacity_pct": 90.13080698550394,
+        "hash_vs_capacity_pct": 61.86508389453258,
+        "dram_vs_page_pct": 7.729083665338643,
+        "hash_vs_page_pct": 61.96926579396699
+      },
+      "coordinate_sha256": {
+        "input": 15118,
+        "input_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
+        "voxel_cap": 40000,
+        "hit_voxel_cap": false
+      },
+      "frame_id": "000216",
+      "split": "val",
+      "point_cloud_path": "/home/vipuser/\u684c\u9762/OpenPCDet/data/kitti/training/velodyne/000216.bin",
+      "fov_points_only": true
+    }
+  ]
+}

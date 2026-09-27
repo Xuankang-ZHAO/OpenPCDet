@@ -11,8 +11,8 @@
   "feature_bytes_per_channel": 1,
   "page_voxels": 64,
   "page_align_bytes": 512,
-  "peak_ifm_ofm_dram_bytes": 12432384,
-  "peak_ifm_ofm_pages": 2698,
+  "peak_ifm_ofm_dram_bytes": 12450816,
+  "peak_ifm_ofm_pages": 2702,
   "peak_ifm_ofm_layer_id": 6,
   "peak_ifm_ofm_layer_name": "conv3.1.0",
   "acceptance": {
@@ -24,61 +24,61 @@
     "last_ofm_pages": 0,
     "peak_layer_id": 6,
     "peak_layer_name": "conv3.1.0",
-    "peak_pages": 2698,
-    "peak_bytes": 12432384,
+    "peak_pages": 2702,
+    "peak_bytes": 12450816,
     "states": [
       {
         "state": "INIT",
-        "pages": 1150,
-        "expected_pages": 1150,
+        "pages": 1155,
+        "expected_pages": 1155,
         "match": true
       },
       {
         "state": "L0",
-        "pages": 1128,
-        "expected_pages": 1128,
+        "pages": 1134,
+        "expected_pages": 1134,
         "match": true
       },
       {
         "state": "L1",
-        "pages": 1150,
-        "expected_pages": 1150,
+        "pages": 1155,
+        "expected_pages": 1155,
         "match": true
       },
       {
         "state": "L2",
-        "pages": 1556,
-        "expected_pages": 1556,
+        "pages": 1559,
+        "expected_pages": 1559,
         "match": true
       },
       {
         "state": "L3",
-        "pages": 1556,
-        "expected_pages": 1556,
+        "pages": 1559,
+        "expected_pages": 1559,
         "match": true
       },
       {
         "state": "L4",
-        "pages": 1781,
-        "expected_pages": 1781,
+        "pages": 1782,
+        "expected_pages": 1782,
         "match": true
       },
       {
         "state": "L5",
-        "pages": 1349,
-        "expected_pages": 1349,
+        "pages": 1351,
+        "expected_pages": 1351,
         "match": true
       },
       {
         "state": "L6",
-        "pages": 1349,
-        "expected_pages": 1349,
+        "pages": 1351,
+        "expected_pages": 1351,
         "match": true
       },
       {
         "state": "L7",
-        "pages": 1320,
-        "expected_pages": 1320,
+        "pages": 1322,
+        "expected_pages": 1322,
         "match": true
       },
       {
@@ -103,79 +103,79 @@
     "copies": [
       {
         "state": "INIT",
-        "sum_nb": 21358,
-        "expected_sum_nb": 21358,
+        "sum_nb": 21554,
+        "expected_sum_nb": 21554,
         "match": true
       },
       {
         "state": "L0",
-        "sum_nb": 21002,
-        "expected_sum_nb": 21002,
+        "sum_nb": 21201,
+        "expected_sum_nb": 21201,
         "match": true
       },
       {
         "state": "L1",
-        "sum_nb": 21358,
-        "expected_sum_nb": 21358,
+        "sum_nb": 21554,
+        "expected_sum_nb": 21554,
         "match": true
       },
       {
         "state": "L2",
-        "sum_nb": 44913,
-        "expected_sum_nb": 44913,
+        "sum_nb": 45063,
+        "expected_sum_nb": 45063,
         "match": true
       },
       {
         "state": "L3",
-        "sum_nb": 44913,
-        "expected_sum_nb": 44913,
+        "sum_nb": 45063,
+        "expected_sum_nb": 45063,
         "match": true
       },
       {
         "state": "L4",
-        "sum_nb": 50785,
-        "expected_sum_nb": 50785,
+        "sum_nb": 50911,
+        "expected_sum_nb": 50911,
         "match": true
       },
       {
         "state": "L5",
-        "sum_nb": 40485,
-        "expected_sum_nb": 40485,
+        "sum_nb": 40561,
+        "expected_sum_nb": 40561,
         "match": true
       },
       {
         "state": "L6",
-        "sum_nb": 40485,
-        "expected_sum_nb": 40485,
+        "sum_nb": 40561,
+        "expected_sum_nb": 40561,
         "match": true
       },
       {
         "state": "L7",
-        "sum_nb": 40175,
-        "expected_sum_nb": 40175,
+        "sum_nb": 40235,
+        "expected_sum_nb": 40235,
         "match": true
       },
       {
         "state": "L8",
-        "sum_nb": 16591,
-        "expected_sum_nb": 16591,
+        "sum_nb": 16600,
+        "expected_sum_nb": 16600,
         "match": true
       },
       {
         "state": "L9",
-        "sum_nb": 16591,
-        "expected_sum_nb": 16591,
+        "sum_nb": 16600,
+        "expected_sum_nb": 16600,
         "match": true
       },
       {
         "state": "L10",
-        "sum_nb": 8495,
-        "expected_sum_nb": 8495,
+        "sum_nb": 8499,
+        "expected_sum_nb": 8499,
         "match": true
       }
     ]
   },
-  "generated_at": "2026-09-17T13:43:49",
+  "generated_at": "2026-09-27T16:21:00",
   "frame": {
     "split": "val",
     "frame_id": "000216",
@@ -219,12 +219,12 @@
         "feature_words": 1,
         "page_stride": 2,
         "page_bytes": 1024,
-        "pages": 1150,
-        "dram_bytes": 1177600,
-        "useful_bytes": 341728,
-        "occupancy": 0.29019021739130435,
-        "semantic_channel_bytes": 60000,
-        "semantic_ratio": 0.050951086956521736,
+        "pages": 1155,
+        "dram_bytes": 1182720,
+        "useful_bytes": 344864,
+        "occupancy": 0.2915854978354978,
+        "semantic_channel_bytes": 60472,
+        "semantic_ratio": 0.051129599567099566,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -278,78 +278,78 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 1112,
-        "mean_nb": 19.2068345323741,
+        "nonempty_blocks": 1117,
+        "mean_nb": 19.29632945389436,
         "median_nb": 15.0,
         "max_nb": 219,
-        "sum_nb": 21358,
+        "sum_nb": 21554,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 600,
-            "pct": 0.539568345323741
+            "n_blocks": 595,
+            "pct": 0.5326768128916741
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 357,
-            "pct": 0.3210431654676259
+            "n_blocks": 366,
+            "pct": 0.3276633840644584
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 94,
-            "pct": 0.08453237410071943
+            "n_blocks": 95,
+            "pct": 0.08504923903312445
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 30,
-            "pct": 0.02697841726618705
+            "pct": 0.02685765443151298
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 10,
-            "pct": 0.008992805755395683
+            "pct": 0.008952551477170993
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 8,
-            "pct": 0.007194244604316547
+            "pct": 0.007162041181736795
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 4,
-            "pct": 0.0035971223021582736
+            "pct": 0.0035810205908683975
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 4,
-            "pct": 0.0035971223021582736
+            "pct": 0.0035810205908683975
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.002697841726618705
+            "pct": 0.0026857654431512983
           },
           {
             "bin_lo": 145,
@@ -384,7 +384,7 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 2,
-            "pct": 0.0017985611510791368
+            "pct": 0.0017905102954341987
           }
         ]
       },
@@ -397,12 +397,12 @@
         "feature_words": 2,
         "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 1128,
-        "dram_bytes": 1732608,
-        "useful_bytes": 504048,
-        "occupancy": 0.2909186613475177,
-        "semantic_channel_bytes": 240000,
-        "semantic_ratio": 0.1385195035460993,
+        "pages": 1134,
+        "dram_bytes": 1741824,
+        "useful_bytes": 508824,
+        "occupancy": 0.29212136243386244,
+        "semantic_channel_bytes": 241888,
+        "semantic_ratio": 0.13887051734273956,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -456,78 +456,78 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 1094,
-        "mean_nb": 19.19744058500914,
-        "median_nb": 15.0,
+        "nonempty_blocks": 1100,
+        "mean_nb": 19.273636363636363,
+        "median_nb": 15.5,
         "max_nb": 212,
-        "sum_nb": 21002,
+        "sum_nb": 21201,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 586,
-            "pct": 0.5356489945155393
+            "n_blocks": 583,
+            "pct": 0.53
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 355,
-            "pct": 0.32449725776965266
+            "n_blocks": 362,
+            "pct": 0.3290909090909091
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 94,
-            "pct": 0.08592321755027423
+            "n_blocks": 96,
+            "pct": 0.08727272727272728
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 30,
-            "pct": 0.027422303473491772
+            "pct": 0.02727272727272727
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 11,
-            "pct": 0.010054844606946984
+            "pct": 0.01
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 4,
-            "pct": 0.003656307129798903
+            "pct": 0.0036363636363636364
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 7,
-            "pct": 0.006398537477148081
+            "pct": 0.006363636363636364
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 3,
-            "pct": 0.002742230347349177
+            "pct": 0.0027272727272727275
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 2,
-            "pct": 0.0018281535648994515
+            "pct": 0.0018181818181818182
           },
           {
             "bin_lo": 145,
@@ -548,7 +548,7 @@
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 1,
-            "pct": 0.0009140767824497258
+            "pct": 0.0009090909090909091
           },
           {
             "bin_lo": 193,
@@ -562,12 +562,12 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 1,
-            "pct": 0.0009140767824497258
+            "pct": 0.0009090909090909091
           }
         ]
       },
-      "peak_dram_bytes": 2910208,
-      "peak_pages": 2278
+      "peak_dram_bytes": 2924544,
+      "peak_pages": 2289
     },
     {
       "layer_id": 1,
@@ -604,12 +604,12 @@
         "feature_words": 2,
         "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 1128,
-        "dram_bytes": 1732608,
-        "useful_bytes": 504048,
-        "occupancy": 0.2909186613475177,
-        "semantic_channel_bytes": 240000,
-        "semantic_ratio": 0.1385195035460993,
+        "pages": 1134,
+        "dram_bytes": 1741824,
+        "useful_bytes": 508824,
+        "occupancy": 0.29212136243386244,
+        "semantic_channel_bytes": 241888,
+        "semantic_ratio": 0.13887051734273956,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -663,78 +663,78 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 1094,
-        "mean_nb": 19.19744058500914,
-        "median_nb": 15.0,
+        "nonempty_blocks": 1100,
+        "mean_nb": 19.273636363636363,
+        "median_nb": 15.5,
         "max_nb": 212,
-        "sum_nb": 21002,
+        "sum_nb": 21201,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 586,
-            "pct": 0.5356489945155393
+            "n_blocks": 583,
+            "pct": 0.53
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 355,
-            "pct": 0.32449725776965266
+            "n_blocks": 362,
+            "pct": 0.3290909090909091
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 94,
-            "pct": 0.08592321755027423
+            "n_blocks": 96,
+            "pct": 0.08727272727272728
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 30,
-            "pct": 0.027422303473491772
+            "pct": 0.02727272727272727
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 11,
-            "pct": 0.010054844606946984
+            "pct": 0.01
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 4,
-            "pct": 0.003656307129798903
+            "pct": 0.0036363636363636364
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 7,
-            "pct": 0.006398537477148081
+            "pct": 0.006363636363636364
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 3,
-            "pct": 0.002742230347349177
+            "pct": 0.0027272727272727275
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 2,
-            "pct": 0.0018281535648994515
+            "pct": 0.0018181818181818182
           },
           {
             "bin_lo": 145,
@@ -755,7 +755,7 @@
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 1,
-            "pct": 0.0009140767824497258
+            "pct": 0.0009090909090909091
           },
           {
             "bin_lo": 193,
@@ -769,7 +769,7 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 1,
-            "pct": 0.0009140767824497258
+            "pct": 0.0009090909090909091
           }
         ]
       },
@@ -782,12 +782,12 @@
         "feature_words": 2,
         "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 1150,
-        "dram_bytes": 1766400,
-        "useful_bytes": 512592,
-        "occupancy": 0.29019021739130435,
-        "semantic_channel_bytes": 240000,
-        "semantic_ratio": 0.1358695652173913,
+        "pages": 1155,
+        "dram_bytes": 1774080,
+        "useful_bytes": 517296,
+        "occupancy": 0.2915854978354978,
+        "semantic_channel_bytes": 241888,
+        "semantic_ratio": 0.13634559884559885,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -841,78 +841,78 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 1112,
-        "mean_nb": 19.2068345323741,
+        "nonempty_blocks": 1117,
+        "mean_nb": 19.29632945389436,
         "median_nb": 15.0,
         "max_nb": 219,
-        "sum_nb": 21358,
+        "sum_nb": 21554,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 600,
-            "pct": 0.539568345323741
+            "n_blocks": 595,
+            "pct": 0.5326768128916741
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 357,
-            "pct": 0.3210431654676259
+            "n_blocks": 366,
+            "pct": 0.3276633840644584
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 94,
-            "pct": 0.08453237410071943
+            "n_blocks": 95,
+            "pct": 0.08504923903312445
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 30,
-            "pct": 0.02697841726618705
+            "pct": 0.02685765443151298
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 10,
-            "pct": 0.008992805755395683
+            "pct": 0.008952551477170993
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 8,
-            "pct": 0.007194244604316547
+            "pct": 0.007162041181736795
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 4,
-            "pct": 0.0035971223021582736
+            "pct": 0.0035810205908683975
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 4,
-            "pct": 0.0035971223021582736
+            "pct": 0.0035810205908683975
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.002697841726618705
+            "pct": 0.0026857654431512983
           },
           {
             "bin_lo": 145,
@@ -947,12 +947,12 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 2,
-            "pct": 0.0017985611510791368
+            "pct": 0.0017905102954341987
           }
         ]
       },
-      "peak_dram_bytes": 3499008,
-      "peak_pages": 2278
+      "peak_dram_bytes": 3515904,
+      "peak_pages": 2289
     },
     {
       "layer_id": 2,
@@ -989,12 +989,12 @@
         "feature_words": 2,
         "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 1150,
-        "dram_bytes": 1766400,
-        "useful_bytes": 512592,
-        "occupancy": 0.29019021739130435,
-        "semantic_channel_bytes": 240000,
-        "semantic_ratio": 0.1358695652173913,
+        "pages": 1155,
+        "dram_bytes": 1774080,
+        "useful_bytes": 517296,
+        "occupancy": 0.2915854978354978,
+        "semantic_channel_bytes": 241888,
+        "semantic_ratio": 0.13634559884559885,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -1048,78 +1048,78 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 1112,
-        "mean_nb": 19.2068345323741,
+        "nonempty_blocks": 1117,
+        "mean_nb": 19.29632945389436,
         "median_nb": 15.0,
         "max_nb": 219,
-        "sum_nb": 21358,
+        "sum_nb": 21554,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 600,
-            "pct": 0.539568345323741
+            "n_blocks": 595,
+            "pct": 0.5326768128916741
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 357,
-            "pct": 0.3210431654676259
+            "n_blocks": 366,
+            "pct": 0.3276633840644584
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 94,
-            "pct": 0.08453237410071943
+            "n_blocks": 95,
+            "pct": 0.08504923903312445
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 30,
-            "pct": 0.02697841726618705
+            "pct": 0.02685765443151298
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 10,
-            "pct": 0.008992805755395683
+            "pct": 0.008952551477170993
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 8,
-            "pct": 0.007194244604316547
+            "pct": 0.007162041181736795
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 4,
-            "pct": 0.0035971223021582736
+            "pct": 0.0035810205908683975
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 4,
-            "pct": 0.0035971223021582736
+            "pct": 0.0035810205908683975
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.002697841726618705
+            "pct": 0.0026857654431512983
           },
           {
             "bin_lo": 145,
@@ -1154,7 +1154,7 @@
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 2,
-            "pct": 0.0017985611510791368
+            "pct": 0.0017905102954341987
           }
         ]
       },
@@ -1167,12 +1167,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1556,
-        "dram_bytes": 3983360,
-        "useful_bytes": 1796520,
-        "occupancy": 0.45100618573264784,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.206956940874036,
+        "pages": 1559,
+        "dram_bytes": 3991040,
+        "useful_bytes": 1802520,
+        "occupancy": 0.45164167735728034,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.20723220012828736,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1226,148 +1226,148 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
-        "nonempty_blocks": 1316,
-        "mean_nb": 34.128419452887535,
+        "nonempty_blocks": 1318,
+        "mean_nb": 34.19044006069803,
         "median_nb": 21.0,
         "max_nb": 499,
-        "sum_nb": 44913,
+        "sum_nb": 45063,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 512,
-            "pct": 0.3890577507598784
+            "n_blocks": 513,
+            "pct": 0.3892261001517451
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 329,
-            "pct": 0.25
+            "pct": 0.2496206373292868
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 205,
-            "pct": 0.15577507598784193
+            "n_blocks": 204,
+            "pct": 0.15477996965098634
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 97,
-            "pct": 0.0737082066869301
+            "n_blocks": 98,
+            "pct": 0.07435508345978756
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 71,
-            "pct": 0.053951367781155016
+            "n_blocks": 70,
+            "pct": 0.05311077389984825
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
-            "n_blocks": 19,
-            "pct": 0.014437689969604863
+            "n_blocks": 21,
+            "pct": 0.015933232169954476
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 17,
-            "pct": 0.012917933130699088
+            "pct": 0.012898330804248861
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 23,
-            "pct": 0.017477203647416412
+            "pct": 0.017450682852807285
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 10,
-            "pct": 0.007598784194528876
+            "pct": 0.007587253414264037
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 5,
-            "pct": 0.003799392097264438
+            "pct": 0.0037936267071320183
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.005319148936170213
+            "pct": 0.005311077389984826
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.004559270516717325
+            "pct": 0.004552352048558422
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 3,
-            "pct": 0.0022796352583586625
+            "pct": 0.002276176024279211
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 4,
-            "pct": 0.00303951367781155
+            "pct": 0.0030349013657056147
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 2,
-            "pct": 0.001519756838905775
+            "pct": 0.0015174506828528073
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 273,
             "bin_hi": 288,
             "bin_label": "273-288",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 289,
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 305,
@@ -1395,7 +1395,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 369,
@@ -1458,12 +1458,12 @@
             "bin_hi": 512,
             "bin_label": "497-512",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           }
         ]
       },
-      "peak_dram_bytes": 5749760,
-      "peak_pages": 2706
+      "peak_dram_bytes": 5765120,
+      "peak_pages": 2714
     },
     {
       "layer_id": 3,
@@ -1500,12 +1500,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1556,
-        "dram_bytes": 3983360,
-        "useful_bytes": 1796520,
-        "occupancy": 0.45100618573264784,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.206956940874036,
+        "pages": 1559,
+        "dram_bytes": 3991040,
+        "useful_bytes": 1802520,
+        "occupancy": 0.45164167735728034,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.20723220012828736,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1559,148 +1559,148 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
-        "nonempty_blocks": 1316,
-        "mean_nb": 34.128419452887535,
+        "nonempty_blocks": 1318,
+        "mean_nb": 34.19044006069803,
         "median_nb": 21.0,
         "max_nb": 499,
-        "sum_nb": 44913,
+        "sum_nb": 45063,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 512,
-            "pct": 0.3890577507598784
+            "n_blocks": 513,
+            "pct": 0.3892261001517451
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 329,
-            "pct": 0.25
+            "pct": 0.2496206373292868
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 205,
-            "pct": 0.15577507598784193
+            "n_blocks": 204,
+            "pct": 0.15477996965098634
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 97,
-            "pct": 0.0737082066869301
+            "n_blocks": 98,
+            "pct": 0.07435508345978756
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 71,
-            "pct": 0.053951367781155016
+            "n_blocks": 70,
+            "pct": 0.05311077389984825
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
-            "n_blocks": 19,
-            "pct": 0.014437689969604863
+            "n_blocks": 21,
+            "pct": 0.015933232169954476
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 17,
-            "pct": 0.012917933130699088
+            "pct": 0.012898330804248861
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 23,
-            "pct": 0.017477203647416412
+            "pct": 0.017450682852807285
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 10,
-            "pct": 0.007598784194528876
+            "pct": 0.007587253414264037
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 5,
-            "pct": 0.003799392097264438
+            "pct": 0.0037936267071320183
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.005319148936170213
+            "pct": 0.005311077389984826
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.004559270516717325
+            "pct": 0.004552352048558422
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 3,
-            "pct": 0.0022796352583586625
+            "pct": 0.002276176024279211
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 4,
-            "pct": 0.00303951367781155
+            "pct": 0.0030349013657056147
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 2,
-            "pct": 0.001519756838905775
+            "pct": 0.0015174506828528073
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 273,
             "bin_hi": 288,
             "bin_label": "273-288",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 289,
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 305,
@@ -1728,7 +1728,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 369,
@@ -1791,7 +1791,7 @@
             "bin_hi": 512,
             "bin_label": "497-512",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           }
         ]
       },
@@ -1804,12 +1804,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1556,
-        "dram_bytes": 3983360,
-        "useful_bytes": 1796520,
-        "occupancy": 0.45100618573264784,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.206956940874036,
+        "pages": 1559,
+        "dram_bytes": 3991040,
+        "useful_bytes": 1802520,
+        "occupancy": 0.45164167735728034,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.20723220012828736,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1863,148 +1863,148 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
-        "nonempty_blocks": 1316,
-        "mean_nb": 34.128419452887535,
+        "nonempty_blocks": 1318,
+        "mean_nb": 34.19044006069803,
         "median_nb": 21.0,
         "max_nb": 499,
-        "sum_nb": 44913,
+        "sum_nb": 45063,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 512,
-            "pct": 0.3890577507598784
+            "n_blocks": 513,
+            "pct": 0.3892261001517451
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 329,
-            "pct": 0.25
+            "pct": 0.2496206373292868
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 205,
-            "pct": 0.15577507598784193
+            "n_blocks": 204,
+            "pct": 0.15477996965098634
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 97,
-            "pct": 0.0737082066869301
+            "n_blocks": 98,
+            "pct": 0.07435508345978756
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 71,
-            "pct": 0.053951367781155016
+            "n_blocks": 70,
+            "pct": 0.05311077389984825
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
-            "n_blocks": 19,
-            "pct": 0.014437689969604863
+            "n_blocks": 21,
+            "pct": 0.015933232169954476
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 17,
-            "pct": 0.012917933130699088
+            "pct": 0.012898330804248861
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 23,
-            "pct": 0.017477203647416412
+            "pct": 0.017450682852807285
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 10,
-            "pct": 0.007598784194528876
+            "pct": 0.007587253414264037
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 5,
-            "pct": 0.003799392097264438
+            "pct": 0.0037936267071320183
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.005319148936170213
+            "pct": 0.005311077389984826
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.004559270516717325
+            "pct": 0.004552352048558422
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 3,
-            "pct": 0.0022796352583586625
+            "pct": 0.002276176024279211
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 4,
-            "pct": 0.00303951367781155
+            "pct": 0.0030349013657056147
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 2,
-            "pct": 0.001519756838905775
+            "pct": 0.0015174506828528073
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 273,
             "bin_hi": 288,
             "bin_label": "273-288",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 289,
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 305,
@@ -2032,7 +2032,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 369,
@@ -2095,12 +2095,12 @@
             "bin_hi": 512,
             "bin_label": "497-512",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           }
         ]
       },
-      "peak_dram_bytes": 7966720,
-      "peak_pages": 3112
+      "peak_dram_bytes": 7982080,
+      "peak_pages": 3118
     },
     {
       "layer_id": 4,
@@ -2137,12 +2137,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1556,
-        "dram_bytes": 3983360,
-        "useful_bytes": 1796520,
-        "occupancy": 0.45100618573264784,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.206956940874036,
+        "pages": 1559,
+        "dram_bytes": 3991040,
+        "useful_bytes": 1802520,
+        "occupancy": 0.45164167735728034,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.20723220012828736,
         "spatial_shape_zyx": [
           21,
           800,
@@ -2196,148 +2196,148 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
-        "nonempty_blocks": 1316,
-        "mean_nb": 34.128419452887535,
+        "nonempty_blocks": 1318,
+        "mean_nb": 34.19044006069803,
         "median_nb": 21.0,
         "max_nb": 499,
-        "sum_nb": 44913,
+        "sum_nb": 45063,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 512,
-            "pct": 0.3890577507598784
+            "n_blocks": 513,
+            "pct": 0.3892261001517451
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 329,
-            "pct": 0.25
+            "pct": 0.2496206373292868
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 205,
-            "pct": 0.15577507598784193
+            "n_blocks": 204,
+            "pct": 0.15477996965098634
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 97,
-            "pct": 0.0737082066869301
+            "n_blocks": 98,
+            "pct": 0.07435508345978756
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 71,
-            "pct": 0.053951367781155016
+            "n_blocks": 70,
+            "pct": 0.05311077389984825
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
-            "n_blocks": 19,
-            "pct": 0.014437689969604863
+            "n_blocks": 21,
+            "pct": 0.015933232169954476
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 17,
-            "pct": 0.012917933130699088
+            "pct": 0.012898330804248861
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 23,
-            "pct": 0.017477203647416412
+            "pct": 0.017450682852807285
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 10,
-            "pct": 0.007598784194528876
+            "pct": 0.007587253414264037
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 5,
-            "pct": 0.003799392097264438
+            "pct": 0.0037936267071320183
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.005319148936170213
+            "pct": 0.005311077389984826
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.004559270516717325
+            "pct": 0.004552352048558422
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 3,
-            "pct": 0.0022796352583586625
+            "pct": 0.002276176024279211
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 4,
-            "pct": 0.00303951367781155
+            "pct": 0.0030349013657056147
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 2,
-            "pct": 0.001519756838905775
+            "pct": 0.0015174506828528073
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 273,
             "bin_hi": 288,
             "bin_label": "273-288",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 289,
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 305,
@@ -2365,7 +2365,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           },
           {
             "bin_lo": 369,
@@ -2428,7 +2428,7 @@
             "bin_hi": 512,
             "bin_label": "497-512",
             "n_blocks": 1,
-            "pct": 0.0007598784194528875
+            "pct": 0.0007587253414264037
           }
         ]
       },
@@ -2441,12 +2441,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1781,
-        "dram_bytes": 4559360,
-        "useful_bytes": 2031400,
-        "occupancy": 0.44554498877035376,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.1808113419427288,
+        "pages": 1782,
+        "dram_bytes": 4561920,
+        "useful_bytes": 2036440,
+        "occupancy": 0.4463997615039282,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.18129910213243547,
         "spatial_shape_zyx": [
           21,
           800,
@@ -2500,134 +2500,134 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
-        "nonempty_blocks": 1511,
-        "mean_nb": 33.610191925876904,
+        "nonempty_blocks": 1512,
+        "mean_nb": 33.6712962962963,
         "median_nb": 21.0,
         "max_nb": 477,
-        "sum_nb": 50785,
+        "sum_nb": 50911,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
             "n_blocks": 562,
-            "pct": 0.37193911317008604
+            "pct": 0.3716931216931217
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 434,
-            "pct": 0.2872270019854401
+            "pct": 0.28703703703703703
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 204,
-            "pct": 0.13500992720052946
+            "n_blocks": 203,
+            "pct": 0.13425925925925927
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 113,
-            "pct": 0.07478491065519524
+            "n_blocks": 115,
+            "pct": 0.07605820105820106
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 79,
-            "pct": 0.05228325612177366
+            "n_blocks": 77,
+            "pct": 0.05092592592592592
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
-            "n_blocks": 32,
-            "pct": 0.021178027796161483
+            "n_blocks": 33,
+            "pct": 0.021825396825396824
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
-            "n_blocks": 29,
-            "pct": 0.019192587690271344
+            "n_blocks": 30,
+            "pct": 0.01984126984126984
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 16,
-            "pct": 0.010589013898080741
+            "pct": 0.010582010582010581
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 8,
-            "pct": 0.005294506949040371
+            "pct": 0.005291005291005291
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 3,
-            "pct": 0.001985440105890139
+            "pct": 0.001984126984126984
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.004632693580410324
+            "pct": 0.004629629629629629
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 3,
-            "pct": 0.001985440105890139
+            "pct": 0.001984126984126984
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 5,
-            "pct": 0.0033090668431502318
+            "pct": 0.0033068783068783067
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 4,
-            "pct": 0.0026472534745201853
+            "pct": 0.0026455026455026454
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 6,
-            "pct": 0.003970880211780278
+            "pct": 0.003968253968253968
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0006618133686300463
+            "pct": 0.0006613756613756613
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 2,
-            "pct": 0.0013236267372600927
+            "pct": 0.0013227513227513227
           },
           {
             "bin_lo": 273,
@@ -2641,7 +2641,7 @@
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0006618133686300463
+            "pct": 0.0006613756613756613
           },
           {
             "bin_lo": 305,
@@ -2669,7 +2669,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0006618133686300463
+            "pct": 0.0006613756613756613
           },
           {
             "bin_lo": 369,
@@ -2718,12 +2718,12 @@
             "bin_hi": 480,
             "bin_label": "465-480",
             "n_blocks": 1,
-            "pct": 0.0006618133686300463
+            "pct": 0.0006613756613756613
           }
         ]
       },
-      "peak_dram_bytes": 8542720,
-      "peak_pages": 3337
+      "peak_dram_bytes": 8552960,
+      "peak_pages": 3341
     },
     {
       "layer_id": 5,
@@ -2760,12 +2760,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 1781,
-        "dram_bytes": 4559360,
-        "useful_bytes": 2031400,
-        "occupancy": 0.44554498877035376,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.1808113419427288,
+        "pages": 1782,
+        "dram_bytes": 4561920,
+        "useful_bytes": 2036440,
+        "occupancy": 0.4463997615039282,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.18129910213243547,
         "spatial_shape_zyx": [
           21,
           800,
@@ -2819,134 +2819,134 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
-        "nonempty_blocks": 1511,
-        "mean_nb": 33.610191925876904,
+        "nonempty_blocks": 1512,
+        "mean_nb": 33.6712962962963,
         "median_nb": 21.0,
         "max_nb": 477,
-        "sum_nb": 50785,
+        "sum_nb": 50911,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
             "n_blocks": 562,
-            "pct": 0.37193911317008604
+            "pct": 0.3716931216931217
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
             "n_blocks": 434,
-            "pct": 0.2872270019854401
+            "pct": 0.28703703703703703
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 204,
-            "pct": 0.13500992720052946
+            "n_blocks": 203,
+            "pct": 0.13425925925925927
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 113,
-            "pct": 0.07478491065519524
+            "n_blocks": 115,
+            "pct": 0.07605820105820106
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 79,
-            "pct": 0.05228325612177366
+            "n_blocks": 77,
+            "pct": 0.05092592592592592
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
-            "n_blocks": 32,
-            "pct": 0.021178027796161483
+            "n_blocks": 33,
+            "pct": 0.021825396825396824
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
-            "n_blocks": 29,
-            "pct": 0.019192587690271344
+            "n_blocks": 30,
+            "pct": 0.01984126984126984
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 16,
-            "pct": 0.010589013898080741
+            "pct": 0.010582010582010581
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 8,
-            "pct": 0.005294506949040371
+            "pct": 0.005291005291005291
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 3,
-            "pct": 0.001985440105890139
+            "pct": 0.001984126984126984
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 7,
-            "pct": 0.004632693580410324
+            "pct": 0.004629629629629629
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 3,
-            "pct": 0.001985440105890139
+            "pct": 0.001984126984126984
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 5,
-            "pct": 0.0033090668431502318
+            "pct": 0.0033068783068783067
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 4,
-            "pct": 0.0026472534745201853
+            "pct": 0.0026455026455026454
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 6,
-            "pct": 0.003970880211780278
+            "pct": 0.003968253968253968
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0006618133686300463
+            "pct": 0.0006613756613756613
           },
           {
             "bin_lo": 257,
             "bin_hi": 272,
             "bin_label": "257-272",
             "n_blocks": 2,
-            "pct": 0.0013236267372600927
+            "pct": 0.0013227513227513227
           },
           {
             "bin_lo": 273,
@@ -2960,7 +2960,7 @@
             "bin_hi": 304,
             "bin_label": "289-304",
             "n_blocks": 1,
-            "pct": 0.0006618133686300463
+            "pct": 0.0006613756613756613
           },
           {
             "bin_lo": 305,
@@ -2988,7 +2988,7 @@
             "bin_hi": 368,
             "bin_label": "353-368",
             "n_blocks": 1,
-            "pct": 0.0006618133686300463
+            "pct": 0.0006613756613756613
           },
           {
             "bin_lo": 369,
@@ -3037,7 +3037,7 @@
             "bin_hi": 480,
             "bin_label": "465-480",
             "n_blocks": 1,
-            "pct": 0.0006618133686300463
+            "pct": 0.0006613756613756613
           }
         ]
       },
@@ -3050,12 +3050,12 @@
         "feature_words": 8,
         "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 1349,
-        "dram_bytes": 6216192,
-        "useful_bytes": 2914920,
-        "occupancy": 0.46892373980726465,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.1965344699777613,
+        "pages": 1351,
+        "dram_bytes": 6225408,
+        "useful_bytes": 2920392,
+        "occupancy": 0.4691085307179867,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.19652109548482605,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3109,132 +3109,132 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
-        "nonempty_blocks": 1138,
-        "mean_nb": 35.57557117750439,
+        "nonempty_blocks": 1140,
+        "mean_nb": 35.579824561403505,
         "median_nb": 25.0,
         "max_nb": 252,
-        "sum_nb": 40485,
+        "sum_nb": 40561,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 406,
-            "pct": 0.35676625659050965
+            "n_blocks": 407,
+            "pct": 0.3570175438596491
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 299,
-            "pct": 0.2627416520210896
+            "n_blocks": 297,
+            "pct": 0.26052631578947366
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 163,
-            "pct": 0.14323374340949033
+            "n_blocks": 166,
+            "pct": 0.1456140350877193
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 96,
-            "pct": 0.0843585237258348
+            "pct": 0.08421052631578947
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 67,
-            "pct": 0.058875219683655534
+            "pct": 0.058771929824561406
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 36,
-            "pct": 0.03163444639718805
+            "pct": 0.031578947368421054
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 18,
-            "pct": 0.015817223198594025
+            "pct": 0.015789473684210527
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 22,
-            "pct": 0.019332161687170474
+            "pct": 0.01929824561403509
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 13,
-            "pct": 0.011423550087873463
+            "pct": 0.011403508771929825
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 6,
-            "pct": 0.005272407732864675
+            "pct": 0.005263157894736842
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           }
         ]
       },
-      "peak_dram_bytes": 10775552,
-      "peak_pages": 3130
+      "peak_dram_bytes": 10787328,
+      "peak_pages": 3133
     },
     {
       "layer_id": 6,
@@ -3271,12 +3271,12 @@
         "feature_words": 8,
         "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 1349,
-        "dram_bytes": 6216192,
-        "useful_bytes": 2914920,
-        "occupancy": 0.46892373980726465,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.1965344699777613,
+        "pages": 1351,
+        "dram_bytes": 6225408,
+        "useful_bytes": 2920392,
+        "occupancy": 0.4691085307179867,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.19652109548482605,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3330,127 +3330,127 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
-        "nonempty_blocks": 1138,
-        "mean_nb": 35.57557117750439,
+        "nonempty_blocks": 1140,
+        "mean_nb": 35.579824561403505,
         "median_nb": 25.0,
         "max_nb": 252,
-        "sum_nb": 40485,
+        "sum_nb": 40561,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 406,
-            "pct": 0.35676625659050965
+            "n_blocks": 407,
+            "pct": 0.3570175438596491
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 299,
-            "pct": 0.2627416520210896
+            "n_blocks": 297,
+            "pct": 0.26052631578947366
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 163,
-            "pct": 0.14323374340949033
+            "n_blocks": 166,
+            "pct": 0.1456140350877193
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 96,
-            "pct": 0.0843585237258348
+            "pct": 0.08421052631578947
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 67,
-            "pct": 0.058875219683655534
+            "pct": 0.058771929824561406
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 36,
-            "pct": 0.03163444639718805
+            "pct": 0.031578947368421054
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 18,
-            "pct": 0.015817223198594025
+            "pct": 0.015789473684210527
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 22,
-            "pct": 0.019332161687170474
+            "pct": 0.01929824561403509
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 13,
-            "pct": 0.011423550087873463
+            "pct": 0.011403508771929825
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 6,
-            "pct": 0.005272407732864675
+            "pct": 0.005263157894736842
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           }
         ]
       },
@@ -3463,12 +3463,12 @@
         "feature_words": 8,
         "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 1349,
-        "dram_bytes": 6216192,
-        "useful_bytes": 2914920,
-        "occupancy": 0.46892373980726465,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.1965344699777613,
+        "pages": 1351,
+        "dram_bytes": 6225408,
+        "useful_bytes": 2920392,
+        "occupancy": 0.4691085307179867,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.19652109548482605,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3522,132 +3522,132 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
-        "nonempty_blocks": 1138,
-        "mean_nb": 35.57557117750439,
+        "nonempty_blocks": 1140,
+        "mean_nb": 35.579824561403505,
         "median_nb": 25.0,
         "max_nb": 252,
-        "sum_nb": 40485,
+        "sum_nb": 40561,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 406,
-            "pct": 0.35676625659050965
+            "n_blocks": 407,
+            "pct": 0.3570175438596491
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 299,
-            "pct": 0.2627416520210896
+            "n_blocks": 297,
+            "pct": 0.26052631578947366
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 163,
-            "pct": 0.14323374340949033
+            "n_blocks": 166,
+            "pct": 0.1456140350877193
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 96,
-            "pct": 0.0843585237258348
+            "pct": 0.08421052631578947
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 67,
-            "pct": 0.058875219683655534
+            "pct": 0.058771929824561406
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 36,
-            "pct": 0.03163444639718805
+            "pct": 0.031578947368421054
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 18,
-            "pct": 0.015817223198594025
+            "pct": 0.015789473684210527
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 22,
-            "pct": 0.019332161687170474
+            "pct": 0.01929824561403509
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 13,
-            "pct": 0.011423550087873463
+            "pct": 0.011403508771929825
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 6,
-            "pct": 0.005272407732864675
+            "pct": 0.005263157894736842
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           }
         ]
       },
-      "peak_dram_bytes": 12432384,
-      "peak_pages": 2698
+      "peak_dram_bytes": 12450816,
+      "peak_pages": 2702
     },
     {
       "layer_id": 7,
@@ -3684,12 +3684,12 @@
         "feature_words": 8,
         "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 1349,
-        "dram_bytes": 6216192,
-        "useful_bytes": 2914920,
-        "occupancy": 0.46892373980726465,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.1965344699777613,
+        "pages": 1351,
+        "dram_bytes": 6225408,
+        "useful_bytes": 2920392,
+        "occupancy": 0.4691085307179867,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.19652109548482605,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3743,127 +3743,127 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
-        "nonempty_blocks": 1138,
-        "mean_nb": 35.57557117750439,
+        "nonempty_blocks": 1140,
+        "mean_nb": 35.579824561403505,
         "median_nb": 25.0,
         "max_nb": 252,
-        "sum_nb": 40485,
+        "sum_nb": 40561,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 406,
-            "pct": 0.35676625659050965
+            "n_blocks": 407,
+            "pct": 0.3570175438596491
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 299,
-            "pct": 0.2627416520210896
+            "n_blocks": 297,
+            "pct": 0.26052631578947366
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 163,
-            "pct": 0.14323374340949033
+            "n_blocks": 166,
+            "pct": 0.1456140350877193
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
             "n_blocks": 96,
-            "pct": 0.0843585237258348
+            "pct": 0.08421052631578947
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 67,
-            "pct": 0.058875219683655534
+            "pct": 0.058771929824561406
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 36,
-            "pct": 0.03163444639718805
+            "pct": 0.031578947368421054
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 18,
-            "pct": 0.015817223198594025
+            "pct": 0.015789473684210527
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 22,
-            "pct": 0.019332161687170474
+            "pct": 0.01929824561403509
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 13,
-            "pct": 0.011423550087873463
+            "pct": 0.011403508771929825
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 6,
-            "pct": 0.005272407732864675
+            "pct": 0.005263157894736842
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 3,
-            "pct": 0.0026362038664323375
+            "pct": 0.002631578947368421
           },
           {
             "bin_lo": 209,
             "bin_hi": 224,
             "bin_label": "209-224",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           },
           {
             "bin_lo": 225,
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0008787346221441124
+            "pct": 0.0008771929824561404
           }
         ]
       },
@@ -3876,12 +3876,12 @@
         "feature_words": 8,
         "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 1320,
-        "dram_bytes": 6082560,
-        "useful_bytes": 2892600,
-        "occupancy": 0.4755563446969697,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.20085227272727274,
+        "pages": 1322,
+        "dram_bytes": 6091776,
+        "useful_bytes": 2896920,
+        "occupancy": 0.4755460476550681,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.2008320726172466,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3935,106 +3935,106 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
-        "nonempty_blocks": 1105,
-        "mean_nb": 36.35746606334842,
+        "nonempty_blocks": 1107,
+        "mean_nb": 36.34598012646793,
         "median_nb": 26.0,
         "max_nb": 242,
-        "sum_nb": 40175,
+        "sum_nb": 40235,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
             "n_blocks": 367,
-            "pct": 0.33212669683257917
+            "pct": 0.33152664859981934
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 308,
-            "pct": 0.27873303167420815
+            "n_blocks": 310,
+            "pct": 0.2800361336946703
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 165,
-            "pct": 0.1493212669683258
+            "n_blocks": 164,
+            "pct": 0.14814814814814814
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 89,
-            "pct": 0.08054298642533937
+            "n_blocks": 90,
+            "pct": 0.08130081300813008
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 67,
-            "pct": 0.06063348416289593
+            "pct": 0.06052393857271906
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 44,
-            "pct": 0.039819004524886875
+            "pct": 0.03974706413730804
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 11,
-            "pct": 0.009954751131221719
+            "pct": 0.00993676603432701
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 21,
-            "pct": 0.019004524886877826
+            "pct": 0.018970189701897018
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 8,
-            "pct": 0.007239819004524887
+            "pct": 0.007226738934056007
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 7,
-            "pct": 0.006334841628959276
+            "pct": 0.006323396567299007
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 6,
-            "pct": 0.005429864253393665
+            "pct": 0.005420054200542005
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.005429864253393665
+            "pct": 0.005420054200542005
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 4,
-            "pct": 0.0036199095022624436
+            "pct": 0.0036133694670280035
           },
           {
             "bin_lo": 209,
@@ -4048,19 +4048,19 @@
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 1,
-            "pct": 0.0009049773755656109
+            "pct": 0.0009033423667570009
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0009049773755656109
+            "pct": 0.0009033423667570009
           }
         ]
       },
-      "peak_dram_bytes": 12298752,
-      "peak_pages": 2669
+      "peak_dram_bytes": 12317184,
+      "peak_pages": 2673
     },
     {
       "layer_id": 8,
@@ -4097,12 +4097,12 @@
         "feature_words": 8,
         "page_stride": 9,
         "page_bytes": 4608,
-        "pages": 1320,
-        "dram_bytes": 6082560,
-        "useful_bytes": 2892600,
-        "occupancy": 0.4755563446969697,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.20085227272727274,
+        "pages": 1322,
+        "dram_bytes": 6091776,
+        "useful_bytes": 2896920,
+        "occupancy": 0.4755460476550681,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.2008320726172466,
         "spatial_shape_zyx": [
           11,
           400,
@@ -4156,106 +4156,106 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
-        "nonempty_blocks": 1105,
-        "mean_nb": 36.35746606334842,
+        "nonempty_blocks": 1107,
+        "mean_nb": 36.34598012646793,
         "median_nb": 26.0,
         "max_nb": 242,
-        "sum_nb": 40175,
+        "sum_nb": 40235,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
             "n_blocks": 367,
-            "pct": 0.33212669683257917
+            "pct": 0.33152664859981934
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 308,
-            "pct": 0.27873303167420815
+            "n_blocks": 310,
+            "pct": 0.2800361336946703
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 165,
-            "pct": 0.1493212669683258
+            "n_blocks": 164,
+            "pct": 0.14814814814814814
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 89,
-            "pct": 0.08054298642533937
+            "n_blocks": 90,
+            "pct": 0.08130081300813008
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 67,
-            "pct": 0.06063348416289593
+            "pct": 0.06052393857271906
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 44,
-            "pct": 0.039819004524886875
+            "pct": 0.03974706413730804
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 11,
-            "pct": 0.009954751131221719
+            "pct": 0.00993676603432701
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 21,
-            "pct": 0.019004524886877826
+            "pct": 0.018970189701897018
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
             "n_blocks": 8,
-            "pct": 0.007239819004524887
+            "pct": 0.007226738934056007
           },
           {
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
             "n_blocks": 7,
-            "pct": 0.006334841628959276
+            "pct": 0.006323396567299007
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
             "n_blocks": 6,
-            "pct": 0.005429864253393665
+            "pct": 0.005420054200542005
           },
           {
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
             "n_blocks": 6,
-            "pct": 0.005429864253393665
+            "pct": 0.005420054200542005
           },
           {
             "bin_lo": 193,
             "bin_hi": 208,
             "bin_label": "193-208",
             "n_blocks": 4,
-            "pct": 0.0036199095022624436
+            "pct": 0.0036133694670280035
           },
           {
             "bin_lo": 209,
@@ -4269,14 +4269,14 @@
             "bin_hi": 240,
             "bin_label": "225-240",
             "n_blocks": 1,
-            "pct": 0.0009049773755656109
+            "pct": 0.0009033423667570009
           },
           {
             "bin_lo": 241,
             "bin_hi": 256,
             "bin_label": "241-256",
             "n_blocks": 1,
-            "pct": 0.0009049773755656109
+            "pct": 0.0009033423667570009
           }
         ]
       },
@@ -4291,10 +4291,10 @@
         "page_bytes": 4608,
         "pages": 488,
         "dram_bytes": 2248704,
-        "useful_bytes": 1194552,
-        "occupancy": 0.5312179815573771,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.24177481785063754,
+        "useful_bytes": 1195200,
+        "occupancy": 0.5315061475409836,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.2418886612021858,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4348,15 +4348,15 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 394,
-        "mean_nb": 42.109137055837564,
+        "mean_nb": 42.131979695431475,
         "median_nb": 36.0,
         "max_nb": 173,
-        "sum_nb": 16591,
+        "sum_nb": 16600,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4437,8 +4437,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 8331264,
-      "peak_pages": 1808
+      "peak_dram_bytes": 8340480,
+      "peak_pages": 1810
     },
     {
       "layer_id": 9,
@@ -4477,10 +4477,10 @@
         "page_bytes": 4608,
         "pages": 488,
         "dram_bytes": 2248704,
-        "useful_bytes": 1194552,
-        "occupancy": 0.5312179815573771,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.24177481785063754,
+        "useful_bytes": 1195200,
+        "occupancy": 0.5315061475409836,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.2418886612021858,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4534,15 +4534,15 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 394,
-        "mean_nb": 42.109137055837564,
+        "mean_nb": 42.131979695431475,
         "median_nb": 36.0,
         "max_nb": 173,
-        "sum_nb": 16591,
+        "sum_nb": 16600,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4634,10 +4634,10 @@
         "page_bytes": 4608,
         "pages": 488,
         "dram_bytes": 2248704,
-        "useful_bytes": 1194552,
-        "occupancy": 0.5312179815573771,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.24177481785063754,
+        "useful_bytes": 1195200,
+        "occupancy": 0.5315061475409836,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.2418886612021858,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4691,15 +4691,15 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 394,
-        "mean_nb": 42.109137055837564,
+        "mean_nb": 42.131979695431475,
         "median_nb": 36.0,
         "max_nb": 173,
-        "sum_nb": 16591,
+        "sum_nb": 16600,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4820,10 +4820,10 @@
         "page_bytes": 4608,
         "pages": 488,
         "dram_bytes": 2248704,
-        "useful_bytes": 1194552,
-        "occupancy": 0.5312179815573771,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.24177481785063754,
+        "useful_bytes": 1195200,
+        "occupancy": 0.5315061475409836,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.2418886612021858,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4877,15 +4877,15 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 394,
-        "mean_nb": 42.109137055837564,
+        "mean_nb": 42.131979695431475,
         "median_nb": 36.0,
         "max_nb": 173,
-        "sum_nb": 16591,
+        "sum_nb": 16600,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4977,10 +4977,10 @@
         "page_bytes": 4608,
         "pages": 365,
         "dram_bytes": 1681920,
-        "useful_bytes": 611640,
-        "occupancy": 0.3636558219178082,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.3232496194824962,
+        "useful_bytes": 611928,
+        "occupancy": 0.36382705479452054,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.3234018264840183,
         "spatial_shape_zyx": [
           5,
           200,
@@ -5034,15 +5034,15 @@
           ]
         ],
         "extent_label": "x:none y:none z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 351,
-        "mean_nb": 24.202279202279204,
+        "mean_nb": 24.213675213675213,
         "median_nb": 20.0,
         "max_nb": 133,
-        "sum_nb": 8495,
+        "sum_nb": 8499,
         "histogram": [
           {
             "bin_lo": 1,
@@ -5149,10 +5149,10 @@
         "page_bytes": 4608,
         "pages": 365,
         "dram_bytes": 1681920,
-        "useful_bytes": 611640,
-        "occupancy": 0.3636558219178082,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.3232496194824962,
+        "useful_bytes": 611928,
+        "occupancy": 0.36382705479452054,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.3234018264840183,
         "spatial_shape_zyx": [
           5,
           200,
@@ -5206,15 +5206,15 @@
           ]
         ],
         "extent_label": "x:none y:none z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 351,
-        "mean_nb": 24.202279202279204,
+        "mean_nb": 24.213675213675213,
         "median_nb": 20.0,
         "max_nb": 133,
-        "sum_nb": 8495,
+        "sum_nb": 8499,
         "histogram": [
           {
             "bin_lo": 1,
@@ -5294,7 +5294,7 @@
         "dram_bytes": 0,
         "useful_bytes": 0,
         "occupancy": 0.0,
-        "semantic_channel_bytes": 846336,
+        "semantic_channel_bytes": 846848,
         "semantic_ratio": 0.0,
         "spatial_shape_zyx": [
           2,
@@ -5333,9 +5333,9 @@
           ]
         ],
         "extent_label": "x:none y:none z:none",
-        "nonempty_voxels": 6612,
-        "coordinate_count": 6612,
-        "coordinate_sha256": "1d2eb76d8ff82da1c4a693a1b7c7f4b594089f036126d31c6571a07250756e4f",
+        "nonempty_voxels": 6616,
+        "coordinate_count": 6616,
+        "coordinate_sha256": "1b9b2b02236943f3c22dc9702a848ed3a0f6a31e01a9e24b90c0af9d7e5fe54c",
         "coordinate_unique": true,
         "nonempty_blocks": 0,
         "mean_nb": 0.0,

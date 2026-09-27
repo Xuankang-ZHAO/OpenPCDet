@@ -1,7 +1,8 @@
 # 三种 Block Structuring 方案在 train 000000–000019 上的稳定性与泛化
 
 本文件复现 `feature_map_dram_hash_entry_comparison.md` 在 KITTI `val/000216` 上的口径，
-对 `accdesign/second_rtl_golden_packages/frames` 中的 20 帧补充 golden（`train/000000`–`train/000019`）做相同实验。
+对 filename `000000`–`000019` 做相同实验。
+体素上限是 `kitti_dataset.yaml` 的 `MAX_NUMBER_OF_VOXELS.test=40000`。
 
 - 加载：KITTI FOV（`FOV_POINTS_ONLY=True`），与 golden 导出一致。
 - 模型：hardware-reference INT8 SECOND 3D backbone，checkpoint `checkpoint_epoch_10.pth`。
@@ -10,27 +11,27 @@
 - 上一层 OFM 与下一层 IFM 是同一 feature map，表中只统计一次。
 - Hash entries：固定容量方案等于物化 block 数；两种 Page 方案等于 page 数。
 - 执行时峰值按 IFM 与 OFM 同时驻留求和；DRAM 峰值层与 hash 峰值层可能不同。
-- Generated: `2026-09-17T19:16:34`
+- Generated: `2026-09-27T16:17:18`
 
 ## 20 帧执行时峰值总表
 
-| Frame | 输入体素 | 触达 15000 上限 | 固定容量 DRAM | 固定块 Page DRAM | Proposed DRAM | 固定容量 Hash | 固定块 Page Hash | Proposed Hash | DRAM vs 固定容量 | Hash vs 固定容量 | DRAM vs 固定块 Page | Hash vs 固定块 Page |
+| Frame | 输入体素 | 触达 40000 上限 | 固定容量 DRAM | 固定块 Page DRAM | Proposed DRAM | 固定容量 Hash | 固定块 Page Hash | Proposed Hash | DRAM vs 固定容量 | Hash vs 固定容量 | DRAM vs 固定块 Page | Hash vs 固定块 Page |
 | --- | ---: | :---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `000000` | 15000 | Y | 45.1126 | 5.0781 | 6.8818 | 3285 | 3441 | 2298 | 84.75% | 30.05% | -35.52% | 33.22% |
-| `000001` | 15000 | Y | 118.2678 | 12.6416 | 12.8232 | 8612 | 8630 | 4267 | 89.16% | 50.45% | -1.44% | 50.56% |
+| `000000` | 16811 | N | 48.9166 | 5.7617 | 7.4048 | 3562 | 3720 | 2502 | 84.86% | 29.76% | -28.52% | 32.74% |
+| `000001` | 15463 | N | 119.0094 | 12.7222 | 12.9463 | 8666 | 8685 | 4318 | 89.12% | 50.17% | -1.76% | 50.28% |
 | `000002` | 14809 | N | 65.9592 | 7.3682 | 6.1787 | 4803 | 5030 | 1820 | 90.63% | 62.11% | 16.14% | 63.82% |
 | `000003` | 14584 | N | 60.7819 | 6.7485 | 6.6138 | 4426 | 4607 | 1931 | 89.12% | 56.37% | 2.00% | 58.09% |
-| `000004` | 15000 | Y | 132.1930 | 14.7998 | 13.8340 | 9626 | 9626 | 4490 | 89.54% | 53.36% | 6.53% | 53.36% |
-| `000005` | 15000 | Y | 130.1193 | 13.8794 | 13.6978 | 9475 | 9475 | 4330 | 89.47% | 54.30% | 1.31% | 54.30% |
-| `000006` | 15000 | Y | 89.5660 | 9.6211 | 12.0674 | 6522 | 6568 | 3958 | 86.53% | 39.31% | -25.43% | 39.74% |
-| `000007` | 15000 | Y | 144.1269 | 15.3882 | 14.5283 | 10495 | 10505 | 4763 | 89.92% | 54.62% | 5.59% | 54.66% |
+| `000004` | 15365 | N | 132.7835 | 14.9170 | 13.9438 | 9669 | 9669 | 4531 | 89.50% | 53.14% | 6.52% | 53.14% |
+| `000005` | 16827 | N | 133.5114 | 14.2412 | 14.1812 | 9722 | 9722 | 4521 | 89.38% | 53.50% | 0.42% | 53.50% |
+| `000006` | 15023 | N | 89.5660 | 9.6211 | 12.0674 | 6522 | 6568 | 3960 | 86.53% | 39.28% | -25.43% | 39.71% |
+| `000007` | 15891 | N | 145.9946 | 15.5918 | 14.7393 | 10631 | 10644 | 4852 | 89.90% | 54.36% | 5.47% | 54.42% |
 | `000008` | 13081 | N | 68.1427 | 7.3887 | 9.0439 | 4962 | 5044 | 2600 | 86.73% | 47.60% | -22.40% | 48.45% |
-| `000009` | 15000 | Y | 119.7510 | 12.9297 | 13.0254 | 8720 | 8720 | 4471 | 89.12% | 48.73% | -0.74% | 48.73% |
+| `000009` | 15688 | N | 120.9869 | 13.1641 | 13.2275 | 8810 | 8810 | 4554 | 89.07% | 48.31% | -0.48% | 48.31% |
 | `000010` | 13094 | N | 93.0817 | 9.9551 | 10.3184 | 6778 | 6796 | 3648 | 88.91% | 46.18% | -3.65% | 46.32% |
-| `000011` | 15000 | Y | 92.8894 | 9.9463 | 10.3623 | 6764 | 6790 | 3546 | 88.84% | 47.58% | -4.18% | 47.78% |
+| `000011` | 16158 | N | 95.0317 | 10.1748 | 10.6084 | 6920 | 6946 | 3649 | 88.84% | 47.27% | -4.26% | 47.47% |
 | `000012` | 14839 | N | 144.9921 | 15.4863 | 13.5791 | 10558 | 10572 | 3332 | 90.63% | 68.44% | 12.32% | 68.48% |
-| `000013` | 15000 | Y | 145.5276 | 15.5420 | 15.3281 | 10597 | 10610 | 4639 | 89.47% | 56.22% | 1.38% | 56.28% |
-| `000014` | 15000 | Y | 145.1569 | 15.4966 | 15.8730 | 10570 | 10579 | 4736 | 89.06% | 55.19% | -2.43% | 55.23% |
+| `000013` | 17054 | N | 150.4715 | 16.0854 | 15.7412 | 10957 | 10981 | 4798 | 89.54% | 56.21% | 2.14% | 56.31% |
+| `000014` | 17045 | N | 149.2905 | 15.9375 | 16.3828 | 10871 | 10880 | 4927 | 89.03% | 54.68% | -2.79% | 54.72% |
 | `000015` | 14241 | N | 73.0728 | 8.3691 | 10.7051 | 5321 | 5409 | 3016 | 85.35% | 43.32% | -27.91% | 44.24% |
 | `000016` | 14000 | N | 95.5948 | 10.2524 | 10.7051 | 6961 | 6999 | 3646 | 88.80% | 47.62% | -4.41% | 47.91% |
 | `000017` | 14853 | N | 116.7023 | 13.0469 | 13.3374 | 8498 | 8505 | 4476 | 88.57% | 47.33% | -2.23% | 47.37% |
@@ -41,16 +42,16 @@
 
 | 指标 | 最小 | 平均 | 最大 |
 | --- | ---: | ---: | ---: |
-| DRAM vs 固定容量 | 84.75% | 88.70% | 90.63% |
-| Hash vs 固定容量 | 30.05% | 51.55% | 68.44% |
-| DRAM vs 固定块 Page | -35.52% | -3.75% | 16.14% |
-| Hash vs 固定块 Page | 33.22% | 52.09% | 68.48% |
+| DRAM vs 固定容量 | 84.86% | 88.70% | 90.63% |
+| Hash vs 固定容量 | 29.76% | 51.39% | 68.44% |
+| DRAM vs 固定块 Page | -28.52% | -3.44% | 16.14% |
+| Hash vs 固定块 Page | 32.74% | 51.93% | 68.48% |
 
 ## Frame `train/000000`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000000.bin`
-- 输入体素: `15000`，坐标 SHA-256 `3c16a43fa65b3c311f61e432e66915b5f60b3a4d65e8723c96015c7971b69bb6`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `16811`，坐标 SHA-256 `9da7a8888976ef73913079df66c2171f09b08adc43a97da1ed77f6134f6e5618`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -80,41 +81,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>10.9245</td><td>1591</td><td>1591</td><td>2</td><td>1.6260</td><td>1591</td><td>1665</td><td>2</td><td>0.8848</td><td>757</td><td>906</td><td>34</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>23.2635</td><td>1694</td><td>1694</td><td>0</td><td>2.6016</td><td>1694</td><td>1776</td><td>0</td><td>1.2935</td><td>744</td><td>883</td><td>29</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>21.8491</td><td>1591</td><td>1591</td><td>2</td><td>2.4390</td><td>1591</td><td>1665</td><td>2</td><td>1.3271</td><td>757</td><td>906</td><td>34</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>19290</td><td>32</td><td>15.5869</td><td>681</td><td>681</td><td>77</td><td>2.5391</td><td>681</td><td>1040</td><td>77</td><td>2.7051</td><td>765</td><td>1108</td><td>66</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>19290</td><td>32</td><td>15.5869</td><td>681</td><td>681</td><td>77</td><td>2.5391</td><td>681</td><td>1040</td><td>77</td><td>2.7051</td><td>765</td><td>1108</td><td>66</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>19290</td><td>32</td><td>14.1220</td><td>617</td><td>617</td><td>78</td><td>2.3560</td><td>617</td><td>965</td><td>78</td><td>2.9053</td><td>826</td><td>1190</td><td>69</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>9910</td><td>64</td><td>8.3221</td><td>202</td><td>202</td><td>56</td><td>1.7710</td><td>202</td><td>403</td><td>56</td><td>3.4409</td><td>617</td><td>783</td><td>26</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>9910</td><td>64</td><td>8.3221</td><td>202</td><td>202</td><td>56</td><td>1.7710</td><td>202</td><td>403</td><td>56</td><td>3.4409</td><td>617</td><td>783</td><td>26</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>9910</td><td>64</td><td>8.6929</td><td>211</td><td>211</td><td>55</td><td>1.7886</td><td>211</td><td>407</td><td>55</td><td>3.4189</td><td>596</td><td>778</td><td>35</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>3337</td><td>64</td><td>2.2659</td><td>55</td><td>55</td><td>13</td><td>0.4746</td><td>55</td><td>108</td><td>13</td><td>1.0679</td><td>183</td><td>243</td><td>2</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>3337</td><td>64</td><td>2.2659</td><td>55</td><td>55</td><td>13</td><td>0.4746</td><td>55</td><td>108</td><td>13</td><td>1.0679</td><td>183</td><td>243</td><td>2</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>3337</td><td>64</td><td>2.0187</td><td>49</td><td>49</td><td>12</td><td>0.3779</td><td>49</td><td>86</td><td>12</td><td>0.6328</td><td>144</td><td>144</td><td>0</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>23.2635</strong></td><td><strong>1694</strong></td><td><strong>1694</strong></td><td><strong>78</strong></td><td><strong>2.6016</strong></td><td><strong>1694</strong></td><td><strong>1776</strong></td><td><strong>78</strong></td><td><strong>3.4409</strong></td><td><strong>826</strong></td><td><strong>1190</strong></td><td><strong>69</strong></td></tr>
+<tr><td>初始输入</td><td>16811</td><td>4</td><td>11.5700</td><td>1685</td><td>1685</td><td>2</td><td>1.7188</td><td>1685</td><td>1760</td><td>2</td><td>1.0361</td><td>911</td><td>1061</td><td>34</td></tr>
+<tr><td><code>conv_input.0</code></td><td>16811</td><td>16</td><td>25.7767</td><td>1877</td><td>1877</td><td>0</td><td>2.8711</td><td>1877</td><td>1960</td><td>0</td><td>1.5205</td><td>898</td><td>1038</td><td>29</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>16811</td><td>16</td><td>23.1400</td><td>1685</td><td>1685</td><td>2</td><td>2.5781</td><td>1685</td><td>1760</td><td>2</td><td>1.5542</td><td>911</td><td>1061</td><td>34</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>22003</td><td>32</td><td>16.6168</td><td>726</td><td>726</td><td>120</td><td>2.8809</td><td>726</td><td>1180</td><td>120</td><td>2.9004</td><td>799</td><td>1188</td><td>75</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>22003</td><td>32</td><td>16.6168</td><td>726</td><td>726</td><td>120</td><td>2.8809</td><td>726</td><td>1180</td><td>120</td><td>2.9004</td><td>799</td><td>1188</td><td>75</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>22003</td><td>32</td><td>15.0375</td><td>657</td><td>657</td><td>98</td><td>2.6099</td><td>657</td><td>1069</td><td>98</td><td>3.2080</td><td>892</td><td>1314</td><td>77</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>11047</td><td>64</td><td>8.5281</td><td>207</td><td>207</td><td>60</td><td>1.8940</td><td>207</td><td>431</td><td>60</td><td>3.6958</td><td>644</td><td>841</td><td>26</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>11047</td><td>64</td><td>8.5281</td><td>207</td><td>207</td><td>60</td><td>1.8940</td><td>207</td><td>431</td><td>60</td><td>3.6958</td><td>644</td><td>841</td><td>26</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>11047</td><td>64</td><td>8.8989</td><td>216</td><td>216</td><td>60</td><td>1.9072</td><td>216</td><td>434</td><td>60</td><td>3.7090</td><td>629</td><td>844</td><td>35</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>3609</td><td>64</td><td>2.3483</td><td>57</td><td>57</td><td>16</td><td>0.5186</td><td>57</td><td>118</td><td>16</td><td>1.1118</td><td>184</td><td>253</td><td>2</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>3609</td><td>64</td><td>2.3483</td><td>57</td><td>57</td><td>16</td><td>0.5186</td><td>57</td><td>118</td><td>16</td><td>1.1118</td><td>184</td><td>253</td><td>2</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>3609</td><td>64</td><td>2.0599</td><td>50</td><td>50</td><td>13</td><td>0.3999</td><td>50</td><td>91</td><td>13</td><td>0.6592</td><td>150</td><td>150</td><td>0</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>25.7767</strong></td><td><strong>1877</strong></td><td><strong>1877</strong></td><td><strong>120</strong></td><td><strong>2.8809</strong></td><td><strong>1877</strong></td><td><strong>1960</strong></td><td><strong>120</strong></td><td><strong>3.7090</strong></td><td><strong>911</strong></td><td><strong>1314</strong></td><td><strong>77</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **84.75%**，将 hash entry 峰值降低 **30.05%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-35.52%**，将 hash entry 峰值降低 **33.22%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **84.86%**，将 hash entry 峰值降低 **29.76%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-28.52%**，将 hash entry 峰值降低 **32.74%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 45.1126 | 5.0781 | 6.8818 |
-| DRAM 峰值层 | `conv1.0.0` | `conv2.1.0` | `conv3.1.0` |
-| Hash entries | 3285 | 3441 | 2298 |
+| DRAM / MiB | 48.9166 | 5.7617 | 7.4048 |
+| DRAM 峰值层 | `conv1.0.0` | `conv2.1.0` | `conv3.2.0` |
+| Hash entries | 3562 | 3720 | 2502 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000001`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000001.bin`
-- 输入体素: `15000`，坐标 SHA-256 `f78d40a815f1f6366582c8214be119dc668b37f573b44391b5d72fb75ead8189`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `15463`，坐标 SHA-256 `78aa1f37c9232cbb82917306338f7312d135b814393c932042e77823abfe36b4`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -144,41 +145,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>28.6743</td><td>4176</td><td>4176</td><td>0</td><td>4.0879</td><td>4176</td><td>4186</td><td>0</td><td>1.1865</td><td>1175</td><td>1215</td><td>5</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>60.9192</td><td>4436</td><td>4436</td><td>0</td><td>6.5098</td><td>4436</td><td>4444</td><td>0</td><td>1.7300</td><td>1148</td><td>1181</td><td>5</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>57.3486</td><td>4176</td><td>4176</td><td>0</td><td>6.1318</td><td>4176</td><td>4186</td><td>0</td><td>1.7798</td><td>1175</td><td>1215</td><td>5</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>29804</td><td>32</td><td>45.4330</td><td>1985</td><td>1985</td><td>83</td><td>5.8423</td><td>1985</td><td>2393</td><td>83</td><td>4.9707</td><td>1723</td><td>2036</td><td>53</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>29804</td><td>32</td><td>45.4330</td><td>1985</td><td>1985</td><td>83</td><td>5.8423</td><td>1985</td><td>2393</td><td>83</td><td>4.9707</td><td>1723</td><td>2036</td><td>53</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>29804</td><td>32</td><td>42.6178</td><td>1862</td><td>1862</td><td>61</td><td>5.3125</td><td>1862</td><td>2176</td><td>61</td><td>5.4468</td><td>1903</td><td>2231</td><td>52</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>21705</td><td>64</td><td>22.7417</td><td>552</td><td>552</td><td>83</td><td>3.8364</td><td>552</td><td>873</td><td>83</td><td>6.4116</td><td>1254</td><td>1459</td><td>31</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>21705</td><td>64</td><td>22.7417</td><td>552</td><td>552</td><td>83</td><td>3.8364</td><td>552</td><td>873</td><td>83</td><td>6.4116</td><td>1254</td><td>1459</td><td>31</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>21705</td><td>64</td><td>23.0301</td><td>559</td><td>559</td><td>81</td><td>3.8496</td><td>559</td><td>876</td><td>81</td><td>6.3457</td><td>1243</td><td>1444</td><td>27</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>10564</td><td>64</td><td>5.6442</td><td>137</td><td>137</td><td>46</td><td>1.3359</td><td>137</td><td>304</td><td>46</td><td>2.4741</td><td>414</td><td>563</td><td>10</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>10564</td><td>64</td><td>5.6442</td><td>137</td><td>137</td><td>46</td><td>1.3359</td><td>137</td><td>304</td><td>46</td><td>2.4741</td><td>414</td><td>563</td><td>10</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>10564</td><td>64</td><td>5.3970</td><td>131</td><td>131</td><td>31</td><td>1.0415</td><td>131</td><td>237</td><td>31</td><td>1.7666</td><td>386</td><td>402</td><td>3</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>60.9192</strong></td><td><strong>4436</strong></td><td><strong>4436</strong></td><td><strong>83</strong></td><td><strong>6.5098</strong></td><td><strong>4436</strong></td><td><strong>4444</strong></td><td><strong>83</strong></td><td><strong>6.4116</strong></td><td><strong>1903</strong></td><td><strong>2231</strong></td><td><strong>53</strong></td></tr>
+<tr><td>初始输入</td><td>15463</td><td>4</td><td>28.8048</td><td>4195</td><td>4195</td><td>0</td><td>4.1074</td><td>4195</td><td>4206</td><td>0</td><td>1.2178</td><td>1207</td><td>1247</td><td>5</td></tr>
+<tr><td><code>conv_input.0</code></td><td>15463</td><td>16</td><td>61.3998</td><td>4471</td><td>4471</td><td>0</td><td>6.5610</td><td>4471</td><td>4479</td><td>0</td><td>1.7783</td><td>1181</td><td>1214</td><td>5</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>15463</td><td>16</td><td>57.6096</td><td>4195</td><td>4195</td><td>0</td><td>6.1611</td><td>4195</td><td>4206</td><td>0</td><td>1.8267</td><td>1207</td><td>1247</td><td>5</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>30502</td><td>32</td><td>45.5704</td><td>1991</td><td>1991</td><td>96</td><td>5.9155</td><td>1991</td><td>2423</td><td>96</td><td>5.0171</td><td>1731</td><td>2055</td><td>55</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>30502</td><td>32</td><td>45.5704</td><td>1991</td><td>1991</td><td>96</td><td>5.9155</td><td>1991</td><td>2423</td><td>96</td><td>5.0171</td><td>1731</td><td>2055</td><td>55</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>30502</td><td>32</td><td>42.6865</td><td>1865</td><td>1865</td><td>66</td><td>5.3613</td><td>1865</td><td>2196</td><td>66</td><td>5.5249</td><td>1919</td><td>2263</td><td>58</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>21973</td><td>64</td><td>22.8653</td><td>555</td><td>555</td><td>83</td><td>3.8760</td><td>555</td><td>882</td><td>83</td><td>6.4731</td><td>1258</td><td>1473</td><td>31</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>21973</td><td>64</td><td>22.8653</td><td>555</td><td>555</td><td>83</td><td>3.8760</td><td>555</td><td>882</td><td>83</td><td>6.4731</td><td>1258</td><td>1473</td><td>31</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>21973</td><td>64</td><td>23.1125</td><td>561</td><td>561</td><td>82</td><td>3.8848</td><td>561</td><td>884</td><td>82</td><td>6.4248</td><td>1251</td><td>1462</td><td>27</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>10632</td><td>64</td><td>5.6442</td><td>137</td><td>137</td><td>46</td><td>1.3359</td><td>137</td><td>304</td><td>46</td><td>2.4873</td><td>414</td><td>566</td><td>10</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>10632</td><td>64</td><td>5.6442</td><td>137</td><td>137</td><td>46</td><td>1.3359</td><td>137</td><td>304</td><td>46</td><td>2.4873</td><td>414</td><td>566</td><td>10</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>10632</td><td>64</td><td>5.3970</td><td>131</td><td>131</td><td>31</td><td>1.0415</td><td>131</td><td>237</td><td>31</td><td>1.7710</td><td>387</td><td>403</td><td>3</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>61.3998</strong></td><td><strong>4471</strong></td><td><strong>4471</strong></td><td><strong>96</strong></td><td><strong>6.5610</strong></td><td><strong>4471</strong></td><td><strong>4479</strong></td><td><strong>96</strong></td><td><strong>6.4731</strong></td><td><strong>1919</strong></td><td><strong>2263</strong></td><td><strong>58</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.16%**，将 hash entry 峰值降低 **50.45%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-1.44%**，将 hash entry 峰值降低 **50.56%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.12%**，将 hash entry 峰值降低 **50.17%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-1.76%**，将 hash entry 峰值降低 **50.28%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 118.2678 | 12.6416 | 12.8232 |
+| DRAM / MiB | 119.0094 | 12.7222 | 12.9463 |
 | DRAM 峰值层 | `conv1.0.0` | `conv1.0.0` | `conv3.1.0` |
-| Hash entries | 8612 | 8630 | 4267 |
+| Hash entries | 8666 | 8685 | 4318 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000002`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000002.bin`
 - 输入体素: `14809`，坐标 SHA-256 `0650175ebc7f42bcd8a3cfdf0f183ce2f54b52935e0b60011e4658624fa606db`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -242,7 +243,7 @@
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000003.bin`
 - 输入体素: `14584`，坐标 SHA-256 `f3515e4c2371a077d4a68f414310b38c95fc33f1e630b74c997f50d909fd8a4c`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -305,8 +306,8 @@
 ## Frame `train/000004`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000004.bin`
-- 输入体素: `15000`，坐标 SHA-256 `3060267669ef71b0d26d10faf2e617e5fd7ecc9d30122d3a61d4d4946b8c3228`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `15365`，坐标 SHA-256 `72cdab0ecc5756247d1dda65a6c0bda1fb1d63a1421a1bb08682f5f74146722c`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -336,41 +337,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>30.1094</td><td>4385</td><td>4385</td><td>0</td><td>4.2822</td><td>4385</td><td>4385</td><td>0</td><td>1.1406</td><td>1146</td><td>1168</td><td>1</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>71.9742</td><td>5241</td><td>5241</td><td>0</td><td>7.6772</td><td>5241</td><td>5241</td><td>0</td><td>1.5747</td><td>1046</td><td>1075</td><td>2</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>60.2188</td><td>4385</td><td>4385</td><td>0</td><td>6.4233</td><td>4385</td><td>4385</td><td>0</td><td>1.7109</td><td>1146</td><td>1168</td><td>1</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>30845</td><td>32</td><td>60.5164</td><td>2644</td><td>2644</td><td>58</td><td>7.3999</td><td>2644</td><td>3031</td><td>58</td><td>4.9146</td><td>1738</td><td>2013</td><td>33</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>30845</td><td>32</td><td>60.5164</td><td>2644</td><td>2644</td><td>58</td><td>7.3999</td><td>2644</td><td>3031</td><td>58</td><td>4.9146</td><td>1738</td><td>2013</td><td>33</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>30845</td><td>32</td><td>49.8505</td><td>2178</td><td>2178</td><td>37</td><td>5.9619</td><td>2178</td><td>2442</td><td>37</td><td>6.0474</td><td>2210</td><td>2477</td><td>31</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>23870</td><td>64</td><td>26.3672</td><td>640</td><td>640</td><td>91</td><td>4.3286</td><td>640</td><td>985</td><td>91</td><td>6.9170</td><td>1375</td><td>1574</td><td>23</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>23870</td><td>64</td><td>26.3672</td><td>640</td><td>640</td><td>91</td><td>4.3286</td><td>640</td><td>985</td><td>91</td><td>6.9170</td><td>1375</td><td>1574</td><td>23</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>23870</td><td>64</td><td>26.4084</td><td>641</td><td>641</td><td>89</td><td>4.3638</td><td>641</td><td>993</td><td>89</td><td>6.9126</td><td>1379</td><td>1573</td><td>24</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>11789</td><td>64</td><td>6.7154</td><td>163</td><td>163</td><td>52</td><td>1.5161</td><td>163</td><td>345</td><td>52</td><td>2.6104</td><td>460</td><td>594</td><td>9</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>11789</td><td>64</td><td>6.7154</td><td>163</td><td>163</td><td>52</td><td>1.5161</td><td>163</td><td>345</td><td>52</td><td>2.6104</td><td>460</td><td>594</td><td>9</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>11789</td><td>64</td><td>6.3446</td><td>154</td><td>154</td><td>33</td><td>1.1646</td><td>154</td><td>265</td><td>33</td><td>1.9688</td><td>421</td><td>448</td><td>3</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>71.9742</strong></td><td><strong>5241</strong></td><td><strong>5241</strong></td><td><strong>91</strong></td><td><strong>7.6772</strong></td><td><strong>5241</strong></td><td><strong>5241</strong></td><td><strong>91</strong></td><td><strong>6.9170</strong></td><td><strong>2210</strong></td><td><strong>2477</strong></td><td><strong>33</strong></td></tr>
+<tr><td>初始输入</td><td>15365</td><td>4</td><td>30.2261</td><td>4402</td><td>4402</td><td>0</td><td>4.2988</td><td>4402</td><td>4402</td><td>0</td><td>1.1650</td><td>1171</td><td>1193</td><td>1</td></tr>
+<tr><td><code>conv_input.0</code></td><td>15365</td><td>16</td><td>72.3312</td><td>5267</td><td>5267</td><td>0</td><td>7.7153</td><td>5267</td><td>5267</td><td>0</td><td>1.6099</td><td>1070</td><td>1099</td><td>2</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>15365</td><td>16</td><td>60.4523</td><td>4402</td><td>4402</td><td>0</td><td>6.4482</td><td>4402</td><td>4402</td><td>0</td><td>1.7476</td><td>1171</td><td>1193</td><td>1</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>31398</td><td>32</td><td>60.6079</td><td>2648</td><td>2648</td><td>70</td><td>7.4585</td><td>2648</td><td>3055</td><td>70</td><td>4.9438</td><td>1744</td><td>2025</td><td>35</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>31398</td><td>32</td><td>60.6079</td><td>2648</td><td>2648</td><td>70</td><td>7.4585</td><td>2648</td><td>3055</td><td>70</td><td>4.9438</td><td>1744</td><td>2025</td><td>35</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>31398</td><td>32</td><td>49.8505</td><td>2178</td><td>2178</td><td>42</td><td>6.0034</td><td>2178</td><td>2459</td><td>42</td><td>6.1182</td><td>2223</td><td>2506</td><td>36</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>24073</td><td>64</td><td>26.4496</td><td>642</td><td>642</td><td>91</td><td>4.3594</td><td>642</td><td>992</td><td>91</td><td>6.9653</td><td>1379</td><td>1585</td><td>23</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>24073</td><td>64</td><td>26.4496</td><td>642</td><td>642</td><td>91</td><td>4.3594</td><td>642</td><td>992</td><td>91</td><td>6.9653</td><td>1379</td><td>1585</td><td>23</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>24073</td><td>64</td><td>26.4908</td><td>643</td><td>643</td><td>89</td><td>4.3813</td><td>643</td><td>997</td><td>89</td><td>6.9785</td><td>1385</td><td>1588</td><td>24</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>11841</td><td>64</td><td>6.7154</td><td>163</td><td>163</td><td>53</td><td>1.5205</td><td>163</td><td>346</td><td>53</td><td>2.6191</td><td>460</td><td>596</td><td>9</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>11841</td><td>64</td><td>6.7154</td><td>163</td><td>163</td><td>53</td><td>1.5205</td><td>163</td><td>346</td><td>53</td><td>2.6191</td><td>460</td><td>596</td><td>9</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>11841</td><td>64</td><td>6.3446</td><td>154</td><td>154</td><td>33</td><td>1.1646</td><td>154</td><td>265</td><td>33</td><td>1.9688</td><td>421</td><td>448</td><td>3</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>72.3312</strong></td><td><strong>5267</strong></td><td><strong>5267</strong></td><td><strong>91</strong></td><td><strong>7.7153</strong></td><td><strong>5267</strong></td><td><strong>5267</strong></td><td><strong>91</strong></td><td><strong>6.9785</strong></td><td><strong>2223</strong></td><td><strong>2506</strong></td><td><strong>36</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.54%**，将 hash entry 峰值降低 **53.36%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **6.53%**，将 hash entry 峰值降低 **53.36%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.50%**，将 hash entry 峰值降低 **53.14%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **6.52%**，将 hash entry 峰值降低 **53.14%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 132.1930 | 14.7998 | 13.8340 |
-| DRAM 峰值层 | `conv1.0.0` | `conv2.1.0` | `conv3.1.0` |
-| Hash entries | 9626 | 9626 | 4490 |
+| DRAM / MiB | 132.7835 | 14.9170 | 13.9438 |
+| DRAM 峰值层 | `conv1.0.0` | `conv2.1.0` | `conv3.2.0` |
+| Hash entries | 9669 | 9669 | 4531 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000005`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000005.bin`
-- 输入体素: `15000`，坐标 SHA-256 `f1676047e0f763270d21f61428a6702422fe4e660b146d368c10d215c891cbdc`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `16827`，坐标 SHA-256 `dd839a8ee7cbe8bf91ea650ad9c9696df7840f299efc659e02b2930d8325f691`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -400,41 +401,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>31.2080</td><td>4545</td><td>4545</td><td>0</td><td>4.4385</td><td>4545</td><td>4545</td><td>0</td><td>1.0713</td><td>1057</td><td>1097</td><td>6</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>67.7032</td><td>4930</td><td>4930</td><td>0</td><td>7.2217</td><td>4930</td><td>4930</td><td>0</td><td>1.5439</td><td>1009</td><td>1054</td><td>7</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>62.4161</td><td>4545</td><td>4545</td><td>0</td><td>6.6577</td><td>4545</td><td>4545</td><td>0</td><td>1.6069</td><td>1057</td><td>1097</td><td>6</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>33997</td><td>32</td><td>50.8804</td><td>2223</td><td>2223</td><td>56</td><td>6.4868</td><td>2223</td><td>2657</td><td>56</td><td>4.9463</td><td>1701</td><td>2026</td><td>39</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>33997</td><td>32</td><td>50.8804</td><td>2223</td><td>2223</td><td>56</td><td>6.4868</td><td>2223</td><td>2657</td><td>56</td><td>4.9463</td><td>1701</td><td>2026</td><td>39</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>33997</td><td>32</td><td>47.3328</td><td>2068</td><td>2068</td><td>50</td><td>5.9131</td><td>2068</td><td>2422</td><td>50</td><td>5.6250</td><td>1935</td><td>2304</td><td>40</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>25085</td><td>64</td><td>25.9964</td><td>631</td><td>631</td><td>116</td><td>4.5659</td><td>631</td><td>1039</td><td>116</td><td>6.7720</td><td>1276</td><td>1541</td><td>30</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>25085</td><td>64</td><td>25.9964</td><td>631</td><td>631</td><td>116</td><td>4.5659</td><td>631</td><td>1039</td><td>116</td><td>6.7720</td><td>1276</td><td>1541</td><td>30</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>25085</td><td>64</td><td>26.2024</td><td>636</td><td>636</td><td>115</td><td>4.6099</td><td>636</td><td>1049</td><td>115</td><td>6.9258</td><td>1292</td><td>1576</td><td>34</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>11267</td><td>64</td><td>6.1798</td><td>150</td><td>150</td><td>49</td><td>1.4722</td><td>150</td><td>335</td><td>49</td><td>2.6411</td><td>429</td><td>601</td><td>7</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>11267</td><td>64</td><td>6.1798</td><td>150</td><td>150</td><td>49</td><td>1.4722</td><td>150</td><td>335</td><td>49</td><td>2.6411</td><td>429</td><td>601</td><td>7</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>11267</td><td>64</td><td>5.8090</td><td>141</td><td>141</td><td>34</td><td>1.1338</td><td>141</td><td>258</td><td>34</td><td>1.7974</td><td>392</td><td>409</td><td>1</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>67.7032</strong></td><td><strong>4930</strong></td><td><strong>4930</strong></td><td><strong>116</strong></td><td><strong>7.2217</strong></td><td><strong>4930</strong></td><td><strong>4930</strong></td><td><strong>116</strong></td><td><strong>6.9258</strong></td><td><strong>1935</strong></td><td><strong>2304</strong></td><td><strong>40</strong></td></tr>
+<tr><td>初始输入</td><td>16827</td><td>4</td><td>31.8535</td><td>4639</td><td>4639</td><td>0</td><td>4.5303</td><td>4639</td><td>4639</td><td>0</td><td>1.1973</td><td>1186</td><td>1226</td><td>6</td></tr>
+<tr><td><code>conv_input.0</code></td><td>16827</td><td>16</td><td>69.8044</td><td>5083</td><td>5083</td><td>0</td><td>7.4458</td><td>5083</td><td>5083</td><td>0</td><td>1.7300</td><td>1136</td><td>1181</td><td>7</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>16827</td><td>16</td><td>63.7070</td><td>4639</td><td>4639</td><td>0</td><td>6.7954</td><td>4639</td><td>4639</td><td>0</td><td>1.7959</td><td>1186</td><td>1226</td><td>6</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>36597</td><td>32</td><td>51.5900</td><td>2254</td><td>2254</td><td>100</td><td>6.7871</td><td>2254</td><td>2780</td><td>100</td><td>5.1294</td><td>1731</td><td>2101</td><td>48</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>36597</td><td>32</td><td>51.5900</td><td>2254</td><td>2254</td><td>100</td><td>6.7871</td><td>2254</td><td>2780</td><td>100</td><td>5.1294</td><td>1731</td><td>2101</td><td>48</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>36597</td><td>32</td><td>48.0652</td><td>2100</td><td>2100</td><td>73</td><td>6.1597</td><td>2100</td><td>2523</td><td>73</td><td>5.9082</td><td>1993</td><td>2420</td><td>51</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>26079</td><td>64</td><td>26.2436</td><td>637</td><td>637</td><td>121</td><td>4.6934</td><td>637</td><td>1068</td><td>121</td><td>7.0093</td><td>1301</td><td>1595</td><td>30</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>26079</td><td>64</td><td>26.2436</td><td>637</td><td>637</td><td>121</td><td>4.6934</td><td>637</td><td>1068</td><td>121</td><td>7.0093</td><td>1301</td><td>1595</td><td>30</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>26079</td><td>64</td><td>26.2848</td><td>638</td><td>638</td><td>121</td><td>4.7065</td><td>638</td><td>1071</td><td>121</td><td>7.1719</td><td>1321</td><td>1632</td><td>34</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>11517</td><td>64</td><td>6.1798</td><td>150</td><td>150</td><td>51</td><td>1.4897</td><td>150</td><td>339</td><td>51</td><td>2.6982</td><td>431</td><td>614</td><td>7</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>11517</td><td>64</td><td>6.1798</td><td>150</td><td>150</td><td>51</td><td>1.4897</td><td>150</td><td>339</td><td>51</td><td>2.6982</td><td>431</td><td>614</td><td>7</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>11517</td><td>64</td><td>5.8090</td><td>141</td><td>141</td><td>34</td><td>1.1514</td><td>141</td><td>262</td><td>34</td><td>1.8237</td><td>398</td><td>415</td><td>1</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>69.8044</strong></td><td><strong>5083</strong></td><td><strong>5083</strong></td><td><strong>121</strong></td><td><strong>7.4458</strong></td><td><strong>5083</strong></td><td><strong>5083</strong></td><td><strong>121</strong></td><td><strong>7.1719</strong></td><td><strong>1993</strong></td><td><strong>2420</strong></td><td><strong>51</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.47%**，将 hash entry 峰值降低 **54.30%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **1.31%**，将 hash entry 峰值降低 **54.30%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.38%**，将 hash entry 峰值降低 **53.50%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **0.42%**，将 hash entry 峰值降低 **53.50%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 130.1193 | 13.8794 | 13.6978 |
+| DRAM / MiB | 133.5114 | 14.2412 | 14.1812 |
 | DRAM 峰值层 | `conv1.0.0` | `conv1.0.0` | `conv3.2.0` |
-| Hash entries | 9475 | 9475 | 4330 |
+| Hash entries | 9722 | 9722 | 4521 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000006`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000006.bin`
-- 输入体素: `15000`，坐标 SHA-256 `1ab6c458d412224b36b4bab68090ed6ec15d7ccc2ab3360514fea4e10b496917`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `15023`，坐标 SHA-256 `c2c882c22fa59bc15d97909043ee58d88605ad6c3db51472734b99b52cf5419d`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -464,26 +465,26 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>22.1718</td><td>3229</td><td>3229</td><td>0</td><td>3.1758</td><td>3229</td><td>3252</td><td>0</td><td>1.2451</td><td>1214</td><td>1275</td><td>16</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>45.2225</td><td>3293</td><td>3293</td><td>0</td><td>4.8574</td><td>3293</td><td>3316</td><td>0</td><td>1.7593</td><td>1145</td><td>1201</td><td>16</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>44.3436</td><td>3229</td><td>3229</td><td>0</td><td>4.7637</td><td>3229</td><td>3252</td><td>0</td><td>1.8677</td><td>1214</td><td>1275</td><td>16</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>24839</td><td>32</td><td>38.7497</td><td>1693</td><td>1693</td><td>62</td><td>4.7461</td><td>1693</td><td>1944</td><td>62</td><td>4.7144</td><td>1699</td><td>1931</td><td>50</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>24839</td><td>32</td><td>38.7497</td><td>1693</td><td>1693</td><td>62</td><td>4.7461</td><td>1693</td><td>1944</td><td>62</td><td>4.7144</td><td>1699</td><td>1931</td><td>50</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>24839</td><td>32</td><td>32.7072</td><td>1429</td><td>1429</td><td>46</td><td>4.0039</td><td>1429</td><td>1640</td><td>46</td><td>4.9487</td><td>1777</td><td>2027</td><td>51</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>17762</td><td>64</td><td>24.1425</td><td>586</td><td>586</td><td>61</td><td>3.6255</td><td>586</td><td>825</td><td>61</td><td>6.0337</td><td>1232</td><td>1373</td><td>9</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>17762</td><td>64</td><td>24.1425</td><td>586</td><td>586</td><td>61</td><td>3.6255</td><td>586</td><td>825</td><td>61</td><td>6.0337</td><td>1232</td><td>1373</td><td>9</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>17762</td><td>64</td><td>24.0189</td><td>583</td><td>583</td><td>59</td><td>3.6035</td><td>583</td><td>820</td><td>59</td><td>5.9722</td><td>1228</td><td>1359</td><td>9</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>8531</td><td>64</td><td>6.3446</td><td>154</td><td>154</td><td>37</td><td>1.2437</td><td>154</td><td>283</td><td>37</td><td>2.2896</td><td>419</td><td>521</td><td>1</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>8531</td><td>64</td><td>6.3446</td><td>154</td><td>154</td><td>37</td><td>1.2437</td><td>154</td><td>283</td><td>37</td><td>2.2896</td><td>419</td><td>521</td><td>1</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>8531</td><td>64</td><td>5.8090</td><td>141</td><td>141</td><td>21</td><td>0.9800</td><td>141</td><td>223</td><td>21</td><td>1.6436</td><td>367</td><td>374</td><td>0</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>45.2225</strong></td><td><strong>3293</strong></td><td><strong>3293</strong></td><td><strong>62</strong></td><td><strong>4.8574</strong></td><td><strong>3293</strong></td><td><strong>3316</strong></td><td><strong>62</strong></td><td><strong>6.0337</strong></td><td><strong>1777</strong></td><td><strong>2027</strong></td><td><strong>51</strong></td></tr>
+<tr><td>初始输入</td><td>15023</td><td>4</td><td>22.1718</td><td>3229</td><td>3229</td><td>0</td><td>3.1758</td><td>3229</td><td>3252</td><td>0</td><td>1.2461</td><td>1215</td><td>1276</td><td>16</td></tr>
+<tr><td><code>conv_input.0</code></td><td>15023</td><td>16</td><td>45.2225</td><td>3293</td><td>3293</td><td>0</td><td>4.8574</td><td>3293</td><td>3316</td><td>0</td><td>1.7593</td><td>1145</td><td>1201</td><td>16</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>15023</td><td>16</td><td>44.3436</td><td>3229</td><td>3229</td><td>0</td><td>4.7637</td><td>3229</td><td>3252</td><td>0</td><td>1.8691</td><td>1215</td><td>1276</td><td>16</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>24877</td><td>32</td><td>38.7497</td><td>1693</td><td>1693</td><td>64</td><td>4.7559</td><td>1693</td><td>1948</td><td>64</td><td>4.7144</td><td>1699</td><td>1931</td><td>50</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>24877</td><td>32</td><td>38.7497</td><td>1693</td><td>1693</td><td>64</td><td>4.7559</td><td>1693</td><td>1948</td><td>64</td><td>4.7144</td><td>1699</td><td>1931</td><td>50</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>24877</td><td>32</td><td>32.7072</td><td>1429</td><td>1429</td><td>47</td><td>4.0088</td><td>1429</td><td>1642</td><td>47</td><td>4.9536</td><td>1777</td><td>2029</td><td>52</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>17770</td><td>64</td><td>24.1425</td><td>586</td><td>586</td><td>61</td><td>3.6255</td><td>586</td><td>825</td><td>61</td><td>6.0337</td><td>1232</td><td>1373</td><td>9</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>17770</td><td>64</td><td>24.1425</td><td>586</td><td>586</td><td>61</td><td>3.6255</td><td>586</td><td>825</td><td>61</td><td>6.0337</td><td>1232</td><td>1373</td><td>9</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>17770</td><td>64</td><td>24.0189</td><td>583</td><td>583</td><td>59</td><td>3.6035</td><td>583</td><td>820</td><td>59</td><td>5.9766</td><td>1228</td><td>1360</td><td>9</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>8533</td><td>64</td><td>6.3446</td><td>154</td><td>154</td><td>37</td><td>1.2437</td><td>154</td><td>283</td><td>37</td><td>2.2896</td><td>419</td><td>521</td><td>1</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>8533</td><td>64</td><td>6.3446</td><td>154</td><td>154</td><td>37</td><td>1.2437</td><td>154</td><td>283</td><td>37</td><td>2.2896</td><td>419</td><td>521</td><td>1</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>8533</td><td>64</td><td>5.8090</td><td>141</td><td>141</td><td>21</td><td>0.9800</td><td>141</td><td>223</td><td>21</td><td>1.6436</td><td>367</td><td>374</td><td>0</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>45.2225</strong></td><td><strong>3293</strong></td><td><strong>3293</strong></td><td><strong>64</strong></td><td><strong>4.8574</strong></td><td><strong>3293</strong></td><td><strong>3316</strong></td><td><strong>64</strong></td><td><strong>6.0337</strong></td><td><strong>1777</strong></td><td><strong>2029</strong></td><td><strong>52</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **86.53%**，将 hash entry 峰值降低 **39.31%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-25.43%**，将 hash entry 峰值降低 **39.74%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **86.53%**，将 hash entry 峰值降低 **39.28%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-25.43%**，将 hash entry 峰值降低 **39.71%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
@@ -491,14 +492,14 @@
 | --- | ---: | ---: | ---: |
 | DRAM / MiB | 89.5660 | 9.6211 | 12.0674 |
 | DRAM 峰值层 | `conv1.0.0` | `conv1.0.0` | `conv3.1.0` |
-| Hash entries | 6522 | 6568 | 3958 |
+| Hash entries | 6522 | 6568 | 3960 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000007`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000007.bin`
-- 输入体素: `15000`，坐标 SHA-256 `b3e2b2d7a6aa77595bf0022143c202224d8087e84aeb6c70529c84b8d2a04b8a`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `15891`，坐标 SHA-256 `0cb15a4f0a7447d45081a07c3d2836edd24fbeb57f55764aa46e5bc850524baf`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -528,41 +529,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>33.6594</td><td>4902</td><td>4902</td><td>0</td><td>4.7920</td><td>4902</td><td>4907</td><td>0</td><td>1.2598</td><td>1267</td><td>1290</td><td>2</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>76.8082</td><td>5593</td><td>5593</td><td>1</td><td>8.2002</td><td>5593</td><td>5598</td><td>1</td><td>1.8208</td><td>1222</td><td>1243</td><td>2</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>67.3187</td><td>4902</td><td>4902</td><td>0</td><td>7.1880</td><td>4902</td><td>4907</td><td>0</td><td>1.8896</td><td>1267</td><td>1290</td><td>2</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>32168</td><td>32</td><td>61.2946</td><td>2678</td><td>2678</td><td>44</td><td>7.3340</td><td>2678</td><td>3004</td><td>44</td><td>5.1953</td><td>1880</td><td>2128</td><td>35</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>32168</td><td>32</td><td>61.2946</td><td>2678</td><td>2678</td><td>44</td><td>7.3340</td><td>2678</td><td>3004</td><td>44</td><td>5.1953</td><td>1880</td><td>2128</td><td>35</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>32168</td><td>32</td><td>51.7044</td><td>2259</td><td>2259</td><td>30</td><td>6.1108</td><td>2259</td><td>2503</td><td>30</td><td>6.4331</td><td>2371</td><td>2635</td><td>31</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>26027</td><td>64</td><td>28.6331</td><td>695</td><td>695</td><td>86</td><td>4.6450</td><td>695</td><td>1057</td><td>86</td><td>7.2642</td><td>1422</td><td>1653</td><td>33</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>26027</td><td>64</td><td>28.6331</td><td>695</td><td>695</td><td>86</td><td>4.6450</td><td>695</td><td>1057</td><td>86</td><td>7.2642</td><td>1422</td><td>1653</td><td>33</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>26027</td><td>64</td><td>28.7979</td><td>699</td><td>699</td><td>80</td><td>4.6846</td><td>699</td><td>1066</td><td>80</td><td>7.1675</td><td>1406</td><td>1631</td><td>31</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>12602</td><td>64</td><td>7.6218</td><td>185</td><td>185</td><td>56</td><td>1.7051</td><td>185</td><td>388</td><td>56</td><td>2.8037</td><td>478</td><td>638</td><td>12</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>12602</td><td>64</td><td>7.6218</td><td>185</td><td>185</td><td>56</td><td>1.7051</td><td>185</td><td>388</td><td>56</td><td>2.8037</td><td>478</td><td>638</td><td>12</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>12602</td><td>64</td><td>7.3746</td><td>179</td><td>179</td><td>33</td><td>1.3052</td><td>179</td><td>297</td><td>33</td><td>2.0479</td><td>441</td><td>466</td><td>0</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>76.8082</strong></td><td><strong>5593</strong></td><td><strong>5593</strong></td><td><strong>86</strong></td><td><strong>8.2002</strong></td><td><strong>5593</strong></td><td><strong>5598</strong></td><td><strong>86</strong></td><td><strong>7.2642</strong></td><td><strong>2371</strong></td><td><strong>2635</strong></td><td><strong>35</strong></td></tr>
+<tr><td>初始输入</td><td>15891</td><td>4</td><td>34.0851</td><td>4964</td><td>4964</td><td>0</td><td>4.8535</td><td>4964</td><td>4970</td><td>0</td><td>1.3223</td><td>1329</td><td>1354</td><td>2</td></tr>
+<tr><td><code>conv_input.0</code></td><td>15891</td><td>16</td><td>77.8244</td><td>5667</td><td>5667</td><td>1</td><td>8.3115</td><td>5667</td><td>5674</td><td>1</td><td>1.9102</td><td>1281</td><td>1304</td><td>2</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>15891</td><td>16</td><td>68.1702</td><td>4964</td><td>4964</td><td>0</td><td>7.2803</td><td>4964</td><td>4970</td><td>0</td><td>1.9834</td><td>1329</td><td>1354</td><td>2</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>33225</td><td>32</td><td>61.5234</td><td>2688</td><td>2688</td><td>59</td><td>7.4463</td><td>2688</td><td>3050</td><td>59</td><td>5.2808</td><td>1897</td><td>2163</td><td>38</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>33225</td><td>32</td><td>61.5234</td><td>2688</td><td>2688</td><td>59</td><td>7.4463</td><td>2688</td><td>3050</td><td>59</td><td>5.2808</td><td>1897</td><td>2163</td><td>38</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>33225</td><td>32</td><td>52.0020</td><td>2272</td><td>2272</td><td>36</td><td>6.2109</td><td>2272</td><td>2544</td><td>36</td><td>6.5649</td><td>2403</td><td>2689</td><td>35</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>26459</td><td>64</td><td>28.7567</td><td>698</td><td>698</td><td>88</td><td>4.6934</td><td>698</td><td>1068</td><td>88</td><td>7.3696</td><td>1434</td><td>1677</td><td>33</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>26459</td><td>64</td><td>28.7567</td><td>698</td><td>698</td><td>88</td><td>4.6934</td><td>698</td><td>1068</td><td>88</td><td>7.3696</td><td>1434</td><td>1677</td><td>33</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>26459</td><td>64</td><td>28.7979</td><td>699</td><td>699</td><td>82</td><td>4.7197</td><td>699</td><td>1074</td><td>82</td><td>7.2949</td><td>1422</td><td>1660</td><td>31</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>12723</td><td>64</td><td>7.6218</td><td>185</td><td>185</td><td>58</td><td>1.7139</td><td>185</td><td>390</td><td>58</td><td>2.8301</td><td>479</td><td>644</td><td>12</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>12723</td><td>64</td><td>7.6218</td><td>185</td><td>185</td><td>58</td><td>1.7139</td><td>185</td><td>390</td><td>58</td><td>2.8301</td><td>479</td><td>644</td><td>12</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>12723</td><td>64</td><td>7.3746</td><td>179</td><td>179</td><td>33</td><td>1.3140</td><td>179</td><td>299</td><td>33</td><td>2.0566</td><td>443</td><td>468</td><td>0</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>77.8244</strong></td><td><strong>5667</strong></td><td><strong>5667</strong></td><td><strong>88</strong></td><td><strong>8.3115</strong></td><td><strong>5667</strong></td><td><strong>5674</strong></td><td><strong>88</strong></td><td><strong>7.3696</strong></td><td><strong>2403</strong></td><td><strong>2689</strong></td><td><strong>38</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.92%**，将 hash entry 峰值降低 **54.62%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **5.59%**，将 hash entry 峰值降低 **54.66%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.90%**，将 hash entry 峰值降低 **54.36%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **5.47%**，将 hash entry 峰值降低 **54.42%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 144.1269 | 15.3882 | 14.5283 |
+| DRAM / MiB | 145.9946 | 15.5918 | 14.7393 |
 | DRAM 峰值层 | `conv1.0.0` | `conv1.0.0` | `conv3.1.0` |
-| Hash entries | 10495 | 10505 | 4763 |
+| Hash entries | 10631 | 10644 | 4852 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000008`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000008.bin`
 - 输入体素: `13081`，坐标 SHA-256 `e32d392d967bdaf3a1307b331e9ba3c178033daa4b0533798195fa4aa48a9e04`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -625,8 +626,8 @@
 ## Frame `train/000009`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000009.bin`
-- 输入体素: `15000`，坐标 SHA-256 `25d5851280af78d514a84f314cc16a6f3e50d1ebbb5e048f07e47df8f6946425`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `15688`，坐标 SHA-256 `f0786a3573c850417d67ad9a55c7fb1b6c793ac5be6bed630106ab2d1d3872d1`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -656,41 +657,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>27.2804</td><td>3973</td><td>3973</td><td>0</td><td>3.8799</td><td>3973</td><td>3973</td><td>0</td><td>1.1367</td><td>1143</td><td>1164</td><td>2</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>65.1901</td><td>4747</td><td>4747</td><td>0</td><td>6.9536</td><td>4747</td><td>4747</td><td>0</td><td>1.6304</td><td>1092</td><td>1113</td><td>3</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>54.5609</td><td>3973</td><td>3973</td><td>0</td><td>5.8198</td><td>3973</td><td>3973</td><td>0</td><td>1.7051</td><td>1143</td><td>1164</td><td>2</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>31060</td><td>32</td><td>51.6129</td><td>2255</td><td>2255</td><td>48</td><td>6.4648</td><td>2255</td><td>2648</td><td>48</td><td>4.9243</td><td>1774</td><td>2017</td><td>27</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>31060</td><td>32</td><td>51.6129</td><td>2255</td><td>2255</td><td>48</td><td>6.4648</td><td>2255</td><td>2648</td><td>48</td><td>4.9243</td><td>1774</td><td>2017</td><td>27</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>31060</td><td>32</td><td>43.6707</td><td>1908</td><td>1908</td><td>32</td><td>5.3198</td><td>1908</td><td>2179</td><td>32</td><td>5.9912</td><td>2223</td><td>2454</td><td>29</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>22954</td><td>64</td><td>27.3972</td><td>665</td><td>665</td><td>81</td><td>4.3638</td><td>665</td><td>993</td><td>81</td><td>6.5127</td><td>1344</td><td>1482</td><td>14</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>22954</td><td>64</td><td>27.3972</td><td>665</td><td>665</td><td>81</td><td>4.3638</td><td>665</td><td>993</td><td>81</td><td>6.5127</td><td>1344</td><td>1482</td><td>14</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>22954</td><td>64</td><td>26.8204</td><td>651</td><td>651</td><td>74</td><td>4.2363</td><td>651</td><td>964</td><td>74</td><td>6.4380</td><td>1321</td><td>1465</td><td>12</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>11246</td><td>64</td><td>7.3746</td><td>179</td><td>179</td><td>49</td><td>1.5820</td><td>179</td><td>360</td><td>49</td><td>2.7070</td><td>481</td><td>616</td><td>2</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>11246</td><td>64</td><td>7.3746</td><td>179</td><td>179</td><td>49</td><td>1.5820</td><td>179</td><td>360</td><td>49</td><td>2.7070</td><td>481</td><td>616</td><td>2</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>11246</td><td>64</td><td>6.7566</td><td>164</td><td>164</td><td>27</td><td>1.1865</td><td>164</td><td>270</td><td>27</td><td>1.9468</td><td>432</td><td>443</td><td>0</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>65.1901</strong></td><td><strong>4747</strong></td><td><strong>4747</strong></td><td><strong>81</strong></td><td><strong>6.9536</strong></td><td><strong>4747</strong></td><td><strong>4747</strong></td><td><strong>81</strong></td><td><strong>6.5127</strong></td><td><strong>2223</strong></td><td><strong>2454</strong></td><td><strong>29</strong></td></tr>
+<tr><td>初始输入</td><td>15688</td><td>4</td><td>27.5139</td><td>4007</td><td>4007</td><td>0</td><td>3.9131</td><td>4007</td><td>4007</td><td>0</td><td>1.1865</td><td>1194</td><td>1215</td><td>2</td></tr>
+<tr><td><code>conv_input.0</code></td><td>15688</td><td>16</td><td>65.9592</td><td>4803</td><td>4803</td><td>0</td><td>7.0356</td><td>4803</td><td>4803</td><td>0</td><td>1.7021</td><td>1141</td><td>1162</td><td>3</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>15688</td><td>16</td><td>55.0278</td><td>4007</td><td>4007</td><td>0</td><td>5.8696</td><td>4007</td><td>4007</td><td>0</td><td>1.7798</td><td>1194</td><td>1215</td><td>2</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>32100</td><td>32</td><td>51.9333</td><td>2269</td><td>2269</td><td>70</td><td>6.5820</td><td>2269</td><td>2696</td><td>70</td><td>5.0073</td><td>1788</td><td>2051</td><td>35</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>32100</td><td>32</td><td>51.9333</td><td>2269</td><td>2269</td><td>70</td><td>6.5820</td><td>2269</td><td>2696</td><td>70</td><td>5.0073</td><td>1788</td><td>2051</td><td>35</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>32100</td><td>32</td><td>43.9453</td><td>1920</td><td>1920</td><td>42</td><td>5.4175</td><td>1920</td><td>2219</td><td>42</td><td>6.1108</td><td>2253</td><td>2503</td><td>33</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>23356</td><td>64</td><td>27.5208</td><td>668</td><td>668</td><td>82</td><td>4.4121</td><td>668</td><td>1004</td><td>82</td><td>6.6138</td><td>1353</td><td>1505</td><td>14</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>23356</td><td>64</td><td>27.5208</td><td>668</td><td>668</td><td>82</td><td>4.4121</td><td>668</td><td>1004</td><td>82</td><td>6.6138</td><td>1353</td><td>1505</td><td>14</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>23356</td><td>64</td><td>26.9028</td><td>653</td><td>653</td><td>76</td><td>4.2715</td><td>653</td><td>972</td><td>76</td><td>6.5566</td><td>1333</td><td>1492</td><td>12</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>11346</td><td>64</td><td>7.3746</td><td>179</td><td>179</td><td>51</td><td>1.5908</td><td>179</td><td>362</td><td>51</td><td>2.7246</td><td>481</td><td>620</td><td>2</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>11346</td><td>64</td><td>7.3746</td><td>179</td><td>179</td><td>51</td><td>1.5908</td><td>179</td><td>362</td><td>51</td><td>2.7246</td><td>481</td><td>620</td><td>2</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>11346</td><td>64</td><td>6.7566</td><td>164</td><td>164</td><td>27</td><td>1.1953</td><td>164</td><td>272</td><td>27</td><td>1.9600</td><td>435</td><td>446</td><td>0</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>65.9592</strong></td><td><strong>4803</strong></td><td><strong>4803</strong></td><td><strong>82</strong></td><td><strong>7.0356</strong></td><td><strong>4803</strong></td><td><strong>4803</strong></td><td><strong>82</strong></td><td><strong>6.6138</strong></td><td><strong>2253</strong></td><td><strong>2503</strong></td><td><strong>35</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.12%**，将 hash entry 峰值降低 **48.73%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-0.74%**，将 hash entry 峰值降低 **48.73%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.07%**，将 hash entry 峰值降低 **48.31%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-0.48%**，将 hash entry 峰值降低 **48.31%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 119.7510 | 12.9297 | 13.0254 |
+| DRAM / MiB | 120.9869 | 13.1641 | 13.2275 |
 | DRAM 峰值层 | `conv1.0.0` | `conv2.1.0` | `conv3.1.0` |
-| Hash entries | 8720 | 8720 | 4471 |
+| Hash entries | 8810 | 8810 | 4554 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000010`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000010.bin`
 - 输入体素: `13094`，坐标 SHA-256 `4acce1cd485e7759ee11a4e397e7966dc1afcd28fd637c4d7a4f3cbeac7635f0`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -753,8 +754,8 @@
 ## Frame `train/000011`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000011.bin`
-- 输入体素: `15000`，坐标 SHA-256 `5ac10c0005153a6457d72091d3c3d9450081cc05b02aaa3ec3a52ee3fca037a5`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `16158`，坐标 SHA-256 `185caa889f5567a85c652cc6f4ef0992266c2232c4e1154ab2c476ec2d249bf6`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -784,41 +785,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>22.7417</td><td>3312</td><td>3312</td><td>0</td><td>3.2461</td><td>3312</td><td>3324</td><td>0</td><td>1.1387</td><td>1111</td><td>1166</td><td>12</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>47.4060</td><td>3452</td><td>3452</td><td>0</td><td>5.0771</td><td>3452</td><td>3466</td><td>0</td><td>1.6553</td><td>1079</td><td>1130</td><td>11</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>45.4834</td><td>3312</td><td>3312</td><td>0</td><td>4.8691</td><td>3312</td><td>3324</td><td>0</td><td>1.7080</td><td>1111</td><td>1166</td><td>12</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>25873</td><td>32</td><td>35.6598</td><td>1558</td><td>1558</td><td>48</td><td>4.5312</td><td>1558</td><td>1856</td><td>48</td><td>4.2554</td><td>1511</td><td>1743</td><td>37</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>25873</td><td>32</td><td>35.6598</td><td>1558</td><td>1558</td><td>48</td><td>4.5312</td><td>1558</td><td>1856</td><td>48</td><td>4.2554</td><td>1511</td><td>1743</td><td>37</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>25873</td><td>32</td><td>31.6544</td><td>1383</td><td>1383</td><td>42</td><td>3.9746</td><td>1383</td><td>1628</td><td>42</td><td>4.4019</td><td>1566</td><td>1803</td><td>39</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>16977</td><td>64</td><td>19.1574</td><td>465</td><td>465</td><td>68</td><td>3.1377</td><td>465</td><td>714</td><td>68</td><td>5.1812</td><td>1027</td><td>1179</td><td>13</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>16977</td><td>64</td><td>19.1574</td><td>465</td><td>465</td><td>68</td><td>3.1377</td><td>465</td><td>714</td><td>68</td><td>5.1812</td><td>1027</td><td>1179</td><td>13</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>16977</td><td>64</td><td>20.0638</td><td>487</td><td>487</td><td>66</td><td>3.2388</td><td>487</td><td>737</td><td>66</td><td>5.1328</td><td>1032</td><td>1168</td><td>13</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>7946</td><td>64</td><td>4.4907</td><td>109</td><td>109</td><td>38</td><td>1.0503</td><td>109</td><td>239</td><td>38</td><td>1.9116</td><td>334</td><td>435</td><td>4</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>7946</td><td>64</td><td>4.4907</td><td>109</td><td>109</td><td>38</td><td>1.0503</td><td>109</td><td>239</td><td>38</td><td>1.9116</td><td>334</td><td>435</td><td>4</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>7946</td><td>64</td><td>4.2023</td><td>102</td><td>102</td><td>24</td><td>0.8130</td><td>102</td><td>185</td><td>24</td><td>1.3755</td><td>302</td><td>313</td><td>0</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>47.4060</strong></td><td><strong>3452</strong></td><td><strong>3452</strong></td><td><strong>68</strong></td><td><strong>5.0771</strong></td><td><strong>3452</strong></td><td><strong>3466</strong></td><td><strong>68</strong></td><td><strong>5.1812</strong></td><td><strong>1566</strong></td><td><strong>1803</strong></td><td><strong>39</strong></td></tr>
+<tr><td>初始输入</td><td>16158</td><td>4</td><td>23.1812</td><td>3376</td><td>3376</td><td>0</td><td>3.3086</td><td>3376</td><td>3388</td><td>0</td><td>1.2285</td><td>1203</td><td>1258</td><td>12</td></tr>
+<tr><td><code>conv_input.0</code></td><td>16158</td><td>16</td><td>48.6694</td><td>3544</td><td>3544</td><td>0</td><td>5.2119</td><td>3544</td><td>3558</td><td>0</td><td>1.7710</td><td>1158</td><td>1209</td><td>11</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>16158</td><td>16</td><td>46.3623</td><td>3376</td><td>3376</td><td>0</td><td>4.9629</td><td>3376</td><td>3388</td><td>0</td><td>1.8428</td><td>1203</td><td>1258</td><td>12</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>27314</td><td>32</td><td>36.0031</td><td>1573</td><td>1573</td><td>67</td><td>4.6826</td><td>1573</td><td>1918</td><td>67</td><td>4.3677</td><td>1529</td><td>1789</td><td>44</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>27314</td><td>32</td><td>36.0031</td><td>1573</td><td>1573</td><td>67</td><td>4.6826</td><td>1573</td><td>1918</td><td>67</td><td>4.3677</td><td>1529</td><td>1789</td><td>44</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>27314</td><td>32</td><td>32.0892</td><td>1402</td><td>1402</td><td>54</td><td>4.1235</td><td>1402</td><td>1689</td><td>54</td><td>4.5410</td><td>1594</td><td>1860</td><td>46</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>17536</td><td>64</td><td>19.2398</td><td>467</td><td>467</td><td>72</td><td>3.1992</td><td>467</td><td>728</td><td>72</td><td>5.3042</td><td>1040</td><td>1207</td><td>13</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>17536</td><td>64</td><td>19.2398</td><td>467</td><td>467</td><td>72</td><td>3.1992</td><td>467</td><td>728</td><td>72</td><td>5.3042</td><td>1040</td><td>1207</td><td>13</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>17536</td><td>64</td><td>20.1050</td><td>488</td><td>488</td><td>68</td><td>3.2871</td><td>488</td><td>748</td><td>68</td><td>5.2646</td><td>1046</td><td>1198</td><td>13</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>8080</td><td>64</td><td>4.4907</td><td>109</td><td>109</td><td>40</td><td>1.0635</td><td>109</td><td>242</td><td>40</td><td>1.9336</td><td>335</td><td>440</td><td>4</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>8080</td><td>64</td><td>4.4907</td><td>109</td><td>109</td><td>40</td><td>1.0635</td><td>109</td><td>242</td><td>40</td><td>1.9336</td><td>335</td><td>440</td><td>4</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>8080</td><td>64</td><td>4.2023</td><td>102</td><td>102</td><td>25</td><td>0.8218</td><td>102</td><td>187</td><td>25</td><td>1.3843</td><td>304</td><td>315</td><td>0</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>48.6694</strong></td><td><strong>3544</strong></td><td><strong>3544</strong></td><td><strong>72</strong></td><td><strong>5.2119</strong></td><td><strong>3544</strong></td><td><strong>3558</strong></td><td><strong>72</strong></td><td><strong>5.3042</strong></td><td><strong>1594</strong></td><td><strong>1860</strong></td><td><strong>46</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **88.84%**，将 hash entry 峰值降低 **47.58%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-4.18%**，将 hash entry 峰值降低 **47.78%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **88.84%**，将 hash entry 峰值降低 **47.27%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-4.26%**，将 hash entry 峰值降低 **47.47%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 92.8894 | 9.9463 | 10.3623 |
+| DRAM / MiB | 95.0317 | 10.1748 | 10.6084 |
 | DRAM 峰值层 | `conv1.0.0` | `conv1.0.0` | `conv3.1.0` |
-| Hash entries | 6764 | 6790 | 3546 |
+| Hash entries | 6920 | 6946 | 3649 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000012`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000012.bin`
 - 输入体素: `14839`，坐标 SHA-256 `21bcbb8e68fba77fadb0d23e30fd6f2a3978d37ee2a5a4e7ce941629451ab71d`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -881,8 +882,8 @@
 ## Frame `train/000013`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000013.bin`
-- 输入体素: `15000`，坐标 SHA-256 `1aa8ff64cec274da8031a4dfb4e3c8501149d897fe2aaa20ccd0e8b47fcf83e3`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `17054`，坐标 SHA-256 `22ae83bd6c749e0183174d2fcbfb88e9fc623564d066821379d3cbb0dca6ef33`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -912,41 +913,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>35.3622</td><td>5150</td><td>5150</td><td>0</td><td>5.0361</td><td>5150</td><td>5157</td><td>0</td><td>1.3057</td><td>1298</td><td>1337</td><td>4</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>74.8032</td><td>5447</td><td>5447</td><td>0</td><td>7.9878</td><td>5447</td><td>5453</td><td>0</td><td>1.8955</td><td>1253</td><td>1294</td><td>5</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>70.7245</td><td>5150</td><td>5150</td><td>0</td><td>7.5542</td><td>5150</td><td>5157</td><td>0</td><td>1.9585</td><td>1298</td><td>1337</td><td>4</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>33478</td><td>32</td><td>58.1131</td><td>2539</td><td>2539</td><td>95</td><td>7.3389</td><td>2539</td><td>3006</td><td>95</td><td>5.3638</td><td>1825</td><td>2197</td><td>63</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>33478</td><td>32</td><td>58.1131</td><td>2539</td><td>2539</td><td>95</td><td>7.3389</td><td>2539</td><td>3006</td><td>95</td><td>5.3638</td><td>1825</td><td>2197</td><td>63</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>33478</td><td>32</td><td>54.9088</td><td>2399</td><td>2399</td><td>89</td><td>6.9360</td><td>2399</td><td>2841</td><td>89</td><td>5.9619</td><td>2065</td><td>2442</td><td>71</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>25069</td><td>64</td><td>27.8915</td><td>677</td><td>677</td><td>103</td><td>4.8076</td><td>677</td><td>1094</td><td>103</td><td>7.6641</td><td>1387</td><td>1744</td><td>69</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>25069</td><td>64</td><td>27.8915</td><td>677</td><td>677</td><td>103</td><td>4.8076</td><td>677</td><td>1094</td><td>103</td><td>7.6641</td><td>1387</td><td>1744</td><td>69</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>25069</td><td>64</td><td>27.5208</td><td>668</td><td>668</td><td>102</td><td>4.7417</td><td>668</td><td>1079</td><td>102</td><td>7.5322</td><td>1363</td><td>1714</td><td>63</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>11646</td><td>64</td><td>5.8502</td><td>142</td><td>142</td><td>47</td><td>1.4810</td><td>142</td><td>337</td><td>47</td><td>2.6235</td><td>406</td><td>597</td><td>30</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>11646</td><td>64</td><td>5.8502</td><td>142</td><td>142</td><td>47</td><td>1.4810</td><td>142</td><td>337</td><td>47</td><td>2.6235</td><td>406</td><td>597</td><td>30</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>11646</td><td>64</td><td>5.4382</td><td>132</td><td>132</td><td>31</td><td>1.1074</td><td>132</td><td>252</td><td>31</td><td>1.7402</td><td>368</td><td>396</td><td>1</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>74.8032</strong></td><td><strong>5447</strong></td><td><strong>5447</strong></td><td><strong>103</strong></td><td><strong>7.9878</strong></td><td><strong>5447</strong></td><td><strong>5453</strong></td><td><strong>103</strong></td><td><strong>7.6641</strong></td><td><strong>2065</strong></td><td><strong>2442</strong></td><td><strong>71</strong></td></tr>
+<tr><td>初始输入</td><td>17054</td><td>4</td><td>36.6394</td><td>5336</td><td>5336</td><td>0</td><td>5.2236</td><td>5336</td><td>5349</td><td>0</td><td>1.4502</td><td>1441</td><td>1485</td><td>4</td></tr>
+<tr><td><code>conv_input.0</code></td><td>17054</td><td>16</td><td>77.1927</td><td>5621</td><td>5621</td><td>0</td><td>8.2500</td><td>5621</td><td>5632</td><td>0</td><td>2.1108</td><td>1395</td><td>1441</td><td>5</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>17054</td><td>16</td><td>73.2788</td><td>5336</td><td>5336</td><td>0</td><td>7.8354</td><td>5336</td><td>5349</td><td>0</td><td>2.1753</td><td>1441</td><td>1485</td><td>4</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>35690</td><td>32</td><td>58.9828</td><td>2577</td><td>2577</td><td>115</td><td>7.5928</td><td>2577</td><td>3110</td><td>115</td><td>5.5371</td><td>1856</td><td>2268</td><td>74</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>35690</td><td>32</td><td>58.9828</td><td>2577</td><td>2577</td><td>115</td><td>7.5928</td><td>2577</td><td>3110</td><td>115</td><td>5.5371</td><td>1856</td><td>2268</td><td>74</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>35690</td><td>32</td><td>55.9387</td><td>2444</td><td>2444</td><td>109</td><td>7.2192</td><td>2444</td><td>2957</td><td>109</td><td>6.1768</td><td>2115</td><td>2530</td><td>80</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>25945</td><td>64</td><td>28.0975</td><td>682</td><td>682</td><td>110</td><td>4.9087</td><td>682</td><td>1117</td><td>110</td><td>7.8706</td><td>1421</td><td>1791</td><td>69</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>25945</td><td>64</td><td>28.0975</td><td>682</td><td>682</td><td>110</td><td>4.9087</td><td>682</td><td>1117</td><td>110</td><td>7.8706</td><td>1421</td><td>1791</td><td>69</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>25945</td><td>64</td><td>27.7267</td><td>673</td><td>673</td><td>108</td><td>4.8428</td><td>673</td><td>1102</td><td>108</td><td>7.7212</td><td>1393</td><td>1757</td><td>63</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>11907</td><td>64</td><td>5.8502</td><td>142</td><td>142</td><td>49</td><td>1.5117</td><td>142</td><td>344</td><td>49</td><td>2.6543</td><td>410</td><td>604</td><td>30</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>11907</td><td>64</td><td>5.8502</td><td>142</td><td>142</td><td>49</td><td>1.5117</td><td>142</td><td>344</td><td>49</td><td>2.6543</td><td>410</td><td>604</td><td>30</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>11907</td><td>64</td><td>5.4794</td><td>133</td><td>133</td><td>32</td><td>1.1294</td><td>133</td><td>257</td><td>32</td><td>1.7666</td><td>374</td><td>402</td><td>1</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>77.1927</strong></td><td><strong>5621</strong></td><td><strong>5621</strong></td><td><strong>115</strong></td><td><strong>8.2500</strong></td><td><strong>5621</strong></td><td><strong>5632</strong></td><td><strong>115</strong></td><td><strong>7.8706</strong></td><td><strong>2115</strong></td><td><strong>2530</strong></td><td><strong>80</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.47%**，将 hash entry 峰值降低 **56.22%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **1.38%**，将 hash entry 峰值降低 **56.28%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.54%**，将 hash entry 峰值降低 **56.21%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **2.14%**，将 hash entry 峰值降低 **56.31%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 145.5276 | 15.5420 | 15.3281 |
+| DRAM / MiB | 150.4715 | 16.0854 | 15.7412 |
 | DRAM 峰值层 | `conv1.0.0` | `conv1.0.0` | `conv3.1.0` |
-| Hash entries | 10597 | 10610 | 4639 |
+| Hash entries | 10957 | 10981 | 4798 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000014`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000014.bin`
-- 输入体素: `15000`，坐标 SHA-256 `8435842187bacbaa475fe0bc06a5878128eacfe14fd3a40a2b14dca8e849e406`
-- 触达 15000 voxel 上限: `True`
+- 输入体素: `17045`，坐标 SHA-256 `4a79eedf805c4f2d1880ad4da0a75d4cc90469c8094d06d2a4c45d6c6c8a8a40`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -976,41 +977,41 @@
     </tr>
   </thead>
   <tbody>
-<tr><td>初始输入</td><td>15000</td><td>4</td><td>34.7786</td><td>5065</td><td>5065</td><td>0</td><td>4.9492</td><td>5065</td><td>5068</td><td>0</td><td>1.2119</td><td>1205</td><td>1241</td><td>4</td></tr>
-<tr><td><code>conv_input.0</code></td><td>15000</td><td>16</td><td>75.5997</td><td>5505</td><td>5505</td><td>0</td><td>8.0728</td><td>5505</td><td>5511</td><td>0</td><td>1.7959</td><td>1190</td><td>1226</td><td>5</td></tr>
-<tr><td><code>conv1.0.0</code></td><td>15000</td><td>16</td><td>69.5572</td><td>5065</td><td>5065</td><td>0</td><td>7.4238</td><td>5065</td><td>5068</td><td>0</td><td>1.8179</td><td>1205</td><td>1241</td><td>4</td></tr>
-<tr><td><code>conv2.0.0</code></td><td>34137</td><td>32</td><td>53.7643</td><td>2349</td><td>2349</td><td>94</td><td>6.9800</td><td>2349</td><td>2859</td><td>94</td><td>5.5054</td><td>1895</td><td>2255</td><td>55</td></tr>
-<tr><td><code>conv2.1.0</code></td><td>34137</td><td>32</td><td>53.7643</td><td>2349</td><td>2349</td><td>94</td><td>6.9800</td><td>2349</td><td>2859</td><td>94</td><td>5.5054</td><td>1895</td><td>2255</td><td>55</td></tr>
-<tr><td><code>conv2.2.0</code></td><td>34137</td><td>32</td><td>50.0565</td><td>2187</td><td>2187</td><td>94</td><td>6.3745</td><td>2187</td><td>2611</td><td>94</td><td>6.0571</td><td>2098</td><td>2481</td><td>56</td></tr>
-<tr><td><code>conv3.0.0</code></td><td>25946</td><td>64</td><td>28.9627</td><td>703</td><td>703</td><td>119</td><td>5.0317</td><td>703</td><td>1145</td><td>119</td><td>7.9365</td><td>1463</td><td>1806</td><td>55</td></tr>
-<tr><td><code>conv3.1.0</code></td><td>25946</td><td>64</td><td>28.9627</td><td>703</td><td>703</td><td>119</td><td>5.0317</td><td>703</td><td>1145</td><td>119</td><td>7.9365</td><td>1463</td><td>1806</td><td>55</td></tr>
-<tr><td><code>conv3.2.0</code></td><td>25946</td><td>64</td><td>29.1275</td><td>707</td><td>707</td><td>116</td><td>5.0537</td><td>707</td><td>1150</td><td>116</td><td>7.7871</td><td>1427</td><td>1772</td><td>49</td></tr>
-<tr><td><code>conv4.0.0</code></td><td>11819</td><td>64</td><td>6.0150</td><td>146</td><td>146</td><td>54</td><td>1.5381</td><td>146</td><td>350</td><td>54</td><td>2.7026</td><td>427</td><td>615</td><td>13</td></tr>
-<tr><td><code>conv4.1.0</code></td><td>11819</td><td>64</td><td>6.0150</td><td>146</td><td>146</td><td>54</td><td>1.5381</td><td>146</td><td>350</td><td>54</td><td>2.7026</td><td>427</td><td>615</td><td>13</td></tr>
-<tr><td><code>conv4.2.0</code></td><td>11819</td><td>64</td><td>5.8502</td><td>142</td><td>142</td><td>36</td><td>1.1646</td><td>142</td><td>265</td><td>36</td><td>1.7842</td><td>390</td><td>406</td><td>0</td></tr>
-<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>75.5997</strong></td><td><strong>5505</strong></td><td><strong>5505</strong></td><td><strong>119</strong></td><td><strong>8.0728</strong></td><td><strong>5505</strong></td><td><strong>5511</strong></td><td><strong>119</strong></td><td><strong>7.9365</strong></td><td><strong>2098</strong></td><td><strong>2481</strong></td><td><strong>56</strong></td></tr>
+<tr><td>初始输入</td><td>17045</td><td>4</td><td>35.7674</td><td>5209</td><td>5209</td><td>0</td><td>5.0898</td><td>5209</td><td>5212</td><td>0</td><td>1.3477</td><td>1344</td><td>1380</td><td>4</td></tr>
+<tr><td><code>conv_input.0</code></td><td>17045</td><td>16</td><td>77.7557</td><td>5662</td><td>5662</td><td>0</td><td>8.3027</td><td>5662</td><td>5668</td><td>0</td><td>2.0039</td><td>1332</td><td>1368</td><td>5</td></tr>
+<tr><td><code>conv1.0.0</code></td><td>17045</td><td>16</td><td>71.5347</td><td>5209</td><td>5209</td><td>0</td><td>7.6348</td><td>5209</td><td>5212</td><td>0</td><td>2.0215</td><td>1344</td><td>1380</td><td>4</td></tr>
+<tr><td><code>conv2.0.0</code></td><td>36802</td><td>32</td><td>54.5654</td><td>2384</td><td>2384</td><td>130</td><td>7.2705</td><td>2384</td><td>2978</td><td>130</td><td>5.6958</td><td>1928</td><td>2333</td><td>63</td></tr>
+<tr><td><code>conv2.1.0</code></td><td>36802</td><td>32</td><td>54.5654</td><td>2384</td><td>2384</td><td>130</td><td>7.2705</td><td>2384</td><td>2978</td><td>130</td><td>5.6958</td><td>1928</td><td>2333</td><td>63</td></tr>
+<tr><td><code>conv2.2.0</code></td><td>36802</td><td>32</td><td>50.8118</td><td>2220</td><td>2220</td><td>120</td><td>6.6528</td><td>2220</td><td>2725</td><td>120</td><td>6.3330</td><td>2161</td><td>2594</td><td>65</td></tr>
+<tr><td><code>conv3.0.0</code></td><td>27033</td><td>64</td><td>29.1275</td><td>707</td><td>707</td><td>124</td><td>5.1504</td><td>707</td><td>1172</td><td>124</td><td>8.1914</td><td>1490</td><td>1864</td><td>55</td></tr>
+<tr><td><code>conv3.1.0</code></td><td>27033</td><td>64</td><td>29.1275</td><td>707</td><td>707</td><td>124</td><td>5.1504</td><td>707</td><td>1172</td><td>124</td><td>8.1914</td><td>1490</td><td>1864</td><td>55</td></tr>
+<tr><td><code>conv3.2.0</code></td><td>27033</td><td>64</td><td>29.2099</td><td>709</td><td>709</td><td>122</td><td>5.1592</td><td>709</td><td>1174</td><td>122</td><td>8.0420</td><td>1456</td><td>1830</td><td>49</td></tr>
+<tr><td><code>conv4.0.0</code></td><td>12099</td><td>64</td><td>6.0150</td><td>146</td><td>146</td><td>57</td><td>1.5645</td><td>146</td><td>356</td><td>57</td><td>2.7598</td><td>429</td><td>628</td><td>13</td></tr>
+<tr><td><code>conv4.1.0</code></td><td>12099</td><td>64</td><td>6.0150</td><td>146</td><td>146</td><td>57</td><td>1.5645</td><td>146</td><td>356</td><td>57</td><td>2.7598</td><td>429</td><td>628</td><td>13</td></tr>
+<tr><td><code>conv4.2.0</code></td><td>12099</td><td>64</td><td>5.8502</td><td>142</td><td>142</td><td>36</td><td>1.1865</td><td>142</td><td>270</td><td>36</td><td>1.8149</td><td>397</td><td>413</td><td>0</td></tr>
+<tr><td><strong>单个 feature map 最大值</strong></td><td>—</td><td>—</td><td><strong>77.7557</strong></td><td><strong>5662</strong></td><td><strong>5662</strong></td><td><strong>130</strong></td><td><strong>8.3027</strong></td><td><strong>5662</strong></td><td><strong>5668</strong></td><td><strong>130</strong></td><td><strong>8.1914</strong></td><td><strong>2161</strong></td><td><strong>2594</strong></td><td><strong>65</strong></td></tr>
   </tbody>
 </table>
 
 “单个 feature map 最大值”一行对每个指标独立取最大值。
 
-- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.06%**，将 hash entry 峰值降低 **55.19%**。
-- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-2.43%**，将 hash entry 峰值降低 **55.23%**。
+- 相对固定容量，Proposed 将执行时 DRAM 峰值降低 **89.03%**，将 hash entry 峰值降低 **54.68%**。
+- 相对固定块分页，Proposed 将执行时 DRAM 峰值降低 **-2.79%**，将 hash entry 峰值降低 **54.72%**。
 
 ### 执行时 IFM 与 OFM 同时驻留峰值
 
 | 执行时同时驻留峰值 | 固定块 + 固定容量 | 固定块 + Page | Proposed 可变块 + Page |
 | --- | ---: | ---: | ---: |
-| DRAM / MiB | 145.1569 | 15.4966 | 15.8730 |
+| DRAM / MiB | 149.2905 | 15.9375 | 16.3828 |
 | DRAM 峰值层 | `conv1.0.0` | `conv1.0.0` | `conv3.1.0` |
-| Hash entries | 10570 | 10579 | 4736 |
+| Hash entries | 10871 | 10880 | 4927 |
 | Hash 峰值层 | `conv_input.0` | `conv_input.0` | `conv2.2.0` |
 
 ## Frame `train/000015`
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000015.bin`
 - 输入体素: `14241`，坐标 SHA-256 `82949cbe297835536b61590e42bcb13d5d878f02dac28dd4999963f0796960c8`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -1074,7 +1075,7 @@
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000016.bin`
 - 输入体素: `14000`，坐标 SHA-256 `71ae4975910284b27b6a2019f5186a5340dbdf0acc0bf0e1f8b930fe0cde2837`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -1138,7 +1139,7 @@
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000017.bin`
 - 输入体素: `14853`，坐标 SHA-256 `0bea72489a88d54dd5866b8b824bc9c721fd691dabd3a374f91bf84aebc3525d`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -1202,7 +1203,7 @@
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000018.bin`
 - 输入体素: `14889`，坐标 SHA-256 `946a904b81ca403867446bd9d3fb87cf37185bc908e3215837b47fefa39c5383`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 
@@ -1266,7 +1267,7 @@
 
 - Point cloud: `/home/vipuser/桌面/OpenPCDet/data/kitti/training/velodyne/000019.bin`
 - 输入体素: `13435`，坐标 SHA-256 `6ac4b0174cdbef63775b7146144b5470143e0adfe65f5609a3effaa97ea868f0`
-- 触达 15000 voxel 上限: `False`
+- 触达 40000 voxel 上限: `False`
 
 ### 按 Feature Map 去重后的对比
 

@@ -17,8 +17,8 @@
   "feature_bytes_per_channel": 1,
   "page_voxels": 64,
   "page_align_bytes": 512,
-  "peak_ifm_ofm_dram_bytes": 13459968,
-  "peak_ifm_ofm_pages": 8763,
+  "peak_ifm_ofm_dram_bytes": 13493760,
+  "peak_ifm_ofm_pages": 8785,
   "peak_ifm_ofm_layer_id": 1,
   "peak_ifm_ofm_layer_name": "conv1.0.0",
   "state_summary": {
@@ -26,96 +26,96 @@
     "last_ofm_pages": 0,
     "peak_layer_id": 1,
     "peak_layer_name": "conv1.0.0",
-    "peak_pages": 8763,
-    "peak_bytes": 13459968,
+    "peak_pages": 8785,
+    "peak_bytes": 13493760,
     "states": [
       {
         "state": "INIT",
-        "pages": 4342,
-        "sum_nb": 31912,
-        "nonempty_blocks": 4330,
+        "pages": 4352,
+        "sum_nb": 32283,
+        "nonempty_blocks": 4340,
         "grid_tiles": 157920
       },
       {
         "state": "L0",
-        "pages": 4421,
-        "sum_nb": 32439,
-        "nonempty_blocks": 4409,
+        "pages": 4433,
+        "sum_nb": 32835,
+        "nonempty_blocks": 4421,
         "grid_tiles": 157920
       },
       {
         "state": "L1",
-        "pages": 4342,
-        "sum_nb": 31912,
-        "nonempty_blocks": 4330,
+        "pages": 4352,
+        "sum_nb": 32283,
+        "nonempty_blocks": 4340,
         "grid_tiles": 157920
       },
       {
         "state": "L2",
-        "pages": 2380,
-        "sum_nb": 58144,
+        "pages": 2382,
+        "sum_nb": 58350,
         "nonempty_blocks": 2116,
         "grid_tiles": 22720
       },
       {
         "state": "L3",
-        "pages": 2380,
-        "sum_nb": 58144,
+        "pages": 2382,
+        "sum_nb": 58350,
         "nonempty_blocks": 2116,
         "grid_tiles": 22720
       },
       {
         "state": "L4",
-        "pages": 2255,
-        "sum_nb": 53457,
+        "pages": 2257,
+        "sum_nb": 53669,
         "nonempty_blocks": 2009,
         "grid_tiles": 22720
       },
       {
         "state": "L5",
         "pages": 848,
-        "sum_nb": 32061,
+        "sum_nb": 32093,
         "nonempty_blocks": 571,
         "grid_tiles": 2880
       },
       {
         "state": "L6",
         "pages": 848,
-        "sum_nb": 32061,
+        "sum_nb": 32093,
         "nonempty_blocks": 571,
         "grid_tiles": 2880
       },
       {
         "state": "L7",
         "pages": 834,
-        "sum_nb": 31575,
+        "sum_nb": 31609,
         "nonempty_blocks": 553,
         "grid_tiles": 2880
       },
       {
         "state": "L8",
         "pages": 284,
-        "sum_nb": 12281,
+        "sum_nb": 12286,
         "nonempty_blocks": 159,
         "grid_tiles": 360
       },
       {
         "state": "L9",
         "pages": 284,
-        "sum_nb": 12281,
+        "sum_nb": 12286,
         "nonempty_blocks": 159,
         "grid_tiles": 360
       },
       {
         "state": "L10",
         "pages": 223,
-        "sum_nb": 8495,
+        "sum_nb": 8499,
         "nonempty_blocks": 150,
         "grid_tiles": 360
       }
     ]
   },
-  "generated_at": "2026-09-17T14:03:28",
+  "generated_at": "2026-09-27T16:17:42",
   "frame": {
     "split": "val",
     "frame_id": "000216",
@@ -159,12 +159,12 @@
         "feature_words": 1,
         "page_stride": 2,
         "page_bytes": 1024,
-        "pages": 4342,
-        "dram_bytes": 4446208,
-        "useful_bytes": 510592,
-        "occupancy": 0.11483763242745279,
-        "semantic_channel_bytes": 60000,
-        "semantic_ratio": 0.013494645324735145,
+        "pages": 4352,
+        "dram_bytes": 4456448,
+        "useful_bytes": 516528,
+        "occupancy": 0.11590576171875,
+        "semantic_channel_bytes": 60472,
+        "semantic_ratio": 0.013569551355698529,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -225,71 +225,71 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 4330,
-        "mean_nb": 7.369976905311778,
+        "nonempty_blocks": 4340,
+        "mean_nb": 7.438479262672811,
         "median_nb": 4.0,
         "max_nb": 115,
-        "sum_nb": 31912,
+        "sum_nb": 32283,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 3886,
-            "pct": 0.897459584295612
+            "n_blocks": 3888,
+            "pct": 0.895852534562212
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 347,
-            "pct": 0.08013856812933025
+            "n_blocks": 345,
+            "pct": 0.07949308755760369
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 73,
-            "pct": 0.016859122401847577
+            "n_blocks": 80,
+            "pct": 0.018433179723502304
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 12,
-            "pct": 0.002771362586605081
+            "n_blocks": 15,
+            "pct": 0.0034562211981566822
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 5,
-            "pct": 0.0011547344110854503
+            "pct": 0.001152073732718894
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 5,
-            "pct": 0.0011547344110854503
+            "pct": 0.001152073732718894
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 1,
-            "pct": 0.00023094688221709007
+            "pct": 0.0002304147465437788
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 1,
-            "pct": 0.00023094688221709007
+            "pct": 0.0002304147465437788
           }
         ]
       },
@@ -302,12 +302,12 @@
         "feature_words": 2,
         "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 4421,
-        "dram_bytes": 6790656,
-        "useful_bytes": 778536,
-        "occupancy": 0.1146481282515268,
-        "semantic_channel_bytes": 240000,
-        "semantic_ratio": 0.03534268265098394,
+        "pages": 4433,
+        "dram_bytes": 6809088,
+        "useful_bytes": 788040,
+        "occupancy": 0.11573356079404466,
+        "semantic_channel_bytes": 241888,
+        "semantic_ratio": 0.035524287540416574,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -368,76 +368,76 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 4409,
-        "mean_nb": 7.357450669085961,
+        "nonempty_blocks": 4421,
+        "mean_nb": 7.4270527030083695,
         "median_nb": 4.0,
         "max_nb": 126,
-        "sum_nb": 32439,
+        "sum_nb": 32835,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 3947,
-            "pct": 0.8952143343161715
+            "n_blocks": 3957,
+            "pct": 0.8950463695996381
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 375,
-            "pct": 0.08505330006804264
+            "n_blocks": 366,
+            "pct": 0.08278669984166478
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 64,
-            "pct": 0.01451576321161261
+            "n_blocks": 74,
+            "pct": 0.016738294503505995
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 11,
-            "pct": 0.0024948968019959175
+            "n_blocks": 12,
+            "pct": 0.0027143180275955667
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 5,
-            "pct": 0.0011340440009072353
+            "pct": 0.001130965844831486
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 2,
-            "pct": 0.0004536176003628941
+            "pct": 0.00045238633793259444
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 4,
-            "pct": 0.0009072352007257881
+            "pct": 0.0009047726758651889
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 1,
-            "pct": 0.00022680880018144704
+            "pct": 0.00022619316896629722
           }
         ]
       },
-      "peak_dram_bytes": 11236864,
-      "peak_pages": 8763
+      "peak_dram_bytes": 11265536,
+      "peak_pages": 8785
     },
     {
       "layer_id": 1,
@@ -474,12 +474,12 @@
         "feature_words": 2,
         "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 4421,
-        "dram_bytes": 6790656,
-        "useful_bytes": 778536,
-        "occupancy": 0.1146481282515268,
-        "semantic_channel_bytes": 240000,
-        "semantic_ratio": 0.03534268265098394,
+        "pages": 4433,
+        "dram_bytes": 6809088,
+        "useful_bytes": 788040,
+        "occupancy": 0.11573356079404466,
+        "semantic_channel_bytes": 241888,
+        "semantic_ratio": 0.035524287540416574,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -540,71 +540,71 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 4409,
-        "mean_nb": 7.357450669085961,
+        "nonempty_blocks": 4421,
+        "mean_nb": 7.4270527030083695,
         "median_nb": 4.0,
         "max_nb": 126,
-        "sum_nb": 32439,
+        "sum_nb": 32835,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 3947,
-            "pct": 0.8952143343161715
+            "n_blocks": 3957,
+            "pct": 0.8950463695996381
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 375,
-            "pct": 0.08505330006804264
+            "n_blocks": 366,
+            "pct": 0.08278669984166478
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 64,
-            "pct": 0.01451576321161261
+            "n_blocks": 74,
+            "pct": 0.016738294503505995
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 11,
-            "pct": 0.0024948968019959175
+            "n_blocks": 12,
+            "pct": 0.0027143180275955667
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 5,
-            "pct": 0.0011340440009072353
+            "pct": 0.001130965844831486
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 2,
-            "pct": 0.0004536176003628941
+            "pct": 0.00045238633793259444
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 4,
-            "pct": 0.0009072352007257881
+            "pct": 0.0009047726758651889
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 1,
-            "pct": 0.00022680880018144704
+            "pct": 0.00022619316896629722
           }
         ]
       },
@@ -617,12 +617,12 @@
         "feature_words": 2,
         "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 4342,
-        "dram_bytes": 6669312,
-        "useful_bytes": 765888,
-        "occupancy": 0.11483763242745279,
-        "semantic_channel_bytes": 240000,
-        "semantic_ratio": 0.035985720865960386,
+        "pages": 4352,
+        "dram_bytes": 6684672,
+        "useful_bytes": 774792,
+        "occupancy": 0.11590576171875,
+        "semantic_channel_bytes": 241888,
+        "semantic_ratio": 0.036185470281862746,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -683,76 +683,76 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 4330,
-        "mean_nb": 7.369976905311778,
+        "nonempty_blocks": 4340,
+        "mean_nb": 7.438479262672811,
         "median_nb": 4.0,
         "max_nb": 115,
-        "sum_nb": 31912,
+        "sum_nb": 32283,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 3886,
-            "pct": 0.897459584295612
+            "n_blocks": 3888,
+            "pct": 0.895852534562212
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 347,
-            "pct": 0.08013856812933025
+            "n_blocks": 345,
+            "pct": 0.07949308755760369
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 73,
-            "pct": 0.016859122401847577
+            "n_blocks": 80,
+            "pct": 0.018433179723502304
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 12,
-            "pct": 0.002771362586605081
+            "n_blocks": 15,
+            "pct": 0.0034562211981566822
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 5,
-            "pct": 0.0011547344110854503
+            "pct": 0.001152073732718894
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 5,
-            "pct": 0.0011547344110854503
+            "pct": 0.001152073732718894
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 1,
-            "pct": 0.00023094688221709007
+            "pct": 0.0002304147465437788
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 1,
-            "pct": 0.00023094688221709007
+            "pct": 0.0002304147465437788
           }
         ]
       },
-      "peak_dram_bytes": 13459968,
-      "peak_pages": 8763
+      "peak_dram_bytes": 13493760,
+      "peak_pages": 8785
     },
     {
       "layer_id": 2,
@@ -789,12 +789,12 @@
         "feature_words": 2,
         "page_stride": 3,
         "page_bytes": 1536,
-        "pages": 4342,
-        "dram_bytes": 6669312,
-        "useful_bytes": 765888,
-        "occupancy": 0.11483763242745279,
-        "semantic_channel_bytes": 240000,
-        "semantic_ratio": 0.035985720865960386,
+        "pages": 4352,
+        "dram_bytes": 6684672,
+        "useful_bytes": 774792,
+        "occupancy": 0.11590576171875,
+        "semantic_channel_bytes": 241888,
+        "semantic_ratio": 0.036185470281862746,
         "spatial_shape_zyx": [
           41,
           1600,
@@ -855,71 +855,71 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 15000,
-        "coordinate_count": 15000,
-        "coordinate_sha256": "b8c429c5bbf27db0e6416a7a26eff2971b631a2783a74da99c761c822ad02443",
+        "nonempty_voxels": 15118,
+        "coordinate_count": 15118,
+        "coordinate_sha256": "59cf47ea7347a1af112a588cf4ff5757d83cd151588cd196934025a5590709c6",
         "coordinate_unique": true,
-        "nonempty_blocks": 4330,
-        "mean_nb": 7.369976905311778,
+        "nonempty_blocks": 4340,
+        "mean_nb": 7.438479262672811,
         "median_nb": 4.0,
         "max_nb": 115,
-        "sum_nb": 31912,
+        "sum_nb": 32283,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 3886,
-            "pct": 0.897459584295612
+            "n_blocks": 3888,
+            "pct": 0.895852534562212
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 347,
-            "pct": 0.08013856812933025
+            "n_blocks": 345,
+            "pct": 0.07949308755760369
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 73,
-            "pct": 0.016859122401847577
+            "n_blocks": 80,
+            "pct": 0.018433179723502304
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 12,
-            "pct": 0.002771362586605081
+            "n_blocks": 15,
+            "pct": 0.0034562211981566822
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
             "n_blocks": 5,
-            "pct": 0.0011547344110854503
+            "pct": 0.001152073732718894
           },
           {
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
             "n_blocks": 5,
-            "pct": 0.0011547344110854503
+            "pct": 0.001152073732718894
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
             "n_blocks": 1,
-            "pct": 0.00023094688221709007
+            "pct": 0.0002304147465437788
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
             "n_blocks": 1,
-            "pct": 0.00023094688221709007
+            "pct": 0.0002304147465437788
           }
         ]
       },
@@ -932,12 +932,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 2380,
-        "dram_bytes": 6092800,
-        "useful_bytes": 2325760,
-        "occupancy": 0.38172268907563023,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.1353046218487395,
+        "pages": 2382,
+        "dram_bytes": 6097920,
+        "useful_bytes": 2334000,
+        "occupancy": 0.38275346347607053,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.13563182199832075,
         "spatial_shape_zyx": [
           21,
           800,
@@ -998,22 +998,22 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
         "nonempty_blocks": 2116,
-        "mean_nb": 27.47826086956522,
+        "mean_nb": 27.575614366729678,
         "median_nb": 17.0,
         "max_nb": 396,
-        "sum_nb": 58144,
+        "sum_nb": 58350,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 1031,
-            "pct": 0.4872400756143667
+            "n_blocks": 1029,
+            "pct": 0.4862948960302457
           },
           {
             "bin_lo": 17,
@@ -1026,15 +1026,15 @@
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 245,
-            "pct": 0.11578449905482041
+            "n_blocks": 243,
+            "pct": 0.11483931947069943
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 135,
-            "pct": 0.06379962192816635
+            "n_blocks": 139,
+            "pct": 0.06568998109640832
           },
           {
             "bin_lo": 65,
@@ -1061,15 +1061,15 @@
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 23,
-            "pct": 0.010869565217391304
+            "n_blocks": 21,
+            "pct": 0.00992438563327032
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
-            "n_blocks": 13,
-            "pct": 0.006143667296786389
+            "n_blocks": 15,
+            "pct": 0.007088846880907372
           },
           {
             "bin_lo": 145,
@@ -1185,8 +1185,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 12762112,
-      "peak_pages": 6722
+      "peak_dram_bytes": 12782592,
+      "peak_pages": 6734
     },
     {
       "layer_id": 3,
@@ -1223,12 +1223,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 2380,
-        "dram_bytes": 6092800,
-        "useful_bytes": 2325760,
-        "occupancy": 0.38172268907563023,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.1353046218487395,
+        "pages": 2382,
+        "dram_bytes": 6097920,
+        "useful_bytes": 2334000,
+        "occupancy": 0.38275346347607053,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.13563182199832075,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1289,22 +1289,22 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
         "nonempty_blocks": 2116,
-        "mean_nb": 27.47826086956522,
+        "mean_nb": 27.575614366729678,
         "median_nb": 17.0,
         "max_nb": 396,
-        "sum_nb": 58144,
+        "sum_nb": 58350,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 1031,
-            "pct": 0.4872400756143667
+            "n_blocks": 1029,
+            "pct": 0.4862948960302457
           },
           {
             "bin_lo": 17,
@@ -1317,15 +1317,15 @@
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 245,
-            "pct": 0.11578449905482041
+            "n_blocks": 243,
+            "pct": 0.11483931947069943
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 135,
-            "pct": 0.06379962192816635
+            "n_blocks": 139,
+            "pct": 0.06568998109640832
           },
           {
             "bin_lo": 65,
@@ -1352,15 +1352,15 @@
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 23,
-            "pct": 0.010869565217391304
+            "n_blocks": 21,
+            "pct": 0.00992438563327032
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
-            "n_blocks": 13,
-            "pct": 0.006143667296786389
+            "n_blocks": 15,
+            "pct": 0.007088846880907372
           },
           {
             "bin_lo": 145,
@@ -1485,12 +1485,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 2380,
-        "dram_bytes": 6092800,
-        "useful_bytes": 2325760,
-        "occupancy": 0.38172268907563023,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.1353046218487395,
+        "pages": 2382,
+        "dram_bytes": 6097920,
+        "useful_bytes": 2334000,
+        "occupancy": 0.38275346347607053,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.13563182199832075,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1551,22 +1551,22 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
         "nonempty_blocks": 2116,
-        "mean_nb": 27.47826086956522,
+        "mean_nb": 27.575614366729678,
         "median_nb": 17.0,
         "max_nb": 396,
-        "sum_nb": 58144,
+        "sum_nb": 58350,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 1031,
-            "pct": 0.4872400756143667
+            "n_blocks": 1029,
+            "pct": 0.4862948960302457
           },
           {
             "bin_lo": 17,
@@ -1579,15 +1579,15 @@
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 245,
-            "pct": 0.11578449905482041
+            "n_blocks": 243,
+            "pct": 0.11483931947069943
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 135,
-            "pct": 0.06379962192816635
+            "n_blocks": 139,
+            "pct": 0.06568998109640832
           },
           {
             "bin_lo": 65,
@@ -1614,15 +1614,15 @@
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 23,
-            "pct": 0.010869565217391304
+            "n_blocks": 21,
+            "pct": 0.00992438563327032
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
-            "n_blocks": 13,
-            "pct": 0.006143667296786389
+            "n_blocks": 15,
+            "pct": 0.007088846880907372
           },
           {
             "bin_lo": 145,
@@ -1738,8 +1738,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 12185600,
-      "peak_pages": 4760
+      "peak_dram_bytes": 12195840,
+      "peak_pages": 4764
     },
     {
       "layer_id": 4,
@@ -1776,12 +1776,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 2380,
-        "dram_bytes": 6092800,
-        "useful_bytes": 2325760,
-        "occupancy": 0.38172268907563023,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.1353046218487395,
+        "pages": 2382,
+        "dram_bytes": 6097920,
+        "useful_bytes": 2334000,
+        "occupancy": 0.38275346347607053,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.13563182199832075,
         "spatial_shape_zyx": [
           21,
           800,
@@ -1842,22 +1842,22 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
         "nonempty_blocks": 2116,
-        "mean_nb": 27.47826086956522,
+        "mean_nb": 27.575614366729678,
         "median_nb": 17.0,
         "max_nb": 396,
-        "sum_nb": 58144,
+        "sum_nb": 58350,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 1031,
-            "pct": 0.4872400756143667
+            "n_blocks": 1029,
+            "pct": 0.4862948960302457
           },
           {
             "bin_lo": 17,
@@ -1870,15 +1870,15 @@
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 245,
-            "pct": 0.11578449905482041
+            "n_blocks": 243,
+            "pct": 0.11483931947069943
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 135,
-            "pct": 0.06379962192816635
+            "n_blocks": 139,
+            "pct": 0.06568998109640832
           },
           {
             "bin_lo": 65,
@@ -1905,15 +1905,15 @@
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 23,
-            "pct": 0.010869565217391304
+            "n_blocks": 21,
+            "pct": 0.00992438563327032
           },
           {
             "bin_lo": 129,
             "bin_hi": 144,
             "bin_label": "129-144",
-            "n_blocks": 13,
-            "pct": 0.006143667296786389
+            "n_blocks": 15,
+            "pct": 0.007088846880907372
           },
           {
             "bin_lo": 145,
@@ -2038,12 +2038,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 2255,
-        "dram_bytes": 5772800,
-        "useful_bytes": 2138280,
-        "occupancy": 0.3704060421286031,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.14280487804878048,
+        "pages": 2257,
+        "dram_bytes": 5777920,
+        "useful_bytes": 2146760,
+        "occupancy": 0.37154546964997787,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.14314355338945503,
         "spatial_shape_zyx": [
           21,
           800,
@@ -2104,50 +2104,50 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
         "nonempty_blocks": 2009,
-        "mean_nb": 26.608760577401693,
+        "mean_nb": 26.714285714285715,
         "median_nb": 17.0,
         "max_nb": 496,
-        "sum_nb": 53457,
+        "sum_nb": 53669,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 978,
-            "pct": 0.48680935788949725
+            "n_blocks": 975,
+            "pct": 0.48531607765057244
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 512,
-            "pct": 0.2548531607765057
+            "n_blocks": 511,
+            "pct": 0.25435540069686413
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 239,
-            "pct": 0.11896465903434544
+            "n_blocks": 237,
+            "pct": 0.11796913887506222
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 92,
-            "pct": 0.045793927327028375
+            "n_blocks": 97,
+            "pct": 0.04828272772523644
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 57,
-            "pct": 0.028372324539571926
+            "n_blocks": 58,
+            "pct": 0.02887008461921354
           },
           {
             "bin_lo": 81,
@@ -2167,8 +2167,8 @@
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 15,
-            "pct": 0.007466401194624191
+            "n_blocks": 14,
+            "pct": 0.006968641114982578
           },
           {
             "bin_lo": 129,
@@ -2181,8 +2181,8 @@
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
-            "n_blocks": 7,
-            "pct": 0.003484320557491289
+            "n_blocks": 8,
+            "pct": 0.003982080637132902
           },
           {
             "bin_lo": 161,
@@ -2333,8 +2333,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 11865600,
-      "peak_pages": 4635
+      "peak_dram_bytes": 11875840,
+      "peak_pages": 4639
     },
     {
       "layer_id": 5,
@@ -2371,12 +2371,12 @@
         "feature_words": 4,
         "page_stride": 5,
         "page_bytes": 2560,
-        "pages": 2255,
-        "dram_bytes": 5772800,
-        "useful_bytes": 2138280,
-        "occupancy": 0.3704060421286031,
-        "semantic_channel_bytes": 824384,
-        "semantic_ratio": 0.14280487804878048,
+        "pages": 2257,
+        "dram_bytes": 5777920,
+        "useful_bytes": 2146760,
+        "occupancy": 0.37154546964997787,
+        "semantic_channel_bytes": 827072,
+        "semantic_ratio": 0.14314355338945503,
         "spatial_shape_zyx": [
           21,
           800,
@@ -2437,50 +2437,50 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-1,+1]",
-        "nonempty_voxels": 25762,
-        "coordinate_count": 25762,
-        "coordinate_sha256": "c5300322e32f3583ae9ee09f45856b82dd7f81d18fa118f4531ece67bdef6906",
+        "nonempty_voxels": 25846,
+        "coordinate_count": 25846,
+        "coordinate_sha256": "0f388c472d74e96cc7dc249b8fe9900743ad1b2ee43f302a45966acdcf4406f8",
         "coordinate_unique": true,
         "nonempty_blocks": 2009,
-        "mean_nb": 26.608760577401693,
+        "mean_nb": 26.714285714285715,
         "median_nb": 17.0,
         "max_nb": 496,
-        "sum_nb": 53457,
+        "sum_nb": 53669,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 978,
-            "pct": 0.48680935788949725
+            "n_blocks": 975,
+            "pct": 0.48531607765057244
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 512,
-            "pct": 0.2548531607765057
+            "n_blocks": 511,
+            "pct": 0.25435540069686413
           },
           {
             "bin_lo": 33,
             "bin_hi": 48,
             "bin_label": "33-48",
-            "n_blocks": 239,
-            "pct": 0.11896465903434544
+            "n_blocks": 237,
+            "pct": 0.11796913887506222
           },
           {
             "bin_lo": 49,
             "bin_hi": 64,
             "bin_label": "49-64",
-            "n_blocks": 92,
-            "pct": 0.045793927327028375
+            "n_blocks": 97,
+            "pct": 0.04828272772523644
           },
           {
             "bin_lo": 65,
             "bin_hi": 80,
             "bin_label": "65-80",
-            "n_blocks": 57,
-            "pct": 0.028372324539571926
+            "n_blocks": 58,
+            "pct": 0.02887008461921354
           },
           {
             "bin_lo": 81,
@@ -2500,8 +2500,8 @@
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 15,
-            "pct": 0.007466401194624191
+            "n_blocks": 14,
+            "pct": 0.006968641114982578
           },
           {
             "bin_lo": 129,
@@ -2514,8 +2514,8 @@
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
-            "n_blocks": 7,
-            "pct": 0.003484320557491289
+            "n_blocks": 8,
+            "pct": 0.003982080637132902
           },
           {
             "bin_lo": 161,
@@ -2677,10 +2677,10 @@
         "page_bytes": 4608,
         "pages": 848,
         "dram_bytes": 3907584,
-        "useful_bytes": 2308392,
-        "occupancy": 0.5907466096698113,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.31264740566037735,
+        "useful_bytes": 2310696,
+        "occupancy": 0.5913362323113207,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.3130896226415094,
         "spatial_shape_zyx": [
           11,
           400,
@@ -2741,29 +2741,29 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
         "nonempty_blocks": 571,
-        "mean_nb": 56.14886164623468,
+        "mean_nb": 56.20490367775832,
         "median_nb": 35.0,
         "max_nb": 355,
-        "sum_nb": 32061,
+        "sum_nb": 32093,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 177,
-            "pct": 0.30998248686514884
+            "n_blocks": 176,
+            "pct": 0.30823117338003503
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 101,
-            "pct": 0.17688266199649738
+            "n_blocks": 102,
+            "pct": 0.1786339754816112
           },
           {
             "bin_lo": 33,
@@ -2797,15 +2797,15 @@
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
-            "n_blocks": 36,
-            "pct": 0.06304728546409807
+            "n_blocks": 35,
+            "pct": 0.06129597197898424
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 14,
-            "pct": 0.024518388791593695
+            "n_blocks": 15,
+            "pct": 0.02626970227670753
           },
           {
             "bin_lo": 129,
@@ -2818,15 +2818,15 @@
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
-            "n_blocks": 13,
-            "pct": 0.02276707530647986
+            "n_blocks": 12,
+            "pct": 0.021015761821366025
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
-            "n_blocks": 6,
-            "pct": 0.010507880910683012
+            "n_blocks": 7,
+            "pct": 0.012259194395796848
           },
           {
             "bin_lo": 177,
@@ -2914,8 +2914,8 @@
           }
         ]
       },
-      "peak_dram_bytes": 9680384,
-      "peak_pages": 3103
+      "peak_dram_bytes": 9685504,
+      "peak_pages": 3105
     },
     {
       "layer_id": 6,
@@ -2954,10 +2954,10 @@
         "page_bytes": 4608,
         "pages": 848,
         "dram_bytes": 3907584,
-        "useful_bytes": 2308392,
-        "occupancy": 0.5907466096698113,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.31264740566037735,
+        "useful_bytes": 2310696,
+        "occupancy": 0.5913362323113207,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.3130896226415094,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3018,29 +3018,29 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
         "nonempty_blocks": 571,
-        "mean_nb": 56.14886164623468,
+        "mean_nb": 56.20490367775832,
         "median_nb": 35.0,
         "max_nb": 355,
-        "sum_nb": 32061,
+        "sum_nb": 32093,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 177,
-            "pct": 0.30998248686514884
+            "n_blocks": 176,
+            "pct": 0.30823117338003503
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 101,
-            "pct": 0.17688266199649738
+            "n_blocks": 102,
+            "pct": 0.1786339754816112
           },
           {
             "bin_lo": 33,
@@ -3074,15 +3074,15 @@
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
-            "n_blocks": 36,
-            "pct": 0.06304728546409807
+            "n_blocks": 35,
+            "pct": 0.06129597197898424
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 14,
-            "pct": 0.024518388791593695
+            "n_blocks": 15,
+            "pct": 0.02626970227670753
           },
           {
             "bin_lo": 129,
@@ -3095,15 +3095,15 @@
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
-            "n_blocks": 13,
-            "pct": 0.02276707530647986
+            "n_blocks": 12,
+            "pct": 0.021015761821366025
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
-            "n_blocks": 6,
-            "pct": 0.010507880910683012
+            "n_blocks": 7,
+            "pct": 0.012259194395796848
           },
           {
             "bin_lo": 177,
@@ -3202,10 +3202,10 @@
         "page_bytes": 4608,
         "pages": 848,
         "dram_bytes": 3907584,
-        "useful_bytes": 2308392,
-        "occupancy": 0.5907466096698113,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.31264740566037735,
+        "useful_bytes": 2310696,
+        "occupancy": 0.5913362323113207,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.3130896226415094,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3266,29 +3266,29 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
         "nonempty_blocks": 571,
-        "mean_nb": 56.14886164623468,
+        "mean_nb": 56.20490367775832,
         "median_nb": 35.0,
         "max_nb": 355,
-        "sum_nb": 32061,
+        "sum_nb": 32093,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 177,
-            "pct": 0.30998248686514884
+            "n_blocks": 176,
+            "pct": 0.30823117338003503
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 101,
-            "pct": 0.17688266199649738
+            "n_blocks": 102,
+            "pct": 0.1786339754816112
           },
           {
             "bin_lo": 33,
@@ -3322,15 +3322,15 @@
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
-            "n_blocks": 36,
-            "pct": 0.06304728546409807
+            "n_blocks": 35,
+            "pct": 0.06129597197898424
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 14,
-            "pct": 0.024518388791593695
+            "n_blocks": 15,
+            "pct": 0.02626970227670753
           },
           {
             "bin_lo": 129,
@@ -3343,15 +3343,15 @@
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
-            "n_blocks": 13,
-            "pct": 0.02276707530647986
+            "n_blocks": 12,
+            "pct": 0.021015761821366025
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
-            "n_blocks": 6,
-            "pct": 0.010507880910683012
+            "n_blocks": 7,
+            "pct": 0.012259194395796848
           },
           {
             "bin_lo": 177,
@@ -3479,10 +3479,10 @@
         "page_bytes": 4608,
         "pages": 848,
         "dram_bytes": 3907584,
-        "useful_bytes": 2308392,
-        "occupancy": 0.5907466096698113,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.31264740566037735,
+        "useful_bytes": 2310696,
+        "occupancy": 0.5913362323113207,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.3130896226415094,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3543,29 +3543,29 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
         "nonempty_blocks": 571,
-        "mean_nb": 56.14886164623468,
+        "mean_nb": 56.20490367775832,
         "median_nb": 35.0,
         "max_nb": 355,
-        "sum_nb": 32061,
+        "sum_nb": 32093,
         "histogram": [
           {
             "bin_lo": 1,
             "bin_hi": 16,
             "bin_label": "1-16",
-            "n_blocks": 177,
-            "pct": 0.30998248686514884
+            "n_blocks": 176,
+            "pct": 0.30823117338003503
           },
           {
             "bin_lo": 17,
             "bin_hi": 32,
             "bin_label": "17-32",
-            "n_blocks": 101,
-            "pct": 0.17688266199649738
+            "n_blocks": 102,
+            "pct": 0.1786339754816112
           },
           {
             "bin_lo": 33,
@@ -3599,15 +3599,15 @@
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
-            "n_blocks": 36,
-            "pct": 0.06304728546409807
+            "n_blocks": 35,
+            "pct": 0.06129597197898424
           },
           {
             "bin_lo": 113,
             "bin_hi": 128,
             "bin_label": "113-128",
-            "n_blocks": 14,
-            "pct": 0.024518388791593695
+            "n_blocks": 15,
+            "pct": 0.02626970227670753
           },
           {
             "bin_lo": 129,
@@ -3620,15 +3620,15 @@
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
-            "n_blocks": 13,
-            "pct": 0.02276707530647986
+            "n_blocks": 12,
+            "pct": 0.021015761821366025
           },
           {
             "bin_lo": 161,
             "bin_hi": 176,
             "bin_label": "161-176",
-            "n_blocks": 6,
-            "pct": 0.010507880910683012
+            "n_blocks": 7,
+            "pct": 0.012259194395796848
           },
           {
             "bin_lo": 177,
@@ -3727,10 +3727,10 @@
         "page_bytes": 4608,
         "pages": 834,
         "dram_bytes": 3843072,
-        "useful_bytes": 2273400,
-        "occupancy": 0.5915580035971223,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.31789568345323743,
+        "useful_bytes": 2275848,
+        "occupancy": 0.5921949940047961,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.3183453237410072,
         "spatial_shape_zyx": [
           11,
           400,
@@ -3791,15 +3791,15 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
         "nonempty_blocks": 553,
-        "mean_nb": 57.09764918625678,
+        "mean_nb": 57.159132007233275,
         "median_nb": 36.0,
         "max_nb": 375,
-        "sum_nb": 31575,
+        "sum_nb": 31609,
         "histogram": [
           {
             "bin_lo": 1,
@@ -3840,15 +3840,15 @@
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
-            "n_blocks": 32,
-            "pct": 0.05786618444846293
+            "n_blocks": 31,
+            "pct": 0.05605786618444846
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
-            "n_blocks": 30,
-            "pct": 0.054249547920433995
+            "n_blocks": 31,
+            "pct": 0.05605786618444846
           },
           {
             "bin_lo": 113,
@@ -3868,8 +3868,8 @@
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
-            "n_blocks": 10,
-            "pct": 0.018083182640144666
+            "n_blocks": 9,
+            "pct": 0.0162748643761302
           },
           {
             "bin_lo": 161,
@@ -3882,8 +3882,8 @@
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
-            "n_blocks": 8,
-            "pct": 0.014466546112115732
+            "n_blocks": 9,
+            "pct": 0.0162748643761302
           },
           {
             "bin_lo": 193,
@@ -4011,10 +4011,10 @@
         "page_bytes": 4608,
         "pages": 834,
         "dram_bytes": 3843072,
-        "useful_bytes": 2273400,
-        "occupancy": 0.5915580035971223,
-        "semantic_channel_bytes": 1221696,
-        "semantic_ratio": 0.31789568345323743,
+        "useful_bytes": 2275848,
+        "occupancy": 0.5921949940047961,
+        "semantic_channel_bytes": 1223424,
+        "semantic_ratio": 0.3183453237410072,
         "spatial_shape_zyx": [
           11,
           400,
@@ -4075,15 +4075,15 @@
           ]
         ],
         "extent_label": "x:[-1,+1] y:[-1,+1] z:[-2,0]",
-        "nonempty_voxels": 19089,
-        "coordinate_count": 19089,
-        "coordinate_sha256": "bf06d0a5ab2bd676eb6867fd636ef4890a8963bf3ed5f3114cdfe4efd3f11844",
+        "nonempty_voxels": 19116,
+        "coordinate_count": 19116,
+        "coordinate_sha256": "7e89fb5f484c45e9df0e492d74c43883dc91d2e0aaa20090d1f9c66d6babdbe3",
         "coordinate_unique": true,
         "nonempty_blocks": 553,
-        "mean_nb": 57.09764918625678,
+        "mean_nb": 57.159132007233275,
         "median_nb": 36.0,
         "max_nb": 375,
-        "sum_nb": 31575,
+        "sum_nb": 31609,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4124,15 +4124,15 @@
             "bin_lo": 81,
             "bin_hi": 96,
             "bin_label": "81-96",
-            "n_blocks": 32,
-            "pct": 0.05786618444846293
+            "n_blocks": 31,
+            "pct": 0.05605786618444846
           },
           {
             "bin_lo": 97,
             "bin_hi": 112,
             "bin_label": "97-112",
-            "n_blocks": 30,
-            "pct": 0.054249547920433995
+            "n_blocks": 31,
+            "pct": 0.05605786618444846
           },
           {
             "bin_lo": 113,
@@ -4152,8 +4152,8 @@
             "bin_lo": 145,
             "bin_hi": 160,
             "bin_label": "145-160",
-            "n_blocks": 10,
-            "pct": 0.018083182640144666
+            "n_blocks": 9,
+            "pct": 0.0162748643761302
           },
           {
             "bin_lo": 161,
@@ -4166,8 +4166,8 @@
             "bin_lo": 177,
             "bin_hi": 192,
             "bin_label": "177-192",
-            "n_blocks": 8,
-            "pct": 0.014466546112115732
+            "n_blocks": 9,
+            "pct": 0.0162748643761302
           },
           {
             "bin_lo": 193,
@@ -4266,10 +4266,10 @@
         "page_bytes": 4608,
         "pages": 284,
         "dram_bytes": 1308672,
-        "useful_bytes": 884232,
-        "occupancy": 0.6756712147887324,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.4154440532081377,
+        "useful_bytes": 884592,
+        "occupancy": 0.6759463028169014,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.41563967136150237,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4330,15 +4330,15 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 159,
-        "mean_nb": 77.23899371069183,
+        "mean_nb": 77.27044025157232,
         "median_nb": 57.0,
         "max_nb": 390,
-        "sum_nb": 12281,
+        "sum_nb": 12286,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4557,10 +4557,10 @@
         "page_bytes": 4608,
         "pages": 284,
         "dram_bytes": 1308672,
-        "useful_bytes": 884232,
-        "occupancy": 0.6756712147887324,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.4154440532081377,
+        "useful_bytes": 884592,
+        "occupancy": 0.6759463028169014,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.41563967136150237,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4621,15 +4621,15 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 159,
-        "mean_nb": 77.23899371069183,
+        "mean_nb": 77.27044025157232,
         "median_nb": 57.0,
         "max_nb": 390,
-        "sum_nb": 12281,
+        "sum_nb": 12286,
         "histogram": [
           {
             "bin_lo": 1,
@@ -4819,10 +4819,10 @@
         "page_bytes": 4608,
         "pages": 284,
         "dram_bytes": 1308672,
-        "useful_bytes": 884232,
-        "occupancy": 0.6756712147887324,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.4154440532081377,
+        "useful_bytes": 884592,
+        "occupancy": 0.6759463028169014,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.41563967136150237,
         "spatial_shape_zyx": [
           5,
           200,
@@ -4883,15 +4883,15 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 159,
-        "mean_nb": 77.23899371069183,
+        "mean_nb": 77.27044025157232,
         "median_nb": 57.0,
         "max_nb": 390,
-        "sum_nb": 12281,
+        "sum_nb": 12286,
         "histogram": [
           {
             "bin_lo": 1,
@@ -5110,10 +5110,10 @@
         "page_bytes": 4608,
         "pages": 284,
         "dram_bytes": 1308672,
-        "useful_bytes": 884232,
-        "occupancy": 0.6756712147887324,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.4154440532081377,
+        "useful_bytes": 884592,
+        "occupancy": 0.6759463028169014,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.41563967136150237,
         "spatial_shape_zyx": [
           5,
           200,
@@ -5174,15 +5174,15 @@
           ]
         ],
         "extent_label": "x:[-2,0] y:[-2,0] z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 159,
-        "mean_nb": 77.23899371069183,
+        "mean_nb": 77.27044025157232,
         "median_nb": 57.0,
         "max_nb": 390,
-        "sum_nb": 12281,
+        "sum_nb": 12286,
         "histogram": [
           {
             "bin_lo": 1,
@@ -5372,10 +5372,10 @@
         "page_bytes": 4608,
         "pages": 223,
         "dram_bytes": 1027584,
-        "useful_bytes": 611640,
-        "occupancy": 0.5952214125560538,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.5290857000498256,
+        "useful_bytes": 611928,
+        "occupancy": 0.5955016816143498,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.5293348281016442,
         "spatial_shape_zyx": [
           5,
           200,
@@ -5436,15 +5436,15 @@
           ]
         ],
         "extent_label": "x:none y:none z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 150,
-        "mean_nb": 56.63333333333333,
+        "mean_nb": 56.66,
         "median_nb": 40.5,
         "max_nb": 285,
-        "sum_nb": 8495,
+        "sum_nb": 8499,
         "histogram": [
           {
             "bin_lo": 1,
@@ -5614,10 +5614,10 @@
         "page_bytes": 4608,
         "pages": 223,
         "dram_bytes": 1027584,
-        "useful_bytes": 611640,
-        "occupancy": 0.5952214125560538,
-        "semantic_channel_bytes": 543680,
-        "semantic_ratio": 0.5290857000498256,
+        "useful_bytes": 611928,
+        "occupancy": 0.5955016816143498,
+        "semantic_channel_bytes": 543936,
+        "semantic_ratio": 0.5293348281016442,
         "spatial_shape_zyx": [
           5,
           200,
@@ -5678,15 +5678,15 @@
           ]
         ],
         "extent_label": "x:none y:none z:[-2,0]",
-        "nonempty_voxels": 8495,
-        "coordinate_count": 8495,
-        "coordinate_sha256": "03d33423f35ef008dd4bcc3cb1df68687aa4e0b2849369313da138faa54261d0",
+        "nonempty_voxels": 8499,
+        "coordinate_count": 8499,
+        "coordinate_sha256": "4407ea88e816de8bc30f50d0a4c9510a5dd0ca80d06892460c9f32313f059438",
         "coordinate_unique": true,
         "nonempty_blocks": 150,
-        "mean_nb": 56.63333333333333,
+        "mean_nb": 56.66,
         "median_nb": 40.5,
         "max_nb": 285,
-        "sum_nb": 8495,
+        "sum_nb": 8499,
         "histogram": [
           {
             "bin_lo": 1,
@@ -5829,7 +5829,7 @@
         "dram_bytes": 0,
         "useful_bytes": 0,
         "occupancy": 0.0,
-        "semantic_channel_bytes": 846336,
+        "semantic_channel_bytes": 846848,
         "semantic_ratio": 0.0,
         "spatial_shape_zyx": [
           2,
@@ -5875,9 +5875,9 @@
           ]
         ],
         "extent_label": "x:none y:none z:none",
-        "nonempty_voxels": 6612,
-        "coordinate_count": 6612,
-        "coordinate_sha256": "1d2eb76d8ff82da1c4a693a1b7c7f4b594089f036126d31c6571a07250756e4f",
+        "nonempty_voxels": 6616,
+        "coordinate_count": 6616,
+        "coordinate_sha256": "1b9b2b02236943f3c22dc9702a848ed3a0f6a31e01a9e24b90c0af9d7e5fe54c",
         "coordinate_unique": true,
         "nonempty_blocks": 0,
         "mean_nb": 0.0,

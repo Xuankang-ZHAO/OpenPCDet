@@ -18,7 +18,7 @@
     "pool_size": 3769,
     "pool_split": "val",
     "pool_source": "kitti_infos_val.pkl + training/velodyne",
-    "source_frame_list": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/dram_footprint/val_sampled_200_frame_ids.txt",
+    "source_frame_list": "/home/vipuser/\u684c\u9762/OpenPCDet/mycode/dram_footprint/val_sampled_200_max40k/val_sampled_200_frame_ids.txt",
     "frame_ids": [
       "000005",
       "000061",
