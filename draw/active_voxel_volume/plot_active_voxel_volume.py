@@ -14,8 +14,9 @@ import math
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.collections import LineCollection
 from matplotlib.lines import Line2D
-from matplotlib.patches import FancyArrowPatch
+from matplotlib.patches import Polygon
 from matplotlib.ticker import LogFormatterMathtext, LogLocator, NullLocator
 
 
@@ -23,7 +24,7 @@ OUT_DIR = Path(__file__).resolve().parent
 # IEEE TCAS-I / IEEEtran journal single-column width.
 FIG_WIDTH_IN = 3.5
 # 10^4–10^7 span, with the top and bottom white margins cropped off.
-FIG_HEIGHT_IN = 1.228
+FIG_HEIGHT_IN = 1.15
 # White margin outside the y-axis label, matched on the right.
 SIDE_PAD_IN = 0.16
 
@@ -36,6 +37,13 @@ def box_volume(xmin: float, ymin: float, zmin: float, xmax: float, ymax: float, 
 SECOND = "#E8E8E8"
 CENTERPOINT = "#0072B2"
 VOXELNEXT = "#C4845A"
+
+# Circle, square, and upward triangle distinguish the three algorithms.
+MARKERS = {
+    SECOND: "o",
+    VOXELNEXT: "s",
+    CENTERPOINT: "^",
+}
 
 # label, train cap, volume (m^3), color, text offset (pt), ha, va.
 # Labels name the dataset only; the algorithm is the legend color.
@@ -127,10 +135,16 @@ def configure_style() -> None:
     )
 
 
+def _mix_rgb(a: tuple[float, float, float], b: tuple[float, float, float], t: float) -> tuple[float, float, float]:
+    return tuple(a[i] + (b[i] - a[i]) * t for i in range(3))
+
+
 def add_increasing_scale_arrow(fig, ax) -> None:
     """Dashed diagonal across the plot, in the style of a workload-scale arrow.
 
     Endpoints stay on the data diagonal used before the axis was cut at 10^7.
+    The stroke is a light green at the lower left and a darker green
+    at the upper right.
     """
     fig.canvas.draw()
     log_lo, log_hi = 4.0, math.log10(2.2e7)
@@ -142,32 +156,79 @@ def add_increasing_scale_arrow(fig, ax) -> None:
         (205 / 281.75) * 196_000,
         10 ** (log_lo + (124 / 154) * (log_hi - log_lo)),
     )
-    color = "#7E9BB5"
-    ax.add_patch(
-        FancyArrowPatch(
-            start,
-            end,
-            transform=ax.transData,
-            arrowstyle="-|>",
-            mutation_scale=8,
-            linestyle=(0, (3.0, 1.6)),
-            linewidth=0.85,
-            color=color,
-            shrinkA=0,
-            shrinkB=0,
-            clip_on=False,
-            zorder=2,
-        )
-    )
-    fig.canvas.draw()
-    p1 = ax.transData.transform(start)
+    # Same slope, extended down-left until it sits at the KITTI marker height.
+    kitti_y = box_volume(0.0, -40.0, -3.0, 70.4, 40.0, 1.0)
+    log_t = (math.log10(kitti_y) - math.log10(start[1])) / (math.log10(end[1]) - math.log10(start[1]))
+    tail = (start[0] + log_t * (end[0] - start[0]), kitti_y)
+    # Light green at the lower left, darker green at the upper right.
+    base = (0x5E / 255, 0xA8 / 255, 0x72 / 255)
+    light = _mix_rgb(base, (1.0, 1.0, 1.0), 0.34)
+    dark = _mix_rgb(base, (0x1E / 255, 0x5A / 255, 0x34 / 255), 0.45)
+    label_color = "#5EA872"
+    p1 = ax.transData.transform(tail)
     p2 = ax.transData.transform(end)
-    angle = math.degrees(math.atan2(p2[1] - p1[1], p2[0] - p1[0]))
+    label_anchor = ax.transData.transform(start)
     dx, dy = p2[0] - p1[0], p2[1] - p1[1]
     norm = math.hypot(dx, dy)
+    ux, uy = dx / norm, dy / norm
+    # Dash pattern is (3.0, 1.6) pt. The head is a filled triangle only,
+    # and the dashes stop at its base so the stroke cannot poke past the tip.
+    on = 3.0 * fig.dpi / 72.0
+    off = 1.6 * fig.dpi / 72.0
+    head_len = 5.2 * fig.dpi / 72.0
+    head_w = 4.4 * fig.dpi / 72.0
+    # A short overlap tucks the last dash under the base; the stroke is narrower
+    # than that base, so it stays inside the triangle.
+    usable = norm - head_len + 0.3 * fig.dpi / 72.0
+    inv = ax.transData.inverted()
+    segments = []
+    colors = []
+    pos = 0.0
+    while pos < usable - 1e-6:
+        seg_end = min(pos + on, usable)
+        span = seg_end - pos
+        pieces = 4
+        for i in range(pieces):
+            a_pos = pos + span * i / pieces
+            b_pos = pos + span * (i + 1) / pieces
+            t = min(max(((a_pos + b_pos) * 0.5) / norm, 0.0), 1.0)
+            color = _mix_rgb(light, dark, t)
+            a = inv.transform((p1[0] + ux * a_pos, p1[1] + uy * a_pos))
+            b = inv.transform((p1[0] + ux * b_pos, p1[1] + uy * b_pos))
+            segments.append((a, b))
+            colors.append(color)
+        pos = seg_end + off
+    dashes = LineCollection(
+        segments,
+        colors=colors,
+        linewidths=0.85,
+        capstyle="butt",
+        zorder=2,
+        clip_on=False,
+    )
+    ax.add_collection(dashes)
+    base = (p2[0] - ux * head_len, p2[1] - uy * head_len)
+    left = (base[0] - uy * head_w / 2.0, base[1] + ux * head_w / 2.0)
+    right = (base[0] + uy * head_w / 2.0, base[1] - ux * head_w / 2.0)
+    ax.add_patch(
+        Polygon(
+            [inv.transform(p2), inv.transform(left), inv.transform(right)],
+            closed=True,
+            facecolor=dark,
+            edgecolor=dark,
+            linewidth=0.0,
+            joinstyle="miter",
+            zorder=3,
+            clip_on=False,
+        )
+    )
+    angle = math.degrees(math.atan2(dy, dx))
     offset = 6.0
-    midpoint = ((p1[0] + p2[0]) / 2 - dy / norm * offset, (p1[1] + p2[1]) / 2 + dx / norm * offset)
-    text_xy = ax.transData.inverted().transform(midpoint)
+    midpoint = (
+        (label_anchor[0] + p2[0]) / 2 - dy / norm * offset,
+        (label_anchor[1] + p2[1]) / 2 + dx / norm * offset,
+    )
+    text_xy = inv.transform(midpoint)
     ax.text(
         text_xy[0],
         text_xy[1],
@@ -177,7 +238,7 @@ def add_increasing_scale_arrow(fig, ax) -> None:
         ha="center",
         va="center",
         fontsize=6,
-        color=color,
+        color=label_color,
         zorder=2,
         clip_on=False,
     )
@@ -191,7 +252,7 @@ def add_algorithm_legend(ax) -> None:
             [],
             [],
             linestyle="none",
-            marker="o",
+            marker=MARKERS[color],
             markersize=marker_size,
             markerfacecolor=color,
             markeredgecolor="black",
@@ -230,7 +291,7 @@ def main() -> None:
             [cap],
             [volume],
             s=22,
-            marker="o",
+            marker=MARKERS[color],
             facecolor=color,
             edgecolor="black",
             linewidth=0.4,
@@ -250,7 +311,7 @@ def main() -> None:
         )
 
     ax.set_xlabel("Active voxel numbers", fontsize=7)
-    ax.set_ylabel(r"3-D ROI volume (m$^3$)")
+    ax.set_ylabel(r"3-D ROI volume (m$^3$)", fontsize=7)
     ax.set_xlim(0, 196_000)
     ax.set_xticks([0, 50_000, 100_000, 150_000])
     ax.set_xticklabels(["0", "50k", "100k", "150k"])
@@ -258,6 +319,7 @@ def main() -> None:
     ax.set_yscale("log")
     ax.set_ylim(1e4, 1e7)
     ax.yaxis.set_major_locator(LogLocator(base=10))
+    ax.set_yticks([1e4, 1e5, 1e6, 1e7])
     ax.yaxis.set_minor_locator(NullLocator())
     ax.yaxis.set_major_formatter(LogFormatterMathtext(base=10))
     ax.tick_params(which="both", top=False, right=False)
@@ -271,8 +333,10 @@ def main() -> None:
         spine.set_linewidth(0.7)
     # Left fraction keeps the y-label ink about SIDE_PAD_IN from the figure edge.
     left = 0.164
-    right = 1.0 - (SIDE_PAD_IN + 0.005) / FIG_WIDTH_IN
-    fig.subplots_adjust(left=left, right=right, bottom=0.167, top=0.953)
+    # Allow for right-side annotations so the visible outer margin matches the
+    # DRAM figure (roughly 0.24 in / 145 px at 600 DPI).
+    right = 1.0 - (SIDE_PAD_IN + 0.09) / FIG_WIDTH_IN
+    fig.subplots_adjust(left=left, right=right, bottom=0.167, top=0.943)
     add_algorithm_legend(ax)
     add_increasing_scale_arrow(fig, ax)
 

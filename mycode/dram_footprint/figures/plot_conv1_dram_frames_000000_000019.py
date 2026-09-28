@@ -13,7 +13,8 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.ticker import LogFormatterMathtext, LogLocator
+from matplotlib.ticker import LogFormatterMathtext, LogLocator, NullLocator
+from matplotlib.transforms import Bbox
 
 
 OUT_DIR = Path(__file__).resolve().parent
@@ -110,7 +111,7 @@ def main() -> None:
 
     # IEEE/TCAS-I single-column width is 3.5 in.
     # Log scale keeps the ~1 MiB effective portion visible inside the allocated bar.
-    fig, ax = plt.subplots(figsize=(3.5, 1.8))
+    fig, ax = plt.subplots(figsize=(3.5, 1.2))
     axis_floor = 10 ** 0
     base_bars = ax.bar(
         x,
@@ -148,40 +149,65 @@ def main() -> None:
         zorder=5,
     )
 
-    ax.set_xlabel("Frame index")
-    ax.set_ylabel("DRAM Footprint (MiB)")
+    ax.set_xlabel("Frame index", fontsize=7, labelpad=0)
+    ax.set_ylabel("DRAM footprint (MiB)", fontsize=7)
     ax.set_xticks(x[::2], [str(index) for index in range(0, 20, 2)])
+    ax.tick_params(axis="x", pad=1)
+    ax.tick_params(axis="y", labelsize=6.5)
     ax.set_xlim(-0.6, 19.6)
     ax.set_yscale("log", base=10)
     ax.set_ylim(axis_floor, 250)
     ax.yaxis.set_major_locator(LogLocator(base=10, numticks=4))
     ax.yaxis.set_major_formatter(LogFormatterMathtext(base=10))
-    ax.grid(axis="y", color="#D0D0D0", linewidth=0.45, linestyle="--", zorder=0)
+    ax.yaxis.set_minor_locator(NullLocator())
+    ax.grid(axis="y", which="major", color="#D0D0D0", linewidth=0.45, linestyle="--", zorder=0)
+    ax.grid(axis="y", which="minor", visible=False)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax_blocks.set_ylabel("Block numbers", labelpad=2)
+    ax_blocks.set_ylabel("Block numbers", fontsize=7, labelpad=2)
     ax_blocks.set_ylim(0, 12000)
     ax_blocks.set_yticks([0, 4000, 8000, 12000])
     ax_blocks.set_yticklabels(["0", "4k", "8k", "12k"])
-    ax_blocks.tick_params(axis="y", pad=1)
+    ax_blocks.yaxis.set_minor_locator(NullLocator())
+    ax_blocks.tick_params(axis="y", labelsize=6.5, pad=1)
     ax_blocks.spines["top"].set_visible(False)
     ax.legend(
         handles=[base_bars, effective_bars, block_line],
         loc="lower center",
-        bbox_to_anchor=(0.5, 1.0),
+        bbox_to_anchor=(0.5, 0.96),
         frameon=False,
         ncols=3,
-        handlelength=1.2,
-        handletextpad=0.3,
-        columnspacing=0.7,
-        borderaxespad=0.15,
+        handlelength=1.0,
+        handletextpad=0.2,
+        columnspacing=0.5,
+        borderaxespad=0.1,
     )
     fig.subplots_adjust(left=0.155, right=0.845, bottom=0.20, top=0.84)
 
+    # Crop only the vertical whitespace, leaving 3 px above and below at 600 DPI.
+    output_dpi = 600
+    vertical_pad_px = 3
+    fig.set_dpi(output_dpi)
+    fig.canvas.draw()
+    rendered = np.asarray(fig.canvas.buffer_rgba())[:, :, :3]
+    content_rows = np.any(rendered != 255, axis=(1, 2))
+    occupied_rows = np.flatnonzero(content_rows)
+    if occupied_rows.size == 0:
+        raise RuntimeError("Rendered figure is empty")
+    first_row = int(occupied_rows[0])
+    last_row = int(occupied_rows[-1])
+    canvas_height_px = rendered.shape[0]
+    vertical_bbox = Bbox.from_extents(
+        0,
+        max(0, canvas_height_px - (last_row + 1 + vertical_pad_px)) / output_dpi,
+        fig.get_figwidth(),
+        min(canvas_height_px, canvas_height_px - first_row + vertical_pad_px) / output_dpi,
+    )
+
     stem = OUT_DIR / "conv1_dram_frames_000000_000019"
-    fig.savefig(stem.with_suffix(".pdf"))
-    fig.savefig(stem.with_suffix(".svg"))
-    fig.savefig(stem.with_suffix(".png"), dpi=600)
+    fig.savefig(stem.with_suffix(".pdf"), bbox_inches=vertical_bbox)
+    fig.savefig(stem.with_suffix(".svg"), bbox_inches=vertical_bbox)
+    fig.savefig(stem.with_suffix(".png"), dpi=output_dpi, bbox_inches=vertical_bbox)
     plt.close(fig)
     print(f"Saved {stem.with_suffix('.pdf')}")
     print(f"Saved {stem.with_suffix('.svg')}")
