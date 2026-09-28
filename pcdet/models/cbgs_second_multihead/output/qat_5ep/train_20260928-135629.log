@@ -1,0 +1,144 @@
+2026-09-28 13:56:29,550   INFO  DATA_PATH: /home/vipuser/桌面/OpenPCDet/data/nuscenes
+2026-09-28 13:56:29,550   INFO  VERSION: v1.0-mini
+2026-09-28 13:56:29,550   INFO  pretrained: /home/vipuser/桌面/OpenPCDet/pcdet/models/cbgs_second_multihead/cbgs_second_multihead_nds6229_updated.pth
+2026-09-28 13:56:29,550   INFO  epochs: 5  batch_size: 2  lr: 0.0001  weight_quant: per_channel
+2026-09-28 13:56:29,550   INFO  cfg.ROOT_DIR: /home/vipuser/桌面/OpenPCDet
+2026-09-28 13:56:29,550   INFO  cfg.LOCAL_RANK: 0
+2026-09-28 13:56:29,550   INFO  cfg.CLASS_NAMES: ['car', 'truck', 'construction_vehicle', 'bus', 'trailer', 'barrier', 'motorcycle', 'bicycle', 'pedestrian', 'traffic_cone']
+2026-09-28 13:56:29,550   INFO  ----------- DATA_CONFIG -----------
+2026-09-28 13:56:29,550   INFO  cfg.DATA_CONFIG.DATASET: NuScenesDataset
+2026-09-28 13:56:29,550   INFO  cfg.DATA_CONFIG.DATA_PATH: /home/vipuser/桌面/OpenPCDet/data/nuscenes
+2026-09-28 13:56:29,550   INFO  cfg.DATA_CONFIG.VERSION: v1.0-mini
+2026-09-28 13:56:29,550   INFO  cfg.DATA_CONFIG.MAX_SWEEPS: 10
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.PRED_VELOCITY: True
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.SET_NAN_VELOCITY_TO_ZEROS: True
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.FILTER_MIN_POINTS_IN_GT: 1
+2026-09-28 13:56:29,551   INFO  ----------- DATA_SPLIT -----------
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.DATA_SPLIT.train: train
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.DATA_SPLIT.test: val
+2026-09-28 13:56:29,551   INFO  ----------- INFO_PATH -----------
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.INFO_PATH.train: ['nuscenes_infos_10sweeps_train.pkl']
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.INFO_PATH.test: ['nuscenes_infos_10sweeps_val.pkl']
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.POINT_CLOUD_RANGE: [-51.2, -51.2, -5.0, 51.2, 51.2, 3.0]
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.BALANCED_RESAMPLING: False
+2026-09-28 13:56:29,551   INFO  ----------- DATA_AUGMENTOR -----------
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.DISABLE_AUG_LIST: ['placeholder']
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.AUG_CONFIG_LIST: [{'NAME': 'gt_sampling', 'DB_INFO_PATH': ['nuscenes_dbinfos_10sweeps_withvelo.pkl'], 'PREPARE': {'filter_by_min_points': ['car:5', 'truck:5', 'construction_vehicle:5', 'bus:5', 'trailer:5', 'barrier:5', 'motorcycle:5', 'bicycle:5', 'pedestrian:5', 'traffic_cone:5']}, 'SAMPLE_GROUPS': ['car:2', 'truck:3', 'construction_vehicle:7', 'bus:4', 'trailer:6', 'barrier:2', 'motorcycle:6', 'bicycle:6', 'pedestrian:2', 'traffic_cone:2'], 'NUM_POINT_FEATURES': 5, 'DATABASE_WITH_FAKELIDAR': False, 'REMOVE_EXTRA_WIDTH': [0.0, 0.0, 0.0], 'LIMIT_WHOLE_SCENE': True}, {'NAME': 'random_world_flip', 'ALONG_AXIS_LIST': ['x', 'y']}, {'NAME': 'random_world_rotation', 'WORLD_ROT_ANGLE': [-0.3925, 0.3925]}, {'NAME': 'random_world_scaling', 'WORLD_SCALE_RANGE': [0.95, 1.05]}]
+2026-09-28 13:56:29,551   INFO  ----------- POINT_FEATURE_ENCODING -----------
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.encoding_type: absolute_coordinates_encoding
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.used_feature_list: ['x', 'y', 'z', 'intensity', 'timestamp']
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.src_feature_list: ['x', 'y', 'z', 'intensity', 'timestamp']
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG.DATA_PROCESSOR: [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': True, 'test': True}}, {'NAME': 'transform_points_to_voxels', 'VOXEL_SIZE': [0.1, 0.1, 0.2], 'MAX_POINTS_PER_VOXEL': 10, 'MAX_NUMBER_OF_VOXELS': {'train': 60000, 'test': 60000}}]
+2026-09-28 13:56:29,551   INFO  cfg.DATA_CONFIG._BASE_CONFIG_: nuscenes_dataset.yaml
+2026-09-28 13:56:29,551   INFO  ----------- MODEL -----------
+2026-09-28 13:56:29,551   INFO  cfg.MODEL.NAME: SECONDNet
+2026-09-28 13:56:29,551   INFO  ----------- VFE -----------
+2026-09-28 13:56:29,551   INFO  cfg.MODEL.VFE.NAME: MeanVFE
+2026-09-28 13:56:29,551   INFO  ----------- BACKBONE_3D -----------
+2026-09-28 13:56:29,551   INFO  cfg.MODEL.BACKBONE_3D.NAME: VoxelResBackBone8x_HWQAT
+2026-09-28 13:56:29,551   INFO  ----------- MAP_TO_BEV -----------
+2026-09-28 13:56:29,551   INFO  cfg.MODEL.MAP_TO_BEV.NAME: HeightCompression
+2026-09-28 13:56:29,551   INFO  cfg.MODEL.MAP_TO_BEV.NUM_BEV_FEATURES: 256
+2026-09-28 13:56:29,552   INFO  ----------- BACKBONE_2D -----------
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.BACKBONE_2D.NAME: BaseBEVBackbone
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.BACKBONE_2D.LAYER_NUMS: [5, 5]
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.BACKBONE_2D.LAYER_STRIDES: [1, 2]
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.BACKBONE_2D.NUM_FILTERS: [128, 256]
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.BACKBONE_2D.UPSAMPLE_STRIDES: [1, 2]
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.BACKBONE_2D.NUM_UPSAMPLE_FILTERS: [256, 256]
+2026-09-28 13:56:29,552   INFO  ----------- DENSE_HEAD -----------
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.NAME: AnchorHeadMulti
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.CLASS_AGNOSTIC: False
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.DIR_OFFSET: 0.78539
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.DIR_LIMIT_OFFSET: 0.0
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.NUM_DIR_BINS: 2
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.USE_MULTIHEAD: True
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.SEPARATE_MULTIHEAD: True
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.ANCHOR_GENERATOR_CONFIG: [{'class_name': 'car', 'anchor_sizes': [[4.63, 1.97, 1.74]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.95], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.45}, {'class_name': 'truck', 'anchor_sizes': [[6.93, 2.51, 2.84]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.6], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'construction_vehicle', 'anchor_sizes': [[6.37, 2.85, 3.19]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.225], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}, {'class_name': 'bus', 'anchor_sizes': [[10.5, 2.94, 3.47]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.085], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'trailer', 'anchor_sizes': [[12.29, 2.9, 3.87]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [0.115], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}, {'class_name': 'barrier', 'anchor_sizes': [[0.5, 2.53, 0.98]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.33], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'motorcycle', 'anchor_sizes': [[2.11, 0.77, 1.47]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.085], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.3}, {'class_name': 'bicycle', 'anchor_sizes': [[1.7, 0.6, 1.28]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.18], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}, {'class_name': 'pedestrian', 'anchor_sizes': [[0.73, 0.67, 1.77]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.935], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.4}, {'class_name': 'traffic_cone', 'anchor_sizes': [[0.41, 0.41, 1.07]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.285], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.4}]
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.SHARED_CONV_NUM_FILTER: 64
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.RPN_HEAD_CFGS: [{'HEAD_CLS_NAME': ['car']}, {'HEAD_CLS_NAME': ['truck', 'construction_vehicle']}, {'HEAD_CLS_NAME': ['bus', 'trailer']}, {'HEAD_CLS_NAME': ['barrier']}, {'HEAD_CLS_NAME': ['motorcycle', 'bicycle']}, {'HEAD_CLS_NAME': ['pedestrian', 'traffic_cone']}]
+2026-09-28 13:56:29,552   INFO  ----------- SEPARATE_REG_CONFIG -----------
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.SEPARATE_REG_CONFIG.NUM_MIDDLE_CONV: 1
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.SEPARATE_REG_CONFIG.NUM_MIDDLE_FILTER: 64
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.SEPARATE_REG_CONFIG.REG_LIST: ['reg:2', 'height:1', 'size:3', 'angle:2', 'velo:2']
+2026-09-28 13:56:29,552   INFO  ----------- TARGET_ASSIGNER_CONFIG -----------
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NAME: AxisAlignedTargetAssigner
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.POS_FRACTION: -1.0
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.SAMPLE_SIZE: 512
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NORM_BY_NUM_EXAMPLES: False
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.MATCH_HEIGHT: False
+2026-09-28 13:56:29,552   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER: ResidualCoder
+2026-09-28 13:56:29,553   INFO  ----------- BOX_CODER_CONFIG -----------
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER_CONFIG.code_size: 9
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER_CONFIG.encode_angle_by_sincos: True
+2026-09-28 13:56:29,553   INFO  ----------- LOSS_CONFIG -----------
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.REG_LOSS_TYPE: WeightedL1Loss
+2026-09-28 13:56:29,553   INFO  ----------- LOSS_WEIGHTS -----------
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.pos_cls_weight: 1.0
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.neg_cls_weight: 2.0
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.cls_weight: 1.0
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.loc_weight: 0.25
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.dir_weight: 0.2
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.code_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.2, 0.2]
+2026-09-28 13:56:29,553   INFO  ----------- POST_PROCESSING -----------
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.SCORE_THRESH: 0.1
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.OUTPUT_RAW_SCORE: False
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.EVAL_METRIC: kitti
+2026-09-28 13:56:29,553   INFO  ----------- NMS_CONFIG -----------
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.MULTI_CLASSES_NMS: True
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_TYPE: nms_gpu
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_THRESH: 0.2
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_PRE_MAXSIZE: 1000
+2026-09-28 13:56:29,553   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_POST_MAXSIZE: 83
+2026-09-28 13:56:29,553   INFO  ----------- OPTIMIZATION -----------
+2026-09-28 13:56:29,553   INFO  cfg.OPTIMIZATION.BATCH_SIZE_PER_GPU: 2
+2026-09-28 13:56:29,553   INFO  cfg.OPTIMIZATION.NUM_EPOCHS: 5
+2026-09-28 13:56:29,553   INFO  cfg.OPTIMIZATION.OPTIMIZER: adam_onecycle
+2026-09-28 13:56:29,553   INFO  cfg.OPTIMIZATION.LR: 0.0001
+2026-09-28 13:56:29,553   INFO  cfg.OPTIMIZATION.WEIGHT_DECAY: 0.01
+2026-09-28 13:56:29,553   INFO  cfg.OPTIMIZATION.MOMENTUM: 0.9
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.MOMS: [0.95, 0.85]
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.PCT_START: 0.4
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.DIV_FACTOR: 10
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.DECAY_STEP_LIST: [35, 45]
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.LR_DECAY: 0.1
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.LR_CLIP: 1e-07
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.LR_WARMUP: False
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.WARMUP_EPOCH: 1
+2026-09-28 13:56:29,554   INFO  cfg.OPTIMIZATION.GRAD_NORM_CLIP: 10
+2026-09-28 13:56:29,554   INFO  cfg.TAG: cbgs_second_multihead_hw_qat
+2026-09-28 13:56:29,554   INFO  cfg.EXP_GROUP_PATH: nuscenes_models
+2026-09-28 13:56:29,593   INFO  Database filter by min points car: 4082 => 3303
+2026-09-28 13:56:29,593   INFO  Database filter by min points truck: 451 => 412
+2026-09-28 13:56:29,593   INFO  Database filter by min points construction_vehicle: 174 => 161
+2026-09-28 13:56:29,593   INFO  Database filter by min points bus: 337 => 309
+2026-09-28 13:56:29,593   INFO  Database filter by min points trailer: 59 => 57
+2026-09-28 13:56:29,593   INFO  Database filter by min points barrier: 1851 => 1741
+2026-09-28 13:56:29,593   INFO  Database filter by min points motorcycle: 179 => 149
+2026-09-28 13:56:29,593   INFO  Database filter by min points bicycle: 147 => 136
+2026-09-28 13:56:29,594   INFO  Database filter by min points pedestrian: 3068 => 2799
+2026-09-28 13:56:29,594   INFO  Database filter by min points traffic_cone: 773 => 635
+2026-09-28 13:56:29,594   INFO  Loading NuScenes dataset
+2026-09-28 13:56:29,613   INFO  Total samples for NuScenes dataset: 323
+2026-09-28 13:56:29,613   INFO  train samples: 323  iters/epoch: 162
+2026-09-28 13:56:29,862   INFO  quantized sparse convs: 21
+2026-09-28 13:56:29,862   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/pcdet/models/cbgs_second_multihead/output/qat_5ep/ckpt/checkpoint_epoch_5.pth to GPU
+2026-09-28 13:56:30,036   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py9487453
+2026-09-28 13:56:30,049   INFO  ==> Done (loaded 571/571)
+2026-09-28 13:56:30,051   INFO  skip training, evaluate /home/vipuser/桌面/OpenPCDet/pcdet/models/cbgs_second_multihead/output/qat_5ep/ckpt/checkpoint_epoch_5.pth
+2026-09-28 13:56:30,051   INFO  **********************Start fake-quant evaluation**********************
+2026-09-28 13:56:30,051   INFO  Loading NuScenes dataset
+2026-09-28 13:56:30,056   INFO  Total samples for NuScenes dataset: 81
+2026-09-28 13:56:30,056   INFO  val samples: 81
+2026-09-28 13:56:30,057   INFO  *************** EPOCH 5 EVALUATION *****************
+2026-09-28 13:56:34,811   INFO  *************** Performance of EPOCH 5 *****************
+2026-09-28 13:56:34,812   INFO  Generate label finished(sec_per_example: 0.0587 second).
+2026-09-28 13:56:34,812   INFO  recall_roi_0.3: 0.000000
+2026-09-28 13:56:34,812   INFO  recall_rcnn_0.3: 0.757396
+2026-09-28 13:56:34,812   INFO  recall_roi_0.5: 0.000000
+2026-09-28 13:56:34,812   INFO  recall_rcnn_0.5: 0.553254
+2026-09-28 13:56:34,812   INFO  recall_roi_0.7: 0.000000
+2026-09-28 13:56:34,812   INFO  recall_rcnn_0.7: 0.278375
+2026-09-28 13:56:34,812   INFO  Average predicted number of objects(81 samples): 122.148
+2026-09-28 13:56:37,181   INFO  The predictions of NuScenes have been saved to /home/vipuser/桌面/OpenPCDet/pcdet/models/cbgs_second_multihead/output/qat_5ep/eval/epoch_5/val/final_result/data/results_nusc.json

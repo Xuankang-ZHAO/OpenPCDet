@@ -1,0 +1,19 @@
+{
+  "recall/roi_0.3": 0.0,
+  "recall/rcnn_0.3": 0.7625067240451856,
+  "recall/roi_0.5": 0.0,
+  "recall/rcnn_0.5": 0.5562130177514792,
+  "recall/roi_0.7": 0.0,
+  "recall/rcnn_0.7": 0.271382463690156,
+  "trans_err": 0.4640114999436339,
+  "scale_err": 0.46857000271825616,
+  "orient_err": 0.6749919878299248,
+  "vel_err": 0.5931254683650184,
+  "attr_err": 0.3654752960014646,
+  "mAP": 0.35999405316289734,
+  "NDS": 0.4233796010956189,
+  "train_samples": 323,
+  "val_samples": 81,
+  "epochs": 5,
+  "weight_quant": "per_channel"
+}

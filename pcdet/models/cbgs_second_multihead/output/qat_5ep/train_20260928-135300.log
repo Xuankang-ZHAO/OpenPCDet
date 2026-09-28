@@ -1,0 +1,225 @@
+2026-09-28 13:53:00,715   INFO  DATA_PATH: /home/vipuser/桌面/OpenPCDet/data/nuscenes
+2026-09-28 13:53:00,715   INFO  VERSION: v1.0-mini
+2026-09-28 13:53:00,715   INFO  pretrained: /home/vipuser/桌面/OpenPCDet/pcdet/models/cbgs_second_multihead/cbgs_second_multihead_nds6229_updated.pth
+2026-09-28 13:53:00,715   INFO  epochs: 5  batch_size: 2  lr: 0.0001  weight_quant: per_channel
+2026-09-28 13:53:00,716   INFO  cfg.ROOT_DIR: /home/vipuser/桌面/OpenPCDet
+2026-09-28 13:53:00,716   INFO  cfg.LOCAL_RANK: 0
+2026-09-28 13:53:00,716   INFO  cfg.CLASS_NAMES: ['car', 'truck', 'construction_vehicle', 'bus', 'trailer', 'barrier', 'motorcycle', 'bicycle', 'pedestrian', 'traffic_cone']
+2026-09-28 13:53:00,716   INFO  ----------- DATA_CONFIG -----------
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.DATASET: NuScenesDataset
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.DATA_PATH: /home/vipuser/桌面/OpenPCDet/data/nuscenes
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.VERSION: v1.0-mini
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.MAX_SWEEPS: 10
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.PRED_VELOCITY: True
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.SET_NAN_VELOCITY_TO_ZEROS: True
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.FILTER_MIN_POINTS_IN_GT: 1
+2026-09-28 13:53:00,716   INFO  ----------- DATA_SPLIT -----------
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.DATA_SPLIT.train: train
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.DATA_SPLIT.test: val
+2026-09-28 13:53:00,716   INFO  ----------- INFO_PATH -----------
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.INFO_PATH.train: ['nuscenes_infos_10sweeps_train.pkl']
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.INFO_PATH.test: ['nuscenes_infos_10sweeps_val.pkl']
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.POINT_CLOUD_RANGE: [-51.2, -51.2, -5.0, 51.2, 51.2, 3.0]
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.BALANCED_RESAMPLING: False
+2026-09-28 13:53:00,716   INFO  ----------- DATA_AUGMENTOR -----------
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.DISABLE_AUG_LIST: ['placeholder']
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.AUG_CONFIG_LIST: [{'NAME': 'gt_sampling', 'DB_INFO_PATH': ['nuscenes_dbinfos_10sweeps_withvelo.pkl'], 'PREPARE': {'filter_by_min_points': ['car:5', 'truck:5', 'construction_vehicle:5', 'bus:5', 'trailer:5', 'barrier:5', 'motorcycle:5', 'bicycle:5', 'pedestrian:5', 'traffic_cone:5']}, 'SAMPLE_GROUPS': ['car:2', 'truck:3', 'construction_vehicle:7', 'bus:4', 'trailer:6', 'barrier:2', 'motorcycle:6', 'bicycle:6', 'pedestrian:2', 'traffic_cone:2'], 'NUM_POINT_FEATURES': 5, 'DATABASE_WITH_FAKELIDAR': False, 'REMOVE_EXTRA_WIDTH': [0.0, 0.0, 0.0], 'LIMIT_WHOLE_SCENE': True}, {'NAME': 'random_world_flip', 'ALONG_AXIS_LIST': ['x', 'y']}, {'NAME': 'random_world_rotation', 'WORLD_ROT_ANGLE': [-0.3925, 0.3925]}, {'NAME': 'random_world_scaling', 'WORLD_SCALE_RANGE': [0.95, 1.05]}]
+2026-09-28 13:53:00,716   INFO  ----------- POINT_FEATURE_ENCODING -----------
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.encoding_type: absolute_coordinates_encoding
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.used_feature_list: ['x', 'y', 'z', 'intensity', 'timestamp']
+2026-09-28 13:53:00,716   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.src_feature_list: ['x', 'y', 'z', 'intensity', 'timestamp']
+2026-09-28 13:53:00,717   INFO  cfg.DATA_CONFIG.DATA_PROCESSOR: [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': True, 'test': True}}, {'NAME': 'transform_points_to_voxels', 'VOXEL_SIZE': [0.1, 0.1, 0.2], 'MAX_POINTS_PER_VOXEL': 10, 'MAX_NUMBER_OF_VOXELS': {'train': 60000, 'test': 60000}}]
+2026-09-28 13:53:00,717   INFO  cfg.DATA_CONFIG._BASE_CONFIG_: nuscenes_dataset.yaml
+2026-09-28 13:53:00,717   INFO  ----------- MODEL -----------
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.NAME: SECONDNet
+2026-09-28 13:53:00,717   INFO  ----------- VFE -----------
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.VFE.NAME: MeanVFE
+2026-09-28 13:53:00,717   INFO  ----------- BACKBONE_3D -----------
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.BACKBONE_3D.NAME: VoxelResBackBone8x_HWQAT
+2026-09-28 13:53:00,717   INFO  ----------- MAP_TO_BEV -----------
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.MAP_TO_BEV.NAME: HeightCompression
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.MAP_TO_BEV.NUM_BEV_FEATURES: 256
+2026-09-28 13:53:00,717   INFO  ----------- BACKBONE_2D -----------
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.BACKBONE_2D.NAME: BaseBEVBackbone
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.BACKBONE_2D.LAYER_NUMS: [5, 5]
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.BACKBONE_2D.LAYER_STRIDES: [1, 2]
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.BACKBONE_2D.NUM_FILTERS: [128, 256]
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.BACKBONE_2D.UPSAMPLE_STRIDES: [1, 2]
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.BACKBONE_2D.NUM_UPSAMPLE_FILTERS: [256, 256]
+2026-09-28 13:53:00,717   INFO  ----------- DENSE_HEAD -----------
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.NAME: AnchorHeadMulti
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.CLASS_AGNOSTIC: False
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.DIR_OFFSET: 0.78539
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.DIR_LIMIT_OFFSET: 0.0
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.NUM_DIR_BINS: 2
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.USE_MULTIHEAD: True
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.SEPARATE_MULTIHEAD: True
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.ANCHOR_GENERATOR_CONFIG: [{'class_name': 'car', 'anchor_sizes': [[4.63, 1.97, 1.74]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.95], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.45}, {'class_name': 'truck', 'anchor_sizes': [[6.93, 2.51, 2.84]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.6], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'construction_vehicle', 'anchor_sizes': [[6.37, 2.85, 3.19]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.225], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}, {'class_name': 'bus', 'anchor_sizes': [[10.5, 2.94, 3.47]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.085], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'trailer', 'anchor_sizes': [[12.29, 2.9, 3.87]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [0.115], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}, {'class_name': 'barrier', 'anchor_sizes': [[0.5, 2.53, 0.98]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.33], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'motorcycle', 'anchor_sizes': [[2.11, 0.77, 1.47]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.085], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.3}, {'class_name': 'bicycle', 'anchor_sizes': [[1.7, 0.6, 1.28]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.18], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}, {'class_name': 'pedestrian', 'anchor_sizes': [[0.73, 0.67, 1.77]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-0.935], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.4}, {'class_name': 'traffic_cone', 'anchor_sizes': [[0.41, 0.41, 1.07]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.285], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.4}]
+2026-09-28 13:53:00,717   INFO  cfg.MODEL.DENSE_HEAD.SHARED_CONV_NUM_FILTER: 64
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.RPN_HEAD_CFGS: [{'HEAD_CLS_NAME': ['car']}, {'HEAD_CLS_NAME': ['truck', 'construction_vehicle']}, {'HEAD_CLS_NAME': ['bus', 'trailer']}, {'HEAD_CLS_NAME': ['barrier']}, {'HEAD_CLS_NAME': ['motorcycle', 'bicycle']}, {'HEAD_CLS_NAME': ['pedestrian', 'traffic_cone']}]
+2026-09-28 13:53:00,718   INFO  ----------- SEPARATE_REG_CONFIG -----------
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.SEPARATE_REG_CONFIG.NUM_MIDDLE_CONV: 1
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.SEPARATE_REG_CONFIG.NUM_MIDDLE_FILTER: 64
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.SEPARATE_REG_CONFIG.REG_LIST: ['reg:2', 'height:1', 'size:3', 'angle:2', 'velo:2']
+2026-09-28 13:53:00,718   INFO  ----------- TARGET_ASSIGNER_CONFIG -----------
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NAME: AxisAlignedTargetAssigner
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.POS_FRACTION: -1.0
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.SAMPLE_SIZE: 512
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NORM_BY_NUM_EXAMPLES: False
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.MATCH_HEIGHT: False
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER: ResidualCoder
+2026-09-28 13:53:00,718   INFO  ----------- BOX_CODER_CONFIG -----------
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER_CONFIG.code_size: 9
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER_CONFIG.encode_angle_by_sincos: True
+2026-09-28 13:53:00,718   INFO  ----------- LOSS_CONFIG -----------
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.REG_LOSS_TYPE: WeightedL1Loss
+2026-09-28 13:53:00,718   INFO  ----------- LOSS_WEIGHTS -----------
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.pos_cls_weight: 1.0
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.neg_cls_weight: 2.0
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.cls_weight: 1.0
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.loc_weight: 0.25
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.dir_weight: 0.2
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.code_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.2, 0.2]
+2026-09-28 13:53:00,718   INFO  ----------- POST_PROCESSING -----------
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.POST_PROCESSING.RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.POST_PROCESSING.SCORE_THRESH: 0.1
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.POST_PROCESSING.OUTPUT_RAW_SCORE: False
+2026-09-28 13:53:00,718   INFO  cfg.MODEL.POST_PROCESSING.EVAL_METRIC: kitti
+2026-09-28 13:53:00,719   INFO  ----------- NMS_CONFIG -----------
+2026-09-28 13:53:00,719   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.MULTI_CLASSES_NMS: True
+2026-09-28 13:53:00,719   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_TYPE: nms_gpu
+2026-09-28 13:53:00,719   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_THRESH: 0.2
+2026-09-28 13:53:00,719   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_PRE_MAXSIZE: 1000
+2026-09-28 13:53:00,719   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_POST_MAXSIZE: 83
+2026-09-28 13:53:00,719   INFO  ----------- OPTIMIZATION -----------
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.BATCH_SIZE_PER_GPU: 2
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.NUM_EPOCHS: 5
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.OPTIMIZER: adam_onecycle
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.LR: 0.0001
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.WEIGHT_DECAY: 0.01
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.MOMENTUM: 0.9
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.MOMS: [0.95, 0.85]
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.PCT_START: 0.4
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.DIV_FACTOR: 10
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.DECAY_STEP_LIST: [35, 45]
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.LR_DECAY: 0.1
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.LR_CLIP: 1e-07
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.LR_WARMUP: False
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.WARMUP_EPOCH: 1
+2026-09-28 13:53:00,719   INFO  cfg.OPTIMIZATION.GRAD_NORM_CLIP: 10
+2026-09-28 13:53:00,719   INFO  cfg.TAG: cbgs_second_multihead_hw_qat
+2026-09-28 13:53:00,719   INFO  cfg.EXP_GROUP_PATH: nuscenes_models
+2026-09-28 13:53:00,759   INFO  Database filter by min points car: 4082 => 3303
+2026-09-28 13:53:00,759   INFO  Database filter by min points truck: 451 => 412
+2026-09-28 13:53:00,759   INFO  Database filter by min points construction_vehicle: 174 => 161
+2026-09-28 13:53:00,759   INFO  Database filter by min points bus: 337 => 309
+2026-09-28 13:53:00,759   INFO  Database filter by min points trailer: 59 => 57
+2026-09-28 13:53:00,759   INFO  Database filter by min points barrier: 1851 => 1741
+2026-09-28 13:53:00,760   INFO  Database filter by min points motorcycle: 179 => 149
+2026-09-28 13:53:00,760   INFO  Database filter by min points bicycle: 147 => 136
+2026-09-28 13:53:00,760   INFO  Database filter by min points pedestrian: 3068 => 2799
+2026-09-28 13:53:00,760   INFO  Database filter by min points traffic_cone: 773 => 635
+2026-09-28 13:53:00,761   INFO  Loading NuScenes dataset
+2026-09-28 13:53:00,779   INFO  Total samples for NuScenes dataset: 323
+2026-09-28 13:53:00,780   INFO  train samples: 323  iters/epoch: 162
+2026-09-28 13:53:01,025   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/pcdet/models/cbgs_second_multihead/cbgs_second_multihead_nds6229_updated.pth to GPU
+2026-09-28 13:53:01,150   INFO  Not updated weight backbone_3d._hw_act_scale_input: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_input: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_conv_input: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_conv_input: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c1b0_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c1b0_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c1b0_out: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c1b0_out: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c1b1_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c1b1_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c1b1_out: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c1b1_out: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c2_down: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c2_down: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c2b0_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c2b0_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c2b0_out: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c2b0_out: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c2b1_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c2b1_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c2b1_out: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c2b1_out: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c3_down: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c3_down: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c3b0_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_seen_c3b0_conv1: torch.Size([])
+2026-09-28 13:53:01,151   INFO  Not updated weight backbone_3d._hw_act_scale_c3b0_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_c3b0_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_scale_c3b1_conv1: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_c3b1_conv1: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_scale_c3b1_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_c3b1_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_scale_c4_down: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_c4_down: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_scale_c4b0_conv1: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_c4b0_conv1: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_scale_c4b0_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_c4b0_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_scale_c4b1_conv1: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_c4b1_conv1: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_scale_c4b1_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_c4b1_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_scale_conv_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  Not updated weight backbone_3d._hw_act_seen_conv_out: torch.Size([])
+2026-09-28 13:53:01,152   INFO  ==> Done (loaded 527/571)
+2026-09-28 13:53:01,154   INFO  quantized sparse convs: 21
+2026-09-28 13:53:10,193   INFO  Train:    1/5 ( 20%) [   0/162 (  0%)]  Loss: 0.6436 (0.644)  LR: 1.000e-05  Time cost: 00:08/23:59 [00:09/1:59:56]  Acc_iter 1           Data time: 0.75(0.75)  Forward time: 8.13(8.13)  Batch time: 8.88(8.88)
+2026-09-28 13:53:14,078   INFO  Train:    1/5 ( 20%) [  19/162 ( 12%)]  Loss: 0.6393 (0.593)  LR: 1.076e-05  Time cost: 00:12/01:31 [00:12/08:25]  Acc_iter 20          Data time: 0.00(0.04)  Forward time: 0.21(0.60)  Batch time: 0.21(0.64)
+2026-09-28 13:53:18,315   INFO  Train:    1/5 ( 20%) [  39/162 ( 24%)]  Loss: 0.6095 (0.587)  LR: 1.318e-05  Time cost: 00:17/00:52 [00:17/05:27]  Acc_iter 40          Data time: 0.00(0.02)  Forward time: 0.19(0.41)  Batch time: 0.19(0.43)
+2026-09-28 13:53:22,320   INFO  Train:    1/5 ( 20%) [  59/162 ( 36%)]  Loss: 0.5618 (0.582)  LR: 1.717e-05  Time cost: 00:21/00:36 [00:21/04:22]  Acc_iter 60          Data time: 0.00(0.01)  Forward time: 0.19(0.34)  Batch time: 0.19(0.35)
+2026-09-28 13:53:26,257   INFO  Train:    1/5 ( 20%) [  79/162 ( 49%)]  Loss: 0.7801 (0.584)  LR: 2.257e-05  Time cost: 00:24/00:25 [00:25/03:47]  Acc_iter 80          Data time: 0.00(0.01)  Forward time: 0.20(0.30)  Batch time: 0.20(0.31)
+2026-09-28 13:53:30,194   INFO  Train:    1/5 ( 20%) [  99/162 ( 61%)]  Loss: 0.5126 (0.587)  LR: 2.919e-05  Time cost: 00:28/00:18 [00:29/03:25]  Acc_iter 100         Data time: 0.00(0.01)  Forward time: 0.18(0.28)  Batch time: 0.18(0.29)
+2026-09-28 13:53:34,200   INFO  Train:    1/5 ( 20%) [ 119/162 ( 73%)]  Loss: 0.6031 (0.581)  LR: 3.678e-05  Time cost: 00:32/00:11 [00:33/03:09]  Acc_iter 120         Data time: 0.00(0.01)  Forward time: 0.17(0.27)  Batch time: 0.17(0.27)
+2026-09-28 13:53:38,069   INFO  Train:    1/5 ( 20%) [ 139/162 ( 86%)]  Loss: 0.5751 (0.571)  LR: 4.505e-05  Time cost: 00:36/00:06 [00:36/02:56]  Acc_iter 140         Data time: 0.00(0.01)  Forward time: 0.18(0.26)  Batch time: 0.18(0.26)
+2026-09-28 13:53:42,023   INFO  Train:    1/5 ( 20%) [ 159/162 ( 98%)]  Loss: 0.5304 (0.568)  LR: 5.369e-05  Time cost: 00:40/00:00 [00:40/02:45]  Acc_iter 160         Data time: 0.00(0.01)  Forward time: 0.18(0.25)  Batch time: 0.18(0.25)
+2026-09-28 13:53:42,402   INFO  Train:    1/5 ( 20%) [ 161/162 ( 99%)]  Loss: 0.5039 (0.568)  LR: 5.456e-05  Time cost: 00:41/00:00 [00:41/02:44]  Acc_iter 162         Data time: 0.00(0.01)  Forward time: 0.20(0.25)  Batch time: 0.20(0.25)
+2026-09-28 13:53:43,637   INFO  Train:    2/5 ( 40%) [   0/162 (  0%)]  Loss: 0.4548 (0.455)  LR: 5.500e-05  Time cost: 00:01/02:42 [00:42/10:50]  Acc_iter 163         Data time: 0.60(0.60)  Forward time: 0.41(0.41)  Batch time: 1.00(1.00)
+2026-09-28 13:53:47,065   INFO  Train:    2/5 ( 40%) [  17/162 ( 10%)]  Loss: 0.5829 (0.500)  LR: 6.238e-05  Time cost: 00:04/00:35 [00:45/02:35]  Acc_iter 180         Data time: 0.00(0.03)  Forward time: 0.22(0.21)  Batch time: 0.23(0.25)
+2026-09-28 13:53:51,023   INFO  Train:    2/5 ( 40%) [  37/162 ( 23%)]  Loss: 0.3984 (0.509)  LR: 7.080e-05  Time cost: 00:08/00:27 [00:49/02:14]  Acc_iter 200         Data time: 0.00(0.02)  Forward time: 0.21(0.20)  Batch time: 0.21(0.22)
+2026-09-28 13:53:55,243   INFO  Train:    2/5 ( 40%) [  57/162 ( 35%)]  Loss: 0.4641 (0.543)  LR: 7.862e-05  Time cost: 00:12/00:22 [00:54/02:08]  Acc_iter 220         Data time: 0.00(0.01)  Forward time: 0.20(0.21)  Batch time: 0.20(0.22)
+2026-09-28 13:53:59,402   INFO  Train:    2/5 ( 40%) [  77/162 ( 48%)]  Loss: 0.4535 (0.546)  LR: 8.556e-05  Time cost: 00:16/00:18 [00:58/02:02]  Acc_iter 240         Data time: 0.00(0.01)  Forward time: 0.20(0.21)  Batch time: 0.20(0.21)
+2026-09-28 13:54:03,635   INFO  Train:    2/5 ( 40%) [  97/162 ( 60%)]  Loss: 0.6918 (0.550)  LR: 9.135e-05  Time cost: 00:21/00:13 [01:02/01:58]  Acc_iter 260         Data time: 0.00(0.01)  Forward time: 0.20(0.21)  Batch time: 0.20(0.21)
+2026-09-28 13:54:07,839   INFO  Train:    2/5 ( 40%) [ 117/162 ( 72%)]  Loss: 0.5922 (0.539)  LR: 9.578e-05  Time cost: 00:25/00:09 [01:06/01:53]  Acc_iter 280         Data time: 0.00(0.01)  Forward time: 0.23(0.21)  Batch time: 0.23(0.21)
+2026-09-28 13:54:11,972   INFO  Train:    2/5 ( 40%) [ 137/162 ( 85%)]  Loss: 0.4478 (0.528)  LR: 9.868e-05  Time cost: 00:29/00:05 [01:10/01:48]  Acc_iter 300         Data time: 0.00(0.00)  Forward time: 0.22(0.21)  Batch time: 0.22(0.21)
+2026-09-28 13:54:16,002   INFO  Train:    2/5 ( 40%) [ 157/162 ( 97%)]  Loss: 0.4713 (0.525)  LR: 9.995e-05  Time cost: 00:33/00:01 [01:14/01:43]  Acc_iter 320         Data time: 0.00(0.00)  Forward time: 0.17(0.21)  Batch time: 0.17(0.21)
+2026-09-28 13:54:16,650   INFO  Train:    2/5 ( 40%) [ 161/162 ( 99%)]  Loss: 0.4507 (0.524)  LR: 1.000e-04  Time cost: 00:34/00:00 [01:15/01:42]  Acc_iter 324         Data time: 0.00(0.00)  Forward time: 0.11(0.21)  Batch time: 0.11(0.21)
+2026-09-28 13:54:18,152   INFO  Train:    3/5 ( 60%) [   0/162 (  0%)]  Loss: 0.5948 (0.595)  LR: 1.000e-04  Time cost: 00:01/03:24 [01:16/10:13]  Acc_iter 325         Data time: 0.85(0.85)  Forward time: 0.42(0.42)  Batch time: 1.26(1.26)
+2026-09-28 13:54:21,128   INFO  Train:    3/5 ( 60%) [  15/162 (  9%)]  Loss: 0.4683 (0.470)  LR: 9.977e-05  Time cost: 00:04/00:38 [01:19/02:04]  Acc_iter 340         Data time: 0.00(0.05)  Forward time: 0.20(0.21)  Batch time: 0.20(0.26)
+2026-09-28 13:54:25,035   INFO  Train:    3/5 ( 60%) [  35/162 ( 22%)]  Loss: 0.5043 (0.493)  LR: 9.873e-05  Time cost: 00:08/00:28 [01:23/01:42]  Acc_iter 360         Data time: 0.00(0.02)  Forward time: 0.19(0.20)  Batch time: 0.19(0.23)
+2026-09-28 13:54:28,853   INFO  Train:    3/5 ( 60%) [  55/162 ( 34%)]  Loss: 0.4971 (0.489)  LR: 9.687e-05  Time cost: 00:11/00:22 [01:27/01:32]  Acc_iter 380         Data time: 0.00(0.02)  Forward time: 0.18(0.20)  Batch time: 0.18(0.21)
+2026-09-28 13:54:32,699   INFO  Train:    3/5 ( 60%) [  75/162 ( 46%)]  Loss: 0.5701 (0.485)  LR: 9.424e-05  Time cost: 00:15/00:18 [01:31/01:25]  Acc_iter 400         Data time: 0.00(0.01)  Forward time: 0.18(0.20)  Batch time: 0.18(0.21)
+2026-09-28 13:54:36,673   INFO  Train:    3/5 ( 60%) [  95/162 ( 59%)]  Loss: 0.4568 (0.481)  LR: 9.086e-05  Time cost: 00:19/00:13 [01:35/01:20]  Acc_iter 420         Data time: 0.00(0.01)  Forward time: 0.18(0.20)  Batch time: 0.18(0.21)
+2026-09-28 13:54:40,569   INFO  Train:    3/5 ( 60%) [ 115/162 ( 71%)]  Loss: 0.4228 (0.482)  LR: 8.681e-05  Time cost: 00:23/00:09 [01:39/01:15]  Acc_iter 440         Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.20)
+2026-09-28 13:54:44,501   INFO  Train:    3/5 ( 60%) [ 135/162 ( 83%)]  Loss: 0.6126 (0.479)  LR: 8.214e-05  Time cost: 00:27/00:05 [01:43/01:11]  Acc_iter 460         Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.20)
+2026-09-28 13:54:48,402   INFO  Train:    3/5 ( 60%) [ 155/162 ( 96%)]  Loss: 0.4784 (0.479)  LR: 7.693e-05  Time cost: 00:31/00:01 [01:47/01:06]  Acc_iter 480         Data time: 0.00(0.01)  Forward time: 0.18(0.20)  Batch time: 0.18(0.20)
+2026-09-28 13:54:49,375   INFO  Train:    3/5 ( 60%) [ 161/162 ( 99%)]  Loss: 1.615 (0.481)  LR: 7.528e-05  Time cost: 00:32/00:00 [01:48/01:05]  Acc_iter 486         Data time: 0.00(0.01)  Forward time: 0.12(0.19)  Batch time: 0.12(0.20)
+2026-09-28 13:54:50,744   INFO  Train:    4/5 ( 80%) [   0/162 (  0%)]  Loss: 0.6161 (0.616)  LR: 7.500e-05  Time cost: 00:01/03:02 [01:49/06:04]  Acc_iter 487         Data time: 0.70(0.70)  Forward time: 0.42(0.42)  Batch time: 1.13(1.13)
+2026-09-28 13:54:53,417   INFO  Train:    4/5 ( 80%) [  13/162 (  8%)]  Loss: 0.3692 (0.477)  LR: 7.128e-05  Time cost: 00:03/00:40 [01:52/01:24]  Acc_iter 500         Data time: 0.00(0.05)  Forward time: 0.20(0.22)  Batch time: 0.20(0.27)
+2026-09-28 13:54:57,789   INFO  Train:    4/5 ( 80%) [  33/162 ( 20%)]  Loss: 0.5550 (0.475)  LR: 6.527e-05  Time cost: 00:08/00:31 [01:56/01:09]  Acc_iter 520         Data time: 0.00(0.02)  Forward time: 0.21(0.22)  Batch time: 0.21(0.24)
+2026-09-28 13:55:01,853   INFO  Train:    4/5 ( 80%) [  53/162 ( 33%)]  Loss: 0.6042 (0.478)  LR: 5.900e-05  Time cost: 00:12/00:24 [02:00/01:01]  Acc_iter 540         Data time: 0.00(0.01)  Forward time: 0.23(0.21)  Batch time: 0.23(0.23)
+2026-09-28 13:55:05,885   INFO  Train:    4/5 ( 80%) [  73/162 ( 45%)]  Loss: 0.4892 (0.475)  LR: 5.258e-05  Time cost: 00:16/00:19 [02:04/00:55]  Acc_iter 560         Data time: 0.00(0.01)  Forward time: 0.18(0.21)  Batch time: 0.18(0.22)
+2026-09-28 13:55:09,894   INFO  Train:    4/5 ( 80%) [  93/162 ( 57%)]  Loss: 0.4476 (0.462)  LR: 4.613e-05  Time cost: 00:20/00:14 [02:08/00:49]  Acc_iter 580         Data time: 0.00(0.01)  Forward time: 0.22(0.21)  Batch time: 0.22(0.22)
+2026-09-28 13:55:13,825   INFO  Train:    4/5 ( 80%) [ 113/162 ( 70%)]  Loss: 0.4890 (0.465)  LR: 3.973e-05  Time cost: 00:24/00:10 [02:12/00:44]  Acc_iter 600         Data time: 0.00(0.01)  Forward time: 0.19(0.21)  Batch time: 0.19(0.21)
+2026-09-28 13:55:17,888   INFO  Train:    4/5 ( 80%) [ 133/162 ( 82%)]  Loss: 0.5094 (0.462)  LR: 3.351e-05  Time cost: 00:28/00:06 [02:16/00:40]  Acc_iter 620         Data time: 0.00(0.01)  Forward time: 0.20(0.21)  Batch time: 0.20(0.21)
+2026-09-28 13:55:21,641   INFO  Train:    4/5 ( 80%) [ 153/162 ( 94%)]  Loss: 0.5249 (0.458)  LR: 2.756e-05  Time cost: 00:32/00:01 [02:20/00:35]  Acc_iter 640         Data time: 0.00(0.01)  Forward time: 0.19(0.20)  Batch time: 0.19(0.21)
+2026-09-28 13:55:22,923   INFO  Train:    4/5 ( 80%) [ 161/162 ( 99%)]  Loss: 0.5202 (0.456)  LR: 2.528e-05  Time cost: 00:33/00:00 [02:21/00:33]  Acc_iter 648         Data time: 0.00(0.00)  Forward time: 0.11(0.20)  Batch time: 0.11(0.21)
+2026-09-28 13:55:24,361   INFO  Train:    5/5 (100%) [   0/162 (  0%)]  Loss: 0.5712 (0.571)  LR: 2.500e-05  Time cost: 00:01/02:53 [02:23/02:53]  Acc_iter 649         Data time: 0.70(0.70)  Forward time: 0.37(0.37)  Batch time: 1.07(1.07)
+2026-09-28 13:55:26,574   INFO  Train:    5/5 (100%) [  11/162 (  7%)]  Loss: 0.4717 (0.469)  LR: 2.199e-05  Time cost: 00:03/00:41 [02:25/00:41]  Acc_iter 660         Data time: 0.00(0.06)  Forward time: 0.19(0.21)  Batch time: 0.19(0.27)
+2026-09-28 13:55:30,352   INFO  Train:    5/5 (100%) [  31/162 ( 19%)]  Loss: 0.3891 (0.470)  LR: 1.688e-05  Time cost: 00:07/00:28 [02:29/00:28]  Acc_iter 680         Data time: 0.00(0.02)  Forward time: 0.19(0.20)  Batch time: 0.19(0.22)
+2026-09-28 13:55:34,238   INFO  Train:    5/5 (100%) [  51/162 ( 31%)]  Loss: 0.4084 (0.466)  LR: 1.233e-05  Time cost: 00:10/00:23 [02:33/00:23]  Acc_iter 700         Data time: 0.00(0.01)  Forward time: 0.19(0.20)  Batch time: 0.19(0.21)
+2026-09-28 13:55:38,130   INFO  Train:    5/5 (100%) [  71/162 ( 44%)]  Loss: 0.4271 (0.458)  LR: 8.405e-06  Time cost: 00:14/00:18 [02:36/00:18]  Acc_iter 720         Data time: 0.00(0.01)  Forward time: 0.19(0.20)  Batch time: 0.19(0.21)
+2026-09-28 13:55:41,997   INFO  Train:    5/5 (100%) [  91/162 ( 56%)]  Loss: 0.4310 (0.455)  LR: 5.175e-06  Time cost: 00:18/00:14 [02:40/00:14]  Acc_iter 740         Data time: 0.00(0.01)  Forward time: 0.20(0.20)  Batch time: 0.20(0.20)
+2026-09-28 13:55:45,859   INFO  Train:    5/5 (100%) [ 111/162 ( 69%)]  Loss: 0.4106 (0.455)  LR: 2.694e-06  Time cost: 00:22/00:10 [02:44/00:10]  Acc_iter 760         Data time: 0.00(0.01)  Forward time: 0.21(0.19)  Batch time: 0.21(0.20)
+2026-09-28 13:55:49,593   INFO  Train:    5/5 (100%) [ 131/162 ( 81%)]  Loss: 0.4746 (0.451)  LR: 1.002e-06  Time cost: 00:26/00:06 [02:48/00:06]  Acc_iter 780         Data time: 0.00(0.01)  Forward time: 0.19(0.19)  Batch time: 0.19(0.20)
+2026-09-28 13:55:53,405   INFO  Train:    5/5 (100%) [ 151/162 ( 93%)]  Loss: 0.4667 (0.451)  LR: 1.273e-07  Time cost: 00:30/00:02 [02:52/00:02]  Acc_iter 800         Data time: 0.00(0.01)  Forward time: 0.18(0.19)  Batch time: 0.18(0.20)
+2026-09-28 13:55:55,056   INFO  Train:    5/5 (100%) [ 161/162 ( 99%)]  Loss: 0.3714 (0.451)  LR: 2.045e-09  Time cost: 00:31/00:00 [02:53/00:00]  Acc_iter 810         Data time: 0.00(0.00)  Forward time: 0.11(0.19)  Batch time: 0.11(0.20)
+2026-09-28 13:55:55,259   INFO  **********************Start fake-quant evaluation**********************
+2026-09-28 13:55:55,259   INFO  Loading NuScenes dataset
+2026-09-28 13:55:55,264   INFO  Total samples for NuScenes dataset: 81
+2026-09-28 13:55:55,265   INFO  val samples: 81
