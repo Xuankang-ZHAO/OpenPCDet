@@ -19,6 +19,7 @@ venv/
 !/output/kitti_models/second/default/ckpt/checkpoint_epoch_80.pth
 !/output/kitti_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_10.pth
 !/output/kitti_models/second_hw_qat/hw_qat_10ep_per_tensor/ckpt/checkpoint_epoch_10.pth
+!/output/kitti_models/voxel_rcnn_car_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_7.pth
 #version.py
 #*.csv
 # Dataset PNGs stay local with the ignored data/ directory.
