@@ -1,0 +1,345 @@
+2026-09-29 16:26:59,406   INFO  **********************Start logging**********************
+2026-09-29 16:26:59,407   INFO  CUDA_VISIBLE_DEVICES=ALL
+2026-09-29 16:26:59,407   INFO  cfg_file         cfgs/once_models/second.yaml
+2026-09-29 16:26:59,407   INFO  batch_size       4
+2026-09-29 16:26:59,407   INFO  workers          4
+2026-09-29 16:26:59,407   INFO  extra_tag        ep40
+2026-09-29 16:26:59,407   INFO  ckpt             None
+2026-09-29 16:26:59,407   INFO  pretrained_model None
+2026-09-29 16:26:59,407   INFO  launcher         none
+2026-09-29 16:26:59,407   INFO  tcp_port         18888
+2026-09-29 16:26:59,407   INFO  local_rank       None
+2026-09-29 16:26:59,407   INFO  set_cfgs         None
+2026-09-29 16:26:59,407   INFO  max_waiting_mins 0
+2026-09-29 16:26:59,407   INFO  start_epoch      11
+2026-09-29 16:26:59,407   INFO  eval_tag         default
+2026-09-29 16:26:59,407   INFO  eval_all         True
+2026-09-29 16:26:59,407   INFO  ckpt_dir         None
+2026-09-29 16:26:59,407   INFO  save_to_file     False
+2026-09-29 16:26:59,407   INFO  infer_time       False
+2026-09-29 16:26:59,407   INFO  cfg.ROOT_DIR: /home/vipuser/桌面/OpenPCDet
+2026-09-29 16:26:59,407   INFO  cfg.LOCAL_RANK: 0
+2026-09-29 16:26:59,407   INFO  cfg.CLASS_NAMES: ['Car', 'Bus', 'Truck', 'Pedestrian', 'Cyclist']
+2026-09-29 16:26:59,407   INFO  ----------- DATA_CONFIG -----------
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.DATASET: ONCEDataset
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.DATA_PATH: ../data/once
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.CLOUD_DATA_PATH: /cache/once
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.POINT_CLOUD_RANGE: [-75.2, -75.2, -5.0, 75.2, 75.2, 3.0]
+2026-09-29 16:26:59,407   INFO  ----------- INFO_PATH -----------
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.INFO_PATH.train: ['once_infos_train.pkl']
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.INFO_PATH.val: ['once_infos_val.pkl']
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.INFO_PATH.test: ['once_infos_test.pkl']
+2026-09-29 16:26:59,407   INFO  ----------- DATA_SPLIT -----------
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.DATA_SPLIT.train: train
+2026-09-29 16:26:59,407   INFO  cfg.DATA_CONFIG.DATA_SPLIT.test: val
+2026-09-29 16:26:59,407   INFO  ----------- DATA_AUGMENTOR -----------
+2026-09-29 16:26:59,408   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.DISABLE_AUG_LIST: ['placeholder']
+2026-09-29 16:26:59,408   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.AUG_CONFIG_LIST: [{'NAME': 'gt_sampling', 'USE_ROAD_PLANE': False, 'DB_INFO_PATH': ['once_dbinfos_train.pkl'], 'PREPARE': {'filter_by_min_points': ['Car:5', 'Bus:5', 'Truck:5', 'Pedestrian:5', 'Cyclist:5']}, 'SAMPLE_GROUPS': ['Car:1', 'Bus:4', 'Truck:3', 'Pedestrian:2', 'Cyclist:2'], 'NUM_POINT_FEATURES': 4, 'REMOVE_EXTRA_WIDTH': [0.0, 0.0, 0.0], 'LIMIT_WHOLE_SCENE': True}, {'NAME': 'random_world_flip', 'ALONG_AXIS_LIST': ['x', 'y']}, {'NAME': 'random_world_rotation', 'WORLD_ROT_ANGLE': [-0.78539816, 0.78539816]}, {'NAME': 'random_world_scaling', 'WORLD_SCALE_RANGE': [0.95, 1.05]}]
+2026-09-29 16:26:59,408   INFO  ----------- POINT_FEATURE_ENCODING -----------
+2026-09-29 16:26:59,408   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.encoding_type: absolute_coordinates_encoding
+2026-09-29 16:26:59,408   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.used_feature_list: ['x', 'y', 'z', 'intensity']
+2026-09-29 16:26:59,408   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.src_feature_list: ['x', 'y', 'z', 'intensity']
+2026-09-29 16:26:59,408   INFO  cfg.DATA_CONFIG.DATA_PROCESSOR: [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': True, 'test': False}}, {'NAME': 'transform_points_to_voxels', 'VOXEL_SIZE': [0.1, 0.1, 0.2], 'MAX_POINTS_PER_VOXEL': 5, 'MAX_NUMBER_OF_VOXELS': {'train': 60000, 'test': 60000}}]
+2026-09-29 16:26:59,408   INFO  cfg.DATA_CONFIG._BASE_CONFIG_: cfgs/dataset_configs/once_dataset.yaml
+2026-09-29 16:26:59,408   INFO  ----------- MODEL -----------
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.NAME: SECONDNet
+2026-09-29 16:26:59,408   INFO  ----------- VFE -----------
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.VFE.NAME: MeanVFE
+2026-09-29 16:26:59,408   INFO  ----------- BACKBONE_3D -----------
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.BACKBONE_3D.NAME: VoxelBackBone8x
+2026-09-29 16:26:59,408   INFO  ----------- MAP_TO_BEV -----------
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.MAP_TO_BEV.NAME: HeightCompression
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.MAP_TO_BEV.NUM_BEV_FEATURES: 256
+2026-09-29 16:26:59,408   INFO  ----------- BACKBONE_2D -----------
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.BACKBONE_2D.NAME: BaseBEVBackbone
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.BACKBONE_2D.LAYER_NUMS: [5, 5]
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.BACKBONE_2D.LAYER_STRIDES: [1, 2]
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.BACKBONE_2D.NUM_FILTERS: [128, 256]
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.BACKBONE_2D.UPSAMPLE_STRIDES: [1, 2]
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.BACKBONE_2D.NUM_UPSAMPLE_FILTERS: [256, 256]
+2026-09-29 16:26:59,408   INFO  ----------- DENSE_HEAD -----------
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.DENSE_HEAD.NAME: AnchorHeadSingle
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.DENSE_HEAD.CLASS_AGNOSTIC: False
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.DENSE_HEAD.USE_DIRECTION_CLASSIFIER: True
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.DENSE_HEAD.DIR_OFFSET: 0.78539
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.DENSE_HEAD.DIR_LIMIT_OFFSET: 0.0
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.DENSE_HEAD.NUM_DIR_BINS: 2
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.DENSE_HEAD.ANCHOR_GENERATOR_CONFIG: [{'class_name': 'Car', 'anchor_sizes': [[4.38, 1.87, 1.59]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.71], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.45}, {'class_name': 'Bus', 'anchor_sizes': [[11.11, 2.88, 3.41]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.74], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'Truck', 'anchor_sizes': [[7.52, 2.5, 2.62]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.55], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'Pedestrian', 'anchor_sizes': [[0.75, 0.76, 1.69]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.62], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.3, 'unmatched_threshold': 0.15}, {'class_name': 'Cyclist', 'anchor_sizes': [[2.18, 0.79, 1.43]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.65], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}]
+2026-09-29 16:26:59,408   INFO  ----------- TARGET_ASSIGNER_CONFIG -----------
+2026-09-29 16:26:59,408   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NAME: AxisAlignedTargetAssigner
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.POS_FRACTION: -1.0
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.SAMPLE_SIZE: 512
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NORM_BY_NUM_EXAMPLES: False
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.MATCH_HEIGHT: False
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER: ResidualCoder
+2026-09-29 16:26:59,409   INFO  ----------- LOSS_CONFIG -----------
+2026-09-29 16:26:59,409   INFO  ----------- LOSS_WEIGHTS -----------
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.cls_weight: 1.0
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.loc_weight: 2.0
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.dir_weight: 0.2
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.code_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+2026-09-29 16:26:59,409   INFO  ----------- POST_PROCESSING -----------
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.SCORE_THRESH: 0.1
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.OUTPUT_RAW_SCORE: False
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.EVAL_METRIC: once
+2026-09-29 16:26:59,409   INFO  ----------- NMS_CONFIG -----------
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.MULTI_CLASSES_NMS: False
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_TYPE: nms_gpu
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_THRESH: 0.01
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_PRE_MAXSIZE: 4096
+2026-09-29 16:26:59,409   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_POST_MAXSIZE: 500
+2026-09-29 16:26:59,409   INFO  ----------- OPTIMIZATION -----------
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.BATCH_SIZE_PER_GPU: 4
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.NUM_EPOCHS: 80
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.OPTIMIZER: adam_onecycle
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.LR: 0.003
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.WEIGHT_DECAY: 0.01
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.MOMENTUM: 0.9
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.MOMS: [0.95, 0.85]
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.PCT_START: 0.4
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.DIV_FACTOR: 10
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.DECAY_STEP_LIST: [35, 45]
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.LR_DECAY: 0.1
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.LR_CLIP: 1e-07
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.LR_WARMUP: False
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.WARMUP_EPOCH: 1
+2026-09-29 16:26:59,409   INFO  cfg.OPTIMIZATION.GRAD_NORM_CLIP: 10
+2026-09-29 16:26:59,409   INFO  cfg.TAG: second
+2026-09-29 16:26:59,409   INFO  cfg.EXP_GROUP_PATH: once_models
+2026-09-29 16:26:59,410   INFO  Loading ONCE dataset
+2026-09-29 16:27:00,215   INFO  Total samples for ONCE dataset: 3321
+2026-09-29 16:27:00,765   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_11.pth to GPU
+2026-09-29 16:27:01,002   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:27:01,015   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:27:01,021   INFO  *************** EPOCH 11 EVALUATION *****************
+2026-09-29 16:27:54,619   INFO  *************** Performance of EPOCH 11 *****************
+2026-09-29 16:27:54,619   INFO  Generate label finished(sec_per_example: 0.0161 second).
+2026-09-29 16:27:54,619   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:27:54,619   INFO  recall_rcnn_0.3: 0.855884
+2026-09-29 16:27:54,619   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:27:54,619   INFO  recall_rcnn_0.5: 0.722360
+2026-09-29 16:27:54,619   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:27:54,619   INFO  recall_rcnn_0.7: 0.391543
+2026-09-29 16:27:54,625   INFO  Average predicted number of objects(3321 samples): 72.079
+2026-09-29 16:28:24,522   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |48.08       |67.16       |35.01       |19.59       |
+|Pedestrian  |12.18       |14.53       |10.61       |4.88        |
+|Cyclist     |9.33        |10.98       |8.04        |8.03        |
+|mAP         |23.19       |30.89       |17.89       |10.83       |
+
+2026-09-29 16:28:24,522   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_11/val
+2026-09-29 16:28:24,522   INFO  ****************Evaluation done.*****************
+2026-09-29 16:28:24,541   INFO  Epoch 11 has been evaluated
+2026-09-29 16:28:24,541   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_12.pth to GPU
+2026-09-29 16:28:24,761   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:28:24,765   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:28:24,767   INFO  *************** EPOCH 12 EVALUATION *****************
+2026-09-29 16:29:15,992   INFO  *************** Performance of EPOCH 12 *****************
+2026-09-29 16:29:15,993   INFO  Generate label finished(sec_per_example: 0.0154 second).
+2026-09-29 16:29:15,993   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:29:15,994   INFO  recall_rcnn_0.3: 0.835964
+2026-09-29 16:29:15,994   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:29:15,994   INFO  recall_rcnn_0.5: 0.703114
+2026-09-29 16:29:15,994   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:29:15,994   INFO  recall_rcnn_0.7: 0.377698
+2026-09-29 16:29:15,999   INFO  Average predicted number of objects(3321 samples): 64.171
+2026-09-29 16:29:32,364   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |46.45       |66.13       |31.23       |17.40       |
+|Pedestrian  |12.20       |15.00       |8.57        |5.61        |
+|Cyclist     |8.63        |8.86        |10.27       |5.53        |
+|mAP         |22.43       |30.00       |16.69       |9.52        |
+
+2026-09-29 16:29:32,364   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_12/val
+2026-09-29 16:29:32,365   INFO  ****************Evaluation done.*****************
+2026-09-29 16:29:32,378   INFO  Epoch 12 has been evaluated
+2026-09-29 16:29:32,379   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_13.pth to GPU
+2026-09-29 16:29:32,637   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:29:32,642   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:29:32,644   INFO  *************** EPOCH 13 EVALUATION *****************
+2026-09-29 16:30:26,556   INFO  *************** Performance of EPOCH 13 *****************
+2026-09-29 16:30:26,557   INFO  Generate label finished(sec_per_example: 0.0162 second).
+2026-09-29 16:30:26,557   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:30:26,557   INFO  recall_rcnn_0.3: 0.855320
+2026-09-29 16:30:26,557   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:30:26,557   INFO  recall_rcnn_0.5: 0.726134
+2026-09-29 16:30:26,557   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:30:26,557   INFO  recall_rcnn_0.7: 0.384139
+2026-09-29 16:30:26,573   INFO  Average predicted number of objects(3321 samples): 94.980
+2026-09-29 16:30:54,733   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |43.49       |63.26       |28.39       |15.38       |
+|Pedestrian  |12.35       |13.64       |11.05       |7.70        |
+|Cyclist     |20.59       |29.81       |13.64       |9.38        |
+|mAP         |25.47       |35.57       |17.69       |10.82       |
+
+2026-09-29 16:30:54,734   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_13/val
+2026-09-29 16:30:54,734   INFO  ****************Evaluation done.*****************
+2026-09-29 16:30:54,756   INFO  Epoch 13 has been evaluated
+2026-09-29 16:30:54,757   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_14.pth to GPU
+2026-09-29 16:30:54,984   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:30:54,990   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:30:54,991   INFO  *************** EPOCH 14 EVALUATION *****************
+2026-09-29 16:31:48,532   INFO  *************** Performance of EPOCH 14 *****************
+2026-09-29 16:31:48,532   INFO  Generate label finished(sec_per_example: 0.0161 second).
+2026-09-29 16:31:48,532   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:31:48,532   INFO  recall_rcnn_0.3: 0.878096
+2026-09-29 16:31:48,532   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:31:48,532   INFO  recall_rcnn_0.5: 0.759235
+2026-09-29 16:31:48,532   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:31:48,532   INFO  recall_rcnn_0.7: 0.428086
+2026-09-29 16:31:48,539   INFO  Average predicted number of objects(3321 samples): 88.299
+2026-09-29 16:32:12,663   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |48.76       |67.96       |35.49       |21.18       |
+|Pedestrian  |13.18       |13.97       |11.94       |10.39       |
+|Cyclist     |13.50       |17.46       |10.92       |9.05        |
+|mAP         |25.15       |33.13       |19.45       |13.54       |
+
+2026-09-29 16:32:12,665   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_14/val
+2026-09-29 16:32:12,665   INFO  ****************Evaluation done.*****************
+2026-09-29 16:32:12,693   INFO  Epoch 14 has been evaluated
+2026-09-29 16:32:12,694   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_15.pth to GPU
+2026-09-29 16:32:12,928   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:32:12,935   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:32:12,937   INFO  *************** EPOCH 15 EVALUATION *****************
+2026-09-29 16:33:07,603   INFO  *************** Performance of EPOCH 15 *****************
+2026-09-29 16:33:07,604   INFO  Generate label finished(sec_per_example: 0.0165 second).
+2026-09-29 16:33:07,604   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:33:07,604   INFO  recall_rcnn_0.3: 0.852144
+2026-09-29 16:33:07,604   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:33:07,604   INFO  recall_rcnn_0.5: 0.740311
+2026-09-29 16:33:07,604   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:33:07,604   INFO  recall_rcnn_0.7: 0.417738
+2026-09-29 16:33:07,614   INFO  Average predicted number of objects(3321 samples): 64.330
+2026-09-29 16:33:24,661   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |47.35       |61.65       |38.97       |22.12       |
+|Pedestrian  |12.49       |14.01       |11.42       |8.03        |
+|Cyclist     |9.53        |10.40       |8.80        |9.36        |
+|mAP         |23.13       |28.69       |19.73       |13.17       |
+
+2026-09-29 16:33:24,661   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_15/val
+2026-09-29 16:33:24,662   INFO  ****************Evaluation done.*****************
+2026-09-29 16:33:24,681   INFO  Epoch 15 has been evaluated
+2026-09-29 16:33:24,682   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_16.pth to GPU
+2026-09-29 16:33:24,901   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:33:24,910   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:33:24,913   INFO  *************** EPOCH 16 EVALUATION *****************
+2026-09-29 16:34:19,430   INFO  *************** Performance of EPOCH 16 *****************
+2026-09-29 16:34:19,430   INFO  Generate label finished(sec_per_example: 0.0164 second).
+2026-09-29 16:34:19,430   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:34:19,430   INFO  recall_rcnn_0.3: 0.824708
+2026-09-29 16:34:19,430   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:34:19,431   INFO  recall_rcnn_0.5: 0.723854
+2026-09-29 16:34:19,431   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:34:19,431   INFO  recall_rcnn_0.7: 0.414673
+2026-09-29 16:34:19,437   INFO  Average predicted number of objects(3321 samples): 60.354
+2026-09-29 16:34:33,125   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |49.06       |65.47       |39.36       |22.08       |
+|Pedestrian  |9.83        |10.98       |7.98        |6.46        |
+|Cyclist     |7.96        |8.29        |7.84        |7.84        |
+|mAP         |22.28       |28.25       |18.40       |12.13       |
+
+2026-09-29 16:34:33,126   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_16/val
+2026-09-29 16:34:33,127   INFO  ****************Evaluation done.*****************
+2026-09-29 16:34:33,141   INFO  Epoch 16 has been evaluated
+2026-09-29 16:34:33,142   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_17.pth to GPU
+2026-09-29 16:34:33,348   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:34:33,353   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:34:33,355   INFO  *************** EPOCH 17 EVALUATION *****************
+2026-09-29 16:35:27,152   INFO  *************** Performance of EPOCH 17 *****************
+2026-09-29 16:35:27,152   INFO  Generate label finished(sec_per_example: 0.0162 second).
+2026-09-29 16:35:27,152   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:35:27,152   INFO  recall_rcnn_0.3: 0.853981
+2026-09-29 16:35:27,152   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:35:27,152   INFO  recall_rcnn_0.5: 0.735209
+2026-09-29 16:35:27,152   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:35:27,152   INFO  recall_rcnn_0.7: 0.439087
+2026-09-29 16:35:27,159   INFO  Average predicted number of objects(3321 samples): 62.379
+2026-09-29 16:35:43,166   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |53.40       |71.12       |43.38       |22.39       |
+|Pedestrian  |11.93       |14.44       |9.28        |4.81        |
+|Cyclist     |10.49       |12.43       |10.11       |7.32        |
+|mAP         |25.27       |32.66       |20.92       |11.51       |
+
+2026-09-29 16:35:43,167   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_17/val
+2026-09-29 16:35:43,167   INFO  ****************Evaluation done.*****************
+2026-09-29 16:35:43,179   INFO  Epoch 17 has been evaluated
+2026-09-29 16:35:43,180   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_18.pth to GPU
+2026-09-29 16:35:43,401   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:35:43,406   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:35:43,408   INFO  *************** EPOCH 18 EVALUATION *****************
+2026-09-29 16:36:36,003   INFO  *************** Performance of EPOCH 18 *****************
+2026-09-29 16:36:36,003   INFO  Generate label finished(sec_per_example: 0.0158 second).
+2026-09-29 16:36:36,003   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:36:36,004   INFO  recall_rcnn_0.3: 0.871755
+2026-09-29 16:36:36,004   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:36:36,004   INFO  recall_rcnn_0.5: 0.766108
+2026-09-29 16:36:36,004   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:36:36,004   INFO  recall_rcnn_0.7: 0.446579
+2026-09-29 16:36:36,012   INFO  Average predicted number of objects(3321 samples): 58.427
+2026-09-29 16:36:50,317   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |51.39       |70.60       |39.46       |20.40       |
+|Pedestrian  |14.56       |16.03       |12.20       |11.12       |
+|Cyclist     |25.85       |34.32       |21.35       |10.63       |
+|mAP         |30.60       |40.32       |24.34       |14.05       |
+
+2026-09-29 16:36:50,318   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_18/val
+2026-09-29 16:36:50,318   INFO  ****************Evaluation done.*****************
+2026-09-29 16:36:50,343   INFO  Epoch 18 has been evaluated
+2026-09-29 16:36:50,344   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_19.pth to GPU
+2026-09-29 16:36:50,583   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:36:50,590   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:36:50,592   INFO  *************** EPOCH 19 EVALUATION *****************
+2026-09-29 16:37:44,801   INFO  *************** Performance of EPOCH 19 *****************
+2026-09-29 16:37:44,802   INFO  Generate label finished(sec_per_example: 0.0163 second).
+2026-09-29 16:37:44,802   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:37:44,802   INFO  recall_rcnn_0.3: 0.874034
+2026-09-29 16:37:44,802   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:37:44,802   INFO  recall_rcnn_0.5: 0.761405
+2026-09-29 16:37:44,802   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:37:44,802   INFO  recall_rcnn_0.7: 0.446623
+2026-09-29 16:37:44,814   INFO  Average predicted number of objects(3321 samples): 80.030
+2026-09-29 16:38:08,530   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |56.85       |76.43       |43.71       |26.52       |
+|Pedestrian  |12.40       |13.55       |11.46       |9.11        |
+|Cyclist     |22.54       |30.88       |18.33       |9.36        |
+|mAP         |30.60       |40.29       |24.50       |15.00       |
+
+2026-09-29 16:38:08,531   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_19/val
+2026-09-29 16:38:08,531   INFO  ****************Evaluation done.*****************
+2026-09-29 16:38:08,551   INFO  Epoch 19 has been evaluated
+2026-09-29 16:38:08,553   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_20.pth to GPU
+2026-09-29 16:38:08,778   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:38:08,785   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:38:08,787   INFO  *************** EPOCH 20 EVALUATION *****************
+2026-09-29 16:39:02,744   INFO  *************** Performance of EPOCH 20 *****************
+2026-09-29 16:39:02,745   INFO  Generate label finished(sec_per_example: 0.0162 second).
+2026-09-29 16:39:02,745   INFO  recall_roi_0.3: 0.000000
+2026-09-29 16:39:02,745   INFO  recall_rcnn_0.3: 0.877034
+2026-09-29 16:39:02,745   INFO  recall_roi_0.5: 0.000000
+2026-09-29 16:39:02,745   INFO  recall_rcnn_0.5: 0.763718
+2026-09-29 16:39:02,745   INFO  recall_roi_0.7: 0.000000
+2026-09-29 16:39:02,745   INFO  recall_rcnn_0.7: 0.466445
+2026-09-29 16:39:02,750   INFO  Average predicted number of objects(3321 samples): 67.728
+2026-09-29 16:39:20,384   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |59.37       |76.91       |48.77       |28.34       |
+|Pedestrian  |14.74       |16.28       |12.75       |11.30       |
+|Cyclist     |24.34       |35.26       |14.94       |15.69       |
+|mAP         |32.81       |42.82       |25.49       |18.44       |
+
+2026-09-29 16:39:20,385   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/eval/eval_all_default/default/epoch_20/val
+2026-09-29 16:39:20,385   INFO  ****************Evaluation done.*****************
+2026-09-29 16:39:20,411   INFO  Epoch 20 has been evaluated
+2026-09-29 16:39:20,412   INFO  ==> Loading parameters from checkpoint /home/vipuser/桌面/OpenPCDet/output/once_models/second/ep40/ckpt/checkpoint_epoch_21.pth to GPU
+2026-09-29 16:39:20,654   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 16:39:20,661   INFO  ==> Done (loaded 163/163)
+2026-09-29 16:39:20,663   INFO  *************** EPOCH 21 EVALUATION *****************

@@ -1,0 +1,155 @@
+2026-09-29 19:35:16,023   INFO  **********************Start SECOND HW-QAT check/export**********************
+2026-09-29 19:35:16,023   INFO  cfg_file                 cfgs/once_models/second_hw_qat.yaml
+2026-09-29 19:35:16,024   INFO  batch_size               4
+2026-09-29 19:35:16,024   INFO  workers                  4
+2026-09-29 19:35:16,024   INFO  extra_tag                hw_qat_10ep
+2026-09-29 19:35:16,024   INFO  ckpt                     ../output/once_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_6.pth
+2026-09-29 19:35:16,024   INFO  pretrained_model         None
+2026-09-29 19:35:16,024   INFO  launcher                 none
+2026-09-29 19:35:16,024   INFO  tcp_port                 18888
+2026-09-29 19:35:16,024   INFO  local_rank               None
+2026-09-29 19:35:16,024   INFO  set_cfgs                 None
+2026-09-29 19:35:16,024   INFO  save_to_file             False
+2026-09-29 19:35:16,024   INFO  infer_time               False
+2026-09-29 19:35:16,024   INFO  eval_tag                 hw_qat
+2026-09-29 19:35:16,024   INFO  calibrate                True
+2026-09-29 19:35:16,024   INFO  calib_batches            8
+2026-09-29 19:35:16,024   INFO  check_export             True
+2026-09-29 19:35:16,024   INFO  eval_hw_ref              True
+2026-09-29 19:35:16,024   INFO  export_dir               ../output/once_models/second_hw_qat/hw_qat_10ep/hw_export_by_epoch/epoch_6
+2026-09-29 19:35:16,024   INFO  weight_quant             per_channel
+2026-09-29 19:35:16,024   INFO  observer                 max
+2026-09-29 19:35:16,024   INFO  observer_momentum        0.95
+2026-09-29 19:35:16,024   INFO  bias_bits                32
+2026-09-29 19:35:16,024   INFO  shift_bits               5
+2026-09-29 19:35:16,024   INFO  max_shift_rel_error      1.0
+2026-09-29 19:35:16,024   INFO  emit_binary              False
+2026-09-29 19:35:16,024   INFO  cfg.ROOT_DIR: /home/vipuser/桌面/OpenPCDet
+2026-09-29 19:35:16,024   INFO  cfg.LOCAL_RANK: 0
+2026-09-29 19:35:16,024   INFO  cfg.CLASS_NAMES: ['Car', 'Bus', 'Truck', 'Pedestrian', 'Cyclist']
+2026-09-29 19:35:16,024   INFO  ----------- DATA_CONFIG -----------
+2026-09-29 19:35:16,024   INFO  cfg.DATA_CONFIG.DATASET: ONCEDataset
+2026-09-29 19:35:16,024   INFO  cfg.DATA_CONFIG.DATA_PATH: ../data/once
+2026-09-29 19:35:16,024   INFO  cfg.DATA_CONFIG.CLOUD_DATA_PATH: /cache/once
+2026-09-29 19:35:16,024   INFO  cfg.DATA_CONFIG.POINT_CLOUD_RANGE: [-75.2, -75.2, -5.0, 75.2, 75.2, 3.0]
+2026-09-29 19:35:16,024   INFO  ----------- INFO_PATH -----------
+2026-09-29 19:35:16,024   INFO  cfg.DATA_CONFIG.INFO_PATH.train: ['once_infos_train.pkl']
+2026-09-29 19:35:16,024   INFO  cfg.DATA_CONFIG.INFO_PATH.val: ['once_infos_val.pkl']
+2026-09-29 19:35:16,024   INFO  cfg.DATA_CONFIG.INFO_PATH.test: ['once_infos_test.pkl']
+2026-09-29 19:35:16,025   INFO  ----------- DATA_SPLIT -----------
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG.DATA_SPLIT.train: train
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG.DATA_SPLIT.test: val
+2026-09-29 19:35:16,025   INFO  ----------- DATA_AUGMENTOR -----------
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.DISABLE_AUG_LIST: ['placeholder']
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG.DATA_AUGMENTOR.AUG_CONFIG_LIST: [{'NAME': 'gt_sampling', 'USE_ROAD_PLANE': False, 'DB_INFO_PATH': ['once_dbinfos_train.pkl'], 'PREPARE': {'filter_by_min_points': ['Car:5', 'Bus:5', 'Truck:5', 'Pedestrian:5', 'Cyclist:5']}, 'SAMPLE_GROUPS': ['Car:1', 'Bus:4', 'Truck:3', 'Pedestrian:2', 'Cyclist:2'], 'NUM_POINT_FEATURES': 4, 'REMOVE_EXTRA_WIDTH': [0.0, 0.0, 0.0], 'LIMIT_WHOLE_SCENE': True}, {'NAME': 'random_world_flip', 'ALONG_AXIS_LIST': ['x', 'y']}, {'NAME': 'random_world_rotation', 'WORLD_ROT_ANGLE': [-0.78539816, 0.78539816]}, {'NAME': 'random_world_scaling', 'WORLD_SCALE_RANGE': [0.95, 1.05]}]
+2026-09-29 19:35:16,025   INFO  ----------- POINT_FEATURE_ENCODING -----------
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.encoding_type: absolute_coordinates_encoding
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.used_feature_list: ['x', 'y', 'z', 'intensity']
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG.POINT_FEATURE_ENCODING.src_feature_list: ['x', 'y', 'z', 'intensity']
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG.DATA_PROCESSOR: [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': True, 'test': False}}, {'NAME': 'transform_points_to_voxels', 'VOXEL_SIZE': [0.1, 0.1, 0.2], 'MAX_POINTS_PER_VOXEL': 5, 'MAX_NUMBER_OF_VOXELS': {'train': 60000, 'test': 60000}}]
+2026-09-29 19:35:16,025   INFO  cfg.DATA_CONFIG._BASE_CONFIG_: cfgs/dataset_configs/once_dataset.yaml
+2026-09-29 19:35:16,025   INFO  ----------- MODEL -----------
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.NAME: SECONDNet
+2026-09-29 19:35:16,025   INFO  ----------- VFE -----------
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.VFE.NAME: MeanVFE
+2026-09-29 19:35:16,025   INFO  ----------- BACKBONE_3D -----------
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.BACKBONE_3D.NAME: VoxelBackBone8x_HWQAT
+2026-09-29 19:35:16,025   INFO  ----------- MAP_TO_BEV -----------
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.MAP_TO_BEV.NAME: HeightCompression
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.MAP_TO_BEV.NUM_BEV_FEATURES: 256
+2026-09-29 19:35:16,025   INFO  ----------- BACKBONE_2D -----------
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.BACKBONE_2D.NAME: BaseBEVBackbone
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.BACKBONE_2D.LAYER_NUMS: [5, 5]
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.BACKBONE_2D.LAYER_STRIDES: [1, 2]
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.BACKBONE_2D.NUM_FILTERS: [128, 256]
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.BACKBONE_2D.UPSAMPLE_STRIDES: [1, 2]
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.BACKBONE_2D.NUM_UPSAMPLE_FILTERS: [256, 256]
+2026-09-29 19:35:16,025   INFO  ----------- DENSE_HEAD -----------
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.DENSE_HEAD.NAME: AnchorHeadSingle
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.DENSE_HEAD.CLASS_AGNOSTIC: False
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.DENSE_HEAD.USE_DIRECTION_CLASSIFIER: True
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.DENSE_HEAD.DIR_OFFSET: 0.78539
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.DENSE_HEAD.DIR_LIMIT_OFFSET: 0.0
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.DENSE_HEAD.NUM_DIR_BINS: 2
+2026-09-29 19:35:16,025   INFO  cfg.MODEL.DENSE_HEAD.ANCHOR_GENERATOR_CONFIG: [{'class_name': 'Car', 'anchor_sizes': [[4.38, 1.87, 1.59]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.71], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.6, 'unmatched_threshold': 0.45}, {'class_name': 'Bus', 'anchor_sizes': [[11.11, 2.88, 3.41]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.74], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'Truck', 'anchor_sizes': [[7.52, 2.5, 2.62]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.55], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.55, 'unmatched_threshold': 0.4}, {'class_name': 'Pedestrian', 'anchor_sizes': [[0.75, 0.76, 1.69]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.62], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.3, 'unmatched_threshold': 0.15}, {'class_name': 'Cyclist', 'anchor_sizes': [[2.18, 0.79, 1.43]], 'anchor_rotations': [0, 1.57], 'anchor_bottom_heights': [-1.65], 'align_center': False, 'feature_map_stride': 8, 'matched_threshold': 0.5, 'unmatched_threshold': 0.35}]
+2026-09-29 19:35:16,026   INFO  ----------- TARGET_ASSIGNER_CONFIG -----------
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NAME: AxisAlignedTargetAssigner
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.POS_FRACTION: -1.0
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.SAMPLE_SIZE: 512
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.NORM_BY_NUM_EXAMPLES: False
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.MATCH_HEIGHT: False
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.TARGET_ASSIGNER_CONFIG.BOX_CODER: ResidualCoder
+2026-09-29 19:35:16,026   INFO  ----------- LOSS_CONFIG -----------
+2026-09-29 19:35:16,026   INFO  ----------- LOSS_WEIGHTS -----------
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.cls_weight: 1.0
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.loc_weight: 2.0
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.dir_weight: 0.2
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.DENSE_HEAD.LOSS_CONFIG.LOSS_WEIGHTS.code_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+2026-09-29 19:35:16,026   INFO  ----------- POST_PROCESSING -----------
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.SCORE_THRESH: 0.1
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.OUTPUT_RAW_SCORE: False
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.EVAL_METRIC: once
+2026-09-29 19:35:16,026   INFO  ----------- NMS_CONFIG -----------
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.MULTI_CLASSES_NMS: False
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_TYPE: nms_gpu
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_THRESH: 0.01
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_PRE_MAXSIZE: 4096
+2026-09-29 19:35:16,026   INFO  cfg.MODEL.POST_PROCESSING.NMS_CONFIG.NMS_POST_MAXSIZE: 500
+2026-09-29 19:35:16,026   INFO  ----------- OPTIMIZATION -----------
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.BATCH_SIZE_PER_GPU: 4
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.NUM_EPOCHS: 10
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.OPTIMIZER: adam_onecycle
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.LR: 0.0001
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.WEIGHT_DECAY: 0.01
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.MOMENTUM: 0.9
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.MOMS: [0.95, 0.85]
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.PCT_START: 0.4
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.DIV_FACTOR: 10
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.DECAY_STEP_LIST: [35, 45]
+2026-09-29 19:35:16,026   INFO  cfg.OPTIMIZATION.LR_DECAY: 0.1
+2026-09-29 19:35:16,027   INFO  cfg.OPTIMIZATION.LR_CLIP: 1e-07
+2026-09-29 19:35:16,027   INFO  cfg.OPTIMIZATION.LR_WARMUP: False
+2026-09-29 19:35:16,027   INFO  cfg.OPTIMIZATION.WARMUP_EPOCH: 1
+2026-09-29 19:35:16,027   INFO  cfg.OPTIMIZATION.GRAD_NORM_CLIP: 10
+2026-09-29 19:35:16,027   INFO  cfg.TAG: second_hw_qat
+2026-09-29 19:35:16,027   INFO  cfg.EXP_GROUP_PATH: once_models
+2026-09-29 19:35:16,027   INFO  Loading ONCE dataset
+2026-09-29 19:35:16,527   INFO  Total samples for ONCE dataset: 3321
+2026-09-29 19:35:16,822   INFO  ==> Loading parameters from checkpoint ../output/once_models/second_hw_qat/hw_qat_10ep/ckpt/checkpoint_epoch_6.pth to GPU
+2026-09-29 19:35:17,069   INFO  ==> Checkpoint trained from version: pcdet+0.6.0+233f849+py0634711
+2026-09-29 19:35:17,086   INFO  ==> Done (loaded 189/189)
+2026-09-29 19:35:17,094   INFO  Start HW-QAT activation calibration for 8 batches
+2026-09-29 19:35:19,081   INFO    calibrated batch 1/8
+2026-09-29 19:35:19,153   INFO    calibrated batch 2/8
+2026-09-29 19:35:19,216   INFO    calibrated batch 3/8
+2026-09-29 19:35:19,297   INFO    calibrated batch 4/8
+2026-09-29 19:35:19,369   INFO    calibrated batch 5/8
+2026-09-29 19:35:19,445   INFO    calibrated batch 6/8
+2026-09-29 19:35:19,525   INFO    calibrated batch 7/8
+2026-09-29 19:35:19,689   INFO    calibrated batch 8/8
+2026-09-29 19:35:19,771   INFO  Finished HW-QAT activation calibration
+2026-09-29 19:35:19,808   INFO  Exported HW-QAT payload/check reports to ../output/once_models/second_hw_qat/hw_qat_10ep/hw_export_by_epoch/epoch_6
+2026-09-29 19:35:19,809   INFO  Hard failures: 0, warnings: 0
+2026-09-29 19:35:19,809   INFO  Enabled HW-equivalent integer bias/shift reference path for evaluation
+2026-09-29 19:35:19,809   INFO  *************** EPOCH hw_ref EVALUATION *****************
+2026-09-29 19:36:17,997   INFO  *************** Performance of EPOCH hw_ref *****************
+2026-09-29 19:36:17,998   INFO  Generate label finished(sec_per_example: 0.0175 second).
+2026-09-29 19:36:17,998   INFO  recall_roi_0.3: 0.000000
+2026-09-29 19:36:17,998   INFO  recall_rcnn_0.3: 0.873780
+2026-09-29 19:36:17,998   INFO  recall_roi_0.5: 0.000000
+2026-09-29 19:36:17,998   INFO  recall_rcnn_0.5: 0.775936
+2026-09-29 19:36:17,998   INFO  recall_roi_0.7: 0.000000
+2026-09-29 19:36:17,998   INFO  recall_rcnn_0.7: 0.509706
+2026-09-29 19:36:18,004   INFO  Average predicted number of objects(3321 samples): 46.444
+2026-09-29 19:36:41,180   INFO  
+|AP@50       |overall     |0-30m       |30-50m      |50m-inf     |
+|Vehicle     |64.47       |78.76       |56.22       |39.94       |
+|Pedestrian  |17.26       |19.04       |15.85       |11.70       |
+|Cyclist     |47.65       |59.88       |40.99       |24.91       |
+|mAP         |43.13       |52.56       |37.69       |25.52       |
+
+2026-09-29 19:36:41,180   INFO  Result is saved to /home/vipuser/桌面/OpenPCDet/output/once_models/second_hw_qat/hw_qat_10ep/eval/epoch_6/val/hw_qat/hw_ref
+2026-09-29 19:36:41,180   INFO  ****************Evaluation done.*****************
+2026-09-29 19:36:41,195   INFO  **********************SECOND HW-QAT check/export done**********************
+2026-09-29 19:36:41,195   INFO  Export directory: ../output/once_models/second_hw_qat/hw_qat_10ep/hw_export_by_epoch/epoch_6
