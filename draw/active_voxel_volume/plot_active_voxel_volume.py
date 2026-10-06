@@ -35,8 +35,8 @@ def box_volume(xmin: float, ymin: float, zmin: float, xmax: float, ymax: float, 
 
 # Same algorithm shares one circle color. Caps and ranges follow the merged yaml.
 SECOND = "#E8E8E8"
-CENTERPOINT = "#0072B2"
-VOXELNEXT = "#C4845A"
+CENTERPOINT = "#BDD7EE"
+VOXELNEXT = "#F4B183"
 
 # Circle, square, and upward triangle distinguish the three algorithms.
 MARKERS = {
