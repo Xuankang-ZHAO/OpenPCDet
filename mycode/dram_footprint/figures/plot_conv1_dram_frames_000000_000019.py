@@ -119,7 +119,7 @@ def main() -> None:
         bar_width,
         bottom=axis_floor,
         label="Base",
-        color="#E8E8E8",
+        color="#A9D18E",
         edgecolor="black",
         linewidth=0.45,
         zorder=3,

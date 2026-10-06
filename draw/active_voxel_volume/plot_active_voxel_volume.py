@@ -34,7 +34,7 @@ def box_volume(xmin: float, ymin: float, zmin: float, xmax: float, ymax: float, 
 
 
 # Same algorithm shares one circle color. Caps and ranges follow the merged yaml.
-SECOND = "#E8E8E8"
+SECOND = "#A9D18E"
 CENTERPOINT = "#BDD7EE"
 VOXELNEXT = "#F4B183"
 
@@ -143,8 +143,7 @@ def add_increasing_scale_arrow(fig, ax) -> None:
     """Dashed diagonal across the plot, in the style of a workload-scale arrow.
 
     Endpoints stay on the data diagonal used before the axis was cut at 10^7.
-    The stroke is a light green at the lower left and a darker green
-    at the upper right.
+    The dashed stroke and arrowhead are a solid dark gray.
     """
     fig.canvas.draw()
     log_lo, log_hi = 4.0, math.log10(2.2e7)
@@ -160,11 +159,9 @@ def add_increasing_scale_arrow(fig, ax) -> None:
     kitti_y = box_volume(0.0, -40.0, -3.0, 70.4, 40.0, 1.0)
     log_t = (math.log10(kitti_y) - math.log10(start[1])) / (math.log10(end[1]) - math.log10(start[1]))
     tail = (start[0] + log_t * (end[0] - start[0]), kitti_y)
-    # Light green at the lower left, darker green at the upper right.
-    base = (0x5E / 255, 0xA8 / 255, 0x72 / 255)
-    light = _mix_rgb(base, (1.0, 1.0, 1.0), 0.34)
-    dark = _mix_rgb(base, (0x1E / 255, 0x5A / 255, 0x34 / 255), 0.45)
-    label_color = "#5EA872"
+    # Solid dark gray for the dashed stroke and arrowhead.
+    light = dark = (0x59 / 255, 0x59 / 255, 0x59 / 255)
+    label_color = "#595959"
     p1 = ax.transData.transform(tail)
     p2 = ax.transData.transform(end)
     label_anchor = ax.transData.transform(start)
