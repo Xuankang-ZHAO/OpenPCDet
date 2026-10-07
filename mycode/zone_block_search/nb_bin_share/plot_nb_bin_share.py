@@ -22,9 +22,9 @@ STAGES = (0, 1, 2, 3)
 PACKAGE_DIR = Path(__file__).resolve().parent
 SEARCH_DIR = PACKAGE_DIR.parent
 
-COLOR_LE64 = '#4C78A8'
-COLOR_LE128 = '#F2A900'
-COLOR_RESHAPE = '#E45756'
+COLOR_LE64 = '#A9D18E'
+COLOR_LE128 = '#9DC3E6'
+COLOR_RESHAPE = '#F4B183'
 
 
 def default_csv(stage: int) -> Path:
