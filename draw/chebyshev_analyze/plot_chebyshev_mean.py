@@ -20,6 +20,8 @@ STAGES = (
     ('conv3', 'chebyshev_stats_conv3.csv'),
     ('conv4', 'chebyshev_stats_conv4.csv'),
 )
+FILL_COLOR = '#C5E0B4'
+LINE_COLOR = '#548235'
 
 VECTOR_SUFFIXES = ('.pdf', '.svg')
 PERCENTILE_LO = 0
@@ -157,9 +159,7 @@ def plot_mean_curves(csv_dir, out_path):
         figsize=(IEEE_FIGURE_WIDTH_INCHES, 4.6),
         sharex=False,
     )
-    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
-
-    for ax, color, (_stage, filename) in zip(axes, colors, STAGES):
+    for ax, (_stage, filename) in zip(axes, STAGES):
         distances, counts, row = load_frame_histograms(csv_dir / filename)
         density = counts_to_ring_density(distances, counts, row)
         mean, p_lo, p_hi = density_mean_and_percentiles(density)
@@ -167,12 +167,11 @@ def plot_mean_curves(csv_dir, out_path):
             distances,
             p_lo,
             p_hi,
-            color=color,
-            alpha=0.28,
+            color=FILL_COLOR,
             linewidth=0,
             zorder=1,
         )
-        ax.plot(distances, mean, color=color, linewidth=1.0, zorder=2)
+        ax.plot(distances, mean, color=LINE_COLOR, linewidth=1.0, zorder=2)
         ax.set_xlim(0, distances[-1] if len(distances) else 1)
         ax.set_ylim(bottom=0)
         ax.grid(True, alpha=0.3)
